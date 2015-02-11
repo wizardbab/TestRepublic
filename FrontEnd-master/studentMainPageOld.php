@@ -25,11 +25,7 @@
 <body>
 
 <?php
-// Php connections added by David Hughen 2/11/15
-// After Andrea Setiawan made modification to the student's html file
 session_start();
-
-// Include the constants used for the db connection
 require("constants.php");
 
 // 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
@@ -65,6 +61,7 @@ $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 
 ?>
+
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -75,13 +72,8 @@ $table = $database->prepare($tableQuery);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
+				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle"><img src="images/logo2.png" alt="Our Logo" height="30" width="30">Test Republic</a>
+            </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
@@ -112,8 +104,7 @@ $table = $database->prepare($tableQuery);
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
-																												// to display student's name in top right corner	
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php 
 																											    $topRightStatement->bind_param("s", $id);
 																												$topRightStatement->bind_result($first_name, $last_name);
 																												$topRightStatement->execute();
@@ -121,7 +112,8 @@ $table = $database->prepare($tableQuery);
 																												{
 																													echo $first_name . " " . $last_name;
 																												}
-																												$topRightStatement->close(); ?><b class="caret"></b></a>
+																												$topRightStatement->close(); ?>
+																												<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -134,7 +126,7 @@ $table = $database->prepare($tableQuery);
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="login2.html"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
@@ -151,24 +143,32 @@ $table = $database->prepare($tableQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 				<li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="#">Summary</a>
                 </li>
                 <li class="sidebar-brand">
-                    Select a Class:
+                        Select a class:
                 </li>
-               
-				<?php 
-				// Added by David Hughen
-				// The code to fetch the student's classes and put them in the sidebar to the left
-				$stmt->bind_param("s", $id);
+                <?php $stmt->bind_param("s", $id);
 				$stmt->bind_result($clid, $clde);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-					echo '<li><a href="#">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+					echo '<li><a href="#">'.$clid.'<br />'.$clde.'</a></li>';
 				}
 				$stmt->close();
 				?>
+                <li class="sidebar-brand">
+                        Recent Updates:
+                </li>
+			<div class="recent_updates">
+                <li>
+                    2/5/15 - CS 130-2 Test # 2 was posted.
+                </li>
+                <li>
+                    2/5/15 - HI 101-3 Midterm was graded.
+                </li>
+			</div>
+			
             </ul>
         </div>
 		
@@ -179,48 +179,35 @@ $table = $database->prepare($tableQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
                     <div class="col-lg-12">
                         <div class="warning_box">
+							<h2 style="color:#FF0000"> Warning(s): </h2>
 							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
+						
 						</div>
-                    </div>
-					
-					<!-- our code starts here :) -->
-					<table class="student_summary">
-					
-						<colgroup>
-							<col class="classes" />
-							<col class="recent_updates" />
-							<col class="date" />
-						</colgroup>
-						
-						<thead>
-						<tr>
-							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
-						</tr>
-						</thead>
-						
-						<tbody>
-						<?php 
-							// Code added by David Hughen to display class id, update, and date
-							// inside the table in the middle of the page
-							$table->bind_param("s", $id);
+						<table>
+							<tr>
+								<th>Class</th>
+								<th>Update</th>
+								<th>Date</th>
+							</tr>
+							<?php $table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
 							{
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
-									  <td>'.$date.'</td></tr>';
+								echo '<tr><td>'.$clid.'</td><td>'.$update.'</td><td>'.$date.'</td></tr>';
 							}
-							$table->close(); 
-							?>			
-					</table>
-                </div>
+							$table->close();
+							?>
+							<tr></tr>
+						</table>
+                        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+                        <p>Make sure to keep all page content within the 23232.</p>
 
+							
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
