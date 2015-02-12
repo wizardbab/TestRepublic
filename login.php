@@ -59,7 +59,7 @@ while($stmt->fetch())
 if($stu1 != null)
 {
 	$_SESSION['username'] = $id;
-	header('Location: http://csweb/CS414/Team1/FrontEnd-master/studentMainPage.php');
+	header('Location: studentMainPage.php');
 }
 $stmt->close();
 
