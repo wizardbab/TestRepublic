@@ -1,3 +1,2 @@
-# This is gonna be Front end's repository
-This is for the Front end dept.
-We Khan do this!
+# This is the Horde's main hub for project TestRepublic
+# We Khan do this!
