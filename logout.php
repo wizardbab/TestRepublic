@@ -3,6 +3,7 @@
 	// be student or teacher
 	// Author: David Hughen
 	// Date:   2/11/2015
+   // Test comment
 	session_start();
 	session_destroy();
 	header('Location: http://csweb/CS414/Team1/FrontEnd-master/login2.html');
