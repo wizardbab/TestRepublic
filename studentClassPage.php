@@ -36,9 +36,6 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
-if($id == null)
-    header('Location: login.html');
-    
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 
@@ -59,11 +56,6 @@ join enrollment using (student_id)
 join class using (class_id)
 where student_id = ?";
 
-$warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
-join class using (class_id)
-join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
-
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
 
@@ -71,7 +63,6 @@ where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
-$warningstmt = $database->prepare($warningQuery);
 
 ?>
 	<div id="wrapper2"
@@ -174,7 +165,7 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-					echo '<li><a href="studentClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+					echo '<li><a href="#">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -191,22 +182,7 @@ $warningstmt = $database->prepare($warningQuery);
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
                     <div class="col-lg-12">
                         <div class="warning_box">
-							<p class="warning_msg"> 
-                                <?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                                </p>
+							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
 						</div>
                     </div>
 					
@@ -235,7 +211,7 @@ $warningstmt = $database->prepare($warningQuery);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
-							{	
+							{
 								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
 									  <td>'.$update.'</td>
 									  <td>'.$date.'</td></tr>';
