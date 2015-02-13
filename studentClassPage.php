@@ -165,7 +165,7 @@ $table = $database->prepare($tableQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-					echo '<li><a href="studentClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+					echo '<li><a href="#">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -211,7 +211,7 @@ $table = $database->prepare($tableQuery);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
-							{	
+							{
 								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
 									  <td>'.$update.'</td>
 									  <td>'.$date.'</td></tr>';
