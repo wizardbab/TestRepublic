@@ -73,7 +73,8 @@ while($tea->fetch())
 // Post teacher id and go to teacher main page
 if($tea1 != null)
 {
-	$type = "teacher";
+	$_SESSION['username'] = $id;
+	header('Location: teacherMainPage.php');
 }
 
    // Go back to login and say incorrect
