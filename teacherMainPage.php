@@ -205,7 +205,8 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-					echo '<li><a href="studentClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
+					echo '<li><a href="#">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -238,8 +239,7 @@ $warningstmt = $database->prepare($warningQuery);
 						
 						<tbody>
 						<?php 
-							// Code added by David Hughen to display class id, update, and date
-							// inside the table in the middle of the page
+							// THE QUERY FOR THE TABLE IN THE MIDDLE OF THE PAGE GOES IN HERE!!!!
 							$table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
