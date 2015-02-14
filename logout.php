@@ -5,5 +5,5 @@
 	// Date:   2/11/2015
 	session_start();
 	session_destroy();
-	header('Location: login2.html');
+	header('Location: login.html');
 ?>
