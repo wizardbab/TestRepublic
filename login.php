@@ -76,7 +76,9 @@ if($tea1 != null)
 }
 
    // Go back to login and say incorrect (ADD CODE FOR MESSSAGE DOWN HERE!!)
-   header('Location: login.html');
+   echo "<script language=javascript>
+	     javascript:history.back();		
+        </script>";
 
 // Close the database connection
 mysqli_close($database);
