@@ -23,88 +23,6 @@
 </head>
 
 <body>
-
-<?php
-// Php connections added by David Hughen 2/11/15
-// After Andrea Setiawan made modification to the student's html file
-session_start();
-
-// Include the constants used for the db connection
-require("constants.php");
-
-// 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
-
-$id = $_SESSION['username']; // Just a random variable gotten from the URL
-
-if($id == null)
-    header('Location: login.html');
-    
-// The database variable holds the connection so you can access it
-$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
-
-if (mysqli_connect_errno())
-{
-   echo "<h1>Connection error</h1>";
-}
-
-//query for listing the classes the teacher teaches
-/* select class_id from teacher
-join class
-using(teacher_id)
-where teacher_id = ? */
-
-
-// query for students who have not taken a test:
-/* select count(*) from student
-join test_list
-using(student_id)
-join test
-using(test_id)
-where date_taken is null */
-
-// Class id and description query
-$query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
-
-// Student first and last name to display on top right of screen
-$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
-
-// main table query
-<<<<<<< HEAD
-/* select test.class_id, (select count(student_id) from test_list
-						join test using(test_id)
-						where date_taken is not null and teacher_id = 121111
-						) as num_of_students, update_date 
-from test_list
-join test
-using(test_id)
-join teacher
-using(teacher_id)
-join class
-using(teacher_id)
-where teacher_id = 121111
-group by(test.class_id) */
-
-
-$tableQuery = "select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";
-
-$warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
-join class using (class_id)
-join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
-
-// The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
-@ $database->select_db(DATABASENAME);
-
-// The statement variable holds your query      
-$stmt = $database->prepare($query);
-$topRightStatement = $database->prepare($topRightQuery);
-$table = $database->prepare($tableQuery);
-$warningstmt = $database->prepare($warningQuery);
-
-?>
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -152,16 +70,7 @@ $warningstmt = $database->prepare($warningQuery);
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
-																												// to display student's name in top right corner	
-																											    $topRightStatement->bind_param("s", $id);
-																												$topRightStatement->bind_result($first_name, $last_name);
-																												$topRightStatement->execute();
-																												while($topRightStatement->fetch())
-																												{
-																													echo $first_name . " " . $last_name;
-																												}
-																												$topRightStatement->close(); ?><b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -174,7 +83,7 @@ $warningstmt = $database->prepare($warningQuery);
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
@@ -196,64 +105,154 @@ $warningstmt = $database->prepare($warningQuery);
                 <li class="sidebar-brand">
                     Select a Class:
                 </li>
-               
-				<?php 
-				// Added by David Hughen
-				// The code to fetch the student's classes and put them in the sidebar to the left
-				$stmt->bind_param("s", $id);
-				$stmt->bind_result($clid, $clde);
-				$stmt->execute();
-				while($stmt->fetch())
-				{
-					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
-
-					echo '<li><a href="teacherClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
-
-				}
-				$stmt->close();
-				?>
+                <li>
+                    <a href="#">
+						BI 101-2
+						<div class="subject-name">New Testament Survey</div>
+					</a>
+                </li>
+                <li>
+                    <a href="#">
+						CS 130-2
+						<div class="subject-name">Intro to Computers</div>
+					</a>
+                </li>
+                <li>
+                    <a href="#">
+						CS 202
+						<div class="subject-name">Intro to Programming</div>
+					</a>
+                </li>
+                <li>
+                    <a href="#">
+						EN 121-5
+						<div class="subject-name">English Grammar & Comp.</div>
+					</a>
+                </li>
+				<li>
+                    <a href="#">
+						HI 101-5
+						<div class="subject-name">History of Civilization</div>
+					</a>
+                </li>
+			
             </ul>
         </div>
 		
         <!-- /#sidebar-wrapper -->
-
+		<div class="course_header">
+			<div class="course_number">
+				CS 130-2
+			</div>
+			
+			<div class="class_name">
+				Introduction to Computers
+			</div>
+		</div>
+		
         <!-- Page Content -->
         <div id="page-content-wrapper">
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<!-- our code starts here :) -->
-					<table class="teacher_summary">
+				
+					<div class="students_num_text">
+						No of Students:
+						<span class="students_number">30</span>
+					</div>
 					
+					<button type="button" class="create_test_button">Create Test</button>
+					
+					<div class="test_list_text">
+						Test List
+					</div>
+					
+					<table class="test_list">
 						<colgroup>
-							<col class="classes" />
-							<col class="recent_updates" />
-							<col class="date" />
+							<col class="test_name" />
+							<col class="test_average" />
+							<col class="view_button_col" />
 						</colgroup>
-						
+					
 						<thead>
 						<tr>
-							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
+							<th>Test Name</th>
+							<th>Average</th>
+							<th>View Test</th>
 						</tr>
 						</thead>
 						
 						<tbody>
-						<?php 
-							// THE QUERY FOR THE TABLE IN THE MIDDLE OF THE PAGE GOES IN HERE!!!!
-							$table->bind_param("s", $id);
-							$table->bind_result($clid, $update, $date);
-							$table->execute();
-							while($table->fetch())
-							{	
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.' student(s) took the test.</td>
-									  <td>'.$date.'</td></tr>';
-							}
-							$table->close(); 
-							?>			
+						<tr>
+							<td>Test #1</td>
+							<td>78</td>
+							<td><button type="button" class="view_test_button">View</button></td>
+						</tr>
+						<tr>
+							<td>Test #2</td>
+							<td>80</td>
+							<td><button type="button" class="view_test_button">View</button></td>
+						</tr>
+						<tr>
+							<td>Midterm Exam</td>
+							<td>85</td>
+							<td><button type="button" class="view_test_button">View</button></td>
+						</tr>
+						
+						</tbody>
+					
 					</table>
+					
+					<div class="student_list_text">
+						Student List
+					</div>
+					
+					<table class="student_list">			
+						<tr class="student_list_header">
+							<td>First Name</td>
+							<td>Last Name</td>
+							<td>Test #1</td>
+							<td>Test #2</td>
+							<td>Midterm Exam</td>
+							<td>Average Grade</td>
+						</tr>
+						
+						<tr class="odd_row">
+							<td>Anna</td>
+							<td>Smith</td>
+							<td>78</td>
+							<td>70</td>
+							<td>80</td>
+							<td>...</td>
+						</tr>
+						<tr>
+							<td>Bob</td>
+							<td>Jones</td>
+							<td>80</td>
+							<td>70</td>
+							<td><button type="button" class="grade_test_button">Grade</button></td>
+							<td>75</td>
+						</tr>
+						<tr class="odd_row">
+							<td>Carol</td>
+							<td>Lie</td>
+							<td>85.5</td>
+							<td class="failing_grade">59</td> <!-- If grade=='F', it should be red -->
+							<td>Not taken</td>
+							<td>...</td>
+						</tr>
+						<tr>
+							<td>Daniel</td>
+							<td>Jones</td>
+							<td>80</td>
+							<td>65</td>
+							<td><button type="button" class="grade_test_button">Grade</button></td>
+							<td>72.5</td>
+						</tr>
+					
+					</table>
+					
+					
                 </div>
 
             </div>
