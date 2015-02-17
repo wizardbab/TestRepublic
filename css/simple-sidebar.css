@@ -309,4 +309,47 @@ ul.alert-dropdown {
 		font-size: 14pt;
 		background-color: rgb(55,96,146);
 	}
+	
+	table.teacher_summary
+	{
+		position: relative;
+		top: 87px;
+		font-size: 14pt;
+		border: 2px solid black;
+		border-collapse: collapse;
+		width: 70%;
+		text-align: center;
+	}
+	
+	table.teacher_summary td, table.teacher_summary th
+	{
+		border: 1px solid black;
+		padding: 8px;
+	}
+	
+	table.teacher_summary thead
+	{
+		background-color: rgb(149,179,215);
+	}
+	
+	table.teacher_summary th
+	{
+		text-align: center;
+	}
+	
+	table.teacher_summary col.classes
+	{
+		width: 15%;
+	}
+	
+	table.teacher_summary col.recent_updates
+	{
+		width: 40%;
+	}
+	
+	table.teacher_summary col.date
+	{
+		width: 20%;
+	}
+
 }

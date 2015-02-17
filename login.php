@@ -3,9 +3,7 @@
 
     require("constants.php");
 
-	// 'CSWEB', 'team1_cs414', 'CS414t1', 'cs414_team1')
-
-$id = $_POST['username']; // Just a random variable gotten from the URL
+$id = $_POST['username']; // The id from login.html
 $password = $_POST['password'];
 
 // The database variable holds the connection so you can access it
@@ -73,16 +71,15 @@ while($tea->fetch())
 // Post teacher id and go to teacher main page
 if($tea1 != null)
 {
-	$type = "teacher";
+	$_SESSION['username'] = $id;
+	header('Location: teacherMainPage.php');
 }
 
-   // Go back to login and say incorrect
-   echo "<script language=javascript> 
-		
-	     javascript:history.back();
+   // Go back to login and say incorrect (ADD CODE FOR MESSSAGE DOWN HERE!!)
+   echo "<script language=javascript>
+	     javascript:history.back();		
         </script>";
 
 // Close the database connection
 mysqli_close($database);
-
 ?>
