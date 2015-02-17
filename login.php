@@ -3,9 +3,7 @@
 
     require("constants.php");
 
-	// 'CSWEB', 'team1_cs414', 'CS414t1', 'cs414_team1')
-
-$id = $_POST['username']; // Just a random variable gotten from the URL
+$id = $_POST['username']; // The id from login.html
 $password = $_POST['password'];
 
 // The database variable holds the connection so you can access it
@@ -50,39 +48,36 @@ $stmt->execute();
 $type = ""; // Determines whether a student or teacher or nothing
 
 // Fetch all of the results one at a time. Access them from the variables in the bind_result
+
 while($stmt->fetch())
 {
    echo $stu1 . " - " . $stu2 . " - ";
+}
+
+$tea->execute();
+while($tea->fetch())
+{
+   echo $tea1 . " - " . $tea2 . " - ";
 }
 
 // Post student id and go to student main page
 if($stu1 != null)
 {
 	$_SESSION['username'] = $id;
-	header('Location: http://csweb/CS414/Team1/FrontEnd-master/studentMainPage.php');
+	header('Location: studentMainPage.php');
 }
-$stmt->close();
-
-$tea->execute();
-
-while($tea->fetch())
-{
-	echo $tea1 . " - " . $tea2 . " - ";
-}
-
 // Post teacher id and go to teacher main page
-if($tea1 != null)
+else if($tea1 != null)
 {
-	$type = "teacher";
+	$_SESSION['username'] = $id;
+	header('Location: teacherMainPage.php');
 }
+else
+{
+	 header('Location: login.html');
 
-   // Go back to login and say incorrect
-   echo "<script language=javascript> 
-		
-	     javascript:history.back();
-        </script>";
+}
 
 // Close the database connection
 mysqli_close($database);
-
 ?>

@@ -47,13 +47,44 @@ if (mysqli_connect_errno())
    echo "<h1>Connection error</h1>";
 }
 
+//query for listing the classes the teacher teaches
+/* select class_id from teacher
+join class
+using(teacher_id)
+where teacher_id = ? */
+
+
+// query for students who have not taken a test:
+/* select count(*) from student
+join test_list
+using(student_id)
+join test
+using(test_id)
+where date_taken is null */
+
 // Class id and description query
-$query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
+$query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
 
 // Student first and last name to display on top right of screen
-$topRightQuery = "select first_name, last_name from student where student_id = ?";
+$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
-// Class, etc, to display on studentMainPage
+// main table query
+<<<<<<< HEAD
+/* select test.class_id, (select count(student_id) from test_list
+						join test using(test_id)
+						where date_taken is not null and teacher_id = 121111
+						) as num_of_students, update_date 
+from test_list
+join test
+using(test_id)
+join teacher
+using(teacher_id)
+join class
+using(teacher_id)
+where teacher_id = 121111
+group by(test.class_id) */
+
+
 $tableQuery = "select class_id, c_update, update_date from student
 join enrollment using (student_id)
 join class using (class_id)
@@ -174,7 +205,10 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-					echo '<li><a href="studentClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
+
+					echo '<li><a href="teacherClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+
 				}
 				$stmt->close();
 				?>
@@ -188,30 +222,8 @@ $warningstmt = $database->prepare($warningQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-12">
-                        <div class="warning_box">
-							<p class="warning_msg"> 
-                                <?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                                </p>
-						</div>
-                    </div>
-					
 					<!-- our code starts here :) -->
-					<table class="student_summary">
+					<table class="teacher_summary">
 					
 						<colgroup>
 							<col class="classes" />
@@ -229,15 +241,14 @@ $warningstmt = $database->prepare($warningQuery);
 						
 						<tbody>
 						<?php 
-							// Code added by David Hughen to display class id, update, and date
-							// inside the table in the middle of the page
+							// THE QUERY FOR THE TABLE IN THE MIDDLE OF THE PAGE GOES IN HERE!!!!
 							$table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
 							{	
 								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
+									  <td>'.$update.' student(s) took the test.</td>
 									  <td>'.$date.'</td></tr>';
 							}
 							$table->close(); 
