@@ -3,6 +3,8 @@
 body
 {
 	background-image: url("../images/photo2.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 #loginButton
 {
