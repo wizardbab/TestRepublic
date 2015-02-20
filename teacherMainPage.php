@@ -55,12 +55,6 @@ where teacher_id = ? */
 
 
 // query for students who have not taken a test:
-/* select count(*) from student
-join test_list
-using(student_id)
-join test
-using(test_id)
-where date_taken is null */
 
 // Class id and description query
 $query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
@@ -69,26 +63,13 @@ $query = "select class_id, class_description from teacher join class using(teach
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
 // main table query
-<<<<<<< HEAD
-/* select test.class_id, (select count(student_id) from test_list
-						join test using(test_id)
-						where date_taken is not null and teacher_id = 121111
-						) as num_of_students, update_date 
+
+$tableQuery = "select class_id, count(student_id) as no_students, update_date
 from test_list
-join test
-using(test_id)
-join teacher
-using(teacher_id)
-join class
-using(teacher_id)
-where teacher_id = 121111
-group by(test.class_id) */
-
-
-$tableQuery = "select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";
+join test using(test_id)
+right join class using(class_id, teacher_id)
+where teacher_id = ? and graded is null or graded != 1
+group by(class_id) ";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
@@ -208,7 +189,6 @@ $warningstmt = $database->prepare($warningQuery);
 					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
 
 					echo '<li><a href="teacherClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
-
 				}
 				$stmt->close();
 				?>

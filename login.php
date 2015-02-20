@@ -75,7 +75,6 @@ else if($tea1 != null)
 else
 {
 	 header('Location: login.html');
-
 }
 
 // Close the database connection
