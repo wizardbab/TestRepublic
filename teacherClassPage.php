@@ -21,6 +21,43 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
+<?php
+
+session_start();
+
+// Include the constants used for the db connection
+require("constants.php");
+
+$id = $_SESSION['username'];
+
+
+
+if($id == null)
+    header('Location: login.html');
+    
+// The database variable holds the connection so you can access it
+$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
+@ $database->select_db(DATABASENAME);
+
+if (mysqli_connect_errno())
+{
+   echo "<h1>Connection error</h1>";
+}
+
+// Query to populate the first table on the screen
+$firstTableQuery = "select test_name, avg(test_score) from test_list
+join test using(test_id)
+where class_id = ?
+group by(test_name)";
+
+// Teacher first and last name to display on top right of screen
+$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
+
+
+$firstTableStatement = $database->prepare($firstTableQuery);
+
+
+?>
 
 <body>
 	<div id="wrapper2"
@@ -70,7 +107,24 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
+																												// to display student's name in top right corner
+
+																								if ($topRightStatement = $database->prepare($topRightQuery)) 
+																															{
+																																$topRightStatement->bind_param("s", $id);
+																									
+																															}
+																															else {
+																																printf("Errormessage: %s\n", $database->error);
+																															}							
+																												$topRightStatement->bind_result($first_name, $last_name);
+																												$topRightStatement->execute();
+																												while($topRightStatement->fetch())
+																												{
+																													echo $first_name . " " . $last_name;
+																												}
+																												$topRightStatement->close(); ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -107,7 +161,7 @@
                 </li>
                 <li>
                     <a href="#">
-						BI 101-2
+						<h1><?php echo $_GET['id'];?></h1>
 						<div class="subject-name">New Testament Survey</div>
 					</a>
                 </li>
