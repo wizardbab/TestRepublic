@@ -51,10 +51,17 @@ $query = "select class_id, class_description from enrollment join class using (c
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, c_update, update_date from student
+//$tableQuery = "select test_name, t_status, date_begin, date_end from test
+//join test_list using(test_id)
+//where student_id = ?";
+$tableQuery = "select test_name, t_status, date_begin, date_end from test
+join test_list using(test_id)
+where student_id = ? and class_id = ?";
+// Get the class id for certain user
+/*"select class_id, c_update, update_date from student
 join enrollment using (student_id)
 join class using (class_id)
-where student_id = ?";
+where student_id = ?";*/
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
@@ -63,7 +70,6 @@ where student_id = ?";
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
-
 ?>
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -165,7 +171,10 @@ $table = $database->prepare($tableQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-					echo '<li><a href="#">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+               // Modified by En Yang Pang
+               // Gets the class id to display in the url correctly
+               echo $clid;
+					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -197,24 +206,28 @@ $table = $database->prepare($tableQuery);
 						
 						<thead>
 						<tr>
-							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
+							<th>List of Tests</th>
+							<th>Status</th>
+							<th>Date Frame</th>
+                     <th>Option</th>
 						</tr>
 						</thead>
 						
 						<tbody>
 						<?php 
-							// Code added by David Hughen to display class id, update, and date
+							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
-							$table->bind_param("s", $id);
-							$table->bind_result($clid, $update, $date);
+                     $class = $_GET['class_id'];
+							$table->bind_param("ss", $id, $class);
+                     //$table->bind_param("s", $id);
+							$table->bind_result($test_list, $status, $date_begin, $date_end);
 							$table->execute();
+                     echo $clid;
 							while($table->fetch())
 							{
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
-									  <td>'.$date.'</td></tr>';
+								echo '<tr><td>'.$test_list.'</td>
+									   <td>'.$status.'</td>
+									   <td>'.$date_begin.' - '.$date_end.'</td></tr>';
 							}
 							$table->close(); 
 							?>			
