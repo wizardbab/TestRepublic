@@ -47,6 +47,8 @@ if (mysqli_connect_errno())
    echo "<h1>Connection error</h1>";
 }
 
+$_SESSION['username'] = $id;
+
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
 
@@ -172,9 +174,12 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->bind_param("s", $id);
 				$stmt->bind_result($clid, $clde);
 				$stmt->execute();
+
 				while($stmt->fetch())
 				{
-					echo '<li><a href="studentClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+               //$clid = str_replace(" ", "%20", $clid);
+               echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+					/*echo '<li><a href="studentClassPage.php?class_id=<?php echo $clid; ?>">' .$clid. '<div class="subject-name">' .$clde. '</div></a></li>';*/
 				}
 				$stmt->close();
 				?>
