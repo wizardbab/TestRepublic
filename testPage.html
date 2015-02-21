@@ -15,14 +15,14 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/testPage.css" rel="stylesheet">
+    <link href="css/TestPage.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
 
-<body>
+<body class="container-fluid">
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -43,41 +43,10 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
                         <li>
                             <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
                         </li>
@@ -95,47 +64,21 @@
 	</div>	
 	
     <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-				<li>
-                    <a href="#" id="student-summary">Summary</a>
-                </li>
-                <li class="sidebar-brand">
-                    Select a Class:
-                </li>
-                <li>
-                    <a href="#">
-						BI 101-2
-						<div class="subject-name">New Testament Survey</div>
-					</a>
-                </li>
-                <li>
-                    <a href="#">
-						CS 130-2
-						<div class="subject-name">Intro to Computers</div>
-					</a>
-                </li>
-                <li>
-                    <a href="#">
-						CS 202
-						<div class="subject-name">Intro to Programming</div>
-					</a>
-                </li>
-                <li>
-                    <a href="#">
-						EN 121-5
-						<div class="subject-name">English Grammar & Comp.</div>
-					</a>
-                </li>
-				<li>
-                    <a href="#">
-						HI 101-5
-						<div class="subject-name">History of Civilization</div>
-					</a>
-                </li>
-			
+				<div class="radio">
+					<label><input type="radio" name="optradio">Essay</label>
+				</div>
+				<div class="radio">
+					<label><input type="radio" name="optradio">Fill in the Blank</label>
+				</div>
+				<div class="radio">
+					<label><input type="radio" name="optradio">T/F</label>
+				</div>
+				<div class="radio disabled">
+					<label><input type="radio" name="optradio" disabled>Multiple Choice</label>
+				</div>
             </ul>
         </div>
 		
@@ -145,26 +88,53 @@
         <div id="page-content-wrapper">
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+					
+					
+					</div>
+				</div>
+				
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-8">
-                        <div class="warning_box">
-							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
-						</div>
+                    <div class="col-lg-12 color">
+						<h1> Explain essay question: </h1>
                     </div>
-			<div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-10">
-                        <div class="warning_box">
-							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
-						</div>
-                    </div>
-					
-					
-					
-					
                 </div>
+				<div class="row">
+					<div class="col-lg-8 color">
+						<div class="form-group">
+						  <textarea class="form-control" rows="8" id="comment"></textarea>
+						</div>
+					  </form>
+					<ul class="pager">
+						<li class="previous"> <a href="#"><span class="glyphicon glyphicon-chevron-left"></span> previous </a></li>
+						<li class="next"> <a href="#"><span class="glyphicon glyphicon-chevron-right"></span> next </a></li>
+					</ul>
+					</div>
+					
+					<div class="col-lg-4 color2">
 
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 color">
+						<h1> Question 2 </h1>
+					
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-8 color">
+						<div class="form-group">
+						  <label for="comment">Comment:</label>
+						  <textarea class="form-control" rows="8" id="comment"></textarea>
+						</div>
+					  </form>
+					<ul class="pager">
+						<li class="previous"> <a href="#"><span class="glyphicon glyphicon-chevron-left"></span> previous </a></li>
+						<li class="next"> <a href="#"><span class="glyphicon glyphicon-chevron-right"></span> next </a></li>
+					</ul>
+					</div>
+				</div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
