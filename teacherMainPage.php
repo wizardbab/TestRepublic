@@ -189,9 +189,8 @@ $warningstmt = $database->prepare($warningQuery);
 				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
 				{
-					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
-					echo '<li><a href="teacherClassPage.php?id=$classId">' . $clid . '<div class=subject-name">' . $clde . '</div></a></li>';
-					//"location.href='prodsub.php?id=<?php echo $id;
+					
+					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
