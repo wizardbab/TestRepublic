@@ -83,6 +83,7 @@ where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $warningstmt = $database->prepare($warningQuery);
+$table = $database->prepare($tableQuery);
 
 ?>
 	<div id="wrapper2"
@@ -221,15 +222,8 @@ $warningstmt = $database->prepare($warningQuery);
 						<?php
 							
 							
-							if ($table = $database->prepare($tableQuery)) 
-							{
-								$table->bind_param("s", $id);
-    
-							}
-							else {
-								printf("Errormessage: %s\n", $database->error);
-							}
 							
+							$table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
