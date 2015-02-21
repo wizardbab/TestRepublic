@@ -51,9 +51,6 @@ $query = "select class_id, class_description from enrollment join class using (c
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
 // Class, etc, to display on studentMainPage
-//$tableQuery = "select test_name, t_status, date_begin, date_end from test
-//join test_list using(test_id)
-//where student_id = ?";
 $tableQuery = "select test_name, t_status, date_begin, date_end from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
@@ -173,7 +170,6 @@ $table = $database->prepare($tableQuery);
 				{
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-               echo $clid;
 					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
@@ -219,10 +215,8 @@ $table = $database->prepare($tableQuery);
 							// inside the table in the middle of the page
                      $class = $_GET['class_id'];
 							$table->bind_param("ss", $id, $class);
-                     //$table->bind_param("s", $id);
 							$table->bind_result($test_list, $status, $date_begin, $date_end);
 							$table->execute();
-                     echo $clid;
 							while($table->fetch())
 							{
 								echo '<tr><td>'.$test_list.'</td>
