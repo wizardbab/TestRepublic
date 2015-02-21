@@ -231,7 +231,6 @@ ul.alert-dropdown {
 
 		#page-content-wrapper 
 		{
-			/*padding: 20px;*/
 			position: relative;
 		}
 
@@ -239,6 +238,7 @@ ul.alert-dropdown {
 			position: relative;
 			margin-right: 0;
 		}
+
 	
 	#course_section
 	{

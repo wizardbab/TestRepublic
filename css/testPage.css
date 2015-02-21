@@ -8,11 +8,35 @@
 
 body
 {
-	background-image: url("../images/background.png");
+	/*background-image: url("../images/background.png");*/
+	background-image: url("../images/photo2.jpg");
+	color: black;
+}
+
+/* added by Andrea */
+.navbar-header
+{
+	background-color: black;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#logo-area
+{
+	display: inline-block;
+	margin-top: -11px;
+}
+
+.TestRepublic
+{
+	font-family: Rockwell, Arial;
+	color: white;
+	font-size: 20px;
 }
 
 #wrapper2{
     padding-left: 0;
+	background-color: rgb(55,96,146);
 }
 .top-nav {
     padding: 0 15px;
@@ -106,6 +130,7 @@ ul.alert-dropdown {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+	background-color: rgb(149,179,215);
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -132,23 +157,24 @@ ul.alert-dropdown {
     margin: 0;
     padding: 0;
     list-style: none;
+	
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+    text-indent: 15px;
+    line-height: 25px;
+	font-size: 13pt;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: #000;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
-    background: rgba(255,255,255,0.2);
+    background: rgba(55,96,146,0.4);
 }
 
 .sidebar-nav li a:active,
@@ -157,9 +183,12 @@ ul.alert-dropdown {
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
+    height: 40px;
+    font-size: 28px;
+	font-weight: bold;
+    line-height: 40px;
+	background-color: rgb(55,96,146);
+	color: rgb(0,0,0);
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -168,14 +197,20 @@ ul.alert-dropdown {
 
 .sidebar-nav 
 {
-
-    color: color: #999999;
+	
+    color: #999999;
     background: none;
+}
+
+#student-summary
+{
+	line-height: 50px;
 }
 
 @media(min-width:768px) 
 {
 		#wrapper {
+			padding-top: 20px;
 			padding-left: 250px;
 		}
 
@@ -185,6 +220,7 @@ ul.alert-dropdown {
 
 		#sidebar-wrapper {
 			width: 250px;
+			font-size: 14px;
 		}
 
 		#wrapper.toggled #sidebar-wrapper {
@@ -203,17 +239,17 @@ ul.alert-dropdown {
 		}
 		
 	/*testing stuff */
-
-	.recent_updates
-	{
-	text-decoration: none;
-    color: rgba(255,255,255,0.2);
-	}
-	
-	.warning_msg
-	{
-		font-size: 14pt;
-		background-color: #FFF;
-	}
-	
+textarea
+{
+	resize:none;
+		
 }
+.color
+{
+	background-color: pink;
+}
+	
+	.color2
+{
+	background-color: blue;
+}	

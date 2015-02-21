@@ -21,6 +21,93 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
+<?php
+
+session_start();
+
+// Include the constants used for the db connection
+require("constants.php");
+
+$id = $_SESSION['username'];
+
+// Gets the class id appended to url from teacherMainPage.php
+$classId = $_GET['classId'];
+
+if($id == null)
+    header('Location: login.html');
+    
+// The database variable holds the connection so you can access it
+$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
+@ $database->select_db(DATABASENAME);
+
+if (mysqli_connect_errno())
+{
+   echo "<h1>Connection error</h1>";
+}
+
+$query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
+
+$mainClassQuery = "select class_id, class_description from teacher join class using(teacher_id) where class_id = ?";
+
+// Query for the number of students in the class
+$studentCountQuery = "select count(distinct student_id) from test_list
+join test using(test_id)
+where class_id = ?";
+
+// Query for the number of tests in the class
+$testCountQuery = "select count(distinct test_id) from test_list
+join test using(test_id)
+where class_id = ?";
+
+// Query to populate the first table on the screen
+$firstTableQuery = "select test_name, avg(test_score) from test_list
+join test using(test_id)
+where class_id = ?
+group by(test_name)";
+
+// Teacher first and last name to display on top right of screen
+$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
+
+// Title bar for student list
+$studentTitleQuery = "select test_name from test where class_id = ?";
+
+// Student names for student list
+$studentNamesQuery = "select first_name, last_name from student
+join test_list using(student_id)
+join test using(test_id)
+where class_id = ? and student_id = ?
+group by(student_id)";
+
+// Test score for student list
+$testScoreQuery = "select test_score from test_list
+join test
+using(test_id)
+where student_id = ? and class_id = ?";
+
+// Average score for student list
+$averageQuery = "select avg(test_score) from test_list
+join test using(test_id)
+where student_id = ? and class_id = ?";
+
+// List of students for student list
+$studentQuery = "select distinct student_id from test_list
+join test using(test_id)
+where class_id = ?";
+
+// List of tests for student list
+$testQuery = "select test_id from test
+where class_id = ?";
+
+$queryStatement = $database->prepare($query);
+$studentCountStatement = $database->prepare($studentCountQuery);
+$mainClassStatement = $database->prepare($mainClassQuery);
+$testCountStatement = $database->prepare($testCountQuery);
+$studentTitleStatement = $database->prepare($studentTitleQuery);
+$studentNamesStatement = $database->prepare($studentNamesQuery);
+$studentStatement = $database->prepare($studentQuery);
+
+
+?>
 
 <body>
 	<div id="wrapper2"
@@ -41,7 +128,7 @@
 				</a>
 			</div>
             <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
+           <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu alert-dropdown">
@@ -68,9 +155,26 @@
                             <a href="#">View All</a>
                         </li>
                     </ul>
-                </li>
+                </li> 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php // Added by David Hughen
+																												// to display student's name in top right corner
+
+																								if ($topRightStatement = $database->prepare($topRightQuery)) 
+																															{
+																																$topRightStatement->bind_param("s", $id);
+																									
+																															}
+																															else {
+																																printf("Errormessage: %s\n", $database->error);
+																															}							
+																												$topRightStatement->bind_result($first_name, $last_name);
+																												$topRightStatement->execute();
+																												while($topRightStatement->fetch())
+																												{
+																													echo $first_name . " " . $last_name;
+																												}
+																												$topRightStatement->close();?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -83,7 +187,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
@@ -99,56 +203,49 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-				<li>
+					 <li>
                     <a href="#" id="student-summary">Summary</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
                 </li>
-                <li>
-                    <a href="#">
-						BI 101-2
-						<div class="subject-name">New Testament Survey</div>
-					</a>
-                </li>
-                <li>
-                    <a href="#">
-						CS 130-2
-						<div class="subject-name">Intro to Computers</div>
-					</a>
-                </li>
-                <li>
-                    <a href="#">
-						CS 202
-						<div class="subject-name">Intro to Programming</div>
-					</a>
-                </li>
-                <li>
-                    <a href="#">
-						EN 121-5
-						<div class="subject-name">English Grammar & Comp.</div>
-					</a>
-                </li>
-				<li>
-                    <a href="#">
-						HI 101-5
-						<div class="subject-name">History of Civilization</div>
-					</a>
-                </li>
+                <?php 
+				// Added by David Hughen
+				// The code to fetch the student's classes and put them in the sidebar to the left
+				$queryStatement->bind_param("s", $id);
+				$queryStatement->bind_result($clid, $clde);
+				$queryStatement->execute();
+				while($queryStatement->fetch())
+				{
+					
+					echo '<li><a href=teacherClassPage.php?classId=' . $cid = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
+				}
+				$queryStatement->close();
+				?>
 			
             </ul>
         </div>
-		
-        <!-- /#sidebar-wrapper -->
-		<div class="course_header">
-			<div class="course_number">
-				CS 130-2
-			</div>
+		<?php
+			$mainClassStatement->bind_param("s", $classId);
+			$mainClassStatement->bind_result($clid, $clde);
+			$mainClassStatement->execute();
+			while($mainClassStatement->fetch())
+			{
+				echo '<div class="course_header">
+	
+			<div class="course_number">'
+				. $clid .
+			'</div>
 			
-			<div class="class_name">
-				Introduction to Computers
-			</div>
-		</div>
+			<div class="class_name">'
+				. $clde . 
+			'</div>
+			</div>'; 
+			}
+			$mainClassStatement->close();
+		?>
+        
+		
 		
         <!-- Page Content -->
         <div id="page-content-wrapper">
@@ -158,7 +255,16 @@
 				
 					<div class="students_num_text">
 						No of Students:
-						<span class="students_number">30</span>
+						<span class="students_number"><?php 
+						$studentCountStatement->bind_param("s", $classId);
+						$studentCountStatement->bind_result($studentCount);
+						$studentCountStatement->execute();
+						while($studentCountStatement->fetch())
+						{
+							echo $studentCount;
+						}
+						$studentCountStatement->close();
+						?></span>
 					</div>
 					
 					<button type="button" class="create_test_button">Create Test</button>
@@ -183,72 +289,111 @@
 						</thead>
 						
 						<tbody>
-						<tr>
-							<td>Test #1</td>
-							<td>78</td>
-							<td><button type="button" class="view_test_button">View</button></td>
-						</tr>
-						<tr>
-							<td>Test #2</td>
-							<td>80</td>
-							<td><button type="button" class="view_test_button">View</button></td>
-						</tr>
-						<tr>
-							<td>Midterm Exam</td>
-							<td>85</td>
-							<td><button type="button" class="view_test_button">View</button></td>
-						</tr>
-						
+						<?php
+							$firstTableStatement = $database->prepare($firstTableQuery);
+							$firstTableStatement->bind_param("s", $classId);
+							$firstTableStatement->bind_result($tname, $tavg);
+							$firstTableStatement->execute();
+							// We should be getting two tests here
+							while($firstTableStatement->fetch())
+							{
+								echo '<tr><td>' . $tname . '</td><td>' . $tavg . '</td><td><button type="button" class="view_teset_button"></button></td></tr>';
+							}
+							$firstTableStatement->close();
+						?>
 						</tbody>
-					
+						
 					</table>
 					
 					<div class="student_list_text">
 						Student List
 					</div>
 					
-					<table class="student_list">			
-						<tr class="student_list_header">
-							<td>First Name</td>
-							<td>Last Name</td>
-							<td>Test #1</td>
-							<td>Test #2</td>
-							<td>Midterm Exam</td>
-							<td>Average Grade</td>
+					<table class="student_list">
+					<tr class="student_list_header">
+					<td>First Name</td>
+					<td>Last Name</td>
+					<?php
+						
+						// Get the test name on top of second table
+						$studentTitleStatement->bind_param("s", $classId);
+						$studentTitleStatement->bind_result($testName);
+						$studentTitleStatement->execute();
+						while($studentTitleStatement->fetch())
+						{
+							echo '<td>'.$testName.'</td>';
+						}
+						$studentTitleStatement->close();
+					?>		
+						<td>Average Grade</td>
 						</tr>
 						
-						<tr class="odd_row">
-							<td>Anna</td>
-							<td>Smith</td>
-							<td>78</td>
-							<td>70</td>
-							<td>80</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>Bob</td>
-							<td>Jones</td>
-							<td>80</td>
-							<td>70</td>
-							<td><button type="button" class="grade_test_button">Grade</button></td>
-							<td>75</td>
-						</tr>
-						<tr class="odd_row">
-							<td>Carol</td>
-							<td>Lie</td>
-							<td>85.5</td>
-							<td class="failing_grade">59</td> <!-- If grade=='F', it should be red -->
-							<td>Not taken</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>Daniel</td>
-							<td>Jones</td>
-							<td>80</td>
-							<td>65</td>
-							<td><button type="button" class="grade_test_button">Grade</button></td>
-							<td>72.5</td>
-						</tr>
+					<?php
+					   // Get the student names
+						
+						
+						// Get the number of tests
+						$testCountStatement->bind_param("s", $classId);
+						$testCountStatement->bind_result($testCount);
+						$testCountStatement->execute();
+						$testCountStatement->fetch();
+						$testCountStatement->close();
+						
+						
+						
+						$studentStatement->bind_param("s", $classId);
+						$studentStatement->bind_result($studentId);
+						$studentStatement->execute();
+						$i = 0;
+						while($studentStatement->fetch())
+						{
+							$studentArray[$i] = $studentId;
+							$i++;
+						}
+						$studentStatement->close();
+						
+						// Loop through each student
+						for($i = 0; $i < $studentCount; $i++)
+						{
+								
+								$studentNamesStatement = $database->prepare($studentNamesQuery);
+								$studentNamesStatement->bind_param("ss", $classId, $studentArray[$i]);
+								$studentNamesStatement->bind_result($firstName, $lastName);
+								$studentNamesStatement->execute();
+								echo '<tr>';
+							while($studentNamesStatement->fetch())
+							{
+								echo '<td>'.$firstName . '</td><td>' . $lastName . '</td>';
+							}
+							$studentNamesStatement->close();
+								
+									$testScoreStatement = $database->prepare($testScoreQuery);
+									$testScoreStatement->bind_param("ss", $studentArray[$i], $classId);
+									$testScoreStatement->bind_result($testScore);
+									$testScoreStatement->execute();
+									while($testScoreStatement->fetch())
+									{
+										echo '<td>' . (float)$testScore.'%' . '</td>';
+									}
+									
+									$testScoreStatement->close();
+									
+							$averageStatement = $database->prepare($averageQuery);
+							$averageStatement->bind_param("ss", $studentArray[$i], $classId);
+							$averageStatement->bind_result($averageScore);
+							$averageStatement->execute();	
+							while($averageStatement->fetch())
+							{
+								echo '<td>' . (float)$averageScore.'%'. '</td>';
+							}
+							$averageStatement->close();
+					
+							echo '</tr>';
+						} 
+						
+						
+						
+					?>
 					
 					</table>
 					
