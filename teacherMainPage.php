@@ -36,6 +36,8 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
+echo '<h1>.$id</h1>';
+
 if($id == null)
     header('Location: login.html');
     
@@ -59,17 +61,17 @@ where teacher_id = ? */
 // Class id and description query
 $query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
 
-// Student first and last name to display on top right of screen
+// Teacher first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
-// main table query
 
+// main table query
 $tableQuery = "select class_id, count(student_id) as no_students, update_date
 from test_list
 join test using(test_id)
 right join class using(class_id, teacher_id)
-where teacher_id = ? and graded is null or graded != 1
-group by(class_id) ";
+where teacher_id = ? and graded  is null or graded != 1
+group by(class_id)";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
@@ -82,7 +84,6 @@ where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end
 // The statement variable holds your query      
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
-$table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
 
 ?>
@@ -184,11 +185,10 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->bind_param("s", $id);
 				$stmt->bind_result($clid, $clde);
 				$stmt->execute();
+				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
-				{
-					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
-
-					echo '<li><a href="teacherClassPage.php">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
+				{	
+					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -220,15 +220,24 @@ $warningstmt = $database->prepare($warningQuery);
 						</thead>
 						
 						<tbody>
-						<?php 
-							// THE QUERY FOR THE TABLE IN THE MIDDLE OF THE PAGE GOES IN HERE!!!!
-							$table->bind_param("s", $id);
+						<?php
+							
+							
+							if ($table = $database->prepare($tableQuery)) 
+							{
+								$table->bind_param("s", $id);
+    
+							}
+							else {
+								printf("Errormessage: %s\n", $database->error);
+							}
+							
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
 							{	
 								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.' student(s) took the test.</td>
+									  <td>'.$update.' test(s) remain(s)</td>
 									  <td>'.$date.'</td></tr>';
 							}
 							$table->close(); 

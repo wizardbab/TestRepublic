@@ -185,7 +185,6 @@ $table = $database->prepare($tableQuery);
 
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-               echo $clid;
 					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
@@ -248,7 +247,6 @@ $table = $database->prepare($tableQuery);
                      //$table->bind_param("s", $id);
 							$table->bind_result($test_list, $status, $date_begin, $date_end);
 							$table->execute();
-                     echo $clid;
 							while($table->fetch())
 							{
 								echo '<tr><td>'.$test_list.'</td>
