@@ -36,8 +36,6 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
-echo '<h1>.$id</h1>';
-
 if($id == null)
     header('Location: login.html');
     

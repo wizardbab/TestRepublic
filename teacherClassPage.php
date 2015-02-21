@@ -75,12 +75,14 @@ $studentTitleQuery = "select test_name from test where class_id = ?";
 $studentNamesQuery = "select first_name, last_name from student
 join test_list using(student_id)
 join test using(test_id)
-where class_id = ?
+where class_id = ? and student_id = ?
 group by(student_id)";
 
 // Test score for student list
 $testScoreQuery = "select test_score from test_list
-where test_id = ?";
+join test
+using(test_id)
+where student_id = ? and class_id = ?";
 
 // Average score for student list
 $averageQuery = "select avg(test_score) from test_list
@@ -102,10 +104,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 $testCountStatement = $database->prepare($testCountQuery);
 $studentTitleStatement = $database->prepare($studentTitleQuery);
 $studentNamesStatement = $database->prepare($studentNamesQuery);
-$testScoreStatement = $database->prepare($testScoreQuery);
-$averageStatement = $database->prepare($averageQuery);
 $studentStatement = $database->prepare($studentQuery);
-$testStatement = $database->prepare($testQuery);
 
 
 ?>
@@ -331,80 +330,70 @@ $testStatement = $database->prepare($testQuery);
 						
 					<?php
 					   // Get the student names
-						$studentNamesStatement->bind_param("s", $classId);
-						$studentNamesStatement->bind_result($firstName, $lastName);
-						$studentNamesStatement->execute();
+						
 						
 						// Get the number of tests
 						$testCountStatement->bind_param("s", $classId);
 						$testCountStatement->bind_result($testCount);
 						$testCountStatement->execute();
+						$testCountStatement->fetch();
+						$testCountStatement->close();
 						
-						$testStatement->bind_param("s", $classId);
-						$testStatement->bind_result($testArrayVariable);
-						$testStatement->execute();
 						
-						$testScoreStatement->bind_param("s", $classId);
-						$testScoreStatement->bind_result($testScore);
-						$testScoreStatement->execute();
 						
-						// Arrays(duh)
-						$testArray = $testStatement->fetch();
-						var_dump($testArray);
-						$studentArray;
+						$studentStatement->bind_param("s", $classId);
+						$studentStatement->bind_result($studentId);
+						$studentStatement->execute();
+						$i = 0;
+						while($studentStatement->fetch())
+						{
+							$studentArray[$i] = $studentId;
+							$i++;
+						}
+						$studentStatement->close();
 						
 						// Loop through each student
 						for($i = 0; $i < $studentCount; $i++)
 						{
-								while($studentNamesStatement->fetch())
-								{
-									echo '<tr><td>'.$firstName . '</td><td>' . $lastName . '</td>';
 								
-									// Loop through each test
-									for($i = 0; $i < $testCount; $i++)
-									{	
-										while($testScoreStatement->fetch())
-										{
-											echo '<td>' . $testScore . '</td>';
-										}
+								$studentNamesStatement = $database->prepare($studentNamesQuery);
+								$studentNamesStatement->bind_param("ss", $classId, $studentArray[$i]);
+								$studentNamesStatement->bind_result($firstName, $lastName);
+								$studentNamesStatement->execute();
+								echo '<tr>';
+							while($studentNamesStatement->fetch())
+							{
+								echo '<td>'.$firstName . '</td><td>' . $lastName . '</td>';
+							}
+							$studentNamesStatement->close();
+								
+									$testScoreStatement = $database->prepare($testScoreQuery);
+									$testScoreStatement->bind_param("ss", $studentArray[$i], $classId);
+									$testScoreStatement->bind_result($testScore);
+									$testScoreStatement->execute();
+									while($testScoreStatement->fetch())
+									{
+										echo '<td>' . (float)$testScore.'%' . '</td>';
 									}
-								}
-							
+									
+									$testScoreStatement->close();
+									
+							$averageStatement = $database->prepare($averageQuery);
+							$averageStatement->bind_param("ss", $studentArray[$i], $classId);
+							$averageStatement->bind_result($averageScore);
+							$averageStatement->execute();	
+							while($averageStatement->fetch())
+							{
+								echo '<td>' . (float)$averageScore.'%'. '</td>';
+							}
+							$averageStatement->close();
+					
+							echo '</tr>';
 						} 
-						$studentNamesStatement->close();
-						$testCountStatement->close();
-						$testStatement->close();
-						$testScoreStatement->close();
+						
+						
 						
 					?>
-						<tr class="odd_row">
-							<td>Anna</td>
-							<td>Smith</td>
-							<td>78</td>
-							<td>70</td>
-							<td>80</td>
-						</tr>
-						<tr>
-							<td>Bob</td>
-							<td>Jones</td>
-							<td>80</td>
-							<td>70</td>
-							<td><button type="button" class="grade_test_button">Grade</button></td>
-						</tr>
-						<tr class="odd_row">
-							<td>Carol</td>
-							<td>Lie</td>
-							<td>85.5</td>
-							<td class="failing_grade">59</td> <!-- If grade=='F', it should be red -->
-							<td>Not taken</td>
-						</tr>
-						<tr>
-							<td>Daniel</td>
-							<td>Jones</td>
-							<td>80</td>
-							<td>65</td>
-							<td><button type="button" class="grade_test_button">Grade</button></td>
-						</tr>
 					
 					</table>
 					
