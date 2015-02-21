@@ -57,7 +57,6 @@ where teacher_id = ? */
 
 
 // query for students who have not taken a test:
-/*  */
 
 // Class id and description query
 $query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
@@ -189,7 +188,6 @@ $warningstmt = $database->prepare($warningQuery);
 				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
 				{
-					// WE WILL NEED TO ADD A LINK HERE TO CLASS DETAILS PAGE FOR A TEACHER!!!
 					echo '<li><a href="teacherClassPage.php?id=$classId">' . $clid . '<div class=subject-name">' . $clde . '</div></a></li>';
 					//"location.href='prodsub.php?id=<?php echo $id;
 				}
