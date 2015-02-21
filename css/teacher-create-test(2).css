@@ -143,7 +143,7 @@ ul.alert-dropdown {
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    /*padding: 15px;*/
+    padding: 15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -231,6 +231,7 @@ ul.alert-dropdown {
 
 		#page-content-wrapper 
 		{
+			padding: 20px;
 			position: relative;
 		}
 
@@ -238,7 +239,6 @@ ul.alert-dropdown {
 			position: relative;
 			margin-right: 0;
 		}
-
 	
 	#course_section
 	{
@@ -263,98 +263,52 @@ ul.alert-dropdown {
 		margin-left: 40pt;
 	}
 	
-	#test_section
-	{
-		margin-top: 150px;
-	}
-	
-	#test_information
-	{
-		/*background: rgba(149,179,215,0.6);*/
-		background: lavender;
-		padding-top: 3px;
-		padding-bottom: 3px;
-	}
-	
-	.test-info-text
-	{
-		font-size: 18pt;
-		font-family: 'DejaVu Sans Condensed', Arial;
-		color: rgb(55,96,146);
-		text-align: center;
-	}
-	
-	.blocklabel
-	{
-		font-size: 12pt;
-		display: block;
-		position: relative;
-		margin: 10px 0px;
-	}
-	
-	.blocklabel input
-	{
-		position: absolute;		
-		left: 100px;
-		width: 9em;
-		height: 2em;
-	}
-	
-	.date_lbl
-	{
-		font-size: 12pt;
-		position: relative;
-	}
-	
-	.date_lbl input
-	{
-		margin-top: 5px;
-		margin-left: 15px;
-		width: 9em;
-		height: 2em;
-	}
-	
-	.time_lbl
-	{
-		font-size: 12pt;
-	}
-	
-	.time_lbl input
-	{
-		width: 6em;
-		height: 2em;
-	}
-	
-	.time_limit_lbl
-	{
-		font-size: 12pt;
-	}
-	
-	.time_limit_lbl input
-	{
-		margin-left: 10px;
-		width: 5em;
-		height: 2em;
-	}
-	
-	.instruction_lbl, .pledge_lbl
-	{
-		font-size: 12pt;
-		margin-top: 5px;
-	}
-	
-	#create_questions
-	{
-		text-align: center;
-	}
-	
+
 	.create-questions-text
 	{
+		margin-top: 140px;
 		font-size: 20pt;
 		font-family: 'DejaVu Sans Condensed', Arial;
 		color: rgb(55,96,146);
-		margin-bottom: 8px;
 	}
 	
+	#test_name_form
+	{
+		margin-top: 10px;
+	}
+	
+	#test_name_lbl
+	{
+		font-size: 16pt;
+	}
+	
+	#test_desc_form
+	{
+		margin-top: 50px;
+	}
+	
+	#test_desc_lbl
+	{
+		font-size: 16pt;
+	}
+	
+	#test_description
+	{
+		height: 100px;
+		display: inline-block;
+		vertical-align: text-top;
+	}
+	
+	.next_button_div
+	{
+		text-align: center;
+	}
+	
+	#next_button
+	{
+		margin-top: 10px;
+		width: 200px;
+		font-size: 16pt;
+	}
 
 }
