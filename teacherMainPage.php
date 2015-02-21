@@ -57,7 +57,6 @@ where teacher_id = ? */
 
 
 // query for students who have not taken a test:
-/*  */
 
 // Class id and description query
 $query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
@@ -188,8 +187,7 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
-				{
-					
+				{	
 					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
