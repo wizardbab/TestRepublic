@@ -69,7 +69,6 @@ $query = "select class_id, class_description from teacher join class using(teach
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
 // main table query
-<<<<<<< HEAD
 /* select test.class_id, (select count(student_id) from test_list
 						join test using(test_id)
 						where date_taken is not null and teacher_id = 121111
