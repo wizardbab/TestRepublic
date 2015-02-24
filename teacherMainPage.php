@@ -221,7 +221,7 @@ $warningstmt = $database->prepare($warningQuery);
 						
 						<tbody>
 						<?php 
-							// THE QUERY FOR THE TABLE IN THE MIDDLE OF THE PAGE GOES IN HERE!!!!
+							// The query for the middle of the page
 							$table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
