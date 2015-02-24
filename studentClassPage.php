@@ -9,13 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/studentClassPage.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -51,7 +51,7 @@ $query = "select class_id, class_description from enrollment join class using (c
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_name, t_status, date_begin, date_end from test
+$tableQuery = "select test_name, t_status, date_begin, date_end, date_taken from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
 // Get the class id for certain user
@@ -120,7 +120,7 @@ $table = $database->prepare($tableQuery);
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
 																												// to display student's name in top right corner	
-																											    $topRightStatement->bind_param("s", $id);
+																											   $topRightStatement->bind_param("s", $id);
 																												$topRightStatement->bind_result($first_name, $last_name);
 																												$topRightStatement->execute();
 																												while($topRightStatement->fetch())
@@ -157,7 +157,7 @@ $table = $database->prepare($tableQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 				<li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="studentMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
@@ -171,9 +171,6 @@ $table = $database->prepare($tableQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
-
-					echo '<li><a href="#">' . $clid . '<div class="subject-name">' . $clde . '</div></a></li>';
-
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
 					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
@@ -198,52 +195,58 @@ $table = $database->prepare($tableQuery);
                     </div>
 					
 					<!-- our code starts here :) -->
-					<table class="student_summary">
+					<table class="class_table">
 					
 						<colgroup>
-							<col class="classes" />
-							<col class="recent_updates" />
-							<col class="date" />
+							<col class="list_test" />
+							<col class="status" />
+							<col class="date_frame" />
+							<col class="option" />
 						</colgroup>
 						
 						<thead>
 						<tr>
-							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
+							
 							<th>List of Tests</th>
 							<th>Status</th>
 							<th>Date Frame</th>
-                     <th>Option</th>
+							<th>Option</th>
 						</tr>
 						</thead>
 						
 						<tbody>
 						<?php 
-							// Code added by David Hughen to display class id, update, and date
-							// inside the table in the middle of the page
-							$table->bind_param("s", $id);
-							$table->bind_result($clid, $update, $date);
-							$table->execute();
-							while($table->fetch())
-							{
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
-									  <td>'.$date.'</td></tr>';
-
+						// Gets the current time formatted like MySql
+						$time = time();
+						$currentTime = date("Y-m-d", $time);
+							
 							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
                      $class = $_GET['class_id'];
 							$table->bind_param("ss", $id, $class);
-							$table->bind_result($test_list, $status, $date_begin, $date_end);
+							$table->bind_result($test_list, $status, $date_begin, $date_end, $date_taken);
 							$table->execute();
 							while($table->fetch())
 							{
 								echo '<tr><td>'.$test_list.'</td>
 									   <td>'.$status.'</td>
-									   <td>'.$date_begin.' - '.$date_end.'</td></tr>';
+									   <td>'.$date_begin.' - '.$date_end.'</td>';
+										if($date_taken != null)
+										{
+											echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
+										}
+										else if($currentTime >= $date_begin and $currentTime <= $date_end)
+										{
+											echo '<td><button type="button" class="btn btn-primary">Take Test</button></td>';
+										}
+										else
+										{
+											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
+										}
+										echo '</tr>';
 							}
 							$table->close(); 
+							
 							?>			
 					</table>
                 </div>
