@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>  
 <html> 
 <head> 
-    <meta name="author"  
-          content="Mongolian Horde" /> 
+    <meta name="author" content="Mongolian Horde" /> 
  	<link href="style.css" rel="stylesheet" type="text/css" /> 
-    <meta http-equiv="Content-Type"  
-         content="text/html; charset=utf-8" />  
-  
-    <title>Test Republic::Home</title> 
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+
+
+ <title>Test Republic::Home</title> 
 	
 	    <!-- Bootstrap Core CSS -->
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
@@ -20,76 +20,57 @@
 	
 </head> 
 <body> 
-<div id="wrapper2"
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
+<div id="wrapper2">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
             <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Log in <b class="caret"></b></a>
-					<form class="dropdown-menu" method="post" action="login.php">  
-						<input type="text" name="username" id="username" placeholder="Username" /> 
-						<input type="password" name="password" id="password" placeholder="Password" /> 
-						<span class="glyphicon glyphicon-log-in"></span>
-						<input class="btn btn-block btn-primary" type="submit" value="Log in" id="loginButton" />
-					</form>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+        <ul class="nav navbar-right top-nav">
+            <li class="dropdown">
 
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
-	
-	<div class="centralBox">
-				<img class="centralLogo" src="images/logo2.png" alt="Our Logo"/>
-				<h1 align="center">Take your online tests here!</h1>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Log in <b class="caret"></b></a>
+				<form class="dropdown-menu" method="post" action="login.php">  
+					<input type="text" name="username" id="username" placeholder="Username" /> 
+					<input type="password" name="password" id="password" placeholder="Password" /> 
+					<button class="btn btn-block btn-primary" type="submit" id="loginButton">
+						<i class="glyphicon glyphicon-log-in"></i> Log in
+					</button>
+				</form>
+            </li>
+        </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+    </nav>
+</div>	
+
+<div class="centralBox">
+	<img class="centralLogo" src="images/logo2.png" alt="Our Logo"/>
+	<h1 align="center">Take your online tests here!</h1>
+</div>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	<div class="carousel-inner" role="listbox">
+		<div class="item active">
+			<div class="container">
+				<div class="carousel-caption">
+					<p>Proverbs 6:6 - "Go to the ant, thou sluggard; consider her ways, and be wise:"</p>
+				</div>
+			</div>
+		</div>
+		<div class="item">
+			<div class="container">
+				<div class="carousel-caption">
+					<p>I Corinthians 5:7 - "Purge out therefore the old leaven, that ye may be a new lump, as ye are unleavened. For even Christ our passover is sacrificed for us:"</p>
+				</div>
+			</div>
+		</div>
 	</div>
-	
-	
-	 <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner" role="listbox">
-        <div class="item active">
-          <div class="container">
-            <div class="carousel-caption">
-              <p>Proverbs 6:6 - "Go to the ant, thou sluggard; consider her ways, and be wise:"</p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="container">
-            <div class="carousel-caption">
-              <p>I Corinthians 5:7 - "Purge out therefore the old leaven, that ye may be a new lump, as ye are unleavened. For even Christ our passover is sacrificed for us:"</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div><!-- /.carousel -->
-	
-	
-	
+</div>
 	    <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
@@ -99,9 +80,8 @@
 	    <!-- Script to Activate the Carousel -->
     <script>
     $('.carousel').carousel({
-        interval: 5000 //changes the speed
+        interval: 7500 //changes the speed
     })
     </script>
-	
 </body> 
 </html> 
