@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -159,7 +159,7 @@ $table = $database->prepare($tableQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 				<li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="studentMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
