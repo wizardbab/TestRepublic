@@ -15,7 +15,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/studentClassPage.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -197,12 +197,13 @@ $table = $database->prepare($tableQuery);
                     </div>
 					
 					<!-- our code starts here :) -->
-					<table class="student_summary">
+					<table class="class_table">
 					
 						<colgroup>
-							<col class="classes" />
-							<col class="recent_updates" />
-							<col class="date" />
+							<col class="list_test" />
+							<col class="status" />
+							<col class="date_frame" />
+							<col class="option" />
 						</colgroup>
 						
 						<thead>
@@ -211,7 +212,7 @@ $table = $database->prepare($tableQuery);
 							<th>List of Tests</th>
 							<th>Status</th>
 							<th>Date Frame</th>
-                     <th>Option</th>
+							<th>Option</th>
 						</tr>
 						</thead>
 						
@@ -235,15 +236,15 @@ $table = $database->prepare($tableQuery);
 									   <td>'.$date_begin.' - '.$date_end.'</td>';
 										if($date_taken != null)
 										{
-											echo '<td>view test</td>';
+											echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{
-											echo '<td>take test</td>';
+											echo '<td><button type="button" class="btn btn-primary">Take Test</button></td>';
 										}
 										else
 										{
-											echo '<td>unavailable</td>';
+											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
 										}
 										echo '</tr>';
 							}
