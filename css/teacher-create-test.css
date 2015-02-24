@@ -13,12 +13,13 @@ body
 	color: black;
 }
 
+
 /* added by Andrea */
+
 .navbar-header
 {
-	background-color: black;
-	background-repeat: no-repeat;
-	background-size: cover;
+	background-color: rgb(55,96,146);
+	width: 250px;
 }
 
 #logo-area
@@ -33,6 +34,8 @@ body
 	color: white;
 	font-size: 20px;
 }
+
+/* */
 
 #wrapper2{
     padding-left: 0;
@@ -140,7 +143,7 @@ ul.alert-dropdown {
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding: 15px;
+    /*padding: 15px;*/
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -210,7 +213,6 @@ ul.alert-dropdown {
 @media(min-width:768px) 
 {
 		#wrapper {
-			padding-top: 20px;
 			padding-left: 250px;
 		}
 
@@ -229,7 +231,6 @@ ul.alert-dropdown {
 
 		#page-content-wrapper 
 		{
-			padding: 20px;
 			position: relative;
 		}
 
@@ -237,19 +238,123 @@ ul.alert-dropdown {
 			position: relative;
 			margin-right: 0;
 		}
-		
-	/*testing stuff */
-textarea
-{
-	resize:none;
-		
-}
-.color
-{
-	background-color: pink;
-}
+
 	
-	.color2
-{
-	background-color: blue;
-}	
+	#course_section
+	{
+		position: absolute;
+		padding: 8px;
+		
+		margin-top: 51px;
+		height: 99px;
+		background: black;
+		font-size: 20pt;
+		color: white;
+		font-weight: bold;
+	}
+	
+	.course_number
+	{
+		margin-left: 10pt;
+	}
+	
+	.class_name
+	{
+		margin-left: 40pt;
+	}
+	
+	#test_section
+	{
+		margin-top: 150px;
+	}
+	
+	#test_information
+	{
+		/*background: rgba(149,179,215,0.6);*/
+		background: lavender;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	
+	.test-info-text
+	{
+		font-size: 18pt;
+		font-family: 'DejaVu Sans Condensed', Arial;
+		color: rgb(55,96,146);
+		text-align: center;
+	}
+	
+	.blocklabel
+	{
+		font-size: 12pt;
+		display: block;
+		position: relative;
+		margin: 10px 0px;
+	}
+	
+	.blocklabel input
+	{
+		position: absolute;		
+		left: 100px;
+		width: 9em;
+		height: 2em;
+	}
+	
+	.date_lbl
+	{
+		font-size: 12pt;
+		position: relative;
+	}
+	
+	.date_lbl input
+	{
+		margin-top: 5px;
+		margin-left: 15px;
+		width: 9em;
+		height: 2em;
+	}
+	
+	.time_lbl
+	{
+		font-size: 12pt;
+	}
+	
+	.time_lbl input
+	{
+		width: 6em;
+		height: 2em;
+	}
+	
+	.time_limit_lbl
+	{
+		font-size: 12pt;
+	}
+	
+	.time_limit_lbl input
+	{
+		margin-left: 10px;
+		width: 5em;
+		height: 2em;
+	}
+	
+	.instruction_lbl, .pledge_lbl
+	{
+		font-size: 12pt;
+		margin-top: 5px;
+	}
+	
+	#create_questions
+	{
+		text-align: center;
+	}
+	
+	.create-questions-text
+	{
+		font-size: 20pt;
+		font-family: 'DejaVu Sans Condensed', Arial;
+		color: rgb(55,96,146);
+		margin-bottom: 8px;
+	}
+	
+
+}

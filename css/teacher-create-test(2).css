@@ -13,12 +13,13 @@ body
 	color: black;
 }
 
+
 /* added by Andrea */
+
 .navbar-header
 {
-	background-color: black;
-	background-repeat: no-repeat;
-	background-size: cover;
+	background-color: rgb(55,96,146);
+	width: 250px;
 }
 
 #logo-area
@@ -33,6 +34,8 @@ body
 	color: white;
 	font-size: 20px;
 }
+
+/* */
 
 #wrapper2{
     padding-left: 0;
@@ -210,7 +213,6 @@ ul.alert-dropdown {
 @media(min-width:768px) 
 {
 		#wrapper {
-			padding-top: 20px;
 			padding-left: 250px;
 		}
 
@@ -237,19 +239,76 @@ ul.alert-dropdown {
 			position: relative;
 			margin-right: 0;
 		}
-		
-	/*testing stuff */
-textarea
-{
-	resize:none;
-		
-}
-.color
-{
-	background-color: pink;
-}
 	
-	.color2
-{
-	background-color: blue;
-}	
+	#course_section
+	{
+		position: absolute;
+		padding: 8px;
+		
+		margin-top: 51px;
+		height: 99px;
+		background: black;
+		font-size: 20pt;
+		color: white;
+		font-weight: bold;
+	}
+	
+	.course_number
+	{
+		margin-left: 10pt;
+	}
+	
+	.class_name
+	{
+		margin-left: 40pt;
+	}
+	
+
+	.create-questions-text
+	{
+		margin-top: 140px;
+		font-size: 20pt;
+		font-family: 'DejaVu Sans Condensed', Arial;
+		color: rgb(55,96,146);
+	}
+	
+	#test_name_form
+	{
+		margin-top: 10px;
+	}
+	
+	#test_name_lbl
+	{
+		font-size: 16pt;
+	}
+	
+	#test_desc_form
+	{
+		margin-top: 50px;
+	}
+	
+	#test_desc_lbl
+	{
+		font-size: 16pt;
+	}
+	
+	#test_description
+	{
+		height: 100px;
+		display: inline-block;
+		vertical-align: text-top;
+	}
+	
+	.next_button_div
+	{
+		text-align: center;
+	}
+	
+	#next_button
+	{
+		margin-top: 10px;
+		width: 200px;
+		font-size: 16pt;
+	}
+
+}
