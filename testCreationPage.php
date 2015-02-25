@@ -205,20 +205,16 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 						
 						<label class="instruction_lbl">Specific Instruction:</label>
 						<br />
-						<textarea rows="5" cols="68">Don't cheat!</textarea>
+						<textarea class="form-control" rows="7">Don't cheat!</textarea>
 						
 						<br />
 						
 						<label class="pledge_lbl">Test Pledge</label>
 						<br />
-						<textarea rows="5" cols="68"></textarea>
+						<textarea class="form-control" rows="7"></textarea>
 						
-						<br />
-						<br />
-						
-						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" id="MBtn">Create Question</button>
-						
+						<button type="button" class="btn btn-default btn-block" id="cancelTestBtn">Cancel</button>
+						<button type="button" class="btn btn-primary btn-block" id="testCreate">Create Test</button>
 					</div>
 					
 					<div class="col-lg-8" id="create_questions">
@@ -254,11 +250,8 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
-								
 							</div>
 						</div>
-						
-						
 					</div>		
                 </div>
 				
@@ -280,7 +273,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" id="SABtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="SABtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -304,7 +297,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" id="EBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="EBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -336,7 +329,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 										
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-											<button type="button" class="btn btn-primary" id="TFBtn">Create Question</button>
+											<button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn">Create Test</button>
 										</div>
 									</form>
 								</div>
@@ -371,7 +364,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" id="MCBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MCBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -404,7 +397,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" id="ATABtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="ATABtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -437,7 +430,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" id="MBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MBtn">Create Question</button>
 								</div>
 							</div>
 						</div>

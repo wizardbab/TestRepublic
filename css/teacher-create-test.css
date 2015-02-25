@@ -356,5 +356,17 @@ ul.alert-dropdown {
 		margin-bottom: 8px;
 	}
 	
+	/* added by Vic */
+	textarea
+	{
+		resize:none;
+			
+	}
+	
+	#cancelTestBtn
+	{
+		margin-top:10px;
+	}
+	
 
 }
