@@ -1,17 +1,12 @@
 /*Test Creation Javascript Page */
 
+// This is an attempt at creating a class in JavaScript
 var Question =
 {
    question : "question",
    points   : 0
-   
 };
-function getFunction()
-{
-   document.getElementById("test").innerHTML = ;
-}
-var x = 0;
-var y = Question.question;
+
 
 
 /*
