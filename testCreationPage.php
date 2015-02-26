@@ -250,6 +250,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
+							
 							</div>
 						</div>
 					</div>		
@@ -421,6 +422,10 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 											<label for="recipient-name" class="control-label">Answer:</label>
 											<input type="text" class="form-control" id="Question">
 										</div>
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="Question">
+										</div>
 										<div class="form-group" id="MatchAddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
 											<input type="text" class="form-control" id="Question">
@@ -439,12 +444,6 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 				
 				
 					
-					
-					
-					
-					  
-
-	
 				</div>   
 				
             </div>
