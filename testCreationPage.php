@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,31 @@
 
 	
 </head>
+<?php
+session_start();
 
+// Include the constants used for the db connection
+require("constants.php");
+
+// Gets the class id appended to url from teacherMainPage.php
+$id = $_SESSION['username']; // Just a random variable gotten from the URL
+$classId = $_SESSION['classId'];
+
+if($id == null)
+    header('Location: login.html');
+    
+// The database variable holds the connection so you can access it
+$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
+@ $database->select_db(DATABASENAME);
+
+// Teacher first and last name to display on top right of screen
+$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
+
+// Class ID and description at the top of the page
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
+$mainClassStatement = $database->prepare($mainClassQuery);
+?>
 <body>
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -75,7 +99,23 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i></i><?php // Added by David Hughen
+																												// to display student's name in top right corner
+																								if ($topRightStatement = $database->prepare($topRightQuery)) 
+                                                                                                {
+                                                                                                    $topRightStatement->bind_param("s", $id);
+                                                                        
+                                                                                                }
+                                                                                                else {
+                                                                                                    printf("Errormessage: %s\n", $database->error);
+                                                                                                }							
+                                                                                                $topRightStatement->bind_result($first_name, $last_name);
+                                                                                                $topRightStatement->execute();
+                                                                                                while($topRightStatement->fetch())
+                                                                                                {
+                                                                                                    echo $first_name . " " . $last_name;
+                                                                                                }
+                                                                                                $topRightStatement->close();?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -106,13 +146,25 @@
             <div class="container-fluid">
                 <div class="row">
 					<div class="col-lg-12" id="course_section">
-						<div class="course_number">
-							CS 130-2
-						</div>
-						
-						<div class="class_name">
-							Introduction to Computers
-						</div>
+						<?php
+                        $mainClassStatement->bind_param("s", $classId);
+                        $mainClassStatement->bind_result($clid, $clde);
+                        $mainClassStatement->execute();
+                        while($mainClassStatement->fetch())
+                        {
+                            echo '<div class="course_header">
+
+                        <div class="course_number">'
+                            . $clid .
+                        '</div>
+                        
+                        <div class="class_name">'
+                            . $clde . 
+                        '</div>
+                        </div>'; 
+                        }
+                        $mainClassStatement->close();
+                        ?>
 					</div>
 				</div>
 				
