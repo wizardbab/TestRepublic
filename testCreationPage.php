@@ -444,10 +444,6 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 				
 				
 					
-					
-					
-
-	
 				</div>   
 				
             </div>
