@@ -47,19 +47,29 @@ if (mysqli_connect_errno())
    echo "<h1>Connection error</h1>";
 }
 
-$_SESSION['username'] = $id;
+//query for listing the classes the teacher teaches
+/* select class_id from teacher
+join class
+using(teacher_id)
+where teacher_id = ? */
+
+
+// query for students who have not taken a test:
 
 // Class id and description query
-$query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
+$query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
 
-// Student first and last name to display on top right of screen
-$topRightQuery = "select first_name, last_name from student where student_id = ?";
+// Teacher first and last name to display on top right of screen
+$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
-// Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";
+
+
+$tableQuery = "select class_id, count(student_id), date_taken
+from test_list
+join test using(test_id) 
+right join class using(class_id, teacher_id)
+where teacher_id = ? and (graded != 1 or student_id is null)
+group by(class_id)";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
@@ -72,8 +82,8 @@ where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end
 // The statement variable holds your query      
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
-$table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+$table = $database->prepare($tableQuery);
 
 ?>
 	<div id="wrapper2"
@@ -162,7 +172,7 @@ $warningstmt = $database->prepare($warningQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 				<li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="#" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
@@ -174,10 +184,10 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->bind_param("s", $id);
 				$stmt->bind_result($clid, $clde);
 				$stmt->execute();
-
+				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
-				{
-               echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+				{	
+					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -191,30 +201,8 @@ $warningstmt = $database->prepare($warningQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-12">
-                        <div class="warning_box">
-							<p class="warning_msg"> 
-                                <?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                                </p>
-						</div>
-                    </div>
-					
 					<!-- our code starts here :) -->
-					<table class="student_summary">
+					<table class="teacher_summary">
 					
 						<colgroup>
 							<col class="classes" />
@@ -226,21 +214,20 @@ $warningstmt = $database->prepare($warningQuery);
 						<tr>
 							<th>Classes</th>
 							<th>Recent Updates</th>
-							<th>Date</th>
+							<th>Updated</th>
 						</tr>
 						</thead>
 						
 						<tbody>
 						<?php 
-							// Code added by David Hughen to display class id, update, and date
-							// inside the table in the middle of the page
+							// The query for the middle of the page
 							$table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
 							{	
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
+								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'teacherClassPage.php?classId='.$clid.'\'">'.$clid.'</button></td>
+									  <td>'.$update.' test(s) to grade</td>
 									  <td>'.$date.'</td></tr>';
 							}
 							$table->close(); 

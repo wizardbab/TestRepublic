@@ -1,14 +1,19 @@
+
 /*!
  * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+/* Added .dropdown section by Cody*/ 
+
 /* top header styles */
 
 body
 {
-	background-image: url("../images/background.png");
+	background-image: url("../images/photo2.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 #loginButton
 {
@@ -29,21 +34,12 @@ body
 	margin-top:5px;
 	background-color:#B3BBC4;
 }
-
-
 .centralBox
 {
-    max-width: 80%;
-    max-height: 80%;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    overflow: auto;
-    position: fixed;
-    right: 0;
-    top: 0;
-	background-color: #FFFFFF;
+	margin-bottom: 100px;
 }
+
+
 .centralLogo
 {
 	top: 30em;
@@ -74,6 +70,25 @@ body
     color: #999;
 }
 
+.dropdown:hover>.dropdown-menu,
+.dropdown:hover>.dropdown-menu:hover {
+    display: block;
+    color: #fff;
+    background-color: #000;
+    float: left;
+    position: absolute;
+    margin-top: 0;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #000;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
 .top-nav>li>a:hover,
 .top-nav>li>a:focus,
 .top-nav>.open>a,
@@ -102,16 +117,15 @@ body
     white-space: normal;
 }
 
-
-
 /* Carousel base class */
 .carousel {
-  height: 2px;
-  margin-bottom: 60px;
+  margin-top: 10px;
+  padding-top: 10px;
 }
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
-  height: 200px;
-  background-color: #777;
+  height: 100px;
+  background-color: #000;
+  opacity: .9;
 }

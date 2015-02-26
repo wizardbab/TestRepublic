@@ -15,7 +15,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/studentClassPage.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -36,9 +36,6 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
-if($id == null)
-    header('Location: login.html');
-    
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 
@@ -47,8 +44,6 @@ if (mysqli_connect_errno())
    echo "<h1>Connection error</h1>";
 }
 
-$_SESSION['username'] = $id;
-
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
 
@@ -56,15 +51,17 @@ $query = "select class_id, class_description from enrollment join class using (c
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, c_update, update_date from student
+
+
+$tableQuery = "select test_name, t_status, date_begin, date_end, date_taken from test
+join test_list using(test_id)
+where student_id = ? and class_id = ?";
+// Get the class id for certain user
+/*"select class_id, c_update, update_date from student
 join enrollment using (student_id)
 join class using (class_id)
-where student_id = ?";
+where student_id = ?";*/
 
-$warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
-join class using (class_id)
-join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
@@ -73,7 +70,7 @@ where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
-$warningstmt = $database->prepare($warningQuery);
+
 
 ?>
 	<div id="wrapper2"
@@ -125,7 +122,7 @@ $warningstmt = $database->prepare($warningQuery);
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
 																												// to display student's name in top right corner	
-																											    $topRightStatement->bind_param("s", $id);
+																											   $topRightStatement->bind_param("s", $id);
 																												$topRightStatement->bind_result($first_name, $last_name);
 																												$topRightStatement->execute();
 																												while($topRightStatement->fetch())
@@ -162,7 +159,7 @@ $warningstmt = $database->prepare($warningQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 				<li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="studentMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
@@ -174,10 +171,11 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->bind_param("s", $id);
 				$stmt->bind_result($clid, $clde);
 				$stmt->execute();
-
 				while($stmt->fetch())
 				{
-               echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+               // Modified by En Yang Pang
+               // Gets the class id to display in the url correctly
+					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -194,56 +192,64 @@ $warningstmt = $database->prepare($warningQuery);
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
                     <div class="col-lg-12">
                         <div class="warning_box">
-							<p class="warning_msg"> 
-                                <?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                                </p>
+							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
 						</div>
                     </div>
 					
 					<!-- our code starts here :) -->
-					<table class="student_summary">
+					<table class="class_table">
 					
 						<colgroup>
-							<col class="classes" />
-							<col class="recent_updates" />
-							<col class="date" />
+							<col class="list_test" />
+							<col class="status" />
+							<col class="date_frame" />
+							<col class="option" />
 						</colgroup>
 						
 						<thead>
 						<tr>
-							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
+							
+							<th>List of Tests</th>
+							<th>Status</th>
+							<th>Date Frame</th>
+							<th>Option</th>
 						</tr>
 						</thead>
 						
 						<tbody>
 						<?php 
-							// Code added by David Hughen to display class id, update, and date
+						// Gets the current time formatted like MySql
+						$time = time();
+						$currentTime = date("Y-m-d", $time);
+							
+							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
-							$table->bind_param("s", $id);
-							$table->bind_result($clid, $update, $date);
+                     $class = $_GET['class_id'];
+							$table->bind_param("ss", $id, $class);
+                     //$table->bind_param("s", $id);
+							$table->bind_result($test_list, $status, $date_begin, $date_end, $date_taken);
 							$table->execute();
 							while($table->fetch())
-							{	
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
-									  <td>'.$date.'</td></tr>';
+							{
+								echo '<tr><td>'.$test_list.'</td>
+									   <td>'.$status.'</td>
+									   <td>'.$date_begin.' - '.$date_end.'</td>';
+										if($date_taken != null)
+										{
+											echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
+										}
+										else if($currentTime >= $date_begin and $currentTime <= $date_end)
+										{
+											echo '<td><button type="button" class="btn btn-primary">Take Test</button></td>';
+										}
+										else
+										{
+											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
+										}
+										echo '</tr>';
 							}
 							$table->close(); 
+							
 							?>			
 					</table>
                 </div>

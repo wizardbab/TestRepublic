@@ -5,5 +5,9 @@
 	// Date:   2/11/2015
 	session_start();
 	session_destroy();
-	header('Location: login2.html');
+	
+	// TIMER CODE SHOULD GO HERE SOMEWHERE
+	
+	
+	header('Location: login.html');
 ?>
