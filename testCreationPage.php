@@ -256,6 +256,14 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 					</div>		
                 </div>
 				
+				<?php 
+				// This testId needs to be inserted with each question and incremented after test is done
+				$testId = 000001;
+				
+				// This questionId needs to inserted and incremented with each question
+				$questionId = 000001;
+				
+				?>
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -505,6 +513,8 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 		
 			$(document).ready(function(){
 				$("#SABtn").click(function(){
+				<?php  ?>	
+				
 			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 			);
 			counter++;
@@ -541,6 +551,15 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 		});
 	});
 	</script>
+	
+	<?php 
+		function insertQuestion()
+		{
+			
+			
+		}
+	
+	?>
 
 </body>
 

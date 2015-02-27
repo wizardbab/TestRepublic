@@ -244,7 +244,8 @@ $warningstmt = $database->prepare($warningQuery);
 									  <td>'.$date.'</td></tr>';
 							}
 							$table->close(); 
-							?>			
+							?>	
+							</tbody>
 					</table>
                 </div>
 
