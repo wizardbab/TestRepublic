@@ -61,6 +61,7 @@ join enrollment using (student_id)
 join class using (class_id)
 where student_id = ?";
 
+// Display any tests that will expire within 7 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
