@@ -402,7 +402,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="row">
+											<div class="row" id="MC_add_answers">
 												<div class="col-lg-1">
 													<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
 												</div>
@@ -410,10 +410,6 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 													<input type="text" class="form-control" id="mc_answer2_tb" />
 												</div>
 											</div>
-										</div>
-										<div class="form-group" id="MC_AddAns">
-											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="mc_addtn_answer" />
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
@@ -442,11 +438,15 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="ata_answer" />
+											<br />
+											<input type="checkbox" name="ata_answer" id="ata_answer1_cb" />
+											<input type="text" id="ata_answer1_tb" class="ata_tb" />
 										</div>
 										<div class="form-group" id="ATA_AddAns">
-											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="ata_addtn_answer" />
+											<div class="ata_margin">
+												<input type="checkbox" name="ata_answer" id="ata_answer2_cb" />
+												<input type="text" id="ata_answer2_tb" class="ata_tb" />
+											</div>
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
@@ -534,8 +534,8 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	<script>
 		$(document).ready(function(){
 				$("#add_match_question_btn").click(function(){
-			$("#add_match_question").append('<input type="text" class="form-control" id="match_question_tb">');
-			$("#add_match_question_letter").append('<input type="text" class="form-control" id="match_question_letter_tb">');
+			$("#add_match_question").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_question_tb"></div>');
+			$("#add_match_question_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_question_letter_tb"></div>');
 		});
 	});
 	</script>
@@ -543,8 +543,8 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	<script>
 		$(document).ready(function(){
 				$("#add_match_answer_btn").click(function(){
-			$("#add_match_answer").append('<input type="text" class="form-control" id="match_answer_tb">');
-			$("#add_match_answer_letter").append('<input type="text" class="form-control" id="match_answer_letter_tb">');
+			$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
+			$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
 		});
 	});
 	</script>
@@ -553,18 +553,19 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	<script>
 		$(document).ready(function(){
 				$("#add_ATA").click(function(){
-			$("#ATA_AddAns").append('<input type="text" class="form-control" id="ata_addtn_answer">'
+			$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
 			);
 		});
 	});
 	</script>
 	
 		<!-- Multiple Choice JS -->
+		<!-- PROBLEM: in every append, how to generate a different value & id -->
+		<!-- class add_margin_mc doesnt work! :'( -->
 	<script>
 		$(document).ready(function(){
 				$("#add_MC").click(function(){
-			$("#MC_AddAns").append('<input type="text" class="form-control" id="mc_addtn_answer"> <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">remove item</button>'
-			);
+			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-lg-1"><input type="radio" name="mc_answer" value="2" id="answer2_rb" /></div><div class="col-lg-9"><input type="text" class="form-control" id="mc_answer2_tb" /></div><div class="col-lg-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 		});
 	});
 	</script>
@@ -585,11 +586,13 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 			
 		}
 		
+		var sa_question = document.getElementById('short_answer_question').value;
+		
 			$(document).ready(function(){
 				$("#SABtn").click(function(){
 				<?php  ?>	
 				
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 			);
 			counter++;
 		});

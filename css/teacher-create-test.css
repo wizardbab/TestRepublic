@@ -369,8 +369,23 @@ ul.alert-dropdown {
 	}
 	
 
-	#add_match_question, #add_match_question_letter, #add_match_answer, #add_match_answer_letter
+	.add_margin_match
 	{
-		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	
+	.add_margin_mc
+	{
+		margin-bottom: 10px;
+	}
+	
+	.ata_tb
+	{
+		position: relative;
+	}
+	
+	.ata_margin
+	{
+		margin-bottom: 10px;
 	}
 }
