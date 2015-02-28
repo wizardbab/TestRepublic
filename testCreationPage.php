@@ -212,8 +212,17 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 
 						<textarea class="form-control" rows="6"></textarea>
 						
-						<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
-						<button type="button" class="btn btn-primary btn-block" id="testCreate">Create Test</button>
+						<div class="row" id="upperButtons">
+							<div class="col-lg-6">
+								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
+							</div>
+							
+							<div class="col-lg-6">	
+								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn">Save</button>
+							</div>
+						</div>
+						
+						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create Test</button>
 					</div>
 					
 					<div class="col-lg-8" id="create_questions">
@@ -266,7 +275,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="short_answer_question">
 										</div>
 									</form>
 								</div>
@@ -290,7 +299,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="essay_question">
 										</div>
 									</form>
 								</div>
@@ -314,15 +323,15 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="tf_question" />
 										</div>
 										
 										<div class="form-group">
 											<div class="radio">
-												<label><input type="radio" name="optradio">True</label>
+												<label><input type="radio" name="optradio" />True</label>
 											</div>
 											<div class="radio">
-												<label><input type="radio" name="optradio">False</label>
+												<label><input type="radio" name="optradio" />False</label>
 											</div>
 										</div>
 										
@@ -348,15 +357,26 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="mc_question" />
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="mc_answer" />
+											<!--
+											<br />
+											
+											<input type="radio" name="mc_answer" value="1" id="answer1_rb" />
+											<input type="text" id="mc_answer1_tb" />
+											
+											<br />
+											
+											<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
+											<input type="text" id="mc_answer2_tb" />
+											-->
 										</div>
 										<div class="form-group" id="MC_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="mc_addtn_answer" />
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
@@ -381,15 +401,15 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="ata_question" />
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="ata_answer" />
 										</div>
 										<div class="form-group" id="ATA_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="Question">
+											<input type="text" class="form-control" id="ata_addtn_answer" />
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
@@ -412,20 +432,39 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 								</div>
 								<div class="modal-body">
 									<form role="form">
-										<div class="form-group">
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question">
+										<div class="row">
+											<div class="col-lg-10" id="add_match_question">
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Question:</label>
+													<input type="text" class="form-control" id="match_question_tb" />
+												</div>
+											</div>
+											<div class="col-lg-2" id="add_match_question_letter">
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Match:</label>
+													<input type="text" class="form-control" id="match_question_letter_tb" />
+												</div>
+											</div>
 										</div>
-										<div class="form-group">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="Question">
+										
+										<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_question_btn">Add Item +</button>
+										
+										<div class="row">
+											<div class="col-lg-10" id="add_match_answer">
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Answer:</label>
+													<input type="text" class="form-control" id="match_answer_tb" />
+												</div>
+											</div>
+											<div class="col-lg-2" id="add_match_answer_letter">
+												<div class="form-group">
+													<label for="recipient-name" class="control-label">Letter:</label>
+													<input type="text" class="form-control" id="match_answer_letter_tb" />
+												</div>
+											</div>
 										</div>
-										<div class="form-group" id="MatchAddAns">
-											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="Question">
-										</div>
-									</form>
-									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match">Add Item +</button>
+										
+									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -473,9 +512,18 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 	<!-- Add matching JS -->
 	<script>
 		$(document).ready(function(){
-				$("#add_match").click(function(){
-			$("#MatchAddAns").append('<input type="text" class="form-control" id="Question">'
-			);
+				$("#add_match_question_btn").click(function(){
+			$("#add_match_question").append('<input type="text" class="form-control" id="match_question_tb">');
+			$("#add_match_question_letter").append('<input type="text" class="form-control" id="match_question_letter_tb">');
+		});
+	});
+	</script>
+	
+	<script>
+		$(document).ready(function(){
+				$("#add_match_answer_btn").click(function(){
+			$("#add_match_answer").append('<input type="text" class="form-control" id="match_answer_tb">');
+			$("#add_match_answer_letter").append('<input type="text" class="form-control" id="match_answer_letter_tb">');
 		});
 	});
 	</script>
@@ -484,7 +532,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 	<script>
 		$(document).ready(function(){
 				$("#add_ATA").click(function(){
-			$("#ATA_AddAns").append('<input type="text" class="form-control" id="Question">'
+			$("#ATA_AddAns").append('<input type="text" class="form-control" id="ata_addtn_answer">'
 			);
 		});
 	});
@@ -494,7 +542,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 	<script>
 		$(document).ready(function(){
 				$("#add_MC").click(function(){
-			$("#MC_AddAns").append('<input type="text" class="form-control" id="Question"> <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">remove item</button>'
+			$("#MC_AddAns").append('<input type="text" class="form-control" id="mc_addtn_answer"> <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">remove item</button>'
 			);
 		});
 	});

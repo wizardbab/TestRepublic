@@ -363,10 +363,14 @@ ul.alert-dropdown {
 			
 	}
 	
-	#cancelTestBtn
+	#upperButtons, #createTestBtn
 	{
-		margin-top:10px;
+		margin-top: 8px;
 	}
 	
 
+	#add_match_question, #add_match_question_letter, #add_match_answer, #add_match_answer_letter
+	{
+		margin-top: 10px;
+	}
 }
