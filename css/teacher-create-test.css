@@ -340,7 +340,7 @@ ul.alert-dropdown {
 	.instruction_lbl, .pledge_lbl
 	{
 		font-size: 12pt;
-		margin-top: 5px;
+		margin-top: 6px;
 	}
 	
 	#create_questions
@@ -363,10 +363,14 @@ ul.alert-dropdown {
 			
 	}
 	
-	#cancelTestBtn
+	#upperButtons, #createTestBtn
 	{
-		margin-top:10px;
+		margin-top: 8px;
 	}
 	
 
+	#add_match_question, #add_match_question_letter, #add_match_answer, #add_match_answer_letter
+	{
+		margin-top: 10px;
+	}
 }
