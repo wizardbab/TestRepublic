@@ -271,7 +271,7 @@ $studentStatement = $database->prepare($studentQuery);
 						Test List
 					</div>
 					
-					<table class="test_list">
+					<table class="test_list table-hover">
 						<colgroup>
 							<col class="test_name" />
 							<col class="test_average" />
@@ -314,7 +314,7 @@ $studentStatement = $database->prepare($studentQuery);
 						Student List
 					</div>
 					
-					<table class="student_list">
+					<table class="student_list table-hover">
 					<tr class="student_list_header">
 					<td>First Name</td>
 					<td>Last Name</td>
