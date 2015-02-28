@@ -1,10 +1,8 @@
 
-
-
-<!DOCTYPE html>
-
 <!-- 2/21 - Modals added by Victor Jereza -->
 <!-- 2/23 - Added lots of JavaScript -->
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -70,10 +68,9 @@ select student_id, '555555' from enrollment where class_id = 'BI 101-1'
 // This gets run when the test is finished
  
 just some stuff to work with*/
-$shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shortAnswerQuestionInput'] : " ");
 ?>
 <body>
-	<div id="wrapper2">
+	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -120,7 +117,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php // Added by David Hughen
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i></i><?php // Added by David Hughen
 																												// to display student's name in top right corner
 																								if ($topRightStatement = $database->prepare($topRightQuery)) 
                                                                                                 {
@@ -308,16 +305,16 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 									<h4 class="modal-title">Short Answer</h4>
 								</div>
 								<div class="modal-body">
-									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
+									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Question:</label> 
-											<input type="text" class="form-control" name="shortAnswerQuestionInput" id="shortAnswerQuestionInput" />
+											<label for="recipient-name" class="control-label">Question:</label>
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" onclick="shortAnswerClick()">Create Question</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal"id="SABtn" name="create" value="create">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -335,13 +332,13 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="EBtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -364,10 +361,10 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 										
 										<div class="form-group">
 											<div class="radio">
-												<label><input type="radio" name="optradio" />True</label>
+												<label><input type="radio" name="optradio">True</label>
 											</div>
 											<div class="radio">
-												<label><input type="radio" name="optradio" />False</label>
+												<label><input type="radio" name="optradio">False</label>
 											</div>
 										</div>
 										
@@ -393,22 +390,22 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group" id="MC_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MCBtn"onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -426,22 +423,22 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group" id="ATA_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -456,35 +453,45 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 									<h4 class="modal-title">Matching</h4>
 								</div>
 								<div class="modal-body">
-									<form role="form" id="recipient-name">
+									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="Question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="Answer" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="pointValue" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group" id="MatchAddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
-											<input type="text" class="form-control" id="additionalAnswer" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MBtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
 					</div>				
 			</div>    				
-			</div>	
+				
+				
+					
+				</div>   
+				
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
 
 	<!-- Custom Test Creation JavaScript --> 
 	<script src="js/testCreation.js"></script>
@@ -532,32 +539,21 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 		});
 	});
 	</script>
-		<?php   
-						
-						
-						
-						echo '<h1>' . $shortAnswerQuestion .  '</h1>';
-			?>
+	
 	<!-- Short Answer JS -->
 	<script>	
 		var counter = 0;
-		var a = <?php echo '<h1>Hey</h1>';?>;
-		alert(a);
-		function shortAnswerClick()
-		{
-		
-			
-		}
+		var ajaxurl = "testCreationPage.php";
 		
 			$(document).ready(function(){
 				$("#SABtn").click(function(){
-					<?php   
-						 echo '<h1>Hey</h1>';
-						$shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shortAnswerQuestionInput'] : " ");
-						
-						echo '<h1>' . $shortAnswerQuestion .  '</h1>';
-					?>
-				
+					
+					
+					<!-- grabs the question from the text field -->
+					var question = $("#Question").val();
+					alert(question);
+					
+					$.post(ajaxurl, question);
 				
 			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 			);
@@ -565,8 +561,6 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 		});
 		
 					$("#MBtn").click(function(){
-					
-					
 			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 			);
 			counter++;
@@ -600,9 +594,9 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	
 	<?php
 
-		if(isset($_POST['shortAnswerForm']))
+		if(isset($_POST['shortAnswerQuestion']))
 		{
-			insertQuestion($_POST['shortAnswerForm']);
+			insertQuestion($_POST['shortAnswerQuestion']);
 			
 		}
 		function insertQuestion(string $receivedQuestion)
@@ -612,6 +606,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 			echo '<h1>' . $question . '</h1>';
 			
 		}
+	
 	?>
 
 </body>
