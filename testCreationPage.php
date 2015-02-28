@@ -492,10 +492,27 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 	
 		<!-- Multiple Choice JS -->
 	<script>
+	var MCAnsArray = [];
+	var MCBtnArray = [];
+	var MCCounter = 0;
 		$(document).ready(function(){
 				$("#add_MC").click(function(){
-			$("#MC_AddAns").append('<input type="text" class="form-control" id="Question"> <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">remove item</button>'
+				MCAnsArray.push('<input type="text" class="form-control" id="Question"> <button type="button" class="btn btn-default" aria-hidden="true" id="remove_MC">remove item</button>');
+			for (int counter = 0; counter < MCAnsArray; counter++;
+			{
+				$("#MC_AddAns").append(MCAnsArray[MCCounter]
+			
+			}
 			);
+		});
+	});
+	
+		$(document).ready(function(){
+				$("#remove_MC").click(function(){
+				MCArray.push('<input type="text" class="form-control" id="Question">');
+				MCBtnArray.push(' <button type="button" class="btn btn-default" aria-hidden="true" id="remove_MC">remove item</button>');
+			$("#MC_AddAns").append(MCArray[MCCounter]);
+			$("#MC_AddAns").append(MCBtnArray[MCCounter]);
 		});
 	});
 	</script>
