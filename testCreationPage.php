@@ -128,7 +128,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
@@ -258,11 +258,20 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
+							
 							</div>
 						</div>
 					</div>		
                 </div>
 				
+				<?php 
+				// This testId needs to be inserted with each question and incremented after test is done
+				$testId = 000001;
+				
+				// This questionId needs to inserted and incremented with each question
+				$questionId = 000001;
+				
+				?>
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -361,18 +370,25 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="mc_answer" />
-											<!--
 											<br />
-											
-											<input type="radio" name="mc_answer" value="1" id="answer1_rb" />
-											<input type="text" id="mc_answer1_tb" />
-											
-											<br />
-											
-											<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
-											<input type="text" id="mc_answer2_tb" />
-											-->
+											<div class="row">
+												<div class="col-lg-1">
+													<input type="radio" name="mc_answer" value="1" id="answer1_rb" />
+												</div>
+												<div class="col-lg-11">
+													<input type="text" class="form-control" id="mc_answer1_tb" />
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-lg-1">
+													<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
+												</div>
+												<div class="col-lg-11">
+													<input type="text" class="form-control" id="mc_answer2_tb" />
+												</div>
+											</div>
 										</div>
 										<div class="form-group" id="MC_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
@@ -462,6 +478,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 													<input type="text" class="form-control" id="match_answer_letter_tb" />
 												</div>
 											</div>
+
 										</div>
 										
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
@@ -477,12 +494,6 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 				
 				
 					
-					
-					
-					
-					  
-
-	
 				</div>   
 				
             </div>
@@ -553,6 +564,8 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 		
 			$(document).ready(function(){
 				$("#SABtn").click(function(){
+				<?php  ?>	
+				
 			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 			);
 			counter++;
@@ -589,6 +602,15 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 		});
 	});
 	</script>
+	
+	<?php 
+		function insertQuestion()
+		{
+			
+			
+		}
+	
+	?>
 
 </body>
 

@@ -239,17 +239,8 @@ ul.alert-dropdown {
 		}
 		
 	/*testing stuff */
-textarea
-{
-	resize:none;
-		
-}
-.color
-{
-	background-color: pink;
-}
-	
-	.color2
-{
-	background-color: blue;
-}	
+		textarea
+		{
+			resize:none;
+				
+		}
