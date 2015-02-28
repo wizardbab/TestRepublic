@@ -70,18 +70,29 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-				<div class="radio">
-					<label><input type="radio" name="optradio">Essay</label>
-				</div>
-				<div class="radio">
-					<label><input type="radio" name="optradio">Fill in the Blank</label>
-				</div>
-				<div class="radio">
-					<label><input type="radio" name="optradio">T/F</label>
-				</div>
-				<div class="radio disabled">
-					<label><input type="radio" name="optradio" disabled>Multiple Choice</label>
-				</div>
+				<li class="sidebar-brand">
+                    Question Types:
+                </li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">Essay</label>
+					</div>
+				</li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">Fill in the Blank</label>
+					</div>
+				</li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">T/F</label>
+					</div>
+				</li>
+				<li>
+					<div class="radio disabled">
+						<label><input type="radio" name="optradio" disabled>Multiple Choice</label>
+					</div>
+				</li>
             </ul>
         </div>
 		
@@ -97,8 +108,18 @@
 					
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-lg-12" id="QuestionBox">
+						<h1 id="question" onload="loadFirstQuestion()"> </h1>
+						<div class="form-group">
+						  <textarea class="form-control" rows="10" id="AnswerBox"></textarea>
+						</div>	
+					</div>
+					<button type="button" class="btn btn-default" id="prevBtn"><span class="glyphicon glyphicon-chevron-left"></span>previous</button>
+					<button type="button" class="btn btn-default" id="nxtBtn"><span class="glyphicon glyphicon-chevron-right"></span>next</button>
+				</div>
 				
-				<!-- Essay template -->
+				<!-- Essay template 
 				<div class="row">
 					<div class="col-lg-12">
 						<h1> Essay Question: </h1>
@@ -111,7 +132,9 @@
 						<li class="next"> <a href="#"><span class="glyphicon glyphicon-chevron-right"></span> next </a></li>
 					</ul>
 					</div>
-				</div>
+				</div> -->
+				
+				
 				<!-- /Essay template -->
 				
 				<!-- Multiple Choice template 
@@ -140,7 +163,7 @@
 				</div>
 				 /Multiple Choice Template -->
 				
-				<!-- Short Answer -->
+				<!-- Short Answer 
 				<div class="row">
                     <div class="col-lg-12">
 						<h1> Short Answer: </h1>
@@ -157,7 +180,9 @@
 						<li class="next"> <a href="#"><span class="glyphicon glyphicon-chevron-right"></span> next </a></li>
 					</ul>
 					</div>
-				</div>
+				</div> -->
+				
+				
 				<!-- /short Answer -->
 				
 				<!-- T/F template 
@@ -197,6 +222,9 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+	<!-- Custom TestTaking JavaScript -->
+	<script src="js/testTaking.js"></script> 
+	
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {
