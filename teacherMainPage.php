@@ -198,6 +198,7 @@ $table = $database->prepare($tableQuery);
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+               <h1>Test</h1>
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
