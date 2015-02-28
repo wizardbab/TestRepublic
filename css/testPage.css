@@ -19,6 +19,7 @@ body
 	background-color: black;
 	background-repeat: no-repeat;
 	background-size: cover;
+	width: 250px;
 }
 
 #logo-area
@@ -164,6 +165,7 @@ ul.alert-dropdown {
     text-indent: 15px;
     line-height: 25px;
 	font-size: 13pt;
+	color: black;
 }
 
 .sidebar-nav li a {
@@ -184,10 +186,8 @@ ul.alert-dropdown {
 
 .sidebar-nav > .sidebar-brand {
     height: 40px;
-    font-size: 28px;
-	font-weight: bold;
+    font-size: 24px;
     line-height: 40px;
-	background-color: rgb(55,96,146);
 	color: rgb(0,0,0);
 }
 
