@@ -459,7 +459,7 @@ ul.alert-dropdown {
 	table.test_list td, table.test_list th
 	{
 		border: 1px solid black;
-		padding: 2px;
+		padding: 3px;
 		text-align: center;
 	}
 	
@@ -513,7 +513,7 @@ ul.alert-dropdown {
 	{
 		border: 1px solid black;
 		text-align: center;
-		padding: 2px;
+		padding: 3px;
 	}
 	
 	.student_list_header
