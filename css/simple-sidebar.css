@@ -57,6 +57,7 @@ body
     color: #999;
 }
 
+/* This is the color of the text within the dropdowns */
 .top-nav>li>ul>li>a{
     color: #999;
 }
