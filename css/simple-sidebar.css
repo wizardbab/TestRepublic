@@ -57,11 +57,15 @@ body
     color: #999;
 }
 
+.top-nav>li>ul>li>a{
+    color: #999;
+}
+
 .dropdown:hover>.dropdown-menu,
 .dropdown:hover>.dropdown-menu:hover {
     display: block;
-    color: #000000;
-    background-color: #FFFFFF;
+    color: #fff;
+    background-color: rgb(55,96,146);
     float: left;
     position: absolute;
     margin-top: 0;
