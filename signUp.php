@@ -51,6 +51,10 @@ $insertStudentQuery = "insert into student values(?, ?, ?, ?, ?)";
 // Insert the classes a student is taking into enrollment
 $insertEnrollmentQuery = "insert into enrollment values(?, ?)";
 
+$insertTestQuery = "insert into test_list(student_id, test_id) values (?, ?)";
+
+$selectTestIdQuery = "select test_id from test where class_id = ?";
+
 
 @ $database->select_db(DATABASENAME);
 
@@ -162,6 +166,8 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						
 						foreach($classes as $a)
 						{
+							$testCounter = 0;
+							
 							echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
 							if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
 							{
@@ -172,6 +178,36 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 							$insertEnrollmentStatement->bind_param("ss", $newId, $a);
 							$insertEnrollmentStatement->execute();
 							$insertEnrollmentStatement->close();
+							
+							// Select id for the test
+							if($selectTestIdStatement = $database->prepare($selectTestIdQuery))
+							{
+								
+							}
+							else 
+							{
+								printf("Errormessage: %s\n", $database->error);
+							}
+							
+							$selectTestIdStatement->bind_param("s", $a);
+							$selectTestIdStatement->bind_result($tid);
+							$selectTestIdStatement->execute();
+							while($selectTestIdStatement->fetch())
+							{	
+								$testIdArray[$testCounter++] = $tid;
+							}
+							$selectTestIdStatement->close();
+							
+							foreach($testIdArray as $t)
+							{
+								$insertTestStatement = $database->prepare($insertTestQuery);
+								$insertTestStatement->bind_param("ss", $newId, $t);
+								$insertTestStatement->execute();
+								$insertTestStatement->close();
+							}
+							
+							
+							
 						}
 						
 						if ($insertStudentStatement = $database->prepare($insertStudentQuery))
