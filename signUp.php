@@ -15,7 +15,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/signup.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -73,7 +73,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 	
 
 <form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
-<div id="sidebar-wrapper">
+	<div id="sidebar-wrapper">
 
 					
 					<a href="logout.php">
@@ -116,26 +116,34 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
             </ul>
 				
 				
-        </div>
+    </div>
 
+	<div id="page-content-wrapper">
+        <div class="container-fluid">
+			<div class="row">
+	
 	<div id="signUpDiv">
-		<h1>Welcome!</h1>
-			<h2>Please enter your information.</h2>
-			<label class="survey_style">First Name:
+		<div class="signup_header">
+			<img src="images/logo4.png" alt="Our Logo" height="80" width="80">
+			<span class="signup_text">&nbsp; Sign Up</span>
+		</div>
+			<h2 class="enter_info_text">Please enter your information.</h2>
+			<label class="survey_style">First Name
 				<input type="text" name="firstName" id="firstName" />
-			</label><br />
-			<label class="survey_style">Last Name:
+			</label>
+			<label class="survey_style">Last Name
 				<input type="text" name="lastName" id="lastName" />
-			</label><br />
-			<label class="survey_style">Email:
+			</label>
+			<label class="survey_style">Email
 				<input type="text" name="email" id="email" />
-			</label><br />
-			<label class="survey_style">Password:
+			</label>
+			<label class="survey_style">Password
 				<input type="text" name="password" id="password" />
-			</label><br />
+			</label>
 			<input class="myButton" type="submit" value="Create Account" />
-
-		</form>	
+	</div>
+			</div>
+</form>	
 
 	
 			
@@ -223,8 +231,8 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 				
 				echo '<h1>' . $newId . '</h1>';
 					}
-					else
-						echo '<h1>Yo</h1>';
+					
+					
 					
 					?>
 					
@@ -237,7 +245,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 		
 	?>
 
-
+	</div>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

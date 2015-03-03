@@ -149,8 +149,8 @@ ul.alert-dropdown {
 #signUpDiv
 {
 	width: 100%;
-   position: absolute;
-   padding: 15px;
+	position: absolute;
+	padding: 15px;
 	text-align: center;
 }
 
@@ -158,17 +158,48 @@ ul.alert-dropdown {
 {
 	padding: 20px;
 	position: relative;
-	background: pink;
+	background: papayawhip;
 	border: 3px solid black;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	width: 50%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-#welcome_text
+
+
+.signup_header
+{
+	display: inline-block;
+	background-color: rgb(55,96,146);
+	width: 100%;
+	padding: 10px;
+}
+
+.signup_text
 {
 	background-color: rgb(55,96,146);
-	padding: 10px;
+	font-size: 40px;
+	font-family: Rockwell, Arial;
+	color: white;
+}
+
+label.survey_style
+{
+	display: block;
+	position: relative;
+	text-align: left;
+	left: 170px;
+	font-size: 14pt;
+	margin: 10px;
+}
+
+label.survey_style input
+{
+	position: absolute;
+	left: 150px;
 }
 
 #wrapper.toggled #signUpDiv {
@@ -270,37 +301,6 @@ ul.alert-dropdown {
 			position: relative;
 			margin-right: 0;
 		}
-		
-	/*testing stuff */
-		
-	.col-lg-12
-	{
-		background-color: pink;
-		height: 100px;
-	}
-	
-	.warning_msg
-	{
-		font-size: 14pt;
-		padding: 5px;
-	}
-	
-	.warning_sign_msg
-	{
-		margin-top: 40px;
-		color:#FF0000;
-	}
-	
-	table.student_summary
-	{
-		position: relative;
-		top: 40px;
-		font-size: 14pt;
-		border: 2px solid black;
-		border-collapse: collapse;
-		width: 70%;
-		text-align: center;
-	}
 	
 	table.signUpTable
 	{
@@ -313,240 +313,4 @@ ul.alert-dropdown {
 		text-align: center;
 	}
 	
-	table.student_summary td, table.student_summary th
-	{
-		border: 1px solid black;
-		padding: 8px;
-	}
-	
-	table.student_summary thead
-	{
-		background-color: rgb(149,179,215);
-	}
-	
-	table.student_summary th
-	{
-		text-align: center;
-	}
-	
-	table.student_summary col.classes
-	{
-		width: 15%;
-	}
-	
-	table.student_summary col.recent_updates
-	{
-		width: 40%;
-	}
-	
-	table.student_summary col.date
-	{
-		width: 20%;
-	}
-
-	.course_button
-	{
-		padding: 8px;
-		color: white;
-		height: 45px;
-		width: 110px;
-		font-size: 14pt;
-		background-color: rgb(55,96,146);
-	}
-	
-	/***********************
-	/*     Teacher CSS     */
-	/***********************/
-	
-	/* teacherMainPage */
-	table.teacher_summary
-	{
-		position: relative;
-		top: 87px;
-		font-size: 14pt;
-		border: 2px solid black;
-		border-collapse: collapse;
-		width: 70%;
-		text-align: center;
-	}
-	
-	table.teacher_summary td, table.teacher_summary th
-	{
-		border: 1px solid black;
-		padding: 8px;
-		text-align: center;
-	}
-	
-	table.teacher_summary thead
-	{
-		background-color: rgb(149,179,215);
-	}
-
-	table.teacher_summary col.classes
-	{
-		width: 15%;
-	}
-	
-	table.teacher_summary col.recent_updates
-	{
-		width: 40%;
-	}
-	
-	table.teacher_summary col.date
-	{
-		width: 20%;
-	}
-
-	/* teacherClassPage */
-	
-	.course_header
-	{
-		width: 85%;
-		position: fixed;
-		padding: 8px;
-		
-		margin-top: 51px;
-		height: 99px;
-		background: black;
-		font-size: 20pt;
-		color: white;
-		font-weight: bold;
-		z-index: 1;
-	}
-	
-	.course_number
-	{
-		margin-left: 10pt;
-	}
-	
-	.class_name
-	{
-		margin-left: 40pt;
-	}
-	
-	.students_num_text
-	{
-		margin-top: 140px;
-		font-size: 18pt;
-		color: rgb(55,96,146);
-	}
-	
-	.students_number
-	{
-		color: black;
-	}
-	
-	.create_test_button
-	{
-		margin-top: 8px;
-		background: rgb(55,96,146);
-		color: white;
-		font-size: 14pt;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		padding-left: 15px;
-		padding-right: 15px;
-	}
-	
-	.test_list_text
-	{
-		margin-top: 20px;
-		font-size: 18pt;
-		font-weight: bold;
-		color: rgb(55,96,146);
-	}
-	
-	table.test_list
-	{
-		position: relative;
-		top: 5px;
-		font-size: 12pt;
-		border: 2px solid black;
-		border-collapse: collapse;
-		width: 35%;
-		text-align: center;
-	}
-	
-	table.test_list td, table.test_list th
-	{
-		border: 1px solid black;
-		padding: 3px;
-		text-align: center;
-	}
-	
-	table.test_list thead
-	{
-		background-color: rgb(149,179,215);
-		padding: 1px;
-	}
-	
-	table.test_list col.test_name
-	{
-		width: 40%;
-	}
-	
-	table.test_list col.test_average
-	{
-		width: 30%;
-	}
-	
-	table.test_list col.view_button_col
-	{
-		width: 25%;
-	}
-	
-	.view_test_button
-	{
-		background-color: rgb(149,179,215);
-	}
-	
-	.student_list_text
-	{
-		margin-top: 30px;
-		font-size: 18pt;
-		font-weight: bold;
-		color: rgb(55,96,146);
-	}
-	
-	table.student_list
-	{
-		position: relative;
-		top: 5px;
-		font-size: 12pt;
-		border: 2px solid black;
-		border-collapse: collapse;
-		width: 70%;
-		text-align: center;
-		background: white;
-	}
-	
-	table.student_list td, table.test_list th
-	{
-		border: 1px solid black;
-		text-align: center;
-		padding: 3px;
-	}
-	
-	.student_list_header
-	{
-		background-color: rgb(149,179,215);
-		padding: 1px;
-		text-align: center;
-		font-weight: bold;
-	}
-	
-	.odd_row
-	{
-		background: rgb(191,191,191);
-	}
-	
-	.failing_grade
-	{
-		color: red;
-	}
-	
-	.grade_test_button
-	{
-		background-color: rgb(149,179,215);
-	}
 }
