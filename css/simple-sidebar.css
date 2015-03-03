@@ -65,7 +65,7 @@ body
 .dropdown:hover>.dropdown-menu:hover {
     display: block;
     color: #fff;
-    background-color: rgb(55,96,146);
+    background-color: #000;
     float: left;
     position: absolute;
     margin-top: 0;
