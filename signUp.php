@@ -3,22 +3,30 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="">
+   <meta name="author" content="">
 
-    <title>Test Republic</title>
+   <title>Test Republic</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+   <!-- Bootstrap Core CSS -->
+   <link href="css/bootstrap.min.css" rel="stylesheet">
 
+<<<<<<< HEAD
     <!-- Custom CSS -->
     <link href="css/signup.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+=======
+   <!-- Custom CSS -->
+   <link href="css/simple-sidebar.css" rel="stylesheet">
+
+   <!-- Custom Fonts -->
+   <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+>>>>>>> b4440f7e6d24766eeaac1bd03ab34ce71ebd9202
 
 </head>
 
@@ -59,7 +67,7 @@ $selectTestIdQuery = "select test_id from test where class_id = ?";
 @ $database->select_db(DATABASENAME);
 
 
-// Check to see if anything was entered, if not assign and empty string
+// Check to see if anything was entered, if not assign an empty string
 $firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : " ");
 $lastName  = (isset($_POST['lastName']) ? $_POST['lastName'] : " ");
 $email     = (isset($_POST['email']) ? $_POST['email'] : " ");
@@ -126,10 +134,10 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 					</div>
 						<h2 class="enter_info_text">Please enter your information.</h2>
 						<label class="survey_style">First Name
-							<input type="text" name="firstName" id="firstName" />
+							<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" />
 						</label>
 						<label class="survey_style">Last Name
-							<input type="text" name="lastName" id="lastName" />
+							<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" />
 						</label>
 						<label class="survey_style">Email
 							<input type="text" name="email" id="email" />
@@ -142,7 +150,6 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 			</div>
 </form>	
 
-	
 			
 		<table class="signUpTable">
 					<tr><td><?php echo $firstName; ?></td></tr>
@@ -150,6 +157,30 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 					<tr><td><?php echo $email; ?></td></tr>
 					<tr><td><?php echo $password; ?></td></tr>
 				</table>	
+
+                  // Does a preliminary check for email pattern
+                  if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
+                  {
+                     echo "Invalid email ".$email;
+                  }
+                  else
+                     echo "Valid email ".$email;
+               ?>
+               </td></tr>
+               <tr><td>
+               <?php
+                  // Does a preliminary check for required password pattern
+                  if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+^',$password))
+                     echo "Need more variety: ";
+                  else
+                     if(!preg_match('^.{8,16}^', $password))
+                        echo "Password too short: ";
+                     else
+                        echo "Valid Password: ";
+                  echo $password;
+               ?>
+               </td></tr>
+					
 					<?php 
 					if(is_array($classes))
 					{
@@ -158,7 +189,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						{
 						}
 						else {
-							printf("Errormessage: %s\n", $database->error);
+							printf("Error message: %s\n", $database->error);
 						}	
 						
 						$idStatement->bind_result($sid);
@@ -178,7 +209,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 							{
 							}
 							else {
-							printf("Errormessage: %s\n", $database->error);
+							printf("Error message: %s\n", $database->error);
 							}
 							$insertEnrollmentStatement->bind_param("ss", $newId, $a);
 							$insertEnrollmentStatement->execute();
@@ -191,7 +222,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 							}
 							else 
 							{
-								printf("Errormessage: %s\n", $database->error);
+								printf("Error message: %s\n", $database->error);
 							}
 							
 							$selectTestIdStatement->bind_param("s", $a);
@@ -219,7 +250,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						{
 						}
 						else{
-							printf("Errormessage: %s\n", $database->error);
+							printf("Error message: %s\n", $database->error);
 						}
 						$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
 						$insertStudentStatement->execute();
@@ -237,11 +268,9 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 		
 		</div>
 
+   <!-- jQuery -->
+   <script src="js/jquery.js"></script>
 
-	<?php
-
-		
-	?>
 
 	</div>
 
@@ -251,13 +280,13 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
+   <!-- Menu Toggle Script -->
+   <script>
+   $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+   });
+   </script>
 
 </body>
 
