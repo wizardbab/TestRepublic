@@ -131,7 +131,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 				<input type="text" name="email" id="email" />
 			</label><br />
 			<label class="survey_style">Password:
-				<input type="text" name="password" id="password" />
+				<input type="password" name="password" id="password" />
 			</label><br />
 			<input class="myButton" type="submit" value="Create Account" />
 
