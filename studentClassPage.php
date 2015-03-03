@@ -194,7 +194,7 @@ $warningstmt = $database->prepare($warningQuery);
             <div class="container-fluid">
                 <div class="row">
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         <div class="warning_box">
 							<p class="warning_msg"><?php
                                 // Display warnings if a test has seven days or less to take
@@ -244,7 +244,6 @@ $warningstmt = $database->prepare($warningQuery);
 							// inside the table in the middle of the page
                      $class = $_GET['class_id'];
 							$table->bind_param("ss", $id, $class);
-                     //$table->bind_param("s", $id);
 							$table->bind_result($test_list, $status, $date_begin, $date_end, $date_taken);
 							$table->execute();
 							while($table->fetch())

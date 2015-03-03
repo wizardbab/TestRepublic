@@ -163,7 +163,7 @@ just some stuff to work with*/
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<div class="col-lg-12" id="course_section">
+					<div class="col-md-12" id="course_section">
 						<?php
                         $mainClassStatement->bind_param("s", $classId);
                         $mainClassStatement->bind_result($clid, $clde);
@@ -189,7 +189,7 @@ just some stuff to work with*/
 				
 				<div class="row" id="test_section">
 				
-					<div class="col-lg-4" id="test_information">
+					<div class="col-md-4" id="test_information">
 				
 						<div class="test-info-text">
 							Test Information
@@ -235,7 +235,7 @@ just some stuff to work with*/
 						<button type="button" class="btn btn-primary btn-block" id="testCreate">Create Test</button>
 					</div>
 					
-					<div class="col-lg-8" id="create_questions">
+					<div class="col-md-8" id="create_questions">
 						<div class="create-questions-text">
 							Create Questions
 						</div>
