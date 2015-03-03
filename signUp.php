@@ -82,11 +82,8 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						<i class="glyphicon glyphicon-log-in"></i>Back to Login
 					</button></a>
             <ul class="sidebar-nav">
-				<li>
-                    <a href="#" id="student-summary">Summary</a>
-                </li>
-                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
-                    Select a Class:
+                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) --> <!-- done :):) -->
+                    SELECT A CLASS TO ADD:
                 </li>
                
 				<?php 
@@ -106,7 +103,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 				$classCounter = 1; 
 				while($classList->fetch())
 				{	
-					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
+					echo '<li class="hello"><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
 					
 				}
 				$classList->close(); 
@@ -119,40 +116,40 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
     </div>
 
 	<div id="page-content-wrapper">
-        <div class="container-fluid">
-			<div class="row">
 	
-	<div id="signUpDiv">
-		<div class="signup_header">
-			<img src="images/logo4.png" alt="Our Logo" height="80" width="80">
-			<span class="signup_text">&nbsp; Sign Up</span>
-		</div>
-			<h2 class="enter_info_text">Please enter your information.</h2>
-			<label class="survey_style">First Name
-				<input type="text" name="firstName" id="firstName" />
-			</label>
-			<label class="survey_style">Last Name
-				<input type="text" name="lastName" id="lastName" />
-			</label>
-			<label class="survey_style">Email
-				<input type="text" name="email" id="email" />
-			</label>
-			<label class="survey_style">Password
-				<input type="text" name="password" id="password" />
-			</label>
-			<input class="myButton" type="submit" value="Create Account" />
-	</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div id="signUpDiv">
+					<div class="signup_header">
+						<img src="images/logo4.png" alt="Our Logo" height="80" width="80">
+						<span class="signup_text">&nbsp; Sign Up</span>
+					</div>
+						<h2 class="enter_info_text">Please enter your information.</h2>
+						<label class="survey_style">First Name
+							<input type="text" name="firstName" id="firstName" />
+						</label>
+						<label class="survey_style">Last Name
+							<input type="text" name="lastName" id="lastName" />
+						</label>
+						<label class="survey_style">Email
+							<input type="text" name="email" id="email" />
+						</label>
+						<label class="survey_style">Password
+							<input type="text" name="password" id="password" />
+						</label>
+						<input id="create_acc_button" type="submit" value="Create Account" />
+				</div>
 			</div>
 </form>	
 
 	
 			
 		<table class="signUpTable">
-					<tr><td><?php echo $firstName ?></td></tr>
-					<tr><td><?php echo $lastName ?></td></tr>
-					<tr><td><?php echo $email ?></td></tr>
-					<tr><td><?php echo $password ?></td></tr>
-					
+					<tr><td><?php echo $firstName; ?></td></tr>
+					<tr><td><?php echo $lastName; ?></td></tr>
+					<tr><td><?php echo $email; ?></td></tr>
+					<tr><td><?php echo $password; ?></td></tr>
+				</table>	
 					<?php 
 					if(is_array($classes))
 					{
@@ -176,7 +173,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						{
 							$testCounter = 0;
 							
-							echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
+							echo '<h1>' . $a . '</h1></br />';
 							if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
 							{
 							}
@@ -231,13 +228,14 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 				
 				echo '<h1>' . $newId . '</h1>';
 					}
-					
+					else
+						echo 'yo';
 					
 					
 					?>
 					
-		</table>
-	</div>
+		
+		</div>
 
 
 	<?php
