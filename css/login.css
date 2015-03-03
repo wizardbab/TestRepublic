@@ -66,6 +66,7 @@ body
 .top-nav>li {
     display: inline-block;
     float: left;
+	 color: #999;
 }
 
 .top-nav>li>a {
@@ -105,11 +106,13 @@ body
 
 .top-nav>.open>.dropdown-menu {
     float: left;
+	 color: #999;
+	 white-space: nowrap;
     position: absolute;
     margin-top: 0;
 	padding-left: 15px;
 	padding-right: 15px;
-	padding-bottom: 10px;
+	padding-bottom: 10px;   
     border: 1px solid rgba(0,0,0,.15);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -119,7 +122,8 @@ body
 }
 
 .top-nav>.open>.dropdown-menu>li>a {
-    white-space: normal;
+    white-space: nowrap;
+    color: #999;
 }
 
 /* Carousel base class */
