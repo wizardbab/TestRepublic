@@ -176,7 +176,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<div class="col-lg-12" id="course_section">
+					<div class="col-md-12" id="course_section">
 						<?php
                         $mainClassStatement->bind_param("s", $classId);
                         $mainClassStatement->bind_result($clid, $clde);
@@ -202,7 +202,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 				
 				<div class="row" id="test_section">
 				
-					<div class="col-lg-4" id="test_information">
+					<div class="col-md-4" id="test_information">
 				
 						<div class="test-info-text">
 							Test Information
@@ -244,11 +244,11 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 						<textarea class="form-control" rows="6"></textarea>
 						
 						<div class="row" id="upperButtons">
-							<div class="col-lg-6">
+							<div class="col-md-6">
 								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
 							</div>
 							
-							<div class="col-lg-6">	
+							<div class="col-md-6">	
 								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn">Save</button>
 							</div>
 						</div>
@@ -256,7 +256,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create Test</button>
 					</div>
 					
-					<div class="col-lg-8" id="create_questions">
+					<div class="col-md-8" id="create_questions">
 						<div class="create-questions-text">
 							Create Questions
 						</div>
@@ -403,20 +403,20 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 											<label for="recipient-name" class="control-label">Answer:</label>
 											<br />
 											<div class="row">
-												<div class="col-lg-1">
+												<div class="col-md-1">
 													<input type="radio" name="mc_answer" value="1" id="answer1_rb" />
 												</div>
-												<div class="col-lg-11">
+												<div class="col-md-11">
 													<input type="text" class="form-control" id="mc_answer1_tb" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="row" id="MC_add_answers">
-												<div class="col-lg-1">
+												<div class="col-md-1">
 													<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
 												</div>
-												<div class="col-lg-11">
+												<div class="col-md-11">
 													<input type="text" class="form-control" id="mc_answer2_tb" />
 												</div>
 											</div>
@@ -480,13 +480,13 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 								<div class="modal-body">
 									<form role="form">
 										<div class="row">
-											<div class="col-lg-10" id="add_match_question">
+											<div class="col-md-10" id="add_match_question">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Question:</label>
 													<input type="text" class="form-control" id="match_question_tb" />
 												</div>
 											</div>
-											<div class="col-lg-2" id="add_match_question_letter">
+											<div class="col-md-2" id="add_match_question_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Match:</label>
 													<input type="text" class="form-control" id="match_question_letter_tb" />
@@ -497,13 +497,13 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 										<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_question_btn">Add Item +</button>
 										
 										<div class="row">
-											<div class="col-lg-10" id="add_match_answer">
+											<div class="col-md-10" id="add_match_answer">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Answer:</label>
 													<input type="text" class="form-control" id="match_answer_tb" />
 												</div>
 											</div>
-											<div class="col-lg-2" id="add_match_answer_letter">
+											<div class="col-md-2" id="add_match_answer_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Letter:</label>
 													<input type="text" class="form-control" id="match_answer_letter_tb" />
@@ -569,7 +569,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	var MCCounter = 0;
 		$(document).ready(function(){
 				$("#add_MC").click(function(){
-			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-lg-1"><input type="radio" name="mc_answer" value="2" id="answer2_rb" /></div><div class="col-lg-9"><input type="text" class="form-control" id="mc_answer2_tb" /></div><div class="col-lg-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
+			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" value="2" id="answer2_rb" /></div><div class="col-md-9"><input type="text" class="form-control" id="mc_answer2_tb" /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 		});
 	});
 	
