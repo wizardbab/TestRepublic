@@ -94,10 +94,10 @@ $password  = (isset($_POST['password'])  ? $_POST['password'] : "");
       <h1>Welcome!</h1>
          <h2>Please enter your information.</h2>
          <label class="survey_style">First Name:
-            <input type="text" name="firstName" id="firstName" />
+            <input type="text" name="firstName" id="firstName" value="<?php print $firstName?>" />
          </label><br />
          <label class="survey_style">Last Name:
-            <input type="text" name="lastName" id="lastName" />
+            <input type="text" name="lastName" id="lastName" value="<?php print $lastName?>" />
          </label><br />
          <label class="survey_style">Email:
             <input type="text" name="email" id="email" />
@@ -114,29 +114,21 @@ $password  = (isset($_POST['password'])  ? $_POST['password'] : "");
          <?php
             // Does a preliminary check for email pattern
             if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
-            {
                echo "Invalid email ".$email;
-            }
             else
-            {
                echo "Valid email ".$email;
-            }
          ?>
          </td></tr>
          <tr><td>
          <?php
             // Does a preliminary check for required password pattern
             if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+^',$password))
-            {
-               echo "Not enough types of characters: ";
-            }
+               echo "Need more variety: ";
             else
-            {
                if(!preg_match('^.{8,16}^', $password))
-                  echo "Not enough characters: ";
+                  echo "Password too short: ";
                else
-                  echo "Enough characters: ";
-            }
+                  echo "Valid Password: ";
             echo $password;
          ?>
          </td></tr>
