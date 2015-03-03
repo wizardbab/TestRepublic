@@ -208,7 +208,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 							}
 							else 
 							{
-								printf("Error message: %s\n", $database->error);
+								printf("Errormessage: %s\n", $database->error);
 							}
 							
 							$selectTestIdStatement->bind_param("s", $a);
@@ -245,8 +245,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 				
 				echo '<h1>' . $newId . '</h1>';
 					}
-					else
-						echo '<h1>Yo</h1>';
+					
 					
 					?>
 					
