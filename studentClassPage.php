@@ -188,7 +188,7 @@ $table = $database->prepare($tableQuery);
             <div class="container-fluid">
                 <div class="row">
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         <div class="warning_box">
 							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
 						</div>

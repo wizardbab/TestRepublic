@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- 2/21 - Modals added by Victor Jereza -->
+<!-- 2/23 - Added lots of JavaScript -->
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>JS/AJAX/PHP attempt 1</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/teacher-create-test.css" rel="stylesheet">
+	
+   <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- Custom Test Creation JavaScript --> 
+	<script src="js/testCreation.js"></script>
+	
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+	
+		<script>
+
+		
+		$(document).ready(function(){
+		$("#testBtn").click(function(){
+				var vvar1 = $("#value1").val();
+				var vvar2 = $("#value2").val();
+
+			$.post("jspg.php",
+			{
+				var1:vvar1,
+				var2:vvar2
+			});
+		});
+	});
+	</script>
+	
+</head>
+
+
+<body>
+
+	
+	<form id="test" method="post">
+
+		<input type="text" class="form-control" id="value1" />
+		<input type="text" class="form-control" id="value2" />
+	
+	
+	</form>
+	
+		<button class="testBtn" name="testBtn" id="testBtn">button </button>
+
+</body>
+
+
+
+
+
+</html>
