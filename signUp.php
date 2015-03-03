@@ -122,10 +122,10 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 		<h1>Welcome!</h1>
 			<h2>Please enter your information.</h2>
 			<label class="survey_style">First Name:
-				<input type="text" name="firstName" id="firstName" />
+				<input type="text" name="firstName" id="firstName" value=<?php print $firstName?> />
 			</label><br />
 			<label class="survey_style">Last Name:
-				<input type="text" name="lastName" id="lastName" />
+				<input type="text" name="lastName" id="lastName" value=<?php print $lastName?> />
 			</label><br />
 			<label class="survey_style">Email:
 				<input type="text" name="email" id="email" />
@@ -142,8 +142,30 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 		<table class="signUpTable">
 					<tr><td><?php echo $firstName ?></td></tr>
 					<tr><td><?php echo $lastName ?></td></tr>
-					<tr><td><?php echo $email ?></td></tr>
-					<tr><td><?php echo $password ?></td></tr>
+					<tr><td>
+               <?php
+                  // Does a preliminary check for email pattern
+                  if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
+                  {
+                     echo "Invalid email ".$email;
+                  }
+                  else
+                     echo "Valid email ".$email;
+               ?>
+               </td></tr>
+               <tr><td>
+               <?php
+                  // Does a preliminary check for required password pattern
+                  if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+^',$password))
+                     echo "Need more variety: ";
+                  else
+                     if(!preg_match('^.{8,16}^', $password))
+                        echo "Password too short: ";
+                     else
+                        echo "Valid Password: ";
+                  echo $password;
+               ?>
+               </td></tr>
 					
 					<?php 
 					if(is_array($classes))
@@ -153,7 +175,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						{
 						}
 						else {
-							printf("Errormessage: %s\n", $database->error);
+							printf("Error message: %s\n", $database->error);
 						}	
 						
 						$idStatement->bind_result($sid);
@@ -173,7 +195,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 							{
 							}
 							else {
-							printf("Errormessage: %s\n", $database->error);
+							printf("Error message: %s\n", $database->error);
 							}
 							$insertEnrollmentStatement->bind_param("ss", $newId, $a);
 							$insertEnrollmentStatement->execute();
@@ -186,7 +208,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 							}
 							else 
 							{
-								printf("Errormessage: %s\n", $database->error);
+								printf("Error message: %s\n", $database->error);
 							}
 							
 							$selectTestIdStatement->bind_param("s", $a);
@@ -214,7 +236,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						{
 						}
 						else{
-							printf("Errormessage: %s\n", $database->error);
+							printf("Error message: %s\n", $database->error);
 						}
 						$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
 						$insertStudentStatement->execute();
@@ -230,95 +252,6 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 					
 		</table>
 	</div>
-
-
-	<?php
-
-		
-	?>
-
-<div id="sidebar-wrapper">
-   <a href="logout.php">
-      <!-- Button with a link wrapped around it to go back to the login page -->
-      <button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="signUp.php">
-         <i class="glyphicon glyphicon-log-in"></i>Back to Login
-      </button>
-   </a>
-   <ul class="sidebar-nav">
-      <li>
-         <a href="#" id="student-summary">Summary</a>
-      </li>
-      <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
-         Select a Class:
-      </li>
-      <?php 
-         $courseCounter = 1;
-         // List of classes for the user to select from...we'll need to keep track of what class is selected for the db
-         if ($classList = $database->prepare($listClassQuery)) 
-         {
-            // nothing to bind
-         }
-         else
-         {
-            printf("Error message: %s\n", $database->error);
-         }
-         $classList->bind_result($clde);
-         $classList->execute();
-         while($classList->fetch())
-         {
-            echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a></li>';
-         }
-         $classList->close(); 
-      ?>
-   </ul>
-</div>
-
-<form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
-   <div id="signUpDiv">
-      <h1>Welcome!</h1>
-         <h2>Please enter your information.</h2>
-         <label class="survey_style">First Name:
-            <input type="text" name="firstName" id="firstName" value="<?php print $firstName?>" />
-         </label><br />
-         <label class="survey_style">Last Name:
-            <input type="text" name="lastName" id="lastName" value="<?php print $lastName?>" />
-         </label><br />
-         <label class="survey_style">Email:
-            <input type="text" name="email" id="email" />
-         </label><br />
-         <label class="survey_style">Password:
-            <input type="text" name="password" id="password" />
-         </label><br />
-      <input class="myButton" type="submit" value="Create Account" />
-
-      <table class="signUpTable">
-         <tr><td><?php echo $firstName ?></td></tr>
-         <tr><td><?php echo $lastName ?></td></tr>
-         <tr><td>
-         <?php
-            // Does a preliminary check for email pattern
-            if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
-               echo "Invalid email ".$email;
-            else
-               echo "Valid email ".$email;
-         ?>
-         </td></tr>
-         <tr><td>
-         <?php
-            // Does a preliminary check for required password pattern
-            if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+^',$password))
-               echo "Need more variety: ";
-            else
-               if(!preg_match('^.{8,16}^', $password))
-                  echo "Password too short: ";
-               else
-                  echo "Valid Password: ";
-            echo $password;
-         ?>
-         </td></tr>
-      </table>
-   </div>
-</form>
 
    <!-- jQuery -->
    <script src="js/jquery.js"></script>
