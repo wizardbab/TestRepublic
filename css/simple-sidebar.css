@@ -407,7 +407,7 @@ ul.alert-dropdown {
 	.course_header
 	{
 		width: 85%;
-		position: absolute;
+		position: fixed;
 		padding: 8px;
 		
 		margin-top: 51px;
@@ -416,6 +416,7 @@ ul.alert-dropdown {
 		font-size: 20pt;
 		color: white;
 		font-weight: bold;
+		z-index: 1;
 	}
 	
 	.course_number
