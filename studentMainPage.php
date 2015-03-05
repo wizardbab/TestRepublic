@@ -61,6 +61,7 @@ join enrollment using (student_id)
 join class using (class_id)
 where student_id = ?";
 
+// Display any tests that will expire within 7 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
@@ -192,7 +193,7 @@ $warningstmt = $database->prepare($warningQuery);
             <div class="container-fluid">
                 <div class="row">
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         <div class="warning_box">
 							<p class="warning_msg"> 
                                 <?php
