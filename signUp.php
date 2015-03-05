@@ -60,11 +60,11 @@ $selectTestIdQuery = "select test_id from test where class_id = ?";
 
 
 // Check to see if anything was entered, if not assign an empty string
-$firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : " ");
-$lastName  = (isset($_POST['lastName']) ? $_POST['lastName'] : " ");
-$email     = (isset($_POST['email']) ? $_POST['email'] : " ");
-$password  = (isset($_POST['password']) ? $_POST['password'] : " ");
-$classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
+$firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : "");
+$lastName  = (isset($_POST['lastName']) ? $_POST['lastName'] : "");
+$email     = (isset($_POST['email']) ? $_POST['email'] : "");
+$password  = (isset($_POST['password']) ? $_POST['password'] : "");
+$classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 
 ?>
 		
@@ -122,10 +122,10 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 		<h1>Welcome!</h1>
 			<h2>Please enter your information.</h2>
 			<label class="survey_style">First Name:
-				<input type="text" name="firstName" id="firstName" value=<?php print $firstName?> />
+				<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" />
 			</label><br />
 			<label class="survey_style">Last Name:
-				<input type="text" name="lastName" id="lastName" value=<?php print $lastName?> />
+				<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" />
 			</label><br />
 			<label class="survey_style">Email:
 				<input type="text" name="email" id="email" />
@@ -136,117 +136,104 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 			<input class="myButton" type="submit" value="Create Account" />
 
 		</form>	
-
-	
-			
-		<table class="signUpTable">
-					<tr><td><?php echo $firstName ?></td></tr>
-					<tr><td><?php echo $lastName ?></td></tr>
-					<tr><td>
-               <?php
-                  // Does a preliminary check for email pattern
-                  if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
-                  {
-                     echo "Invalid email ".$email;
-                  }
-                  else
-                     echo "Valid email ".$email;
-               ?>
-               </td></tr>
-               <tr><td>
-               <?php
-                  // Does a preliminary check for required password pattern
-                  if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+^',$password))
-                     echo "Need more variety: ";
-                  else
-                     if(!preg_match('^.{8,16}^', $password))
-                        echo "Password too short: ";
-                     else
-                        echo "Valid Password: ";
-                  echo $password;
-               ?>
-               </td></tr>
 					
 					<?php 
+					// We have data; begin validation
 					if(is_array($classes))
 					{
-						// Assign an id
-						if ($idStatement = $database->prepare($newStudentIdQuery)) 
+						// Does a preliminary check for email pattern
+						if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
 						{
+							echo "Invalid email ".$email;
 						}
-						else {
-							printf("Error message: %s\n", $database->error);
-						}	
-						
-						$idStatement->bind_result($sid);
-						$idStatement->execute();
-						while($idStatement->fetch())
-						{	
-							$newId = $sid + 1;
-						}
-						$idStatement->close();
-						
-						foreach($classes as $a)
+						// Valid email; validate password
+						else
 						{
-							$testCounter = 0;
-							
-							echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
-							if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
-							{
-							}
-							else {
-							printf("Error message: %s\n", $database->error);
-							}
-							$insertEnrollmentStatement->bind_param("ss", $newId, $a);
-							$insertEnrollmentStatement->execute();
-							$insertEnrollmentStatement->close();
-							
-							// Select id for the test
-							if($selectTestIdStatement = $database->prepare($selectTestIdQuery))
-							{
+							// Does a preliminary check for required password pattern
+							if(!preg_match('^[[:alpha:]]+[[:digit:]]+^',$password))
+								echo "Need more variety: ";
+							else
+								if(!preg_match('^.{8,20}^', $password))
+									echo "Password needs to be between 8-16 characters";
 								
+								// Valid email and password so we insert into db
+								else
+								{
+									// Assign an id
+									if ($idStatement = $database->prepare($newStudentIdQuery)) 
+									{
+									}
+									else {
+										printf("Error message: %s\n", $database->error);
+									}	
+									
+									$idStatement->bind_result($sid);
+									$idStatement->execute();
+									while($idStatement->fetch())
+									{	
+										$newId = $sid + 1;
+									}
+									$idStatement->close();
+									
+									foreach($classes as $a)
+									{
+										$testCounter = 0;
+										
+										echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
+										if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
+										{
+										}
+										else {
+										printf("Error message: %s\n", $database->error);
+										}
+										$insertEnrollmentStatement->bind_param("ss", $newId, $a);
+										$insertEnrollmentStatement->execute();
+										$insertEnrollmentStatement->close();
+										
+										// Select id for the test
+										if($selectTestIdStatement = $database->prepare($selectTestIdQuery))
+										{
+											
+										}
+										else 
+										{
+											printf("Error message: %s\n", $database->error);
+										}
+										
+										$selectTestIdStatement->bind_param("s", $a);
+										$selectTestIdStatement->bind_result($tid);
+										$selectTestIdStatement->execute();
+										while($selectTestIdStatement->fetch())
+										{	
+											$testIdArray[$testCounter++] = $tid;
+										}
+										$selectTestIdStatement->close();
+										
+										foreach($testIdArray as $t)
+										{
+											$insertTestStatement = $database->prepare($insertTestQuery);
+											$insertTestStatement->bind_param("ss", $newId, $t);
+											$insertTestStatement->execute();
+											$insertTestStatement->close();
+										}																			
+									}
+									
+									if ($insertStudentStatement = $database->prepare($insertStudentQuery))
+									{
+									}
+									else{
+										printf("Error message: %s\n", $database->error);
+									}
+									$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
+									$insertStudentStatement->execute();
+									$insertStudentStatement->close();
+								
+								echo '<h1>' . $newId . '</h1>';
 							}
-							else 
-							{
-								printf("Errormessage: %s\n", $database->error);
-							}
-							
-							$selectTestIdStatement->bind_param("s", $a);
-							$selectTestIdStatement->bind_result($tid);
-							$selectTestIdStatement->execute();
-							while($selectTestIdStatement->fetch())
-							{	
-								$testIdArray[$testCounter++] = $tid;
-							}
-							$selectTestIdStatement->close();
-							
-							foreach($testIdArray as $t)
-							{
-								$insertTestStatement = $database->prepare($insertTestQuery);
-								$insertTestStatement->bind_param("ss", $newId, $t);
-								$insertTestStatement->execute();
-								$insertTestStatement->close();
-							}
-							
-							
-							
-						}
-						
-						if ($insertStudentStatement = $database->prepare($insertStudentQuery))
-						{
-						}
-						else{
-							printf("Error message: %s\n", $database->error);
-						}
-						$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
-						$insertStudentStatement->execute();
-						$insertStudentStatement->close();
-				
-				
-				echo '<h1>' . $newId . '</h1>';
+						}			
 					}
-					
-					
+					else
+						// do nothing
 					?>
 					
 		</table>
