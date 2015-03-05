@@ -64,7 +64,8 @@ where class_id = ?";
 $firstTableQuery = "select test_name, avg(test_score) from test_list
 join test using(test_id)
 where class_id = ?
-group by(test_name)";
+group by(test_name)
+order by(test_id)";
 
 // Teacher first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
@@ -304,7 +305,7 @@ $studentStatement = $database->prepare($studentQuery);
 							}
 							$firstTableStatement->close();
                             if($tname == null)
-                                    echo'<tr><td>No tests created</td></tr>';
+                                    echo'<tr><td colspan="3">No tests created</td></tr>';
 						?>
 						</tbody>
 						

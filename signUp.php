@@ -150,10 +150,10 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 						else
 						{
 							// Does a preliminary check for required password pattern
-							if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+^',$password))
+							if(!preg_match('^[[:alpha:]]+[[:digit:]]+^',$password))
 								echo "Need more variety: ";
 							else
-								if(!preg_match('^.{8,16}^', $password))
+								if(!preg_match('^.{8,20}^', $password))
 									echo "Password needs to be between 8-16 characters";
 								
 								// Valid email and password so we insert into db
@@ -254,5 +254,4 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
    </script>
 
 </body>
-
 </html>
