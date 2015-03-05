@@ -148,21 +148,17 @@ ul.alert-dropdown {
 
 #signUpDiv
 {
-	width: 100%;
-   position: absolute;
-   padding: 15px;
-	text-align: center;
-}
-
-#signUpDiv
-{
 	padding: 20px;
 	position: relative;
 	background: pink;
+	/*
+	
 	border: 3px solid black;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
-	width: 50%;
+	*/
+	width: 100%;
+	text-align: center;
 }
 
 #welcome_text
@@ -311,6 +307,7 @@ ul.alert-dropdown {
 		border-collapse: collapse;
 		width: 70%;
 		text-align: center;
+		background-color: pink;
 	}
 	
 	table.student_summary td, table.student_summary th

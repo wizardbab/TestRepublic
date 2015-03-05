@@ -15,11 +15,11 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
    <!-- Custom CSS -->
-   <link href="css/simple-sidebar.css" rel="stylesheet">
+   <link href="css/signup.css" rel="stylesheet">
 
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-				
+
 </head>
 
 <body>
@@ -60,19 +60,19 @@ $selectTestIdQuery = "select test_id from test where class_id = ?";
 
 
 // Check to see if anything was entered, if not assign an empty string
-$firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : " ");
-$lastName  = (isset($_POST['lastName']) ? $_POST['lastName'] : " ");
-$email     = (isset($_POST['email']) ? $_POST['email'] : " ");
-$password  = (isset($_POST['password']) ? $_POST['password'] : " ");
-$classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
+$firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : "");
+$lastName  = (isset($_POST['lastName']) ? $_POST['lastName'] : "");
+$email     = (isset($_POST['email']) ? $_POST['email'] : "");
+$password  = (isset($_POST['password']) ? $_POST['password'] : "");
+$classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 
 ?>
 		
 
 
-	
+<!-- PUT THIS DIV SO THE CONTENT IS CENTERED ON THE RIGHT SECTION (NOT CENTERED ON THE WHOLE PAGE) -->	
+<div id="wrapper">
 
-<form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
 	<div id="sidebar-wrapper">
 
 					
@@ -82,8 +82,8 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 						<i class="glyphicon glyphicon-log-in"></i>Back to Login
 					</button></a>
             <ul class="sidebar-nav">
-                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) --> <!-- done :):) -->
-                    SELECT A CLASS TO ADD:
+                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
+                    Select a Class:
                 </li>
                
 				<?php 
@@ -103,7 +103,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 				$classCounter = 1; 
 				while($classList->fetch())
 				{	
-					echo '<li class="hello"><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
+					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="'.$clid.'"></li>';
 					
 				}
 				$classList->close(); 
@@ -113,63 +113,74 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
             </ul>
 				
 				
-    </div>
+	</div>
 
-	<div id="page-content-wrapper">
-	
-		<div class="container-fluid">
-			<div class="row">
-				<div id="signUpDiv">
-					<div class="signup_header">
-						<img src="images/logo4.png" alt="Our Logo" height="80" width="80">
-						<span class="signup_text">&nbsp; Sign Up</span>
-					</div>
-						<h2 class="enter_info_text">Please enter your information.</h2>
-						<label class="survey_style">First Name
-							<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" />
-						</label>
-						<label class="survey_style">Last Name
-							<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" />
-						</label>
-						<label class="survey_style">Email
-							<input type="text" name="email" id="email" />
-						</label>
-						<label class="survey_style">Password
-							<input type="text" name="password" id="password" />
-						</label>
-						<input id="create_acc_button" type="submit" value="Create Account" />
-				</div>
-			</div>
-</form>	
-
+	<div class="container-fluid">
+		<div class="row">
 			
-		<table class="signUpTable">
-					<tr><td><?php echo $firstName; ?></td></tr>
-					<tr><td><?php echo $lastName; ?></td></tr>
-					<tr><td><?php echo $email; ?></td></tr>
-					<tr><td><?php echo $password; ?></td></tr>
-				</table>	
-
-					
-					<?php 
-					// Check for valid email
-					if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
-					{
-						echo "Invalid email ".$email;
-					}
-					else
-					{
-						 // Does a preliminary check for required password pattern
-						if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+^',$password))
-							echo "Need more variety: ";
-						else
-							if(!preg_match('^.{8,16}^', $password))
-								echo "Password too short: ";
+		<form name="signUpForm" id="signUpForm" action="signUp.php" method="post">	
+			
+		<div id="signUpDiv">
+		
+			<div class="sign_up_box">
+				<div class="sign_up_text_area">
+					<img src="images/logo4.png" alt="Our Logo" height="80" width="80">
+					<span class="sign_up_text">&nbsp; Sign Up</span>
+				</div>
+				<h2>Please enter your information.</h2>
+				<br />
+				
+				<label class="survey_style">
+					<div class="row">
+						<div class="col-md-4">First Name:</div>
+						<div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" /></div>
+					</div>
+				</label><br />
+				<label class="survey_style">
+					<div class="row">
+						<div class="col-md-4">Last Name:</div>
+						<div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" /></div>
+					</div>
+				</label><br />
+				<label class="survey_style">
+					<div class="row">
+						<div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
+						<div class="col-md-8"><input type="text" name="email" id="email" /></div>
+					</div>
+				</label><br />
+				<label class="survey_style">
+					<div class="row">
+						<div class="col-md-4">Password:</div>
+						<div class="col-md-8"><input type="password" name="password" id="password" /></div>
+					</div>
+				</label><br />
+				<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up"/>
+			
+				
+		</form>		
+						
+						<?php 
+						// We have data; begin validation
+						if(is_array($classes) == true)
+						{
+							echo '<h1>Hey</h1>';
+							// Does a preliminary check for email pattern
+							if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
+							{
+								echo "Invalid email " . $email;
+							}
+							// Valid email; validate password
 							else
 							{
-								echo "Valid Password: ";
-								
-									if(is_array($classes))
+								// Does a preliminary check for required password pattern
+								if(!preg_match('#^[[:alpha:]]+[[:digit:]]+$#', $password))
+									echo "Need more variety: ";
+								else
+									if(!preg_match('^.{8,20}^', $password))
+										echo "Password needs to be between 8-16 characters";
+									
+									// Valid email and password so we insert into db
+									else
 									{
 										// Assign an id
 										if ($idStatement = $database->prepare($newStudentIdQuery)) 
@@ -191,7 +202,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 										{
 											$testCounter = 0;
 											
-											echo '<h1>' . $a . '</h1></br />';
+											echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
 											if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
 											{
 											}
@@ -227,10 +238,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 												$insertTestStatement->bind_param("ss", $newId, $t);
 												$insertTestStatement->execute();
 												$insertTestStatement->close();
-											}
-											
-											
-											
+											}																			
 										}
 										
 										if ($insertStudentStatement = $database->prepare($insertStudentQuery))
@@ -242,33 +250,65 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : " ");
 										$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
 										$insertStudentStatement->execute();
 										$insertStudentStatement->close();
-								
-								
-										echo '<h1>' . $newId . '</h1>';
-											
-									}
-					
-							}
-					}
-					
-					
-					
-					
-				?>	
+									
+									echo '<h1>' . $newId . '</h1>';
+								}
+							}			
+						}
+						else
+							echo '<h1>Yo</h1>';
+							// do nothing
+							
+						print_r($classes);
+						?>
+				
+			</div>
 		</div>
-	
 
+		</div>
+		
+		<!-- Sign Up Modal -->
+		<div id="sign_up_modal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title">
+							<div class="sign_up_text_area_2">
+								<img src="images/logo4.png" alt="Our Logo" height="50" width="50">
+								<span class="sign_up_text_2">&nbsp; Sign Up</span>
+							</div>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="congrats_text">Congratulation!</div>
+						<div><h4>You have successfully created an account.<h4></div>
+					
+						<?php
+							echo '<div class="name_section">'.ucfirst($firstName).' '.ucfirst($lastName).' (#id)'.'</div>';
+						?>
+					
+						<div class="course_added_text">Course(s) that you have added:</div>
+						<div>put all the courses here below
+						</div>
+					
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+</div>
+	
    <!-- jQuery -->
    <script src="js/jquery.js"></script>
 
-
-	</div>
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+   <!-- Bootstrap Core JavaScript -->
+   <script src="js/bootstrap.min.js"></script>
 
    <!-- Menu Toggle Script -->
    <script>

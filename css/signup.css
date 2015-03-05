@@ -148,71 +148,83 @@ ul.alert-dropdown {
 
 #signUpDiv
 {
-	width: 100%;
-	position: absolute;
-	padding: 15px;
-	text-align: center;
-}
-
-#signUpDiv
-{
 	padding: 20px;
 	position: relative;
-	/*background: papayawhip;*/
+	/*
+	
 	border: 3px solid black;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
-	width: 50%;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	*/
+	width: 100%;
+	text-align: center;
 }
 
-
-
-.signup_header
+.sign_up_box
 {
-	display: inline-block;
+	background: papayawhip;
+	border: 3px solid black;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 20px;
+}
+
+.sign_up_text_area
+{
 	background-color: rgb(55,96,146);
-	width: 100%;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 	padding: 10px;
 }
 
-.signup_text
+.sign_up_text
 {
-	background-color: rgb(55,96,146);
-	font-size: 40px;
+	font-size: 30pt;
 	font-family: Rockwell, Arial;
 	color: white;
 }
 
-label.survey_style
+.sign_up_text_area_2
 {
-	display: block;
-	position: relative;
-	text-align: left;
-	left: 160px;
+	background-color: rgb(55,96,146);
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.sign_up_text_2
+{
+	font-size: 20pt;
+	font-family: Rockwell, Arial;
+	color: white;
+}
+
+.congrats_text
+{
+	font-weight: bold;
+	font-size: 18pt;
+}
+
+.name_section
+{
+	font-size: 18pt;
+	color: rgb(55,96,146);
+}
+
+.course_added_text
+{
+	margin-top: 8px;
+	background: rgb(149,179,215);
 	font-size: 14pt;
-	margin: 10px;
+	padding: 5px;
 }
 
 label.survey_style input
 {
-	position: absolute;
-	left: 145px;
-	padding-left: 5px;
-}
-
-#create_acc_button
-{
-	margin-top: 8px;
-	background-color: rgb(55,96,146);
-	padding: 10px;
-	font-weight: bold;
-	color: white;
-	font-size: 13pt;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
+	padding: 5px;
 }
 
 #wrapper.toggled #signUpDiv {
@@ -239,7 +251,7 @@ label.survey_style input
 }
 
 .sidebar-nav li {
-    text-indent: 10px;
+    text-indent: 15px;
     line-height: 25px;
 	font-size: 13pt;
 }
@@ -262,7 +274,7 @@ label.survey_style input
 
 .sidebar-nav > .sidebar-brand {
     height: 40px;
-    font-size: 18px;
+    font-size: 28px;
 	font-weight: bold;
     line-height: 40px;
 	background-color: rgb(55,96,146);
@@ -314,8 +326,28 @@ label.survey_style input
 			position: relative;
 			margin-right: 0;
 		}
+		
+	/*testing stuff */
+		
+	#warning_box1
+	{
+		background-color: pink;
+		height: 100px;
+	}
 	
-	table.signUpTable
+	.warning_msg
+	{
+		font-size: 14pt;
+		padding: 5px;
+	}
+	
+	.warning_sign_msg
+	{
+		margin-top: 40px;
+		color:#FF0000;
+	}
+	
+	table.student_summary
 	{
 		position: relative;
 		top: 40px;
@@ -326,7 +358,7 @@ label.survey_style input
 		text-align: center;
 	}
 	
-		table.student_summary
+	table.signUpTable
 	{
 		position: relative;
 		top: 40px;
@@ -335,6 +367,7 @@ label.survey_style input
 		border-collapse: collapse;
 		width: 70%;
 		text-align: center;
+		background-color: pink;
 	}
 	
 	table.student_summary td, table.student_summary th
@@ -367,9 +400,210 @@ label.survey_style input
 	{
 		width: 20%;
 	}
-	
-	.hello
+
+	.course_button
 	{
-		display: inline-block;
+		padding: 8px;
+		color: white;
+		height: 45px;
+		width: 110px;
+		font-size: 14pt;
+		background-color: rgb(55,96,146);
+	}
+	
+	/***********************
+	/*     Teacher CSS     */
+	/***********************/
+	
+	/* teacherMainPage */
+	table.teacher_summary
+	{
+		position: relative;
+		top: 87px;
+		font-size: 14pt;
+		border: 2px solid black;
+		border-collapse: collapse;
+		width: 70%;
+		text-align: center;
+	}
+	
+	table.teacher_summary td, table.teacher_summary th
+	{
+		border: 1px solid black;
+		padding: 8px;
+		text-align: center;
+	}
+	
+	table.teacher_summary thead
+	{
+		background-color: rgb(149,179,215);
+	}
+
+	table.teacher_summary col.classes
+	{
+		width: 15%;
+	}
+	
+	table.teacher_summary col.recent_updates
+	{
+		width: 40%;
+	}
+	
+	table.teacher_summary col.date
+	{
+		width: 20%;
+	}
+
+	/* teacherClassPage */
+	
+	.course_header
+	{
+		width: 85%;
+		position: fixed;
+		padding: 8px;
+		
+		margin-top: 51px;
+		height: 99px;
+		background: black;
+		font-size: 20pt;
+		color: white;
+		font-weight: bold;
+		z-index: 1;
+	}
+	
+	.course_number
+	{
+		margin-left: 10pt;
+	}
+	
+	.class_name
+	{
+		margin-left: 40pt;
+	}
+	
+	.students_num_text
+	{
+		margin-top: 140px;
+		font-size: 18pt;
+		color: rgb(55,96,146);
+	}
+	
+	.students_number
+	{
+		color: black;
+	}
+	
+	.create_test_button
+	{
+		margin-top: 8px;
+		background: rgb(55,96,146);
+		color: white;
+		font-size: 14pt;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	
+	.test_list_text
+	{
+		margin-top: 20px;
+		font-size: 18pt;
+		font-weight: bold;
+		color: rgb(55,96,146);
+	}
+	
+	table.test_list
+	{
+		position: relative;
+		top: 5px;
+		font-size: 12pt;
+		border: 2px solid black;
+		border-collapse: collapse;
+		width: 35%;
+		text-align: center;
+	}
+	
+	table.test_list td, table.test_list th
+	{
+		border: 1px solid black;
+		padding: 3px;
+		text-align: center;
+	}
+	
+	table.test_list thead
+	{
+		background-color: rgb(149,179,215);
+		padding: 1px;
+	}
+	
+	table.test_list col.test_name
+	{
+		width: 40%;
+	}
+	
+	table.test_list col.test_average
+	{
+		width: 30%;
+	}
+	
+	table.test_list col.view_button_col
+	{
+		width: 25%;
+	}
+	
+	.view_test_button
+	{
+		background-color: rgb(149,179,215);
+	}
+	
+	.student_list_text
+	{
+		margin-top: 30px;
+		font-size: 18pt;
+		font-weight: bold;
+		color: rgb(55,96,146);
+	}
+	
+	table.student_list
+	{
+		position: relative;
+		top: 5px;
+		font-size: 12pt;
+		border: 2px solid black;
+		border-collapse: collapse;
+		width: 70%;
+		text-align: center;
+		background: white;
+	}
+	
+	table.student_list td, table.test_list th
+	{
+		border: 1px solid black;
+		text-align: center;
+		padding: 3px;
+	}
+	
+	.student_list_header
+	{
+		background-color: rgb(149,179,215);
+		padding: 1px;
+		text-align: center;
+		font-weight: bold;
+	}
+	
+	.odd_row
+	{
+		background: rgb(191,191,191);
+	}
+	
+	.failing_grade
+	{
+		color: red;
+	}
+	
+	.grade_test_button
+	{
+		background-color: rgb(149,179,215);
 	}
 }
