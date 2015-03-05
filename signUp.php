@@ -135,12 +135,82 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 			</label><br />
 			<input class="myButton" type="submit" value="Create Account" />
 
-		</form>	
-					
+		</form>
+      
+      <!-- A JavaScript script that does dynamic feedback validation -->
+      <script>
+      $(document.ready(function() {
+         FormValidation.Validator.securePassword = {
+            validate: function(validator, $field, options) {
+               var value = $field.val();
+               if (value === '') {
+                  return true;
+               }
+               
+               // Check the password strength
+               if (value.length < 8) {
+                  return {
+                     valid: false,
+                     message: 'The password must be more than 8 characters long'
+                  };
+               }
+               
+               // The password doesn't contain any uppercase character
+               if (value === value.toLowerCase()) {
+                  return {
+                     valid: false,
+                     message: 'The password must contain at least one upper case character'
+                  }
+               }
+               
+               // The password doesn't contain any lowercase character
+               if (value === value.toUpperCase()) {
+                  return {
+                     valid: false,
+                     message: 'The password must contain at least one lower case character'
+                  }
+               }
+               
+               // The password doesn't contain any digit
+               if (value.search(/[0-9]/) < 0) {
+                  return {
+                     valid: false,
+                     message: 'The password must contain at least one digit'
+                  }
+               }
+               
+               return true;
+            }
+         };
+         
+         $('#signUpForm').formValidation({
+            framework: 'bootstrap',
+            feedbackIcons: {
+               valid: 'glyphicon glyphicon-ok',
+               invalid: 'glyphicon glyphicon-remove',
+               validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+               pwd: {
+                  validators: {
+                     notEmpty: {
+                        message: 'The password cannot be empty
+                     },
+                     securePassword: {
+                        message: 'The password is not valid'
+                     }
+                  }
+               }
+            }
+         });
+      });
+      </script>
+      
 					<?php 
 					// We have data; begin validation
 					if(is_array($classes))
 					{
+                  
 						// Does a preliminary check for email pattern
 						if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
 						{
@@ -151,7 +221,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 						{
 							// Does a preliminary check for required password pattern
 							if(!preg_match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+^',$password))
-								echo "Need more variety: ";
+								echo "At least one uppercase, one lowercase, and one number: ";
 							else
 								if(!preg_match('^.{8,16}^', $password))
 									echo "Password needs to be between 8-16 characters";
@@ -233,6 +303,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 						}			
 					}
 					else
+                  echo "Need to select classes from the list";
 						// do nothing
 					?>
 					
