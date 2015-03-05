@@ -533,31 +533,43 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	
 	<!-- Add matching JS -->
 	<script>
-		$(document).ready(function(){
-				$("#add_match_question_btn").click(function(){
-			$("#add_match_question").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_question_tb"></div>');
-			$("#add_match_question_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_question_letter_tb"></div>');
+	$(document).ready(function()
+	{
+		$("#add_match_question_btn").click(function()
+		{
+			var vvar1 = $("#value1").val();
+			var vvar2 = $("#value2").val();
+
+			$.post("jspg.php",
+			{
+				var1:vvar1,
+				var2:vvar2
+			});
 		});
 	});
 	</script>
 	
 	<script>
-		$(document).ready(function(){
-				$("#add_match_answer_btn").click(function(){
-			$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
-			$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
+		$(document).ready(function()
+		{
+			$("#add_match_answer_btn").click(function()
+			{
+				$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
+				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
+			});
 		});
-	});
 	</script>
 	
 		<!-- All that Apply JS -->
 	<script>
-		$(document).ready(function(){
-				$("#add_ATA").click(function(){
-			$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
-			);
+		$(document).ready(function()
+		{
+			$("#add_ATA").click(function()
+			{
+				$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
+				);
+			});
 		});
-	});
 	</script>
 	
 		<!-- Multiple Choice JS -->
@@ -582,68 +594,50 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 		});
 	});
 	</script>
-		<?php   
-						
-						
-						
-						echo '<h1>' . $shortAnswerQuestion .  '</h1>';
-			?>
-	<!-- Short Answer JS -->
-	<script>	
-		var counter = 0;
-		var a = <?php echo '<h1>Hey</h1>';?>;
-		alert(a);
-		function shortAnswerClick()
-		{
-		
-			
-		}
-		
-		var sa_question = document.getElementById('short_answer_question').value;
-		
-			$(document).ready(function(){
-				$("#SABtn").click(function(){
-				alert("SAB");
-			
-				
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-			);
-			counter++;
-		});
-		
-					$("#MBtn").click(function(){
-					
-					
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-			);
-			counter++;
-		});
-		
-					$("#MCBtn").click(function(){
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-			);
-			counter++;
-		});
-		
-					$("#ATABtn").click(function(){
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-			);
-			counter++;
-		});
-		
-					$("#TFBtn").click(function(){
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-			);
-			counter++;
-		});
-		
-					$("#EBtn").click(function(){
-			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Essay</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-			);
-			counter++;
-		});
 
-	});
+	
+	<script>	
+		
+		$(document).ready(function()
+		{
+			$("#SABtn").click(function()
+			{
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				);
+				counter++;
+			});
+			
+			$("#MBtn").click(function()
+			{
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				);
+				counter++;
+			});
+			
+			$("#MCBtn").click(function(){
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				);
+				counter++;
+			});
+			
+			$("#ATABtn").click(function(){
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				);
+				counter++;
+			});
+			
+			$("#TFBtn").click(function(){
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				);
+				counter++;
+			});
+			
+			$("#EBtn").click(function(){
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Essay</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				);
+				counter++;
+			});
+		});
 	</script>
 
 </body>
