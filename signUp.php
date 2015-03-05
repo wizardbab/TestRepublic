@@ -209,13 +209,16 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 										}
 										$selectTestIdStatement->close();
 										
-										foreach($testIdArray as $t)
+										if(is_array($testIdArray))
 										{
-											$insertTestStatement = $database->prepare($insertTestQuery);
-											$insertTestStatement->bind_param("ss", $newId, $t);
-											$insertTestStatement->execute();
-											$insertTestStatement->close();
-										}																			
+											foreach($testIdArray as $t)
+											{
+												$insertTestStatement = $database->prepare($insertTestQuery);
+												$insertTestStatement->bind_param("ss", $newId, $t);
+												$insertTestStatement->execute();
+												$insertTestStatement->close();
+											}	
+										}																				
 									}
 									
 									if ($insertStudentStatement = $database->prepare($insertStudentQuery))
@@ -229,6 +232,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 									$insertStudentStatement->close();
 								
 								echo '<h1>' . $newId . '</h1>';
+								$testIdArray = null;
 							}
 						}			
 					}
@@ -236,7 +240,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 						// do nothing
 					?>
 					
-		</table>
+	
 	</div>
 
    <!-- jQuery -->

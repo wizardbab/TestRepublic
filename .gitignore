@@ -19,4 +19,4 @@
 *.zip
 
 #PHP#
-/constants.php
+constants.php
