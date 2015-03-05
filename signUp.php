@@ -178,6 +178,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 									foreach($classes as $a)
 									{
 										$testCounter = 0;
+                                        $testIdArray[] = null;
 										
 										echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
 										if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
@@ -190,6 +191,12 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 										$insertEnrollmentStatement->execute();
 										$insertEnrollmentStatement->close();
 										
+                                        $testCount = count($testIdArray);
+                                        for($i = 0; $i < $testCount; $i++)
+                                        {
+                                            $testIdArray[$i] = null;
+                                        }
+                                        
 										// Select id for the test
 										if($selectTestIdStatement = $database->prepare($selectTestIdQuery))
 										{
@@ -209,13 +216,20 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 										}
 										$selectTestIdStatement->close();
 										
-										foreach($testIdArray as $t)
-										{
-											$insertTestStatement = $database->prepare($insertTestQuery);
-											$insertTestStatement->bind_param("ss", $newId, $t);
-											$insertTestStatement->execute();
-											$insertTestStatement->close();
-										}																			
+                                        if(is_array($testIdArray))
+                                        {
+                                            foreach($testIdArray as $t)
+                                            {
+                                                $insertTestStatement = $database->prepare($insertTestQuery);
+                                                $insertTestStatement->bind_param("ss", $newId, $t);
+                                                $insertTestStatement->execute();
+                                                $insertTestStatement->close();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            printf("It failed");
+                                        }
 									}
 									
 									if ($insertStudentStatement = $database->prepare($insertStudentQuery))
