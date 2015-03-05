@@ -108,9 +108,9 @@ body
 }
 
 .top-nav>.open>.dropdown-menu {
+	display: block;
     float: left;
-	 color: #999;
-	 white-space: nowrap;
+	color: #999;
     position: absolute;
     margin-top: 0;
 	padding-left: 15px;
