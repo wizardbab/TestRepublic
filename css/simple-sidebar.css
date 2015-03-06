@@ -144,6 +144,12 @@ ul.alert-dropdown {
     padding-left: 250px;
 }
 
+#classList
+{
+    font-weight: bold;
+    color: red;
+}
+
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;

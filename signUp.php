@@ -101,14 +101,13 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 				}	
 				$classList->bind_result($clid, $clde);
 				$classList->execute();
-				
-				$courseCounter = 1;
-				$classCounter = 1; 
+				echo '<ol id="classList">';
 				while($classList->fetch())
 				{	
-					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
+					echo '<li><a href="#"><div class="subject-name">' . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
 					
 				}
+                echo '</ol>';
 				$classList->close(); 
 				
 
