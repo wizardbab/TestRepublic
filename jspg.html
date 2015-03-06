@@ -40,14 +40,13 @@
 		$("#ATABtn").click(function(){
 				var question = $("#ata_question").val();
 				var answer = $("#ata_answer1_tb").val();
+				
 			$.post("jspg.php",
 			{
-				//var1:question,
-				//var2:answer
-				array:JSON.stringify(answerArray)
+				var1:question,
+				var2:answer
+				//array:JSON.stringify(answerArray)
 			});
-			// var Jstring = JSON.stringify(answerArray);
-			// alert(Jstring);
 		});	
 	});
 	</script>

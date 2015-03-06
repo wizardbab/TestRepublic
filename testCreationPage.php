@@ -59,27 +59,11 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 
 // Class ID and description at the top of the page
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
-
 $mainClassStatement = $database->prepare($mainClassQuery);
 
-/* insert into question (question_id, test_id, question_type, question_value, question_text, student_answer, section_title, question_no)
-values(bound stuff)
-//This runs when a question is created
- 
-insert into answer(answer_id, question_id, answer_text, correct)
-values(bound stuff)
-//This one will need to loop for every answer when a question is created
- 
-insert into test
-values(everything) //T_STATUS might be left null; runs when the test get initially created
- 
-insert into test_list(student_id, test_id)
-select student_id, '555555' from enrollment where class_id = 'BI 101-1'
-// THIS ACTUALLY WORKED!!! it took every student from BI 101-1 and inserted him into test_list with test 555555
-// This gets run when the test is finished
- 
-just some stuff to work with*/
-$shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shortAnswerQuestionInput'] : " ");
+$testIdQuery = "select max(test_id) from test";
+
+global $newTestId;
 ?>
 <body>
 	<div id="wrapper2">
@@ -237,7 +221,8 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 						<label class="instruction_lbl">Specific Instruction:</label>
 						<br />
 						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						
+						<h1 id="test"> Foo </h1> 
+					
 						
 						<label class="pledge_lbl">Test Pledge:</label>
 
@@ -296,13 +281,19 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
                 </div>
 				
 				<?php 
-				// This testId needs to be inserted with each question and incremented after test is done
-				$testId = 000001;
+				// New id
+				$testIdStatement = $database->prepare($testIdQuery);
+				$testIdStatement->bind_result($tid);
+                $testIdStatement->execute();
+				while($testIdStatement->fetch())
+				{
+					$newTestId = $tid + 1;
+				}
+				$testIdStatement->close();
 				
-				// This questionId needs to inserted and incremented with each question
-				$questionId = 000001;
 				
 				?>
+				
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -316,12 +307,14 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="short_answer_question">
+											<label for="recipient-name" class="control-label">Answer:</label>
+											<input type="text" class="form-control" id="short_answer_answer">
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" onclick="shortAnswerClick()">Create Question</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -340,6 +333,8 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="essay_question">
+											<label for="recipient-name" class="control-label">Answer:</label>
+											<input type="text" class="form-control" id="essay_answer">
 										</div>
 									</form>
 								</div>
@@ -537,14 +532,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	{
 		$("#add_match_question_btn").click(function()
 		{
-			var vvar1 = $("#value1").val();
-			var vvar2 = $("#value2").val();
 
-			$.post("jspg.php",
-			{
-				var1:vvar1,
-				var2:vvar2
-			});
 		});
 	});
 	</script>
@@ -597,6 +585,9 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 
 	
 	<script>	
+		var counter = 0;
+		var testId = '<?php echo $newTestId; ?>';
+		
 		
 		$(document).ready(function()
 		{
@@ -605,6 +596,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;
+
 			});
 			
 			$("#MBtn").click(function()
@@ -612,7 +604,9 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;
+
 			});
+
 			
 			$("#MCBtn").click(function(){
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
@@ -633,9 +627,27 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 			});
 			
 			$("#EBtn").click(function(){
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Essay</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-				);
+				
+				
 				counter++;
+				var question = $("#essay_question").val();
+				var answer = $("#essay_answer").val();
+
+				$.post("TestQuestionScripts/essayAndShortAnswer.php",
+				{
+					question:question,
+					answer:answer,
+					testId:testId,
+					questionType:"Essay"
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">' + question + '</h4> <p class="list-group-item-text">' + answer + '</p></a>'
+				);
+			
 			});
 		});
 	</script>
