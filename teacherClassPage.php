@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -33,6 +33,9 @@ $id = $_SESSION['username'];
 // Gets the class id appended to url from teacherMainPage.php
 $classId = $_GET['classId'];
 
+$_SESSION['classId'] = $classId;
+$_SESSION['testId'] = null;
+
 if($id == null)
     header('Location: login.html');
     
@@ -47,11 +50,10 @@ if (mysqli_connect_errno())
 
 $query = "select class_id, class_description from teacher join class using(teacher_id) where teacher_id = ?";
 
-$mainClassQuery = "select class_id, class_description from teacher join class using(teacher_id) where class_id = ?";
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
 
 // Query for the number of students in the class
-$studentCountQuery = "select count(distinct student_id) from test_list
-join test using(test_id)
+$studentCountQuery = "select count(distinct student_id) from enrollment
 where class_id = ?";
 
 // Query for the number of tests in the class
@@ -63,7 +65,8 @@ where class_id = ?";
 $firstTableQuery = "select test_name, avg(test_score) from test_list
 join test using(test_id)
 where class_id = ?
-group by(test_name)";
+group by(test_name)
+order by(test_id)";
 
 // Teacher first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
@@ -73,13 +76,11 @@ $studentTitleQuery = "select test_name from test where class_id = ?";
 
 // Student names for student list
 $studentNamesQuery = "select first_name, last_name from student
-join test_list using(student_id)
-join test using(test_id)
-where class_id = ? and student_id = ?
-group by(student_id)";
+join enrollment using(student_id)
+where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select test_score from test_list
+$testScoreQuery = "select test_score, graded from test_list
 join test
 using(test_id)
 where student_id = ? and class_id = ?";
@@ -90,8 +91,7 @@ join test using(test_id)
 where student_id = ? and class_id = ?";
 
 // List of students for student list
-$studentQuery = "select distinct student_id from test_list
-join test using(test_id)
+$studentQuery = "select student_id from enrollment
 where class_id = ?";
 
 // List of tests for student list
@@ -204,7 +204,7 @@ $studentStatement = $database->prepare($studentQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 					 <li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="teacherMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
@@ -267,13 +267,13 @@ $studentStatement = $database->prepare($studentQuery);
 						?></span>
 					</div>
 					
-					<button type="button" class="create_test_button">Create Test</button>
+					<button type="button" class="create_test_button" onclick="location.href='testCreationPage.php'">Create Test</button>
 					
 					<div class="test_list_text">
 						Test List
 					</div>
 					
-					<table class="test_list">
+					<table class="test_list table-hover">
 						<colgroup>
 							<col class="test_name" />
 							<col class="test_average" />
@@ -296,10 +296,17 @@ $studentStatement = $database->prepare($studentQuery);
 							$firstTableStatement->execute();
 							// We should be getting two tests here
 							while($firstTableStatement->fetch())
-							{
-								echo '<tr><td>' . $tname . '</td><td>' . $tavg . '</td><td><button type="button" class="view_teset_button"></button></td></tr>';
+							{                                  
+                                $tavg = number_format($tavg, 2);
+                                if($tavg == 0)
+                                    $tavg = 'No Tests Taken';
+                                else
+                                    $tavg = (float)$tavg.'%';
+								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><button type="button" class="view_test_button"></button></td></tr>';
 							}
 							$firstTableStatement->close();
+                            if($tname == null)
+                                    echo'<tr><td colspan="3">No tests created</td></tr>';
 						?>
 						</tbody>
 						
@@ -309,7 +316,7 @@ $studentStatement = $database->prepare($studentQuery);
 						Student List
 					</div>
 					
-					<table class="student_list">
+					<table class="student_list table-hover">
 					<tr class="student_list_header">
 					<td>First Name</td>
 					<td>Last Name</td>
@@ -369,11 +376,21 @@ $studentStatement = $database->prepare($studentQuery);
 								
 									$testScoreStatement = $database->prepare($testScoreQuery);
 									$testScoreStatement->bind_param("ss", $studentArray[$i], $classId);
-									$testScoreStatement->bind_result($testScore);
+									$testScoreStatement->bind_result($testScore, $graded);
 									$testScoreStatement->execute();
 									while($testScoreStatement->fetch())
 									{
-										echo '<td>' . (float)$testScore.'%' . '</td>';
+                                        // Determines whether test is graded or not
+                                        // This will become a button link to grade the test
+                                        if($graded == 0)
+                                            $graded = '(grade)';
+                                        else
+                                            $graded = '(view)';
+                                        number_format($testScore, 2);
+                                        if($testScore != null)
+                                            echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
+                                        else
+                                            echo '<td>Not Taken</td>';
 									}
 									
 									$testScoreStatement->close();
@@ -384,7 +401,11 @@ $studentStatement = $database->prepare($studentQuery);
 							$averageStatement->execute();	
 							while($averageStatement->fetch())
 							{
-								echo '<td>' . (float)$averageScore.'%'. '</td>';
+                                $averageScore = number_format($averageScore, 2);
+                                if($averageScore != 0)
+                                    echo '<td>' . (float)$averageScore.'%'. '</td>';
+                                else
+                                    echo '<td>No Tests Taken</td>';
 							}
 							$averageStatement->close();
 					

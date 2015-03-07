@@ -6,7 +6,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 
 
- <title>Test Republic::Home</title> 
+ <title>Test Republic</title> 
 	
 	    <!-- Bootstrap Core CSS -->
 
@@ -24,7 +24,7 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <button type="button" class="navbar-toggle" data-toggle="dropdown" data-target=".navbar-ex1-collapse">
 				<span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -34,16 +34,46 @@
             <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
             <li class="dropdown">
-
+                <a href="about.html" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-graduation-cap"></i> About us <b class="caret"></b></a>
+                <ul class="dropdown-menu about-dropdown">
+                    <li>
+                        <a href="about.html#David" style="color:#999" >David Hughen</a>
+                    </li>
+                    <li>
+                        <a href="about.html#Jake" style="color:#999" >Jake Stevens</a>
+                    </li>
+                    <li>
+                        <a href="about.html#Andrea" style="color:#999" >Andrea Setiawan</a>
+                    </li>
+                    <li>
+                        <a href="about.html#Cody" style="color:#999" >Cody Carr</a>
+                    </li>
+                    <li>
+                        <a href="about.html#Victor" style="color:#999" >Victor Jereza</a>
+                    </li>
+                    <li>
+                        <a href="about.html#EnYang" style="color:#999" >EnYang Pang</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="about.html" style="color:#999" >View all</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Log in <b class="caret"></b></a>
 				<form class="dropdown-menu" method="post" action="login.php">  
-					<input type="text" name="username" id="username" placeholder="Username" /> 
+					<input type="text" name="username" id="username" placeholder="Username" autofocus/> 
 					<input type="password" name="password" id="password" placeholder="Password" /> 
 					<button class="btn btn-block btn-primary" type="submit" id="loginButton">
 						<i class="glyphicon glyphicon-log-in"></i> Log in
 					</button>
+					<a href="signUp.php">
+					<button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="signUp.php">
+						<i class="glyphicon glyphicon-log-in"></i> Sign Up
+					</button></a>
 				</form>
-            </li>
+			</li>
         </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     </nav>

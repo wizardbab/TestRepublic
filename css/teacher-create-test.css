@@ -57,6 +57,22 @@ body
     color: #999;
 }
 
+.dropdown:hover>.dropdown-menu,
+.dropdown:hover>.dropdown-menu:hover {
+    display: block;
+    color: #fff;
+    background-color: #000;
+    float: left;
+    position: absolute;
+    margin-top: 0;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #fff;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
 .top-nav>li>a:hover,
 .top-nav>li>a:focus,
 .top-nav>.open>a,
@@ -340,7 +356,7 @@ ul.alert-dropdown {
 	.instruction_lbl, .pledge_lbl
 	{
 		font-size: 12pt;
-		margin-top: 5px;
+		margin-top: 6px;
 	}
 	
 	#create_questions
@@ -356,5 +372,36 @@ ul.alert-dropdown {
 		margin-bottom: 8px;
 	}
 	
+	/* added by Vic */
+	textarea
+	{
+		resize:none;
+			
+	}
+	
+	#upperButtons, #createTestBtn
+	{
+		margin-top: 8px;
+	}
+	
 
+	.add_margin_match
+	{
+		margin-bottom: 10px;
+	}
+	
+	.add_margin_mc
+	{
+		margin-bottom: 10px;
+	}
+	
+	.ata_tb
+	{
+		position: relative;
+	}
+	
+	.ata_margin
+	{
+		margin-bottom: 10px;
+	}
 }

@@ -1,5 +1,6 @@
 
 <!-- 2/21 - Modals added by Victor Jereza -->
+<!-- 2/23 - Added lots of JavaScript -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +24,51 @@
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+	
 </head>
+<?php
+session_start();
 
+// Include the constants used for the db connection
+require("constants.php");
+
+// Gets the class id appended to url from teacherMainPage.php
+$id = $_SESSION['username']; // Just a random variable gotten from the URL
+$classId = $_SESSION['classId'];
+
+if($id == null)
+    header('Location: login.html');
+    
+// The database variable holds the connection so you can access it
+$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
+@ $database->select_db(DATABASENAME);
+
+// Teacher first and last name to display on top right of screen
+$topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
+
+// Class ID and description at the top of the page
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
+$mainClassStatement = $database->prepare($mainClassQuery);
+
+/* insert into question (question_id, test_id, question_type, question_value, question_text, student_answer, section_title, question_no)
+values(bound stuff)
+//This runs when a question is created
+ 
+insert into answer(answer_id, question_id, answer_text, correct)
+values(bound stuff)
+//This one will need to loop for every answer when a question is created
+ 
+insert into test
+values(everything) //T_STATUS might be left null; runs when the test get initially created
+ 
+insert into test_list(student_id, test_id)
+select student_id, '555555' from enrollment where class_id = 'BI 101-1'
+// THIS ACTUALLY WORKED!!! it took every student from BI 101-1 and inserted him into test_list with test 555555
+// This gets run when the test is finished
+ 
+just some stuff to work with*/
+?>
 <body>
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -73,7 +117,23 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i></i><?php // Added by David Hughen
+																												// to display student's name in top right corner
+																								if ($topRightStatement = $database->prepare($topRightQuery)) 
+                                                                                                {
+                                                                                                    $topRightStatement->bind_param("s", $id);
+                                                                        
+                                                                                                }
+                                                                                                else {
+                                                                                                    printf("Errormessage: %s\n", $database->error);
+                                                                                                }							
+                                                                                                $topRightStatement->bind_result($first_name, $last_name);
+                                                                                                $topRightStatement->execute();
+                                                                                                while($topRightStatement->fetch())
+                                                                                                {
+                                                                                                    echo $first_name . " " . $last_name;
+                                                                                                }
+                                                                                                $topRightStatement->close();?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -86,7 +146,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
@@ -103,21 +163,33 @@
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<div class="col-lg-12" id="course_section">
-						<div class="course_number">
-							CS 130-2
-						</div>
-						
-						<div class="class_name">
-							Introduction to Computers
-						</div>
+					<div class="col-md-12" id="course_section">
+						<?php
+                        $mainClassStatement->bind_param("s", $classId);
+                        $mainClassStatement->bind_result($clid, $clde);
+                        $mainClassStatement->execute();
+                        while($mainClassStatement->fetch())
+                        {
+                            echo '<div class="course_header">
+
+                        <div class="course_number">'
+                            . $clid .
+                        '</div>
+                        
+                        <div class="class_name">'
+                            . $clde . 
+                        '</div>
+                        </div>'; 
+                        }
+                        $mainClassStatement->close();
+                        ?>
 					</div>
 				</div>
 				
 				
 				<div class="row" id="test_section">
 				
-					<div class="col-lg-4" id="test_information">
+					<div class="col-md-4" id="test_information">
 				
 						<div class="test-info-text">
 							Test Information
@@ -151,20 +223,19 @@
 						
 						<label class="instruction_lbl">Specific Instruction:</label>
 						<br />
-						<textarea rows="5" cols="68">Don't cheat!</textarea>
+						<textarea class="form-control" rows="7">Don't cheat!</textarea>
 						
 						<br />
 						
 						<label class="pledge_lbl">Test Pledge</label>
 						<br />
-						<textarea rows="5" cols="68"></textarea>
+						<textarea class="form-control" rows="7"></textarea>
 						
-						<br />
-						<br />
-						
+						<button type="button" class="btn btn-default btn-block" id="cancelTestBtn">Cancel</button>
+						<button type="button" class="btn btn-primary btn-block" id="testCreate">Create Test</button>
 					</div>
 					
-					<div class="col-lg-8" id="create_questions">
+					<div class="col-md-8" id="create_questions">
 						<div class="create-questions-text">
 							Create Questions
 						</div>
@@ -182,7 +253,7 @@
 								<span class="glyphicon glyphicon-check"></span> All that Apply
 							</button>
 							
-							<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#MatchModal" data-title="Matching">
+							<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#MatchModal" data-title="Matching" >
 								<span class="glyphicon glyphicon-th-large"></span> Matching
 							</button>
 							
@@ -194,9 +265,37 @@
 								<span class="glyphicon glyphicon-pencil"></span> Essay
 							</button>
 						</div>
-					</div>
+						
+						<div class="container-fluid">
+							<div class="list-group" id ="testList">
+							
+							</div>
+						</div>
+					</div>		
                 </div>
 				
+				<?php 
+				// This testId needs to be inserted with each question and incremented after test is done
+				$testId = 000001;
+				
+				// This questionId needs to inserted and incremented with each question
+				$questionId = 000001;
+				
+				// The type of question (m/c, t/f, etc.)
+				$questionType;
+				
+				// The value put on the question by the teacher
+				$questionValue;
+				
+				// The question
+				$questionText;
+				
+				// The section of the class
+				$sectionTitle;
+				
+				// Increment with each question and reset when test is over
+				$questionNo = 1;
+				?>
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -215,7 +314,7 @@
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary">Create Question</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal"id="SABtn" name="create" value="create">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -239,7 +338,7 @@
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="EBtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -271,7 +370,7 @@
 										
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-											<button type="button" class="btn btn-primary">Create Question</button>
+											<button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Create Question</button>
 										</div>
 									</form>
 								</div>
@@ -297,16 +396,16 @@
 											<label for="recipient-name" class="control-label">Answer:</label>
 											<input type="text" class="form-control" id="Question">
 										</div>
-										<div class="form-group">
+										<div class="form-group" id="MC_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
 											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
-									<button type="button" class="btn btn-default" aria-hidden="true">Add Item +</button>
+									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MCBtn"onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -330,16 +429,16 @@
 											<label for="recipient-name" class="control-label">Answer:</label>
 											<input type="text" class="form-control" id="Question">
 										</div>
-										<div class="form-group">
+										<div class="form-group" id="ATA_AddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
 											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
-									<button type="button" class="btn btn-default" aria-hidden="true">Add Item +</button>
+									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -364,30 +463,27 @@
 											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="Question">
+										</div>
+										<div class="form-group" id="MatchAddAns">
 											<label for="message-text" class="control-label">Additional answers: </label>
 											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
-									<button type="button" class="btn btn-default" aria-hidden="true">Add Item +</button>
+									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MBtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
-					</div>
-					
+					</div>				
 			</div>    				
 				
 				
 					
-					
-					
-					
-					  
-
-	
 				</div>   
 				
             </div>
@@ -397,6 +493,9 @@
     </div>
     <!-- /#wrapper -->
 
+	<!-- Custom Test Creation JavaScript --> 
+	<script src="js/testCreation.js"></script>
+	
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
@@ -410,6 +509,105 @@
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	
+	<!-- Add matching JS -->
+	<script>
+		$(document).ready(function(){
+				$("#add_match").click(function(){
+			$("#MatchAddAns").append('<input type="text" class="form-control" id="Question">'
+			);
+		});
+	});
+	</script>
+	
+		<!-- All that Apply JS -->
+	<script>
+		$(document).ready(function(){
+				$("#add_ATA").click(function(){
+			$("#ATA_AddAns").append('<input type="text" class="form-control" id="Question">'
+			);
+		});
+	});
+	</script>
+	
+		<!-- Multiple Choice JS -->
+	<script>
+		$(document).ready(function(){
+				$("#add_MC").click(function(){
+			$("#MC_AddAns").append('<input type="text" class="form-control" id="Question"> <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">remove item</button>'
+			);
+		});
+	});
+	</script>
+	
+	<!-- Short Answer JS -->
+	<script>	
+		var counter = 0;
+		var ajaxurl = "testCreationPage.php";
+		
+			$(document).ready(function(){
+				$("#SABtn").click(function(){
+					
+					
+					<!-- grabs the question from the text field -->
+					var question = $("#Question").val();
+					alert(question);
+					
+					$.post(ajaxurl, question);
+				
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#MBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#MCBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#ATABtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#TFBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#EBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Essay</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+	});
+	</script>
+	
+	<?php
+
+		if(isset($_POST['shortAnswerQuestion']))
+		{
+			insertQuestion($_POST['shortAnswerQuestion']);
+			
+		}
+		function insertQuestion(string $receivedQuestion)
+		{
+			$question = $receivedQuestion;
+			
+			echo '<h1>' . $question . '</h1>';
+			
+		}
+	
+	?>
 
 </body>
 

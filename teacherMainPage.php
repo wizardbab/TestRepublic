@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -64,11 +64,11 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 
 
 
-$tableQuery = "select class_id, count(student_id) as no_students, update_date
+$tableQuery = "select class_id, count(student_id), date_taken
 from test_list
-join test using(test_id)
+join test using(test_id) 
 right join class using(class_id, teacher_id)
-where teacher_id = ? and graded  is null or graded != 1
+where teacher_id = ? and (graded != 1 or student_id is null)
 group by(class_id)";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
@@ -172,7 +172,7 @@ $table = $database->prepare($tableQuery);
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
 				<li>
-                    <a href="#" id="student-summary">Summary</a>
+                    <a href="#" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
                     Select a Class:
@@ -214,22 +214,20 @@ $table = $database->prepare($tableQuery);
 						<tr>
 							<th>Classes</th>
 							<th>Recent Updates</th>
-							<th>Date</th>
+							<th>Updated</th>
 						</tr>
 						</thead>
 						
 						<tbody>
-						<?php
-							
-							
-							
+						<?php 
+							// The query for the middle of the page
 							$table->bind_param("s", $id);
 							$table->bind_result($clid, $update, $date);
 							$table->execute();
 							while($table->fetch())
 							{	
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
-									  <td>'.$update.' test(s) remain(s)</td>
+								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'teacherClassPage.php?classId='.$clid.'\'">'.$clid.'</button></td>
+									  <td>'.$update.' test(s) to grade</td>
 									  <td>'.$date.'</td></tr>';
 							}
 							$table->close(); 

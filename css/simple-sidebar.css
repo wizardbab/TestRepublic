@@ -57,6 +57,29 @@ body
     color: #999;
 }
 
+/* This is the color of the text within the dropdowns */
+.top-nav>li>ul>li>a{
+    color: #999;
+}
+
+.dropdown:hover>.dropdown-menu,
+.dropdown:hover>.dropdown-menu:hover {
+    display: block;
+    color: #fff;
+    background-color: #000;
+    float: left;
+    position: absolute;
+    margin-top: 0;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
 .top-nav>li>a:hover,
 .top-nav>li>a:focus,
 .top-nav>.open>a,
@@ -80,6 +103,7 @@ body
 
 .top-nav>.open>.dropdown-menu>li>a {
     white-space: normal;
+    color: #000;
 }
 
 ul.message-dropdown {
@@ -144,6 +168,26 @@ ul.alert-dropdown {
     width: 100%;
     position: absolute;
     padding: 15px;
+}
+
+#signUpDiv
+{
+	width: 100%;
+   position: absolute;
+   padding: 15px;
+	text-align: center;
+}
+
+#signUpDiv
+{
+	padding: 20px;
+	position: relative;
+}
+
+#wrapper.toggled #signUpDiv {
+	position: relative;
+	margin-right: 0;
+	position: absolute;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -271,6 +315,17 @@ ul.alert-dropdown {
 		text-align: center;
 	}
 	
+	table.signUpTable
+	{
+		position: relative;
+		top: 40px;
+		font-size: 14pt;
+		border: 2px solid black;
+		border-collapse: collapse;
+		width: 70%;
+		text-align: center;
+	}
+	
 	table.student_summary td, table.student_summary th
 	{
 		border: 1px solid black;
@@ -360,7 +415,7 @@ ul.alert-dropdown {
 	.course_header
 	{
 		width: 85%;
-		position: absolute;
+		position: fixed;
 		padding: 8px;
 		
 		margin-top: 51px;
@@ -369,6 +424,7 @@ ul.alert-dropdown {
 		font-size: 20pt;
 		color: white;
 		font-weight: bold;
+		z-index: 1;
 	}
 	
 	.course_number
