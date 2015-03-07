@@ -34,6 +34,7 @@ $id = $_SESSION['username'];
 $classId = $_GET['classId'];
 
 $_SESSION['classId'] = $classId;
+$_SESSION['testId'] = null;
 
 if($id == null)
     header('Location: login.html');

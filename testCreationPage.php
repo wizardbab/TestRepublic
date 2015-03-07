@@ -46,6 +46,7 @@ require("constants.php");
 // Gets the class id appended to url from teacherMainPage.php
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
+$sessionTestId = $_SESSION['testId'];
 
 if($id == null)
     header('Location: login.html');
@@ -61,7 +62,13 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
 $mainClassStatement = $database->prepare($mainClassQuery);
 
-$testIdQuery = "select max(test_id) from test";
+// Generate a test id
+$testIdQuery = "select max(test_id), saved, question_id from test
+				left join question using(test_id)
+				where class_id = ?";
+
+// Create a test
+$createTestQuery = "insert into test(test_id, class_id, teacher_id) values(?, ?, ?)";
 
 global $newTestId;
 ?>
@@ -221,7 +228,7 @@ global $newTestId;
 						<label class="instruction_lbl">Specific Instruction:</label>
 						<br />
 						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						<h1 id="test"> Foo </h1> 
+						<p id="test"> Foo </p> 
 					
 						
 						<label class="pledge_lbl">Test Pledge:</label>
@@ -238,7 +245,7 @@ global $newTestId;
 							</div>
 						</div>
 						
-						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create Test</button>
+						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create and Publish</button>
 					</div>
 					
 					<div class="col-md-8" id="create_questions">
@@ -281,15 +288,31 @@ global $newTestId;
                 </div>
 				
 				<?php 
-				// New id
-				$testIdStatement = $database->prepare($testIdQuery);
-				$testIdStatement->bind_result($tid);
-                $testIdStatement->execute();
-				while($testIdStatement->fetch())
+				// New test id
+				if($sessionTestId == null)
 				{
-					$newTestId = $tid + 1;
+					$testIdStatement = $database->prepare($testIdQuery);
+					$testIdStatement->bind_param("s", $classId);
+					$testIdStatement->bind_result($tid, $saved, $questionId);
+					$testIdStatement->execute();
+					while($testIdStatement->fetch())
+					{
+					
+						// Create a session variable with the test id
+						$newTestId = $tid + 1;
+						$_SESSION['testId'] = $newTestId;
+					}
+					$testIdStatement->close();
 				}
-				$testIdStatement->close();
+				else
+				{
+					$newTestId = $sessionTestId;
+				}
+					
+				$testCreateStatement = $database->prepare($createTestQuery);
+				$testCreateStatement->bind_param("sss", $newTestId, $classId, $id);
+                $testCreateStatement->execute();
+				$testCreateStatement->close();
 				
 				
 				?>
@@ -305,6 +328,8 @@ global $newTestId;
 								<div class="modal-body">
 									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="short_answer_point_value">
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="short_answer_question">
 											<label for="recipient-name" class="control-label">Answer:</label>
@@ -331,6 +356,8 @@ global $newTestId;
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="essay_point_value">
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="essay_question">
 											<label for="recipient-name" class="control-label">Answer:</label>
@@ -593,9 +620,27 @@ global $newTestId;
 		{
 			$("#SABtn").click(function()
 			{
+				var pointValue = $("#short_anwer_point_value").val();
+				var question = $("#short_answer_question").val();
+				var answer = $("#short_answer_answer").val();
+				counter++;
+			
+				$.post("TestQuestionScripts/essayAndShortAnswer.php",
+				{
+					pointValue:pointValue,
+					question:question,
+					answer:answer,
+					testId:testId,
+					questionNumber:counter,
+					questionType:"Short Answer"
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 
 			});
 			
@@ -627,17 +672,19 @@ global $newTestId;
 			});
 			
 			$("#EBtn").click(function(){
-				
-				
-				counter++;
+					
+				var pointValue = $("#essay_point_value").val();
 				var question = $("#essay_question").val();
 				var answer = $("#essay_answer").val();
-
+				counter++;
+				
 				$.post("TestQuestionScripts/essayAndShortAnswer.php",
 				{
+					pointValue:pointValue,
 					question:question,
 					answer:answer,
 					testId:testId,
+					questionNumber:counter,
 					questionType:"Essay"
 				},
 				function(data)
