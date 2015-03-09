@@ -215,6 +215,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 										}
 										$selectTestIdStatement->close();
 										
+
                                         if(is_array($testIdArray))
                                         {
                                             foreach($testIdArray as $t)
@@ -242,6 +243,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 									$insertStudentStatement->close();
 								
 								echo '<h1>' . $newId . '</h1>';
+								$testIdArray = null;
 							}
 						}			
 					}
@@ -249,7 +251,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 						// do nothing
 					?>
 					
-		</table>
+	
 	</div>
 
    <!-- jQuery -->
