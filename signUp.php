@@ -19,7 +19,7 @@
 
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+<script type="text/javascript" src="js/formValidation.js"></script>
 </head>
 
 <body>
@@ -72,7 +72,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 
 	
 
-<form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
+<form name="signUpForm" id="signUpForm" action="signUp.php" onsubmit="return validate(this)" method="post">
 <div id="sidebar-wrapper">
 
 					
@@ -117,7 +117,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 				
 				
         </div>
-
+   
 	<div id="signUpDiv">
 		<h1>Welcome!</h1>
 			<h2>Please enter your information.</h2>
@@ -138,73 +138,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 		</form>
       
       <!-- A JavaScript script that does dynamic feedback validation -->
-      <script>
-      $(document.ready(function() {
-         FormValidation.Validator.securePassword = {
-            validate: function(validator, $field, options) {
-               var value = $field.val();
-               if (value === '') {
-                  return true;
-               }
-               
-               // Check the password strength
-               if (value.length < 8) {
-                  return {
-                     valid: false,
-                     message: 'The password must be more than 8 characters long'
-                  };
-               }
-               
-               // The password doesn't contain any uppercase character
-               if (value === value.toLowerCase()) {
-                  return {
-                     valid: false,
-                     message: 'The password must contain at least one upper case character'
-                  }
-               }
-               
-               // The password doesn't contain any lowercase character
-               if (value === value.toUpperCase()) {
-                  return {
-                     valid: false,
-                     message: 'The password must contain at least one lower case character'
-                  }
-               }
-               
-               // The password doesn't contain any digit
-               if (value.search(/[0-9]/) < 0) {
-                  return {
-                     valid: false,
-                     message: 'The password must contain at least one digit'
-                  }
-               }
-               
-               return true;
-            }
-         };
-         
-         $('#signUpForm').formValidation({
-            framework: 'bootstrap',
-            feedbackIcons: {
-               valid: 'glyphicon glyphicon-ok',
-               invalid: 'glyphicon glyphicon-remove',
-               validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-               pwd: {
-                  validators: {
-                     notEmpty: {
-                        message: 'The password cannot be empty
-                     },
-                     securePassword: {
-                        message: 'The password is not valid'
-                     }
-                  }
-               }
-            }
-         });
-      });
-      </script>
+      
       
 					<?php 
 					// We have data; begin validation
