@@ -35,6 +35,29 @@ body
 	margin-top:5px;
 	background-color:#B3BBC4;
 }
+
+#team_section
+{
+	text-align: center;
+	margin-top: 80px;
+	
+	width: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#mongolian_horde
+{
+	font-size: 18pt;
+}
+
+#team_picture
+{
+	width: 30%;
+	height: 30%;
+}
+
 .centralBox
 {
 	margin-bottom: 100px;

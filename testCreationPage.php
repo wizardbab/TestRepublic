@@ -328,7 +328,7 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 					</div>
 					
 				<!-- Essay Modal -->
-					<div id="EssayModal" class="modal fade">
+					<div id="EssayModal" class="modal hide fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">

@@ -57,6 +57,29 @@ body
     color: #999;
 }
 
+/* This is the color of the text within the dropdowns */
+.top-nav>li>ul>li>a{
+    color: #999;
+}
+
+.dropdown:hover>.dropdown-menu,
+.dropdown:hover>.dropdown-menu:hover {
+    display: block;
+    color: #fff;
+    background-color: #000;
+    float: left;
+    position: absolute;
+    margin-top: 0;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
 .top-nav>li>a:hover,
 .top-nav>li>a:focus,
 .top-nav>.open>a,
@@ -80,6 +103,7 @@ body
 
 .top-nav>.open>.dropdown-menu>li>a {
     white-space: normal;
+    color: #000;
 }
 
 ul.message-dropdown {
