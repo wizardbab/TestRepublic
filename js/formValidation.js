@@ -1,133 +1,163 @@
+// Function that validates the form
 function validate(form)
 {
-   var email      = signUpForm.signUpDiv.email.value;
-   var password   = signUpForm.signUpDiv.password.value;
-   var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-   var passRegex  = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-   if (email == "")
+   var MESSAGE_DURATION = 3;
+   var firstName        = form.firstName.value;
+   var lastName         = form.lastName.value;
+   var email            = form.email.value;
+   var password         = form.password.value;
+   var emailRegex       = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+   var passwordRegex    = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+   
+   if(firstName == "")
    {
-      inlineMsg('email','You must enter an email.',3);
+      inlineMsg('firstName', 'Your first name cannot be blank', MESSAGE_DURATION);
       return false;
    }
-   if (!email.match(emailRegex))
+   if(lastName == "")
    {
-      inlineMsg('email','You have entered an invalid email.',3);
+      inlineMsg('lastName', 'Your last name cannot be blank', MESSAGE_DURATION);
       return false;
    }
-   if (password == "")
+   if(email == "")
    {
-      inlineMsg('password','You must enter a password.',3);
+      inlineMsg('email', 'Your email cannot be blank', MESSAGE_DURATION);
       return false;
    }
-   if (!password.match(passRegex))
+   if(!email.match(emailRegex))
    {
-      inlineMsg('password','You need at least one lowercase, one uppercase, one number, and at least eight characters.',3);
+      inlineMsg('email', 'Your email is invalid' MESSAGE_DURATION);
+      return false;
+   }
+   if(password == "")
+   {
+      inlineMsg('password', 'Your password cannot be blank', MESSAGE_DURATION);
+      return false;
+   }
+   if(!password.match(passwordRegex))
+   {
+      inlineMsg('password', 'Your password must be at least eight characters long, have one number, one uppercase, and one lowercase letter', MESSAGE_DURATION);
       return false;
    }
    return true;
 }
 
+// The creation of the message itself as it is shown on the page begins here.
 var MSGTIMER  = 20;
 var MSGSPEED  = 5;
 var MSGOFFSET = 3;
 var MSGHIDE   = 3;
 
-function inlinMsg(target, string, autohide)
+function inlineMsg(target_id, error_string, autohide_length)
 {
-   var msg;
-   var msgcontent;
-   if(!document.getElementById('msg'))
+   var message;
+   var message_content;
+   
+   if(!document.getElementById('message'))
    {
-      msg = document.createElement('div');
-      msg.id = 'msg';
-      msgcontent = document.createElement('div');
-      msgcontent.id = 'msgcontent';
-      document.body.appendChild(msg);
-      msg.appendChild(msgcontent);
-      msg.style.filter = 'alpha(opacity = 0)';
-      msg.style.opacity = 0;
-      msg.alpha = 0;
-   } else {
-      msg = document.getElementById('msg');
-      msgcontent =document.getElementById('msgcontent');
+      message = document.createElement('div');
+      message.id            = 'message';
+      message_content       = document.createElement('div');
+      message_content.id    = 'message_content';
+      document.body.appendChild(message);
+      message.appendChild(message_content);
+      message.style.filter  = 'alpha(opacity = 0)';
+      message.style.opacity = 0;
+      message.alpha         = 0;
    }
-   msgcontent.innerHTML = string;
-   msg.style.display = 'block';
-   var msgheight = msg.offsetHeight;
-   var targetdiv = document.getElementById(target);
-   targetdiv.focus();
-   var targetheight = targetdiv.offsetHeight;
-   var targetwidth = target div.offsetWidth;
-   var topposition = topPosition(targetdiv) - ((msgheight - targetheight) / 2);
-   var leftposition = leftPosition(targetdiv) + targetwidth + MSGOFFSET;
-   msg.style.top = topposition + 'px';
-   msg.style.left = leftposition + 'px';
-   clearInterval(msg.timer);
-   msg.timer = setInterval("fadeMsg(1)", MSGTIMER);
-   if(!autohide) {
-      autohide = MSGHIDE;
+   else
+   {
+      message         = document.getElementById('message');
+      message_content = document.getElementById('message_content');
    }
-   window.setTimeout("hideMsg()", (autohide * 1000));
+   message_content.innerHTML = error_string;
+   message.style.display = 'block';
+   var message_height = message.offsetHeight;
+   var target_div = document.getElementById(target_id);
+   target_div.focus();
+   var target_height = target_div.offsetHeight;
+   var target_width = target_div.offsetWidth;
+   var top_position = topPosition(target_div) - ((message_height - target_height) / 2);
+   var left_position = leftPosition(target_div) + target_width + MSGOFFSET;
+   message.style.top = top_position + 'px';
+   message.style.eleft = left_position + 'px';
+   clearInterval(message.timer);
+   message.timer = setInterval("fade_message(1)", MSGTIMER);
+   if(!autohide_length)
+      autohide_length = MSGHIDE;
+   window.setTimeout("hide_message()", (autohide_length * 1000));
 }
 
-function hideMsg(msg) {
-   var msg = document.getElementById('msg');
-   if(!msg.timer) {
-      msg.timer = setInterval("fadeMsg(0)", MSGTIMER);
-   }
+function hide_message(message)
+{
+   var message = document.getElementById('message');
+   if(!message.timer)
+      message.timer = setInterval("fade_message(0)", MSGTIMER);
 }
 
-function fadeMsg(flag) {
-   if(flag == null) {
+function fade_message(flag)
+{
+   if(flag == null)
       flag = 1;
-   }
-   var msg = document.getElementById('msg');
+   var message = document.getElementById('message');
    var value;
-   if(flag == 1) {
-      value = msg.alpha + MSGSPEED;
-   } else {
-      value = msg.alpha = MSGSPEED;
+   if(flag == 1)
+      value = message.alpha + MSGSPEED;
+   else
+      value = message.alpha - MSGSPEED;
+   message.alpha = value;
+   message.style.opacity = (value / 100);
+   message.style.filter = 'alpha(opacity = ' + value + ')';
+   if(value >= 99)
+   {
+      clearInterval(message.timer);
+      message.timer = null;
    }
-   msg.alpha = value;
-   msg.style.opacity = (value / 100);
-   msg.style.filter = 'alpha(opacity=' + value + ')';
-   if(value >= 00) {
-      clearInterval(msg.timer);
-      msg.timer = null;
-   }else if(value <= 1) {
-      msg.style.displa = "none";
-      clearInterval(msg.timer);
+   else if(value <= 1)
+   {
+      message.style.display = "none";
+      clearInterval(message.timer);
    }
 }
 
-function leftPosition(target) {
+function leftPosition(target)
+{
    var left = 0;
-   if(target.offsetParent) {
-      while(1) {
+   if(target.offsetParent)
+   {
+      while(true)
+      {
          left += target.offsetLeft;
-         if(!target.offsetParent) {
+         if(!target.offsetParent)
             break;
-         }
          target = target.offsetParent;
       }
-   }else if(target.x) {
-      left += target.x;
    }
+   else if(target.x)
+      left += target.x;
    return left;
 }
 
-function topPosition(target) {
+function topPosition(target)
+{
    var top = 0;
-   if(target.offsetParent) {
-      while(1) {
+   if(target.offsetParent)
+   {
+      while(true)
+      {
          top += target.offsetTop;
-         if(!targte.offsteParent) {
+         if(!target.offsetParent)
             break;
-         }
          target = target.offsetParent;
       }
-   } else if(target.y) {
-      top += target.y;
    }
+   else if(target.y)
+      top += target.y;
    return top;
+}
+
+if(document.images)
+{
+   arrow = new Image(7,80);
+   arrow.src = "../images/msg_arrow.gif";
 }
