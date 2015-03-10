@@ -1,17 +1,10 @@
 <?php
 	// Authors: David Hughen - Jake Stevens
-	// Date Created: 3/6/15
-	// Last Modified: 3/9/15 - modified question number query
-	// This php script handles the db stuff for essay and short answer questions
+	// Date Created: 3/9/15
+	// Last Modified: 3/9/15
+	// This php script handles the db stuff for multiple choice, all that apply, and true/false questions
 	require("../constants.php");
-	
-	// Grab the values posted by testCreationPage.php
-	@$pointValue = $_POST["pointValue"];
-	@$question = $_POST["question"];
-	@$answer = $_POST["answer"];
-	@$testId = $_POST["testId"];
-	@$questionType = $_POST["questionType"];
-	
+
 	// The database variable holds the connection so you can access it
 	$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 	@ $database->select_db(DATABASENAME);
@@ -25,10 +18,19 @@
 		question_type, question_value, question_text, question_no)
 		values(?, ?, ?, ?, ?, ?)";
 		
-	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text)
-		values(?, ?, ?)";
+	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text, correct)
+	values(?, ?, ?, ?)";
 		
 	$questionNumberQuery = "select max(question_no) from question where test_id = ?";
+	
+	// Grab the values posted by testCreationPage.php
+	@$pointValue = $_POST["pointValue"];
+	@$question = $_POST["question"];
+	@$answer = $_POST["answer"];
+	@$testId = $_POST["testId"];
+	@$questionType = $_POST["questionType"];
+	@$correct = $_POST["correct"]; // boolean value
+	@$numberOfAnswers = $_POST["numberOfAnswers"];
 	
 	// assign a new question id
 	$questionIdStatement = $database->prepare($questionIdQuery);
@@ -61,8 +63,6 @@
 	}
 	$questionNumberStatement->close();
 	
-	echo $testId;
-	
 	// Insert into question table after question is created
 	$insertQuestionStatement = $database->prepare($insertQuestionQuery);
 	$insertQuestionStatement->bind_param("ssssss", $newQuestionId, $testId, $questionType,
@@ -72,7 +72,8 @@
 	
 	// Insert into answer table after question is created
 	$insertAnswerStatement = $database->prepare($insertAnswerQuery);
-	$insertAnswerStatement->bind_param("sss", $newAnswerId, $newQuestionId, $answer);
+	$insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQuestionId, $answer, $correct);
 	$insertAnswerStatement->execute();
 	$insertAnswerStatement->close();
+
 ?>

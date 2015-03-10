@@ -21,8 +21,9 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
-<?php
+<body>
 
+<?php
 session_start();
 
 // Include the constants used for the db connection
@@ -109,8 +110,8 @@ $studentStatement = $database->prepare($studentQuery);
 
 ?>
 
-<body>
-	<div id="wrapper2"
+
+	<div id="wrapper2">
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
