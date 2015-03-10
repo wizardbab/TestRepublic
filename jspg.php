@@ -19,6 +19,7 @@
     <!-- Custom CSS -->
     <link href="css/teacher-create-test.css" rel="stylesheet">
 	
+<<<<<<< HEAD
    <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	
@@ -31,6 +32,17 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+=======
+	
+	$shortAnswer = (isset($_POST['shortAnswer']) ? $_POST['shortAnswer'] : " ");
+	
+	$myFile = fopen("textFile.json", "w");
+	while(!eof($myFile))
+	{
+		fwrite($myFile, $shortAnswer);
+	}
+	fclose($myFile);
+>>>>>>> development
 	
 		<script>
 
@@ -51,6 +63,7 @@
 	});
 	</script>
 	
+<<<<<<< HEAD
 </head>
 
 
@@ -114,3 +127,9 @@
 
 
 </html>
+=======
+	
+	
+	
+?>
+>>>>>>> development

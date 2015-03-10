@@ -1,10 +1,8 @@
 
-
-
-<!DOCTYPE html>
-
 <!-- 2/21 - Modals added by Victor Jereza -->
 <!-- 2/23 - Added lots of JavaScript -->
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,15 +23,6 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	
-	<!-- Custom Test Creation JavaScript --> 
-	<script src="js/testCreation.js"></script>
-	
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
 
 	
 </head>
@@ -46,7 +35,6 @@ require("constants.php");
 // Gets the class id appended to url from teacherMainPage.php
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
-$sessionTestId = $_SESSION['testId'];
 
 if($id == null)
     header('Location: login.html');
@@ -60,20 +48,29 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 
 // Class ID and description at the top of the page
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
 $mainClassStatement = $database->prepare($mainClassQuery);
 
-// Generate a test id
-$testIdQuery = "select max(test_id), saved, question_id from test
-				left join question using(test_id)
-				where class_id = ?";
-
-// Create a test
-$createTestQuery = "insert into test(test_id, class_id, teacher_id) values(?, ?, ?)";
-
-global $newTestId;
+/* insert into question (question_id, test_id, question_type, question_value, question_text, student_answer, section_title, question_no)
+values(bound stuff)
+//This runs when a question is created
+ 
+insert into answer(answer_id, question_id, answer_text, correct)
+values(bound stuff)
+//This one will need to loop for every answer when a question is created
+ 
+insert into test
+values(everything) //T_STATUS might be left null; runs when the test get initially created
+ 
+insert into test_list(student_id, test_id)
+select student_id, '555555' from enrollment where class_id = 'BI 101-1'
+// THIS ACTUALLY WORKED!!! it took every student from BI 101-1 and inserted him into test_list with test 555555
+// This gets run when the test is finished
+ 
+just some stuff to work with*/
 ?>
 <body>
-	<div id="wrapper2">
+	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -120,7 +117,7 @@ global $newTestId;
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php // Added by David Hughen
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i></i><?php // Added by David Hughen
 																												// to display student's name in top right corner
 																								if ($topRightStatement = $database->prepare($topRightQuery)) 
                                                                                                 {
@@ -136,8 +133,7 @@ global $newTestId;
                                                                                                 {
                                                                                                     echo $first_name . " " . $last_name;
                                                                                                 }
-                                            
-+											$topRightStatement->close();?><b class="caret"></b></a>
+                                                                                                $topRightStatement->close();?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -167,7 +163,7 @@ global $newTestId;
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<div class="col-md-12" id="course_section">
+					<div class="col-lg-12" id="course_section">
 						<?php
                         $mainClassStatement->bind_param("s", $classId);
                         $mainClassStatement->bind_result($clid, $clde);
@@ -193,7 +189,7 @@ global $newTestId;
 				
 				<div class="row" id="test_section">
 				
-					<div class="col-md-4" id="test_information">
+					<div class="col-lg-4" id="test_information">
 				
 						<div class="test-info-text">
 							Test Information
@@ -227,28 +223,19 @@ global $newTestId;
 						
 						<label class="instruction_lbl">Specific Instruction:</label>
 						<br />
-						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						<p id="test"> Foo </p> 
-					
+						<textarea class="form-control" rows="7">Don't cheat!</textarea>
 						
-						<label class="pledge_lbl">Test Pledge:</label>
-
-						<textarea class="form-control" rows="6"></textarea>
+						<br />
 						
-						<div class="row" id="upperButtons">
-							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
-							</div>
-							
-							<div class="col-md-6">	
-								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn">Save</button>
-							</div>
-						</div>
+						<label class="pledge_lbl">Test Pledge</label>
+						<br />
+						<textarea class="form-control" rows="7"></textarea>
 						
-						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create and Publish</button>
+						<button type="button" class="btn btn-default btn-block" id="cancelTestBtn">Cancel</button>
+						<button type="button" class="btn btn-primary btn-block" id="testCreate">Create Test</button>
 					</div>
 					
-					<div class="col-md-8" id="create_questions">
+					<div class="col-lg-8" id="create_questions">
 						<div class="create-questions-text">
 							Create Questions
 						</div>
@@ -288,35 +275,27 @@ global $newTestId;
                 </div>
 				
 				<?php 
-				// New test id
-				if($sessionTestId == null)
-				{
-					$testIdStatement = $database->prepare($testIdQuery);
-					$testIdStatement->bind_param("s", $classId);
-					$testIdStatement->bind_result($tid, $saved, $questionId);
-					$testIdStatement->execute();
-					while($testIdStatement->fetch())
-					{
-					
-						// Create a session variable with the test id
-						$newTestId = $tid + 1;
-						$_SESSION['testId'] = $newTestId;
-					}
-					$testIdStatement->close();
-				}
-				else
-				{
-					$newTestId = $sessionTestId;
-				}
-					
-				$testCreateStatement = $database->prepare($createTestQuery);
-				$testCreateStatement->bind_param("sss", $newTestId, $classId, $id);
-                $testCreateStatement->execute();
-				$testCreateStatement->close();
+				// This testId needs to be inserted with each question and incremented after test is done
+				$testId = 000001;
 				
+				// This questionId needs to inserted and incremented with each question
+				$questionId = 000001;
 				
+				// The type of question (m/c, t/f, etc.)
+				$questionType;
+				
+				// The value put on the question by the teacher
+				$questionValue;
+				
+				// The question
+				$questionText;
+				
+				// The section of the class
+				$sectionTitle;
+				
+				// Increment with each question and reset when test is over
+				$questionNo = 1;
 				?>
-				
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -326,20 +305,16 @@ global $newTestId;
 									<h4 class="modal-title">Short Answer</h4>
 								</div>
 								<div class="modal-body">
-									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
+									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="short_answer_point_value">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="short_answer_question">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="short_answer_answer">
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal"id="SABtn" name="create" value="create">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -356,18 +331,14 @@ global $newTestId;
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="essay_point_value">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="essay_question">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="essay_answer">
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="EBtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -385,15 +356,15 @@ global $newTestId;
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="tf_question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										
 										<div class="form-group">
 											<div class="radio">
-												<label><input type="radio" name="optradio" />True</label>
+												<label><input type="radio" name="optradio">True</label>
 											</div>
 											<div class="radio">
-												<label><input type="radio" name="optradio" />False</label>
+												<label><input type="radio" name="optradio">False</label>
 											</div>
 										</div>
 										
@@ -419,36 +390,22 @@ global $newTestId;
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="mc_question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<br />
-											<div class="row">
-												<div class="col-md-1">
-													<input type="radio" name="mc_answer" value="1" id="answer1_rb" />
-												</div>
-												<div class="col-md-11">
-													<input type="text" class="form-control" id="mc_answer1_tb" />
-												</div>
-											</div>
+											<input type="text" class="form-control" id="Question">
 										</div>
-										<div class="form-group">
-											<div class="row" id="MC_add_answers">
-												<div class="col-md-1">
-													<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
-												</div>
-												<div class="col-md-11">
-													<input type="text" class="form-control" id="mc_answer2_tb" />
-												</div>
-											</div>
+										<div class="form-group" id="MC_AddAns">
+											<label for="message-text" class="control-label">Additional answers: </label>
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MCBtn"onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -466,26 +423,22 @@ global $newTestId;
 									<form role="form">
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="ata_question" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<br />
-											<input type="checkbox" name="ata_answer" id="ata_answer1_cb" />
-											<input type="text" id="ata_answer1_tb" class="ata_tb" />
+											<input type="text" class="form-control" id="Question">
 										</div>
 										<div class="form-group" id="ATA_AddAns">
-											<div class="ata_margin">
-												<input type="checkbox" name="ata_answer" id="ata_answer2_cb" />
-												<input type="text" id="ata_answer2_tb" class="ata_tb" />
-											</div>
+											<label for="message-text" class="control-label">Additional answers: </label>
+											<input type="text" class="form-control" id="Question">
 										</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -501,49 +454,53 @@ global $newTestId;
 								</div>
 								<div class="modal-body">
 									<form role="form">
-										<div class="row">
-											<div class="col-md-10" id="add_match_question">
-												<div class="form-group">
-													<label for="recipient-name" class="control-label">Question:</label>
-													<input type="text" class="form-control" id="match_question_tb" />
-												</div>
-											</div>
-											<div class="col-md-2" id="add_match_question_letter">
-												<div class="form-group">
-													<label for="recipient-name" class="control-label">Match:</label>
-													<input type="text" class="form-control" id="match_question_letter_tb" />
-												</div>
-											</div>
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Question:</label>
+											<input type="text" class="form-control" id="Question">
 										</div>
-										
-										<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_question_btn">Add Item +</button>
-										
-										<div class="row">
-											<div class="col-md-10" id="add_match_answer">
-												<div class="form-group">
-													<label for="recipient-name" class="control-label">Answer:</label>
-													<input type="text" class="form-control" id="match_answer_tb" />
-												</div>
-											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
-												<div class="form-group">
-													<label for="recipient-name" class="control-label">Letter:</label>
-													<input type="text" class="form-control" id="match_answer_letter_tb" />
-												</div>
-											</div>
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Answer:</label>
+											<input type="text" class="form-control" id="Question">
 										</div>
-										
-									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
+										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="Question">
+										</div>
+										<div class="form-group" id="MatchAddAns">
+											<label for="message-text" class="control-label">Additional answers: </label>
+											<input type="text" class="form-control" id="Question">
+										</div>
+									</form>
+									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match">Add Item +</button>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal"id="MBtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
 					</div>				
 			</div>    				
-			</div>	
+				
+				
+					
+				</div>   
+				
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	<!-- Custom Test Creation JavaScript --> 
+	<script src="js/testCreation.js"></script>
+	
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
     <!-- Menu Toggle Script -->
     <script>
@@ -555,162 +512,102 @@ global $newTestId;
 	
 	<!-- Add matching JS -->
 	<script>
-	$(document).ready(function()
-	{
-		$("#SABtn").click(function()
-		{
-			var shortAnswerArray = new Array();
-			shortAnswerArray[0] = $("#short_answer_question").val();
-			shortAnswerArray[1] = $("#short_answer_anwer").val();
-			
-			
-			var shortAnswerQuestion = $("#short_answer_question").val();
-			var shortAnswerAnswer   = $("#short_answer_anwer").val();
-			
-			
-			var myJSONText = JSON.stringify(shortAnswerArray);
-		   $.post("jspg.php",
-			{
-				shortAnswer:myJSONText
-			}); 
+		$(document).ready(function(){
+				$("#add_match").click(function(){
+			$("#MatchAddAns").append('<input type="text" class="form-control" id="Question">'
+			);
 		});
 	});
-	</script>
-	
-	<script>
-		$(document).ready(function()
-		{
-			$("#add_match_answer_btn").click(function()
-			{
-				$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
-				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
-			});
-		});
 	</script>
 	
 		<!-- All that Apply JS -->
 	<script>
-		$(document).ready(function()
-		{
-			$("#add_ATA").click(function()
-			{
-				$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				);
-			});
+		$(document).ready(function(){
+				$("#add_ATA").click(function(){
+			$("#ATA_AddAns").append('<input type="text" class="form-control" id="Question">'
+			);
 		});
+	});
 	</script>
 	
 		<!-- Multiple Choice JS -->
-		<!-- PROBLEM: in every append, how to generate a different value & id -->
-		<!-- class add_margin_mc doesnt work! :'( -->
 	<script>
-	var MCAnsArray = [];
-	var MCBtnArray = [];
-	var MCCounter = 0;
 		$(document).ready(function(){
 				$("#add_MC").click(function(){
-			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" value="2" id="answer2_rb" /></div><div class="col-md-9"><input type="text" class="form-control" id="mc_answer2_tb" /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
-		});
-	});
-	
-		$(document).ready(function(){
-				$("#remove_MC").click(function(){
-				MCArray.push('<input type="text" class="form-control" id="Question">');
-				MCBtnArray.push(' <button type="button" class="btn btn-default" aria-hidden="true" id="remove_MC">remove item</button>');
-			$("#MC_AddAns").append(MCArray[MCCounter]);
-			$("#MC_AddAns").append(MCBtnArray[MCCounter]);
+			$("#MC_AddAns").append('<input type="text" class="form-control" id="Question"> <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">remove item</button>'
+			);
 		});
 	});
 	</script>
-
 	
+	<!-- Short Answer JS -->
 	<script>	
 		var counter = 0;
-		var testId = '<?php echo $newTestId; ?>';
+		var ajaxurl = "testCreationPage.php";
 		
-		
-		$(document).ready(function()
-		{
-			$("#SABtn").click(function()
-			{
-				var pointValue = $("#short_anwer_point_value").val();
-				var question = $("#short_answer_question").val();
-				var answer = $("#short_answer_answer").val();
-				counter++;
-			
-				$.post("TestQuestionScripts/essayAndShortAnswer.php",
-				{
-					pointValue:pointValue,
-					question:question,
-					answer:answer,
-					testId:testId,
-					questionNumber:counter,
-					questionType:"Short Answer"
-				},
-				function(data)
-				{
-					document.getElementById("test").innerHTML = data;
-				});
-				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-				);
-
-			});
-			
-			$("#MBtn").click(function()
-			{
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-				);
-				counter++;
-
-			});
-
-			
-			$("#MCBtn").click(function(){
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-				);
-				counter++;
-			});
-			
-			$("#ATABtn").click(function(){
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-				);
-				counter++;
-			});
-			
-			$("#TFBtn").click(function(){
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
-				);
-				counter++;
-			});
-			
-			$("#EBtn").click(function(){
+			$(document).ready(function(){
+				$("#SABtn").click(function(){
 					
-				var pointValue = $("#essay_point_value").val();
-				var question = $("#essay_question").val();
-				var answer = $("#essay_answer").val();
-				counter++;
+					
+					<!-- grabs the question from the text field -->
+					var question = $("#Question").val();
+					alert(question);
+					
+					$.post(ajaxurl, question);
 				
-				$.post("TestQuestionScripts/essayAndShortAnswer.php",
-				{
-					pointValue:pointValue,
-					question:question,
-					answer:answer,
-					testId:testId,
-					questionNumber:counter,
-					questionType:"Essay"
-				},
-				function(data)
-				{
-					document.getElementById("test").innerHTML = data;
-				});
-				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">' + question + '</h4> <p class="list-group-item-text">' + answer + '</p></a>'
-				);
-			
-			});
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
 		});
+		
+					$("#MBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#MCBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#ATABtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#TFBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+		
+					$("#EBtn").click(function(){
+			$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Essay</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+			);
+			counter++;
+		});
+	});
 	</script>
+	
+	<?php
+
+		if(isset($_POST['shortAnswerQuestion']))
+		{
+			insertQuestion($_POST['shortAnswerQuestion']);
+			
+		}
+		function insertQuestion(string $receivedQuestion)
+		{
+			$question = $receivedQuestion;
+			
+			echo '<h1>' . $question . '</h1>';
+			
+		}
+	
+	?>
 
 </body>
 

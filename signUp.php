@@ -106,7 +106,8 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 				$classCounter = 1; 
 				while($classList->fetch())
 				{	
-					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
+					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" 
+						value="' . $clid . '" draggable="true" ondragstart="drag(event)"></li>';
 					
 				}
 				$classList->close(); 
@@ -122,18 +123,18 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 		<h1>Welcome!</h1>
 			<h2>Please enter your information.</h2>
 			<label class="survey_style">First Name:
-				<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" />
+				<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" required />
 			</label><br />
 			<label class="survey_style">Last Name:
-				<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" />
+				<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" required />
 			</label><br />
-			<label class="survey_style">Email:
-				<input type="text" name="email" id="email" />
+			<label class="survey_style">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="text" name="email" id="email" required />
 			</label><br />
 			<label class="survey_style">Password:
-				<input type="password" name="password" id="password" />
+				<input type="password" name="password" id="password" required />
 			</label><br />
-			<input class="myButton" type="submit" value="Create Account" />
+			<input class="myButton" type="submit" value="Create Account" required />
 
 		</form>	
 					
@@ -202,6 +203,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 										{
 											
 										}
+										
 										else 
 										{
 											printf("Error message: %s\n", $database->error);
@@ -243,23 +245,43 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 									$insertStudentStatement->execute();
 									$insertStudentStatement->close();
 								
-								echo '<h1>' . $newId . '</h1>';
-								$testIdArray = null;
+								echo '<h1>' . $newId . '</h1>';				
+								// Empty the array of classes
+								$classes = null;
 							}
 						}			
 					}
 					else
-						// do nothing
+						echo '<h1><--Please select your classes</h1>';					
+					
 					?>
 					
-	
 	</div>
+	<div id="dropDiv" ondrop="drop(event)" ondragover="allowDrop(event)">
+					
+					</div>
 
    <!-- jQuery -->
    <script src="js/jquery.js"></script>
 
    <!-- Bootstrap Core JavaScript -->
    <script src="js/bootstrap.min.js"></script>
+	
+	<script>
+	function allowDrop(ev) {
+    ev.preventDefault();
+	}
+
+	function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+	}
+
+	function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+	}
+</script>
 
    <!-- Menu Toggle Script -->
    <script>
