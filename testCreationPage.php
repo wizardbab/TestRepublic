@@ -316,12 +316,14 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="short_answer_question">
+											<label for="recipient-name" class="control-label">Answer:</label>
+											<input type="text" class="form-control" id="short_answer_anwer">
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" onclick="shortAnswerClick()">Create Question</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -535,16 +537,22 @@ $shortAnswerQuestion = (isset($_POST['shortAnswerQuestionInput']) ? $_POST['shor
 	<script>
 	$(document).ready(function()
 	{
-		$("#add_match_question_btn").click(function()
+		$("#SABtn").click(function()
 		{
-			var vvar1 = $("#value1").val();
-			var vvar2 = $("#value2").val();
-
-			$.post("jspg.php",
+			var shortAnswerArray = new Array();
+			shortAnswerArray[0] = $("#short_answer_question").val();
+			shortAnswerArray[1] = $("#short_answer_anwer").val();
+			
+			
+			var shortAnswerQuestion = $("#short_answer_question").val();
+			var shortAnswerAnswer   = $("#short_answer_anwer").val();
+			
+			
+			var myJSONText = JSON.stringify(shortAnswerArray);
+		   $.post("jspg.php",
 			{
-				var1:vvar1,
-				var2:vvar2
-			});
+				shortAnswer:myJSONText
+			}); 
 		});
 	});
 	</script>
