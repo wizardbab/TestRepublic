@@ -50,6 +50,12 @@ $query = "select class_id, class_description from enrollment join class using (c
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
+// Display any tests that will expire within 7 days
+$warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
+join class using (class_id)
+join test using(class_id)
+where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
+
 // Class, etc, to display on studentMainPage
 $tableQuery = "select test_name, t_status, date_begin, date_end, date_taken from test
 join test_list using(test_id)
@@ -68,7 +74,7 @@ where student_id = ?";*/
 $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
-
+$warningstmt = $database->prepare($warningQuery);
 
 ?>
 	<div id="wrapper2"
@@ -188,9 +194,23 @@ $table = $database->prepare($tableQuery);
             <div class="container-fluid">
                 <div class="row">
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         <div class="warning_box">
-							<p class="warning_msg"> 2/5/15 - EN 121-5 Midterm Exam will be expired in 1 day!</p>
+							<p class="warning_msg"><?php
+                                // Display warnings if a test has seven days or less to take
+                                $warningstmt->bind_param("s", $id);
+                                $warningstmt->bind_result($class_id, $days_left);
+                                $warningstmt->execute();
+                                while($warningstmt->fetch())
+                                {
+                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
+                                    echo '<br />';
+                                }
+                                if($class_id == null)
+                                    echo 'No warnings :)';
+                                $warningstmt->close();
+                            ?>
+                            </p>
 						</div>
                     </div>
 					
