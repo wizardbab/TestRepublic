@@ -1,6 +1,8 @@
 /* Test Taking JavaScript - 2/26  Created by Victor Jereza*/
 		var counter = 0;
-		var testArray = ['What is the meaning of life?','Why is the Mongolian Horde so awesome?','Why is Victor such a beast?'];
+		var testArray = ['What is the meaning of life?',
+						 'Why is the Mongolian Horde so awesome?',
+						 'Why is Victor such a beast at programming?'];
 		
 		$(document).ready(function(){
 				$("#nxtBtn").click(function(){

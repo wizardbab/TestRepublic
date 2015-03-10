@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	
+	
 
     <title>JS/AJAX/PHP attempt 1</title>
 
@@ -32,40 +34,65 @@
     <script src="js/bootstrap.min.js"></script>
 
 	
-		<script>
-
-		
-		$(document).ready(function(){
-		$("#testBtn").click(function(){
-				var vvar1 = $("#value1").val();
-				var vvar2 = $("#value2").val();
-
-			$.post("jspg.php",
-			{
-				var1:vvar1,
-				var2:vvar2
-			});
-		});
-	});
-	</script>
+	
 	
 </head>
 
 
 <body>
-
+	<button id="click">To clone</button>
 	
-	<form id="test" method="post">
-
-		<input type="text" class="form-control" id="value1" />
-		<input type="text" class="form-control" id="value2" />
-	
-	
+	<form id="form" name="form" action="jspg.php">
+		<input type="text" id="id0" name="id0"/>
+		<input id="clock" type="submit" />
 	</form>
 	
-		<button class="testBtn" name="testBtn" id="testBtn">button </button>
+		
+		
+	<script>
+
+		var c = 0;
+		var cloned;
+		var stuff = [];
+		var d;
+		
+		
+		
+			$("#click").click(function(){
+				cloned = $('#id' + c);
+				$("#id" + c).clone().attr('id', 'id'+(++c)).insertAfter(cloned);
+			
+				$("#id" + c).text('id' + c);
+				
+			});
+			
+			$("#clock").click(function(){
+				for(d = 0; d <= c; d++)
+				{
+					stuff[d] = document.getElementById("id" + d).value;
+				}
+				
+				$.post("jspg.php",
+				{
+					"parameters[]":stuff
+				},
+				function(data)
+				{
+					alert(data);
+				});
+				
+			
+			});
+		
+		
+	
+	</script>
+		
+		
 
 </body>
+
+	
 
 
 

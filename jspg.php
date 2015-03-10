@@ -1,18 +1,19 @@
+
+		
+		
 <?php
 
+	@$value = $_POST['parameters'];
 	
-	if($_POST["var1"])
+	if(is_array($value))
 	{
-	$var1 = $_POST["var1"];
-	$var2 = $_POST["var2"];
-	
-
-	
+		foreach($value as $i)
+			echo $i . " ";
 	}
-	$myFile = fopen("textFile.txt", "w");
-	fwrite($myFile,$var1);
-	fwrite($myFile,$var2);
-	fclose($myFile);
-	
-	
+
+									
 ?>
+		
+		
+		
+
