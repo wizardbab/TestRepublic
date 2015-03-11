@@ -390,16 +390,18 @@ $multipleChoiceRadioId = 0;
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="tf_question_point_value" />
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="tf_question" />
 										</div>
 										
 										<div class="form-group">
 											<div class="radio">
-												<label><input type="radio" name="optradio" />True</label>
+												<label><input type="radio" class="optradio" name="optradio" value="true" />True</label>
 											</div>
 											<div class="radio">
-												<label><input type="radio" name="optradio" />False</label>
+												<label><input type="radio" class="optradio" name="optradio" value="false" />False</label>
 											</div>
 										</div>
 										
@@ -682,25 +684,10 @@ $multipleChoiceRadioId = 0;
 
 			<!-- create multiple choice question -->
 			$("#MCBtn").click(function(){
-				var pointValue = $("#mc_point_value").val();
-				var question = $("#mc_question").val();
-				var answer = [];
-				var i;
-				
-				for(i = 0; i < '<?php echo $multipleChoiceRadioId; ?>'; i++)
-				{
-					alert(i);
-					answer[i] = $(i).val();
-					alert(answer[i]);
-				
-				}
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
-					pointValue:pointValue,
-					question:question,
-					answer:answer,
-					testId:testId,
+					
 					questionType:"Multiple Choice"
 					
 				},
@@ -721,6 +708,43 @@ $multipleChoiceRadioId = 0;
 			});
 			
 			$("#TFBtn").click(function(){
+				var pointValue = $("#tf_question_point_value").val();
+				var question = $("#tf_question").val();
+				var trueFalseArray = [];
+				
+				
+				
+				for(i = 0; i < 2; i++)
+				{
+					if( $ ('input[value=true]').prop("checked"))
+					{
+						 trueFalseArray[i] = true;
+					}
+					else
+						 trueFalseArray[i] = false;
+					
+					
+					//alert(i);
+					//alert(trueFalseArray[i]);
+				} 
+				
+				
+				
+				
+				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+				{
+					
+					questionType:"True/False",
+					pointValue:pointValue,
+					question:question,
+					"parameters[]":trueFalseArray
+					
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;

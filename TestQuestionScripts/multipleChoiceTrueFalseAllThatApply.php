@@ -31,6 +31,17 @@
 	@$questionType = $_POST["questionType"];
 	@$correct = $_POST["correct"]; // boolean value
 	@$numberOfAnswers = $_POST["numberOfAnswers"];
+	@$parameters = $_POST["parameters"]; // an array
+	
+	if(is_array($parameters))
+	{
+		foreach($parameters as $i)
+			echo $i . " ";
+			
+			
+	}
+	
+	
 	
 	// assign a new question id
 	$questionIdStatement = $database->prepare($questionIdQuery);
