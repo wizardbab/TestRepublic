@@ -20,8 +20,10 @@
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
    
-   <!-- JavaScript Form Validation -->
-   <script type="text/javascript" src="js/formValidation.js"></script>
+   <!-- Form Validation Includes -->
+   <link href="css/validation_page.css" rel="stylesheet" type="text/css">
+   <script type="text/javascript" src="js/validation.js"></script>
+   
 </head>
 
 <body>
@@ -81,12 +83,12 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 						<i class="glyphicon glyphicon-log-in"></i>Back to Login
 					</button></a>
             <ul class="sidebar-nav">
-				<li>
-                    <a href="#" id="student-summary">Summary</a>
-                </li>
-                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
-                    Select a Class:
-                </li>
+               <li>
+                  <a href="#" id="student-summary">Summary</a>
+               </li>
+               <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
+                  Select a Class:
+               </li>
                
 				<?php 
 				
@@ -118,7 +120,7 @@ $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
         </div>
    
 	<div id="signUpDiv">
-
+   
 		<h1>Welcome!</h1>
 			<h2>Please enter your information.</h2>
 			<label class="survey_style">First Name:
