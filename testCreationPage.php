@@ -71,6 +71,12 @@ $testIdQuery = "select max(test_id), saved, question_id from test
 $createTestQuery = "insert into test(test_id, class_id, teacher_id) values(?, ?, ?)";
 
 global $newTestId;
+global $multipleChoiceInputId;
+$multipleChoiceInputId = 0;
+global $multipleChoiceRadioId;
+
+$multipleChoiceRadioId = 0;
+
 ?>
 <body>
 	<div id="wrapper2">
@@ -346,7 +352,7 @@ global $newTestId;
 					</div>
 					
 				<!-- Essay Modal -->
-					<div id="EssayModal" class="modal fade">
+					<div id="EssayModal" class="modal hide fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -418,6 +424,8 @@ global $newTestId;
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="mc_point_value" />
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="mc_question" />
 										</div>
@@ -426,20 +434,20 @@ global $newTestId;
 											<br />
 											<div class="row">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer" value="1" id="answer1_rb" />
+													<input type="radio" name="mc_answer" value="1" id="<?php echo $multipleChoiceRadioId++; ?>" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="mc_answer1_tb" />
+													<input type="text" class="form-control" id="<?php echo $multipleChoiceInputId++; ?>" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="row" id="MC_add_answers">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer" value="2" id="answer2_rb" />
+													<input type="radio" name="mc_answer" value="2" id="<?php echo $multipleChoiceRadioId++; ?>" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="mc_answer2_tb" />
+													<input type="text" class="form-control" id="<?php echo $multipleChoiceInputId++; ?>" />
 												</div>
 											</div>
 										</div>
@@ -595,8 +603,16 @@ global $newTestId;
 	var MCBtnArray = [];
 	var MCCounter = 0;
 		$(document).ready(function(){
-				$("#add_MC").click(function(){
-			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" value="2" id="answer2_rb" /></div><div class="col-md-9"><input type="text" class="form-control" id="mc_answer2_tb" /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
+		
+			$("#add_MC").click(function(){
+			<!-- MCCounter++; -->
+			
+			
+			
+			
+			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" value="<?php echo $multipleChoiceRadioId; ?>" id="<?php echo $multipleChoiceRadioId++; ?>" /></div><div class="col-md-9"><input type="text" class="form-control" id="<?php echo $multipleChoiceInputId++; ?>" /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
+			
+			
 		});
 	});
 	
@@ -631,7 +647,6 @@ global $newTestId;
 					question:question,
 					answer:answer,
 					testId:testId,
-					questionNumber:counter,
 					questionType:"Short Answer"
 				},
 				function(data)
@@ -652,8 +667,35 @@ global $newTestId;
 
 			});
 
-			
+			<!-- create multiple choice question -->
 			$("#MCBtn").click(function(){
+				var pointValue = $("#mc_point_value").val();
+				var question = $("#mc_question").val();
+				var answer = [];
+				var i;
+				
+				for(i = 0; i < '<?php echo $multipleChoiceRadioId; ?>'; i++)
+				{
+					alert(i);
+					answer[i] = $(i).val();
+					alert(answer[i]);
+				
+				}
+				
+				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+				{
+					pointValue:pointValue,
+					question:question,
+					answer:answer,
+					testId:testId,
+					questionType:"Multiple Choice"
+					
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;
@@ -684,7 +726,6 @@ global $newTestId;
 					question:question,
 					answer:answer,
 					testId:testId,
-					questionNumber:counter,
 					questionType:"Essay"
 				},
 				function(data)
