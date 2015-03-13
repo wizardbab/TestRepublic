@@ -98,8 +98,7 @@ global $id;
 				$classCounter = 1; 
 				while($classList->fetch())
 				{	
-					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" 
-						value="' . $clid . '" draggable="true" ondragstart="drag(event)"></li>';
+					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
 					
 				}
 				$classList->close(); 
@@ -110,7 +109,7 @@ global $id;
 				
         </div>
 
-<<<<<<< HEAD
+
 <div class="container-fluid">
 		<div class="row">
 			
@@ -153,26 +152,7 @@ global $id;
 			</div>
 				
 		</form>
-=======
-	<div id="signUpDiv">
-		<h1>Welcome!</h1>
-			<h2>Please enter your information.</h2>
-			<label class="survey_style">First Name:
-				<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" required />
-			</label><br />
-			<label class="survey_style">Last Name:
-				<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" required />
-			</label><br />
-			<label class="survey_style">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="text" name="email" id="email" required />
-			</label><br />
-			<label class="survey_style">Password:
-				<input type="password" name="password" id="password" required />
-			</label><br />
-			<input class="myButton" type="submit" value="Create Account" required />
 
-		</form>	
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
 					
 					<?php 
 					// We have data; begin validation
@@ -239,7 +219,6 @@ global $id;
 										{
 											
 										}
-										
 										else 
 										{
 											printf("Error message: %s\n", $database->error);
@@ -253,11 +232,7 @@ global $id;
 											$testIdArray[$testCounter++] = $tid;
 										}
 										$selectTestIdStatement->close();
-										
-<<<<<<< HEAD
-=======
 
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
                                         if(is_array($testIdArray))
                                         {
                                             foreach($testIdArray as $t)
@@ -283,34 +258,14 @@ global $id;
 									$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
 									$insertStudentStatement->execute();
 									$insertStudentStatement->close();
-								
-<<<<<<< HEAD
-								echo '<h1>' . $newId . '</h1>';				
-								// Empty the array of classes
-								$classes = null;
-=======
-<<<<<<< HEAD
-								
-								$id = $newId;
-								echo '<h1>' . $id . '</h1>';
-								
-								//data flag
-								$success = true; 
-=======
+
 								echo '<h1>' . $newId . '</h1>';
 								$testIdArray = null;
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
->>>>>>> 8cbf8a1dcd7d40a4dc87f1c24d50bd3e19fd26fa
+
 							}
 						}			
 					}
 					else
-<<<<<<< HEAD
-						echo '<h1><--Please select your classes</h1>';					
-					
-					?>
-					
-=======
 					// do nothing
 					{
 						$success = false;
@@ -319,42 +274,9 @@ global $id;
 						
 					?>
 					
-<<<<<<< HEAD
-=======
-	
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
->>>>>>> 8cbf8a1dcd7d40a4dc87f1c24d50bd3e19fd26fa
+
 	</div>
-	<div id="dropDiv" ondrop="drop(event)" ondragover="allowDrop(event)">
-					
-					</div>
-
-<<<<<<< HEAD
-   <!-- jQuery -->
-   <script src="js/jquery.js"></script>
-
-   <!-- Bootstrap Core JavaScript -->
-   <script src="js/bootstrap.min.js"></script>
-	
-	<script>
-	function allowDrop(ev) {
-    ev.preventDefault();
-	}
-
-	function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-	}
-
-	function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-	}
-</script>
-=======
 		</div>
->>>>>>> 8cbf8a1dcd7d40a4dc87f1c24d50bd3e19fd26fa
-
 		</div>
 	
 </div>
@@ -373,7 +295,7 @@ global $id;
 						</h4>
 					</div>
 					<div class="modal-body">
-						<div class="congrats_text">Congratulation!</div>
+						<div class="congrats_text">Congratulations!</div>
 						<div><h4>You have successfully created an account.<h4></div>
 					
 						<?php
@@ -402,7 +324,6 @@ global $id;
       $("#wrapper").toggleClass("toggled");
    });
    </script>
-
    <!-- if the info is valid, show the modal -->
    <script>
    $(document).ready(function(){
@@ -422,13 +343,12 @@ global $id;
 			// TEST: make the modal appears after the button is clicked
 			//
 			$('#sign_up_modal').modal('show');
-			//
+			
 		});
 	});
 	</script>
   
 	
-
    
 </body>
 </html>
