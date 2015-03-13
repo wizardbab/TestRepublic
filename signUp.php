@@ -109,7 +109,7 @@ global $id;
 				
         </div>
 
-<<<<<<< HEAD
+
 <div class="container-fluid">
 		<div class="row">
 			
@@ -152,26 +152,7 @@ global $id;
 			</div>
 				
 		</form>
-=======
-	<div id="signUpDiv">
-		<h1>Welcome!</h1>
-			<h2>Please enter your information.</h2>
-			<label class="survey_style">First Name:
-				<input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" />
-			</label><br />
-			<label class="survey_style">Last Name:
-				<input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" />
-			</label><br />
-			<label class="survey_style">Email:
-				<input type="text" name="email" id="email" />
-			</label><br />
-			<label class="survey_style">Password:
-				<input type="password" name="password" id="password" />
-			</label><br />
-			<input class="myButton" type="submit" value="Create Account" />
 
-		</form>	
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
 					
 					<?php 
 					// We have data; begin validation
@@ -251,11 +232,7 @@ global $id;
 											$testIdArray[$testCounter++] = $tid;
 										}
 										$selectTestIdStatement->close();
-										
-<<<<<<< HEAD
-=======
 
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
                                         if(is_array($testIdArray))
                                         {
                                             foreach($testIdArray as $t)
@@ -281,18 +258,10 @@ global $id;
 									$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
 									$insertStudentStatement->execute();
 									$insertStudentStatement->close();
-								
-<<<<<<< HEAD
-								
-								$id = $newId;
-								echo '<h1>' . $id . '</h1>';
-								
-								//data flag
-								$success = true; 
-=======
+
 								echo '<h1>' . $newId . '</h1>';
 								$testIdArray = null;
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
+
 							}
 						}			
 					}
@@ -305,14 +274,9 @@ global $id;
 						
 					?>
 					
-<<<<<<< HEAD
-=======
-	
->>>>>>> d171386235bb24c89ee099e243989e0cf87a6442
+
 	</div>
-
 		</div>
-
 		</div>
 	
 </div>
@@ -331,7 +295,7 @@ global $id;
 						</h4>
 					</div>
 					<div class="modal-body">
-						<div class="congrats_text">Congratulation!</div>
+						<div class="congrats_text">Congratulations!</div>
 						<div><h4>You have successfully created an account.<h4></div>
 					
 						<?php
@@ -360,7 +324,6 @@ global $id;
       $("#wrapper").toggleClass("toggled");
    });
    </script>
-
    <!-- if the info is valid, show the modal -->
    <script>
    $(document).ready(function(){
@@ -380,13 +343,12 @@ global $id;
 			// TEST: make the modal appears after the button is clicked
 			//
 			$('#sign_up_modal').modal('show');
-			//
+			
 		});
 	});
 	</script>
   
 	
-
    
 </body>
 </html>
