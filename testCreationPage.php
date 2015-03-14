@@ -439,17 +439,19 @@ $multipleChoiceRadioId = 0;
 													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="multipleText0" name="multipleText0" />
+													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="row" id="MC_add_answers">
-												<div class="col-md-1">
-													<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-												</div>
-												<div class="col-md-11">
-													<input type="text" class="form-control" id="multipleText1" name="multipleText1"/>
+											<div id="MC_add_answers">
+												<div class="row">
+													<div class="col-md-1">
+														<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+													</div>
+													<div class="col-md-11">
+														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -670,14 +672,12 @@ $multipleChoiceRadioId = 0;
 			
 				$("#mc_answer" + c).text('mc_answer' + c);
 				
-				
 				// adds text boxes to mc modal
 				cloned = $('#multipleText' + d );
 				$("#multipleText" + d).clone().attr('id', 'multipleText'+(++d )).insertAfter(cloned);
 			
 				$("#multipleText" + d ).text('multipleText' + d );
 				
-
 			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 			
 			

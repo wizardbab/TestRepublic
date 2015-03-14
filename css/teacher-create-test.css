@@ -390,11 +390,12 @@ ul.alert-dropdown {
 		margin-bottom: 10px;
 	}
 	
+	/*
 	.add_margin_mc
 	{
 		margin-bottom: 10px;
 	}
-	
+	*/
 	.ata_tb
 	{
 		position: relative;
@@ -404,4 +405,27 @@ ul.alert-dropdown {
 	{
 		margin-bottom: 10px;
 	}
+	
+	.multipleRadio
+	{
+		height: 32px;
+	}
+	
+	.multipleTextboxes
+	{
+		margin-bottom: 10px;
+	}
+	/*
+	#mc_answer0
+	{
+		margin-left: 20px;
+	}
+	
+	#mc_answer1
+	{
+		margin-left: 20px;
+	}
+	*/
+	
+	
 }
