@@ -1,10 +1,22 @@
 <?php
 	// Authors: David Hughen - Jake Stevens
-	// Date Created: 3/9/15
-	// Last Modified: 3/9/15
-	// This php script handles the db stuff for multiple choice, all that apply, and true/false questions
+	// Date Created: 3/13/15
+	// Last Modified: 3/13/15 - 
+	// This php script handles the db stuff for matching questions
 	require("../constants.php");
-
+	
+	// Grab the values posted by testCreationPage.php
+	@$pointValue = $_POST["pointValue"];
+	@$questions = $_POST["questions"];
+	@$questionLetters = $_POST["questionLetters"];
+	@$answers = $_POST["answers"];
+	@$answerLetters = $_POST["answerLetters"];
+	@$testId = $_POST["testId"];
+	@$questionType = $_POST["questionType"];
+	@$heading = $_POST["heading"];
+	
+	echo $pointValue;
+	
 	// The database variable holds the connection so you can access it
 	$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 	@ $database->select_db(DATABASENAME);
@@ -15,35 +27,13 @@
 	$answerIdQuery = "select max(answer_id) from answer";
 	
 	$insertQuestionQuery = "insert into question(question_id, test_id,
-		question_type, question_value, question_text, question_no)
-		values(?, ?, ?, ?, ?, ?)";
+		question_type, question_value, question_text, question_letter, question_no, heading)
+		values(?, ?, ?, ?, ?, ?, ?, ?)";
 		
 	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text, correct)
-	values(?, ?, ?, ?)";
+		values(?, ?, ?, ?)";
 		
 	$questionNumberQuery = "select max(question_no) from question where test_id = ?";
-	
-	// Grab the values posted by testCreationPage.php
-	@$pointValue = $_POST["pointValue"];
-	@$question = $_POST["question"];
-	@$answer = $_POST["answer"];
-	@$testId = $_POST["testId"];
-	@$questionType = $_POST["questionType"];
-	@$correct = $_POST["correct"]; // boolean value
-	@$textBoxAnswers = $_POST["textBoxes"];
-	@$parameters = $_POST["parameters"]; // an array
-	
-	/*if(is_array($parameters))
-	{
-		foreach($parameters as $i)
-			echo $i . " ";
-		
-	}
-	echo $pointValue;
-	echo $question; */
-	
-	
-	
 	
 	// assign a new question id
 	$questionIdStatement = $database->prepare($questionIdQuery);
@@ -76,26 +66,30 @@
 	}
 	$questionNumberStatement->close();
 	
-	
+	echo $testId;
 	
 	// Insert into question table after question is created
-	$insertQuestionStatement = $database->prepare($insertQuestionQuery);
-	$insertQuestionStatement->bind_param("ssssss", $newQuestionId, $testId, $questionType,
-											  $pointValue, $question, $newQuestionNumber);
-	$insertQuestionStatement->execute();
-	$insertQuestionStatement->close();
-	if((is_array($parameters)) and (is_array($textBoxAnswers)))
+	if(is_array($questions))
 	{
-		for($i = 0; $i < count($parameters); $i++)
+		for($i = 0; $i < count($questions); $i++)
 		{
-			// Insert into answer table after question is created
-			$insertAnswerStatement = $database->prepare($insertAnswerQuery);
-			$insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQuestionId, $textBoxAnswers[$i], $parameters[$i]);
-			$insertAnswerStatement->execute();
-			$insertAnswerStatement->close();
-			
-			$newAnswerId++;
+			$insertQuestionStatement = $database->prepare($insertQuestionQuery);
+			$insertQuestionStatement->bind_param("ssssssss", $newQuestionId, $testId, $questionType,
+													  $pointValue, $questions[$i], $questionLetters[$i], $newQuestionNumber, $heading);
+			$insertQuestionStatement->execute();
+			$insertQuestionStatement->close();
 		}
 	}
-
+	
+	// Insert into answer table after question is created
+	if(is_array($answers))
+	{
+		for($i = 0; $i < count($questions); $i++)
+		{
+			$insertAnswerStatement = $database->prepare($insertAnswerQuery);
+			$insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQuestionId, $answers[$i], $answerLetters[$i]);
+			$insertAnswerStatement->execute();
+			$insertAnswerStatement->close();
+		}
+	}
 ?>
