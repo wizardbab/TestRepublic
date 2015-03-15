@@ -569,7 +569,20 @@ $multipleChoiceRadioId = 0;
     });
     </script>
 	
-	
+
+	<script>
+	$(document).ready(function()
+	{
+		$("#SABtn").click(function()
+		{
+			var shortAnswerQuestion = $("#short_answer_question").val();
+			var shortAnswerAnswer   = $("#short_answer_anwer").val();
+			
+			
+			
+		});
+	});
+	</script>
 	
 	<!-- Add matching JS -->
 	<script>
@@ -718,12 +731,13 @@ $multipleChoiceRadioId = 0;
 				);
 
 			});
-	
+
 			/***********************************************************/
 			/* Matching stuff                                          */
 			/***********************************************************/
 			$("#MBtn").click(function()
 			{
+
 				var pointValue = $("#m_point_value").val();
 				var heading = $("#m_heading").val();
 				
@@ -780,8 +794,6 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				
-
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 
