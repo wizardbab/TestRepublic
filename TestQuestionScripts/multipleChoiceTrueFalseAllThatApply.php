@@ -30,7 +30,20 @@
 	@$testId = $_POST["testId"];
 	@$questionType = $_POST["questionType"];
 	@$correct = $_POST["correct"]; // boolean value
-	@$numberOfAnswers = $_POST["numberOfAnswers"];
+	@$textBoxAnswers = $_POST["textBoxes"];
+	@$parameters = $_POST["parameters"]; // an array
+	
+	/*if(is_array($parameters))
+	{
+		foreach($parameters as $i)
+			echo $i . " ";
+		
+	}
+	echo $pointValue;
+	echo $question; */
+	
+	
+	
 	
 	// assign a new question id
 	$questionIdStatement = $database->prepare($questionIdQuery);
@@ -63,17 +76,26 @@
 	}
 	$questionNumberStatement->close();
 	
+	
+	
 	// Insert into question table after question is created
 	$insertQuestionStatement = $database->prepare($insertQuestionQuery);
 	$insertQuestionStatement->bind_param("ssssss", $newQuestionId, $testId, $questionType,
 											  $pointValue, $question, $newQuestionNumber);
 	$insertQuestionStatement->execute();
 	$insertQuestionStatement->close();
-	
-	// Insert into answer table after question is created
-	$insertAnswerStatement = $database->prepare($insertAnswerQuery);
-	$insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQuestionId, $answer, $correct);
-	$insertAnswerStatement->execute();
-	$insertAnswerStatement->close();
+	if((is_array($parameters)) and (is_array($textBoxAnswers)))
+	{
+		for($i = 0; $i < count($parameters); $i++)
+		{
+			// Insert into answer table after question is created
+			$insertAnswerStatement = $database->prepare($insertAnswerQuery);
+			$insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQuestionId, $textBoxAnswers[$i], $parameters[$i]);
+			$insertAnswerStatement->execute();
+			$insertAnswerStatement->close();
+			
+			$newAnswerId++;
+		}
+	}
 
 ?>
