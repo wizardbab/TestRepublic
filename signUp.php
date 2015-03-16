@@ -258,10 +258,9 @@ global $id;
 									$insertStudentStatement->execute();
 									$insertStudentStatement->close();
 
-								//data flag
-								$success = true; 
 								echo '<h1>' . $newId . '</h1>';
 								$testIdArray = null;
+
 							}
 						}			
 					}
@@ -274,10 +273,7 @@ global $id;
 						
 					?>
 	</div>
-   </form>
-
 		</div>
-
 		</div>
 	
 </div>
@@ -296,7 +292,7 @@ global $id;
 						</h4>
 					</div>
 					<div class="modal-body">
-						<div class="congrats_text">Congratulation!</div>
+						<div class="congrats_text">Congratulations!</div>
 						<div><h4>You have successfully created an account.<h4></div>
 					
 						<?php
@@ -325,7 +321,6 @@ global $id;
       $("#wrapper").toggleClass("toggled");
    });
    </script>
-
    <!-- if the info is valid, show the modal -->
    <script>
    $(document).ready(function(){
@@ -345,13 +340,12 @@ global $id;
 			// TEST: make the modal appears after the button is clicked
 			//
 			$('#sign_up_modal').modal('show');
-			//
+			
 		});
 	});
 	</script>
   
 	
-
    
 </body>
 </html>

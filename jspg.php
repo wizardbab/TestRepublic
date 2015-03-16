@@ -1,6 +1,3 @@
-
-		
-		
 <?php
 
 	@$value = $_POST['parameters'];
@@ -13,7 +10,6 @@
 
 									
 ?>
-		
 		
 		
 

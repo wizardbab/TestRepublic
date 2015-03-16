@@ -345,7 +345,7 @@ $multipleChoiceRadioId = 0;
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" onclick="">Create Question</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -390,16 +390,18 @@ $multipleChoiceRadioId = 0;
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="tf_question_point_value" />
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="tf_question" />
 										</div>
 										
 										<div class="form-group">
 											<div class="radio">
-												<label><input type="radio" name="optradio" />True</label>
+												<label><input type="radio" class="optradio" name="optradio" value="true" />True</label>
 											</div>
 											<div class="radio">
-												<label><input type="radio" name="optradio" />False</label>
+												<label><input type="radio" class="optradio" name="optradio" value="false" />False</label>
 											</div>
 										</div>
 										
@@ -434,20 +436,20 @@ $multipleChoiceRadioId = 0;
 											<br />
 											<div class="row">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer" value="1" id="<?php echo $multipleChoiceRadioId++; ?>" />
+													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="<?php echo $multipleChoiceInputId++; ?>" />
+													<input type="text" class="form-control" id="multipleText0" name="multipleText0" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="row" id="MC_add_answers">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer" value="2" id="<?php echo $multipleChoiceRadioId++; ?>" />
+													<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="<?php echo $multipleChoiceInputId++; ?>" />
+													<input type="text" class="form-control" id="multipleText1" name="multipleText1"/>
 												</div>
 											</div>
 										</div>
@@ -473,19 +475,21 @@ $multipleChoiceRadioId = 0;
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
+											<label for="recipient-name" class="control-label">Point Value:</label>
+											<input type="text" class="form-control" id="ata_point_value" />
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="ata_question" />
 										</div>
 										<div class="form-group">
 											<label for="recipient-name" class="control-label">Answer:</label>
 											<br />
-											<input type="checkbox" name="ata_answer" id="ata_answer1_cb" />
-											<input type="text" id="ata_answer1_tb" class="ata_tb" />
+											<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" />
+											<input type="text" id="ata_answer0" class="ata_tb" />
 										</div>
 										<div class="form-group" id="ATA_AddAns">
 											<div class="ata_margin">
-												<input type="checkbox" name="ata_answer" id="ata_answer2_cb" />
-												<input type="text" id="ata_answer2_tb" class="ata_tb" />
+												<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb"/>
+												<input type="text" id="ata_answer1" class="ata_tb" />
 											</div>
 										</div>
 									</form>
@@ -513,13 +517,13 @@ $multipleChoiceRadioId = 0;
 											<div class="col-md-10" id="add_match_question">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Question:</label>
-													<input type="text" class="form-control" id="match_question_tb" />
+													<input type="text" class="form-control" id="match_question_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_question_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Match:</label>
-													<input type="text" class="form-control" id="match_question_letter_tb" />
+													<input type="text" class="form-control" id="match_question_letter_tb0" />
 												</div>
 											</div>
 										</div>
@@ -530,13 +534,13 @@ $multipleChoiceRadioId = 0;
 											<div class="col-md-10" id="add_match_answer">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Answer:</label>
-													<input type="text" class="form-control" id="match_answer_tb" />
+													<input type="text" class="form-control" id="match_answer_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_answer_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Letter:</label>
-													<input type="text" class="form-control" id="match_answer_letter_tb" />
+													<input type="text" class="form-control" id="match_answer_letter_tb0" />
 												</div>
 											</div>
 										</div>
@@ -561,24 +565,60 @@ $multipleChoiceRadioId = 0;
     });
     </script>
 	
-	<!-- Add matching JS -->
 	<script>
 	$(document).ready(function()
 	{
-		$("#add_match_question_btn").click(function()
+		$("#SABtn").click(function()
 		{
-
+			var shortAnswerQuestion = $("#short_answer_question").val();
+			var shortAnswerAnswer   = $("#short_answer_anwer").val();
+			
+			
+			
 		});
 	});
 	</script>
 	
+	<!-- Add matching JS -->
 	<script>
 		$(document).ready(function()
 		{
+			var c = 0;
+			var d = 0;
+			var a = 0;
+			var b = 0;
 			$("#add_match_answer_btn").click(function()
 			{
-				$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
+				// Add the text box for a matching answer
+				cloned = $('#match_answer_tb' + c );
+				$("#match_answer_tb" + c).clone().attr('id', 'match_answer_tb'+(++c )).insertAfter(cloned);
+			
+				$("#match_answer_tb" + c ).text('match_answer_tb' + c );
+				
+				// Add the Letter box for the answer
+				cloned = $('#match_answer_letter_tb' + d );
+				$("#match_answer_letter_tb" + d).clone().attr('id', 'match_answer_letter_tb'+(++d )).insertAfter(cloned);
+			
+				$("#match_answer_letter_tb" + d ).text('match_answer_letter_tb' + d );
+				
+				/*$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
 				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
+				*/
+			});
+			
+			$("#add_match_question_btn").click(function()
+			{
+				// Add the text box for a matching question
+				cloned = $('#match_question_tb' + a );
+				$("#match_question_tb" + a).clone().attr('id', 'match_question_tb'+(++a )).insertAfter(cloned);
+			
+				$("#match_question_tb" + a ).text('match_question_tb' + a );
+				
+				// Add the Match box for the question
+				cloned = $('#match_question_letter_tb' + b );
+				$("#match_question_letter_tb" + b).clone().attr('id', 'match_question_letter_tb'+(++b )).insertAfter(cloned);
+			
+				$("#match_question_letter_tb" + b ).text('match_question_letter_tb' + b );
 			});
 		});
 	</script>
@@ -589,8 +629,20 @@ $multipleChoiceRadioId = 0;
 		{
 			$("#add_ATA").click(function()
 			{
-				$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				);
+				// adds text boxes to ata modal
+				cloned = $('#ata_answer' + c);
+				$("#ata_answer" + c).clone().attr('id', 'ata_answer'+(++c)).insertAfter(cloned);
+			
+				$("#ata_answer" + c).text('ata_answer' + c);
+				
+				
+				cloned = $('#ata_answer_cb' + d );
+				$("#ata_answer_cb" + d).clone().attr('id', 'ata_answer_cb'+(++d )).insertAfter(cloned);
+			
+				$("#ata_answer_cb" + d ).text('ata_answer_cb' + d );
+				
+				/*$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
+				); */
 			});
 		});
 	</script>
@@ -602,15 +654,31 @@ $multipleChoiceRadioId = 0;
 	var MCAnsArray = [];
 	var MCBtnArray = [];
 	var MCCounter = 0;
+	var c = 1;
+	var cloned;
+	var stuff = [];
+	var d = 1;
+	
 		$(document).ready(function(){
 		
 			$("#add_MC").click(function(){
 			<!-- MCCounter++; -->
 			
+				// adds radio buttons to mc modal
+				cloned = $('#mc_answer' + c);
+				$("#mc_answer" + c).clone().attr('id', 'mc_answer'+(++c)).insertAfter(cloned);
 			
+				$("#mc_answer" + c).text('mc_answer' + c);
+				
+				
+				// adds text boxes to mc modal
+				cloned = $('#multipleText' + d );
+				$("#multipleText" + d).clone().attr('id', 'multipleText'+(++d )).insertAfter(cloned);
 			
-			
-			$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" value="<?php echo $multipleChoiceRadioId; ?>" id="<?php echo $multipleChoiceRadioId++; ?>" /></div><div class="col-md-9"><input type="text" class="form-control" id="<?php echo $multipleChoiceInputId++; ?>" /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
+				$("#multipleText" + d ).text('multipleText' + d );
+				
+
+			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 			
 			
 		});
@@ -634,6 +702,10 @@ $multipleChoiceRadioId = 0;
 		
 		$(document).ready(function()
 		{
+			
+			/***********************************************************/
+			/* Short answer stuff                                      */
+			/***********************************************************/
 			$("#SABtn").click(function()
 			{
 				var pointValue = $("#short_anwer_point_value").val();
@@ -659,37 +731,60 @@ $multipleChoiceRadioId = 0;
 
 			});
 			
+			/***********************************************************/
+			/* Matching stuff                                          */
+			/***********************************************************/
 			$("#MBtn").click(function()
 			{
+
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;
 
 			});
 
-			<!-- create multiple choice question -->
+			/***********************************************************/
+			/* Multiple choice stuff                                   */
+			/***********************************************************/
 			$("#MCBtn").click(function(){
 				var pointValue = $("#mc_point_value").val();
 				var question = $("#mc_question").val();
-				var answer = [];
-				var i;
+				var multipleChoiceArray = [];
+				var multipleTextArray = [];
 				
-				for(i = 0; i < '<?php echo $multipleChoiceRadioId; ?>'; i++)
+				<!-- check for multiple choice radios -->
+				var i = 0;
+				$('.multipleRadio').each(function() {
+					
+					// If true, assign
+					if($(this).is(':checked'))
+					{
+						multipleChoiceArray[i] = 1;
+					  	
+					}
+					// Else false, assign
+					else
+					{
+						multipleChoiceArray[i] = 0;				
+					}
+					i++;		
+				});
+				
+				// Get and store the possible answers from the multiple choice type
+				for(i = 0; i <= c; i++)
 				{
-					alert(i);
-					answer[i] = $(i).val();
-					alert(answer[i]);
-				
+					multipleTextArray[i] = document.getElementById("multipleText" + i).value;
 				}
+				
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
 					pointValue:pointValue,
+					questionType:"Multiple Choice",
 					question:question,
-					answer:answer,
-					testId:testId,
-					questionType:"Multiple Choice"
-					
+					"parameters[]":multipleChoiceArray,
+					"textBoxes[]":multipleTextArray,
+					testId:testId
 				},
 				function(data)
 				{
@@ -701,18 +796,111 @@ $multipleChoiceRadioId = 0;
 				counter++;
 			});
 			
+			/***********************************************************/
+			/* All that apply stuff                                    */
+			/***********************************************************/
 			$("#ATABtn").click(function(){
+				var pointValue = $("#ata_point_value").val();
+				var question = $("#ata_question").val();
+				var ataArray = [];
+				var ataTextArray = [];
+				
+				<!-- check for all that apply checkboxes -->
+				var i = 0;
+				$('.ata_cb').each(function() {
+					
+					// If true, assign
+					if($(this).is(':checked'))
+					{
+						ataArray[i] = 1;
+					  	
+					}
+					// Else false, assign
+					else
+					{
+						ataArray[i] = 0;				
+					}
+					i++;		
+				});
+				
+				// Get and store the possible answers from the multiple choice type
+				for(i = 0; i <= c; i++)
+				{
+					ataTextArray[i] = document.getElementById("ata_answer" + i).value;
+				}
+				
+				
+				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+				{
+					pointValue:pointValue,
+					questionType:"All That Apply",
+					question:question,
+					"parameters[]":ataArray,
+					"textBoxes[]":ataTextArray,
+					testId:testId
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;
 			});
 			
+			
+			/***********************************************************/
+			/* True/false stuff                                        */
+			/***********************************************************/
 			$("#TFBtn").click(function(){
+				var pointValue = $("#tf_question_point_value").val();
+				var question = $("#tf_question").val();
+				var trueFalseArray = [];
+				var answerText = ["true", "false"];
+				
+				<!-- check for true/false radios -->
+				var i = 0;
+				$('.optradio').each(function() {
+						 		 
+					if($(this).is(':checked'))
+					{
+						trueFalseArray[i] = 1;
+					 
+					}
+					else
+					{
+						trueFalseArray[i] = 0;				
+					}
+					i++;		
+				});
+			
+				  
+				
+				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+				{
+					
+					questionType:"True/False",
+					pointValue:pointValue,
+					question:question,
+					"parameters[]":trueFalseArray,
+					"textBoxes[]":answerText,
+					testId:testId
+					
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
 				counter++;
 			});
 			
+			/***********************************************************/
+			/* Essay stuff                                             */
+			/***********************************************************/
 			$("#EBtn").click(function(){
 					
 				var pointValue = $("#essay_point_value").val();
