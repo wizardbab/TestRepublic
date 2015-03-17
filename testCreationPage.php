@@ -204,43 +204,43 @@ $multipleChoiceRadioId = 0;
 						<div class="test-info-text">
 							Test Information
 						</div>
-					
-						<label class="blocklabel">Test Name:
-							<input type="text" placeholder="Test #1" />
-						</label>
+						<form name="test_form" id="test_form" method="post">
+							<label class="blocklabel">Test Name:
+								<input type="text" placeholder="Test #1" />
+							</label>
+							
+							<label class="date_lbl">Start Date:
+								<input type="date" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="date_lbl">End Date:&nbsp;
+								<input type="date" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="time_limit_lbl">Time Limit:
+								<input type="number" /> minutes
+							</label>
+							
+							<br />
+							
+							<label class="instruction_lbl">Specific Instruction:</label>
+							<br />
+							<textarea class="form-control" rows="6">Don't cheat!</textarea>
+							<p id="test"> Foo </p> 
 						
-						<label class="date_lbl">Start Date:
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="date_lbl">End Date:&nbsp;
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="time_limit_lbl">Time Limit:
-							<input type="number" /> minutes
-						</label>
-						
-						<br />
-						
-						<label class="instruction_lbl">Specific Instruction:</label>
-						<br />
-						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						<p id="test"> Foo </p> 
-					
-						
-						<label class="pledge_lbl">Test Pledge:</label>
+							
+							<label class="pledge_lbl">Test Pledge:</label>
 
-						<textarea class="form-control" rows="6"></textarea>
-						
+							<textarea class="form-control" rows="6"></textarea>
+						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
 								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
@@ -532,14 +532,18 @@ $multipleChoiceRadioId = 0;
 										<div class="row">
 											<div class="col-md-10" id="add_match_question">
 												<div class="form-group">
+													<label for="recipient-name" class="control-label">Section Heading:</label>
+													<input type="text" class="form-control" id="m_heading" />
+													<label for="recipient-name" class="control-label">Point Value (ea. question):</label>
+													<input type="text" class="form-control" id="m_point_value" />
 													<label for="recipient-name" class="control-label">Question:</label>
-													<input type="text" class="form-control" id="match_question_tb0" />
+													<input type="text" class="m_question" id="match_question_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_question_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Match:</label>
-													<input type="text" class="form-control" id="match_question_letter_tb0" />
+													<input type="text" class="m_question_letter" id="match_question_letter_tb0" />
 												</div>
 											</div>
 										</div>
@@ -550,17 +554,17 @@ $multipleChoiceRadioId = 0;
 											<div class="col-md-10" id="add_match_answer">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Answer:</label>
-													<input type="text" class="form-control" id="match_answer_tb0" />
+													<input type="text" class="m_answer" id="match_answer_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_answer_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Letter:</label>
-													<input type="text" class="form-control" id="match_answer_letter_tb0" />
+													<input type="text" class="m_answer_letter" id="match_answer_letter_tb0" />
 												</div>
 											</div>
 										</div>
-									</form>	
+										</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
 								</div>
 								<div class="modal-footer">
@@ -581,6 +585,7 @@ $multipleChoiceRadioId = 0;
     });
     </script>
 	
+
 	<script>
 	$(document).ready(function()
 	{
@@ -697,7 +702,8 @@ $multipleChoiceRadioId = 0;
 			
 		});
 	});
-	
+	</script>
+	<script>	
 		$(document).ready(function(){
 				$("#remove_MC").click(function(){
 				MCArray.push('<input type="text" class="form-control" id="Question">');
@@ -707,13 +713,9 @@ $multipleChoiceRadioId = 0;
 		});
 	});
 	</script>
-
-	
 	<script>	
-		var counter = 0;
 		var testId = '<?php echo $newTestId; ?>';
-		
-		
+			
 		$(document).ready(function()
 		{
 			
@@ -725,7 +727,6 @@ $multipleChoiceRadioId = 0;
 				var pointValue = $("#short_anwer_point_value").val();
 				var question = $("#short_answer_question").val();
 				var answer = $("#short_answer_answer").val();
-				counter++;
 			
 				$.post("TestQuestionScripts/essayAndShortAnswer.php",
 				{
@@ -744,16 +745,67 @@ $multipleChoiceRadioId = 0;
 				);
 
 			});
-			
+
 			/***********************************************************/
 			/* Matching stuff                                          */
 			/***********************************************************/
 			$("#MBtn").click(function()
 			{
 
+				var pointValue = $("#m_point_value").val();
+				var heading = $("#m_heading").val();
+				
+				var questionArray = [];
+				var questionLetterArray = [];
+				var answerArray = [];
+				var answerLetterArray = [];
+				
+				var i = 0;
+				// Loop and store questions
+				$('.m_question').each(function() {
+					questionArray[i] = $(this).val();
+					i++;									
+				});
+				
+				i = 0;
+				// Loop and store question letters
+				$('.m_question_letter').each(function() {
+					questionLetterArray[i] = $(this).val();
+					i++;					
+				});
+				
+				i = 0;
+				// Loop and store answers
+				$('.m_answer').each(function() {
+					answerArray[i] = $(this).val();
+					i++;					
+				});
+				
+				i = 0;
+				// Loop and store answer letters
+				$('.m_answer_letter').each(function() {
+					answerLetterArray[i] = $(this).val();
+					i++;	
+				});
+				
+				$.post("TestQuestionScripts/matching.php",
+				{
+					pointValue:pointValue,
+					questionType:"Matching",
+					"questions[]":questionArray,
+					"questionLetters[]":questionLetterArray,
+					"answers[]":answerArray,
+					"answerLetters[]":answerLetterArray,
+					testId:testId,
+					heading:heading
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 
 			});
 
@@ -807,7 +859,6 @@ $multipleChoiceRadioId = 0;
 				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 			});
 			
 			/***********************************************************/
@@ -860,7 +911,6 @@ $multipleChoiceRadioId = 0;
 				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 			});
 			
 			
@@ -909,7 +959,6 @@ $multipleChoiceRadioId = 0;
 				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 			});
 			
 			/***********************************************************/
