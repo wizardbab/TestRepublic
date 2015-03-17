@@ -327,18 +327,23 @@ $multipleChoiceRadioId = 0;
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Short Answer</h4>
 								</div>
 								<div class="modal-body">
 									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="short_answer_point_value">
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="short_answer_question">
-											<label for="recipient-name" class="control-label">Answer:</label>
+											<div class="point_value_section">
+												<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="text" id="short_answer_point_value">
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="short_answer_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="short_answer_question">
+											</div>
+											<label for="short_answer_answer" class="control-label">Answer:</label>
 											<input type="text" class="form-control" id="short_answer_answer">
 										</div>
 									</form>
@@ -352,7 +357,7 @@ $multipleChoiceRadioId = 0;
 					</div>
 					
 				<!-- Essay Modal -->
-					<div id="EssayModal" class="modal hide fade">
+					<div id="EssayModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -383,17 +388,22 @@ $multipleChoiceRadioId = 0;
 					<div id="TFModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">True/False</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="tf_question_point_value" />
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="tf_question" />
+											<div class="point_value_section">
+												<label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="tf_question_point_value" />
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="tf_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="tf_question" />
+											</div>
 										</div>
 										
 										<div class="form-group">
@@ -419,37 +429,43 @@ $multipleChoiceRadioId = 0;
 					<div id="MCModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Multiple Choice</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="mc_point_value" />
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="mc_question" />
+											<div class="point_value_section">
+												<label for="mc_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="mc_point_value" />
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="mc_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="mc_question" />
+											</div>
 										</div>
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<br />
+											<label class="control-label">Answer:</label>
 											<div class="row">
 												<div class="col-md-1">
 													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="multipleText0" name="multipleText0" />
+													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="row" id="MC_add_answers">
-												<div class="col-md-1">
-													<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-												</div>
-												<div class="col-md-11">
-													<input type="text" class="form-control" id="multipleText1" name="multipleText1"/>
+											<div id="MC_add_answers">
+												<div class="row reduce_margin_top">
+													<div class="col-md-1">
+														<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+													</div>
+													<div class="col-md-11">
+														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -675,14 +691,12 @@ $multipleChoiceRadioId = 0;
 			
 				$("#mc_answer" + c).text('mc_answer' + c);
 				
-				
 				// adds text boxes to mc modal
 				cloned = $('#multipleText' + d );
 				$("#multipleText" + d).clone().attr('id', 'multipleText'+(++d )).insertAfter(cloned);
 			
 				$("#multipleText" + d ).text('multipleText' + d );
 				
-
 			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 			
 			

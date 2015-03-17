@@ -169,7 +169,7 @@ ul.alert-dropdown {
 
 .sidebar-nav {
     position: absolute;
-    top: 60px;
+    top: 20px;
     width: 250px;
     margin: 0;
     padding: 0;
@@ -223,10 +223,67 @@ ul.alert-dropdown {
 	line-height: 50px;
 }
 
+.course_header
+	{
+		width: 100%;
+		position: fixed;
+		padding: 8px;
+		
+		margin-top: 50px;
+		height: 99px;
+		background: black;
+		font-size: 20pt;
+		color: white;
+		font-weight: bold;
+		z-index: 1;
+	}
+	
+	.course_number
+	{
+		margin-left: 10pt;
+	}
+	
+	.class_name
+	{
+		margin-left: 40pt;
+	}
+
+#question_header
+{
+	background: rgba(149,179,215, 0.8);
+	padding: 8px;
+	padding-left: 30px;
+	font-size: 16pt;
+}
+
+#question_text
+{
+	font-weight: bold;
+}
+
+#question_type_text
+{
+	color: rgb(55,96,146);
+	font-size: 20pt;
+}
+
+#test_name
+{
+	font-size: 18pt;
+	padding: 5px;
+	padding-left: 30px;
+}
+
+#question_number
+{
+	width: 2em;
+	text-align: center;
+}
+
 @media(min-width:768px) 
 {
 		#wrapper {
-			padding-top: 20px;
+			padding-top: 149px;
 			padding-left: 250px;
 		}
 
