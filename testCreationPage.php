@@ -204,43 +204,43 @@ $multipleChoiceRadioId = 0;
 						<div class="test-info-text">
 							Test Information
 						</div>
-					
-						<label class="blocklabel">Test Name:
-							<input type="text" placeholder="Test #1" />
-						</label>
+						<form name="test_form" id="test_form" method="post">
+							<label class="blocklabel">Test Name:
+								<input type="text" placeholder="Test #1" />
+							</label>
+							
+							<label class="date_lbl">Start Date:
+								<input type="date" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="date_lbl">End Date:&nbsp;
+								<input type="date" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="time_limit_lbl">Time Limit:
+								<input type="number" /> minutes
+							</label>
+							
+							<br />
+							
+							<label class="instruction_lbl">Specific Instruction:</label>
+							<br />
+							<textarea class="form-control" rows="6">Don't cheat!</textarea>
+							<p id="test"> Foo </p> 
 						
-						<label class="date_lbl">Start Date:
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="date_lbl">End Date:&nbsp;
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="time_limit_lbl">Time Limit:
-							<input type="number" /> minutes
-						</label>
-						
-						<br />
-						
-						<label class="instruction_lbl">Specific Instruction:</label>
-						<br />
-						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						<p id="test"> Foo </p> 
-					
-						
-						<label class="pledge_lbl">Test Pledge:</label>
+							
+							<label class="pledge_lbl">Test Pledge:</label>
 
-						<textarea class="form-control" rows="6"></textarea>
-						
+							<textarea class="form-control" rows="6"></textarea>
+						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
 								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
@@ -750,7 +750,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store questions
 				$('.m_question').each(function() {
 					questionArray[i] = $(this).val();
-					alert(questionArray[i]);
 					i++;									
 				});
 				
@@ -758,7 +757,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store question letters
 				$('.m_question_letter').each(function() {
 					questionLetterArray[i] = $(this).val();
-					alert(questionLetterArray[i]);
 					i++;					
 				});
 				
@@ -766,7 +764,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store answers
 				$('.m_answer').each(function() {
 					answerArray[i] = $(this).val();
-					alert(answerArray[i]);
 					i++;					
 				});
 				
@@ -774,7 +771,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store answer letters
 				$('.m_answer_letter').each(function() {
 					answerLetterArray[i] = $(this).val();
-					alert(answerLetterArray[i]);
 					i++;	
 				});
 				
