@@ -10,7 +10,7 @@ function validate(form)
    
    if(firstName == "")
    {
-      inlineMsg('firstName','Required', 2);
+      inlineMsg('firstName', 'Required', 2);
       return false;
    }
    

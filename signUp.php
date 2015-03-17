@@ -77,30 +77,41 @@ $success = false;
                <li>
                   <a href="#" id="student-summary">Summary</a>
                </li>
+               
                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
                   Select a Class:
                </li>
-
-               <?php 
-               // List of classes for the user to select from...we'll need to keep track of what class is selected for the db
-               if ($classList = $database->prepare($listClassQuery)) 
-               {
-                  // nothing to bind
-               }
-               else {
-                  printf("Error message: %s\n", $database->error);
-               }	
-               $classList->bind_result($clid, $clde);
-               $classList->execute();
-               
-               $courseCounter = 1;
-               $classCounter = 1; 
-               while($classList->fetch())
-               {	
-                  echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
-               }
-               $classList->close(); 
-               ?>
+               <div id="sidebar">
+                  <?php 
+                  // List of classes for the user to select from...we'll need to keep track of what class is selected for the db
+                  if ($classList = $database->prepare($listClassQuery)) 
+                  {
+                     // nothing to bind
+                  }
+                  else {
+                     printf("Error message: %s\n", $database->error);
+                  }	
+                  $classList->bind_result($clid, $clde);
+                  $classList->execute();
+                  
+                  $courseCounter = 1;
+                  $classCounter = 1; 
+                  $sidebarArray = array();
+                  while($classList->fetch())
+                  {
+                     echo '
+                     <li>
+                        <a href="#">
+                           <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
+                        </a>
+                        <input type="checkbox" name="classes[]" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
+                     </li>
+                     ';
+                     //$sidebarArray[] = sidebar-element.checked;
+                  }
+                  $classList->close(); 
+                  ?>
+               </div>
             </ul>
          </div>
 
