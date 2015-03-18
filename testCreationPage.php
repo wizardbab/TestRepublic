@@ -69,13 +69,34 @@ $testIdQuery = "select max(test_id), saved, question_id from test
 
 // Create a test
 $createTestQuery = "insert into test(test_id, class_id, teacher_id) values(?, ?, ?)";
+				  
+// Publish a test
+$publishQuery = "insert into test_list(student_id, test_id)
+					  select student_id, ? from enrollment where class_id = ?";
+					  
+$populateTestCrapQuery = "select test_name, date_begin, date_end, time_limit, instruction, pledge, max_points
+									from test where test_id = ?";
 
 global $newTestId;
 global $multipleChoiceInputId;
-$multipleChoiceInputId = 0;
 global $multipleChoiceRadioId;
 
-$multipleChoiceRadioId = 0;
+// These go with the form on the left of the page
+$testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
+$startDate = (isset($_POST['startDate']) ? $_POST['startDate'] : "");
+$endDate = (isset($_POST['endDate']) ? $_POST['endDate'] : "");
+$timeLimit = (isset($_POST['timeLimit']) ? $_POST['timeLimit'] : "");
+$specificInstructions = (isset($_POST['specificInstructions']) ? $_POST['specificInstructions'] : "");
+$testPledge = (isset($_POST['testPledge']) ? $_POST['testPledge'] : "");
+$maxPoints = (isset($_POST['maxPoints']) ? $_POST['maxPoints'] : "");
+
+/*global $testName;
+global $startDate;
+global $endDate;
+global $timeLimit;
+global $specificInstructions;
+global $testPledge;
+global $maxPoints; */
 
 ?>
 <body>
@@ -196,7 +217,6 @@ $multipleChoiceRadioId = 0;
 					</div>
 				</div>
 				
-				
 				<div class="row" id="test_section">
 				
 					<div class="col-md-4" id="test_information">
@@ -204,43 +224,47 @@ $multipleChoiceRadioId = 0;
 						<div class="test-info-text">
 							Test Information
 						</div>
-					
-						<label class="blocklabel">Test Name:
-							<input type="text" placeholder="Test #1" />
-						</label>
+						<form name="test_form" id="test_form" method="post">
+							<label class="blocklabel">Test Name:
+								<input type="text" id="testName" name="testName" placeholder="Test #1" value="<?php echo $testName; ?>" />
+							</label>
+							
+							<label class="date_lbl">Start Date:
+								<input type="text" id="dateBegin" name="dateBegin" value="<?php echo $startDate; ?>" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="date_lbl">End Date:&nbsp;
+								<input type="text" id="dateEnd" name="dateEnd" value="<?php echo $endDate; ?>" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="time_limit_lbl">Time Limit:
+								<input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" /> minutes
+							</label>
+							
+							<label class="time_limit_lbl">Max Points:
+								<input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" /> 
+							</label>
+							
+							<br />
+							
+							<label class="instruction_lbl">Specific Instructions:</label>
+							<br />
+							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6" value="<?php echo $specificInstructions; ?>"></textarea>
+							<p id="test" value="<?php echo $testName; ?>"> Foo </p> 
 						
-						<label class="date_lbl">Start Date:
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="date_lbl">End Date:&nbsp;
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="time_limit_lbl">Time Limit:
-							<input type="number" /> minutes
-						</label>
-						
-						<br />
-						
-						<label class="instruction_lbl">Specific Instruction:</label>
-						<br />
-						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						<p id="test"> Foo </p> 
-					
-						
-						<label class="pledge_lbl">Test Pledge:</label>
+							
+							<label class="pledge_lbl">Test Pledge:</label>
 
-						<textarea class="form-control" rows="6"></textarea>
-						
+							<textarea class="form-control" id="testPledge" name="testPledge" rows="6" value="<?php echo $testPledge; ?>"></textarea>
+						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
 								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
@@ -317,28 +341,52 @@ $multipleChoiceRadioId = 0;
 					
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("sss", $newTestId, $classId, $id);
-                $testCreateStatement->execute();
+            $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
-				
+					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
+					$populateTestCrapStatement->bind_param("s", $newTestId);
+					$populateTestCrapStatement->bind_result($bTestName, $bStartDate, $bEndDate, $bTimeLimit, $bSpecificInstructions, $bTestPledge, $bMaxPoints);
+					$populateTestCrapStatement->execute();
+					while($populateTestCrapStatement->fetch())
+					{
+						$testName = $bTestName;
+	
+						if(!is_null($bStartDate))
+							$startDate = $bStartDate;
+						
+						if(!is_null($bEndDate))
+							$endDate = $bEndDate;
+						
+						$timeLimit = $bTimeLimit;
+						$specificInstruction = $bSpecificInstructions;
+						$testPledge = $bTestPledge;
+						$maxPoints = $bMaxPoints;
+					}
+					$populateTestCrapStatement->close();
+					
 				?>
-				
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Short Answer</h4>
 								</div>
 								<div class="modal-body">
 									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="short_answer_point_value">
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="short_answer_question">
-											<label for="recipient-name" class="control-label">Answer:</label>
+											<div class="point_value_section">
+												<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="text" id="short_answer_point_value">
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="short_answer_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="short_answer_question">
+											</div>
+											<label for="short_answer_answer" class="control-label">Answer:</label>
 											<input type="text" class="form-control" id="short_answer_answer">
 										</div>
 									</form>
@@ -352,7 +400,7 @@ $multipleChoiceRadioId = 0;
 					</div>
 					
 				<!-- Essay Modal -->
-					<div id="EssayModal" class="modal hide fade">
+					<div id="EssayModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -383,17 +431,22 @@ $multipleChoiceRadioId = 0;
 					<div id="TFModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">True/False</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="tf_question_point_value" />
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="tf_question" />
+											<div class="point_value_section">
+												<label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="tf_question_point_value" />
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="tf_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="tf_question" />
+											</div>
 										</div>
 										
 										<div class="form-group">
@@ -419,37 +472,43 @@ $multipleChoiceRadioId = 0;
 					<div id="MCModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Multiple Choice</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="mc_point_value" />
-											<label for="recipient-name" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="mc_question" />
+											<div class="point_value_section">
+												<label for="mc_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="mc_point_value" />
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="mc_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="mc_question" />
+											</div>
 										</div>
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<br />
+											<label class="control-label">Answer:</label>
 											<div class="row">
 												<div class="col-md-1">
 													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-11">
-													<input type="text" class="form-control" id="multipleText0" name="multipleText0" />
+													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="row" id="MC_add_answers">
-												<div class="col-md-1">
-													<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-												</div>
-												<div class="col-md-11">
-													<input type="text" class="form-control" id="multipleText1" name="multipleText1"/>
+											<div id="MC_add_answers">
+												<div class="row reduce_margin_top">
+													<div class="col-md-1">
+														<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+													</div>
+													<div class="col-md-11">
+														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -516,14 +575,18 @@ $multipleChoiceRadioId = 0;
 										<div class="row">
 											<div class="col-md-10" id="add_match_question">
 												<div class="form-group">
+													<label for="recipient-name" class="control-label">Section Heading:</label>
+													<input type="text" class="form-control" id="m_heading" />
+													<label for="recipient-name" class="control-label">Point Value (ea. question):</label>
+													<input type="text" class="form-control" id="m_point_value" />
 													<label for="recipient-name" class="control-label">Question:</label>
-													<input type="text" class="form-control" id="match_question_tb0" />
+													<input type="text" class="m_question" id="match_question_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_question_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Match:</label>
-													<input type="text" class="form-control" id="match_question_letter_tb0" />
+													<input type="text" class="m_question_letter" id="match_question_letter_tb0" />
 												</div>
 											</div>
 										</div>
@@ -534,17 +597,17 @@ $multipleChoiceRadioId = 0;
 											<div class="col-md-10" id="add_match_answer">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Answer:</label>
-													<input type="text" class="form-control" id="match_answer_tb0" />
+													<input type="text" class="m_answer" id="match_answer_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_answer_letter">
 												<div class="form-group">
 													<label for="recipient-name" class="control-label">Letter:</label>
-													<input type="text" class="form-control" id="match_answer_letter_tb0" />
+													<input type="text" class="m_answer_letter" id="match_answer_letter_tb0" />
 												</div>
 											</div>
 										</div>
-										
+										</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
 								</div>
 								<div class="modal-footer">
@@ -557,6 +620,8 @@ $multipleChoiceRadioId = 0;
 			</div>    				
 			</div>	
 
+	
+			
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {
@@ -564,7 +629,72 @@ $multipleChoiceRadioId = 0;
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	 <script>
+	$(document).ready(function()
+	{
+		var testName;
+		var dateBegin;
+		var dateEnd;
+		var timeLimit;
+		var specificInstruction;
+		var testPledge;
+		var newTestId = '<?php echo $newTestId; ?>';
+		var maxPoints;
+		
+		$("#saveTestBtn").click(function()
+		{
+			testName = $("#testName").val();
+			alert(testName);
+			dateBegin = $("#dateBegin").val();
+			alert(dateBegin);
+			dateEnd = $("#dateEnd").val();
+			alert(dateEnd);
+			timeLimit = $("#timeLimit").val();
+			alert(timeLimit);
+			specificInstruction = $("#specificInstruction").val();
+			alert(specificInstruction);
+			testPledge = $("#testPledge").val();
+			alert(testPledge);
+			maxPoints = $("#maxPoints").val();
+			alert(maxPoints);
+			
+			$.post("TestButtonScripts/saveButton.php",
+			{
+				testName:testName,
+				dateBegin:dateBegin,
+				dateEnd:dateEnd,
+				timeLimit:timeLimit,
+				specificInstruction:specificInstruction,
+				testPledge:testPledge,
+				newTestId:newTestId,
+				maxPoints:maxPoints
+			},
+		function(data)
+		{
+			/*document.getElementById("testName").value = data[0];
+			document.getElementById("dateBegin").value = data[1];
+			document.getElementById("dateEnd").value = data[2];
+			document.getElementById("timeLimit").value = data[3];
+			document.getElementById("specificInstruction").value = data[4];
+			document.getElementById("testPledge").value = data[5];
+			document.getElementById("maxPoints").value = data[6]; */
+			
+		//	document.getElementById("test").innerHTML = data;
+		'<?php echo $testName; ?>' = data["testName"];
+		'<?php echo $startDate; ?>' = data["startDate"];
+		'<?php echo $endDate; ?>' = data["endDate"];
+		'<?php echo $timeLimit; ?>' = data["timeLimit"];
+		'<?php echo $specificInstruction; ?>' = data["specificInstruction"];
+		'<?php echo $testPledge; ?>' = data["testPledge"];
+		'<?php echo $maxPoints; ?>' = data["maxPoints"];
+			
+		});
+			
+		});
+	});
+	</script>
 	
+
 	<script>
 	$(document).ready(function()
 	{
@@ -670,20 +800,19 @@ $multipleChoiceRadioId = 0;
 			
 				$("#mc_answer" + c).text('mc_answer' + c);
 				
-				
 				// adds text boxes to mc modal
 				cloned = $('#multipleText' + d );
 				$("#multipleText" + d).clone().attr('id', 'multipleText'+(++d )).insertAfter(cloned);
 			
 				$("#multipleText" + d ).text('multipleText' + d );
 				
-
 			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 			
 			
 		});
 	});
-	
+	</script>
+	<script>	
 		$(document).ready(function(){
 				$("#remove_MC").click(function(){
 				MCArray.push('<input type="text" class="form-control" id="Question">');
@@ -693,13 +822,9 @@ $multipleChoiceRadioId = 0;
 		});
 	});
 	</script>
-
-	
 	<script>	
-		var counter = 0;
 		var testId = '<?php echo $newTestId; ?>';
-		
-		
+			
 		$(document).ready(function()
 		{
 			
@@ -711,7 +836,6 @@ $multipleChoiceRadioId = 0;
 				var pointValue = $("#short_anwer_point_value").val();
 				var question = $("#short_answer_question").val();
 				var answer = $("#short_answer_answer").val();
-				counter++;
 			
 				$.post("TestQuestionScripts/essayAndShortAnswer.php",
 				{
@@ -730,16 +854,67 @@ $multipleChoiceRadioId = 0;
 				);
 
 			});
-			
+
 			/***********************************************************/
 			/* Matching stuff                                          */
 			/***********************************************************/
 			$("#MBtn").click(function()
 			{
 
+				var pointValue = $("#m_point_value").val();
+				var heading = $("#m_heading").val();
+				
+				var questionArray = [];
+				var questionLetterArray = [];
+				var answerArray = [];
+				var answerLetterArray = [];
+				
+				var i = 0;
+				// Loop and store questions
+				$('.m_question').each(function() {
+					questionArray[i] = $(this).val();
+					i++;									
+				});
+				
+				i = 0;
+				// Loop and store question letters
+				$('.m_question_letter').each(function() {
+					questionLetterArray[i] = $(this).val();
+					i++;					
+				});
+				
+				i = 0;
+				// Loop and store answers
+				$('.m_answer').each(function() {
+					answerArray[i] = $(this).val();
+					i++;					
+				});
+				
+				i = 0;
+				// Loop and store answer letters
+				$('.m_answer_letter').each(function() {
+					answerLetterArray[i] = $(this).val();
+					i++;	
+				});
+				
+				$.post("TestQuestionScripts/matching.php",
+				{
+					pointValue:pointValue,
+					questionType:"Matching",
+					"questions[]":questionArray,
+					"questionLetters[]":questionLetterArray,
+					"answers[]":answerArray,
+					"answerLetters[]":answerLetterArray,
+					testId:testId,
+					heading:heading
+				},
+				function(data)
+				{
+					document.getElementById("test").innerHTML = data;
+				});
+				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 
 			});
 
@@ -793,7 +968,6 @@ $multipleChoiceRadioId = 0;
 				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 			});
 			
 			/***********************************************************/
@@ -846,7 +1020,6 @@ $multipleChoiceRadioId = 0;
 				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 			});
 			
 			
@@ -895,7 +1068,6 @@ $multipleChoiceRadioId = 0;
 				
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
 				);
-				counter++;
 			});
 			
 			/***********************************************************/
@@ -906,7 +1078,6 @@ $multipleChoiceRadioId = 0;
 				var pointValue = $("#essay_point_value").val();
 				var question = $("#essay_question").val();
 				var answer = $("#essay_answer").val();
-				counter++;
 				
 				$.post("TestQuestionScripts/essayAndShortAnswer.php",
 				{
