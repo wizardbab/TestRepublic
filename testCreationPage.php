@@ -69,13 +69,34 @@ $testIdQuery = "select max(test_id), saved, question_id from test
 
 // Create a test
 $createTestQuery = "insert into test(test_id, class_id, teacher_id) values(?, ?, ?)";
+				  
+// Publish a test
+$publishQuery = "insert into test_list(student_id, test_id)
+					  select student_id, ? from enrollment where class_id = ?";
+					  
+$populateTestCrapQuery = "select test_name, date_begin, date_end, time_limit, instruction, pledge, max_points
+									from test where test_id = ?";
 
 global $newTestId;
 global $multipleChoiceInputId;
-$multipleChoiceInputId = 0;
 global $multipleChoiceRadioId;
 
-$multipleChoiceRadioId = 0;
+// These go with the form on the left of the page
+$testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
+$startDate = (isset($_POST['startDate']) ? $_POST['startDate'] : "");
+$endDate = (isset($_POST['endDate']) ? $_POST['endDate'] : "");
+$timeLimit = (isset($_POST['timeLimit']) ? $_POST['timeLimit'] : "");
+$specificInstructions = (isset($_POST['specificInstructions']) ? $_POST['specificInstructions'] : "");
+$testPledge = (isset($_POST['testPledge']) ? $_POST['testPledge'] : "");
+$maxPoints = (isset($_POST['maxPoints']) ? $_POST['maxPoints'] : "");
+
+/*global $testName;
+global $startDate;
+global $endDate;
+global $timeLimit;
+global $specificInstructions;
+global $testPledge;
+global $maxPoints; */
 
 ?>
 <body>
@@ -196,7 +217,6 @@ $multipleChoiceRadioId = 0;
 					</div>
 				</div>
 				
-				
 				<div class="row" id="test_section">
 				
 					<div class="col-md-4" id="test_information">
@@ -204,43 +224,47 @@ $multipleChoiceRadioId = 0;
 						<div class="test-info-text">
 							Test Information
 						</div>
-					
-						<label class="blocklabel">Test Name:
-							<input type="text" placeholder="Test #1" />
-						</label>
+						<form name="test_form" id="test_form" method="post">
+							<label class="blocklabel">Test Name:
+								<input type="text" id="testName" name="testName" placeholder="Test #1" value="<?php echo $testName; ?>" />
+							</label>
+							
+							<label class="date_lbl">Start Date:
+								<input type="text" id="dateBegin" name="dateBegin" value="<?php echo $startDate; ?>" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="date_lbl">End Date:&nbsp;
+								<input type="text" id="dateEnd" name="dateEnd" value="<?php echo $endDate; ?>" />
+							</label>
+							
+							<label class="time_lbl">Time:
+								<input type="time" />
+							</label>
+							
+							<label class="time_limit_lbl">Time Limit:
+								<input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" /> minutes
+							</label>
+							
+							<label class="time_limit_lbl">Max Points:
+								<input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" /> 
+							</label>
+							
+							<br />
+							
+							<label class="instruction_lbl">Specific Instructions:</label>
+							<br />
+							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6" value="<?php echo $specificInstructions; ?>"></textarea>
+							<p id="test" value="<?php echo $testName; ?>"> Foo </p> 
 						
-						<label class="date_lbl">Start Date:
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="date_lbl">End Date:&nbsp;
-							<input type="date" />
-						</label>
-						
-						<label class="time_lbl">Time:
-							<input type="time" />
-						</label>
-						
-						<label class="time_limit_lbl">Time Limit:
-							<input type="number" /> minutes
-						</label>
-						
-						<br />
-						
-						<label class="instruction_lbl">Specific Instruction:</label>
-						<br />
-						<textarea class="form-control" rows="6">Don't cheat!</textarea>
-						<p id="test"> Foo </p> 
-					
-						
-						<label class="pledge_lbl">Test Pledge:</label>
+							
+							<label class="pledge_lbl">Test Pledge:</label>
 
-						<textarea class="form-control" rows="6"></textarea>
-						
+							<textarea class="form-control" id="testPledge" name="testPledge" rows="6" value="<?php echo $testPledge; ?>"></textarea>
+						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
 								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
@@ -317,12 +341,31 @@ $multipleChoiceRadioId = 0;
 					
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("sss", $newTestId, $classId, $id);
-                $testCreateStatement->execute();
+            $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
-				
+					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
+					$populateTestCrapStatement->bind_param("s", $newTestId);
+					$populateTestCrapStatement->bind_result($bTestName, $bStartDate, $bEndDate, $bTimeLimit, $bSpecificInstructions, $bTestPledge, $bMaxPoints);
+					$populateTestCrapStatement->execute();
+					while($populateTestCrapStatement->fetch())
+					{
+						$testName = $bTestName;
+	
+						if(!is_null($bStartDate))
+							$startDate = $bStartDate;
+						
+						if(!is_null($bEndDate))
+							$endDate = $bEndDate;
+						
+						$timeLimit = $bTimeLimit;
+						$specificInstruction = $bSpecificInstructions;
+						$testPledge = $bTestPledge;
+						$maxPoints = $bMaxPoints;
+					}
+					$populateTestCrapStatement->close();
+					
 				?>
-				
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -561,6 +604,8 @@ $multipleChoiceRadioId = 0;
 			</div>    				
 			</div>	
 
+	
+			
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {
@@ -568,6 +613,70 @@ $multipleChoiceRadioId = 0;
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	 <script>
+	$(document).ready(function()
+	{
+		var testName;
+		var dateBegin;
+		var dateEnd;
+		var timeLimit;
+		var specificInstruction;
+		var testPledge;
+		var newTestId = '<?php echo $newTestId; ?>';
+		var maxPoints;
+		
+		$("#saveTestBtn").click(function()
+		{
+			testName = $("#testName").val();
+			alert(testName);
+			dateBegin = $("#dateBegin").val();
+			alert(dateBegin);
+			dateEnd = $("#dateEnd").val();
+			alert(dateEnd);
+			timeLimit = $("#timeLimit").val();
+			alert(timeLimit);
+			specificInstruction = $("#specificInstruction").val();
+			alert(specificInstruction);
+			testPledge = $("#testPledge").val();
+			alert(testPledge);
+			maxPoints = $("#maxPoints").val();
+			alert(maxPoints);
+			
+			$.post("TestButtonScripts/saveButton.php",
+			{
+				testName:testName,
+				dateBegin:dateBegin,
+				dateEnd:dateEnd,
+				timeLimit:timeLimit,
+				specificInstruction:specificInstruction,
+				testPledge:testPledge,
+				newTestId:newTestId,
+				maxPoints:maxPoints
+			},
+		function(data)
+		{
+			/*document.getElementById("testName").value = data[0];
+			document.getElementById("dateBegin").value = data[1];
+			document.getElementById("dateEnd").value = data[2];
+			document.getElementById("timeLimit").value = data[3];
+			document.getElementById("specificInstruction").value = data[4];
+			document.getElementById("testPledge").value = data[5];
+			document.getElementById("maxPoints").value = data[6]; */
+			
+		//	document.getElementById("test").innerHTML = data;
+		'<?php echo $testName; ?>' = data["testName"];
+		'<?php echo $startDate; ?>' = data["startDate"];
+		'<?php echo $endDate; ?>' = data["endDate"];
+		'<?php echo $timeLimit; ?>' = data["timeLimit"];
+		'<?php echo $specificInstruction; ?>' = data["specificInstruction"];
+		'<?php echo $testPledge; ?>' = data["testPledge"];
+		'<?php echo $maxPoints; ?>' = data["maxPoints"];
+			
+		});
+			
+		});
+	});
+	</script>
 	
 
 	<script>
@@ -750,7 +859,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store questions
 				$('.m_question').each(function() {
 					questionArray[i] = $(this).val();
-					alert(questionArray[i]);
 					i++;									
 				});
 				
@@ -758,7 +866,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store question letters
 				$('.m_question_letter').each(function() {
 					questionLetterArray[i] = $(this).val();
-					alert(questionLetterArray[i]);
 					i++;					
 				});
 				
@@ -766,7 +873,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store answers
 				$('.m_answer').each(function() {
 					answerArray[i] = $(this).val();
-					alert(answerArray[i]);
 					i++;					
 				});
 				
@@ -774,7 +880,6 @@ $multipleChoiceRadioId = 0;
 				// Loop and store answer letters
 				$('.m_answer_letter').each(function() {
 					answerLetterArray[i] = $(this).val();
-					alert(answerLetterArray[i]);
 					i++;	
 				});
 				
