@@ -79,93 +79,8 @@ $multipleChoiceRadioId = 0;
 
 ?>
 <body>
-	<div id="wrapper2">
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php // Added by David Hughen
-																												// to display student's name in top right corner
-																								if ($topRightStatement = $database->prepare($topRightQuery)) 
-                                                                                                {
-                                                                                                    $topRightStatement->bind_param("s", $id);
-                                                                        
-                                                                                                }
-                                                                                                else {
-                                                                                                    printf("Errormessage: %s\n", $database->error);
-                                                                                                }							
-                                                                                                $topRightStatement->bind_result($first_name, $last_name);
-                                                                                                $topRightStatement->execute();
-                                                                                                while($topRightStatement->fetch())
-                                                                                                {
-                                                                                                    echo $first_name . " " . $last_name;
-                                                                                                }
-                                            
-+											$topRightStatement->close();?><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
+	<!-- Added by Victor, replaces the nav bar -->
+	<?php require("Nav.php");?>
 	
         <!-- /#sidebar-wrapper -->
         <!-- Page Content -->
@@ -234,8 +149,6 @@ $multipleChoiceRadioId = 0;
 							<label class="instruction_lbl">Specific Instruction:</label>
 							<br />
 							<textarea class="form-control" rows="6">Don't cheat!</textarea>
-							<p id="test"> Foo </p> 
-						
 							
 							<label class="pledge_lbl">Test Pledge:</label>
 
@@ -344,13 +257,13 @@ $multipleChoiceRadioId = 0;
 												<input type="text" class="form-control" id="short_answer_question">
 											</div>
 											<label for="short_answer_answer" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="short_answer_answer">
+											<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
+									<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -360,7 +273,7 @@ $multipleChoiceRadioId = 0;
 					<div id="EssayModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Essay</h4>
 								</div>
@@ -372,7 +285,7 @@ $multipleChoiceRadioId = 0;
 											<label for="recipient-name" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="essay_question">
 											<label for="recipient-name" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="essay_answer">
+											<textarea type="text" class="form-control" id="essay_answer" rows="8"> </textarea>
 										</div>
 									</form>
 								</div>
@@ -484,7 +397,7 @@ $multipleChoiceRadioId = 0;
 					<div id="ATAModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">All that Apply</h4>
 								</div>
@@ -523,7 +436,7 @@ $multipleChoiceRadioId = 0;
 					<div id="MatchModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Matching</h4>
 								</div>
@@ -585,21 +498,6 @@ $multipleChoiceRadioId = 0;
     });
     </script>
 	
-
-	<script>
-	$(document).ready(function()
-	{
-		$("#SABtn").click(function()
-		{
-			var shortAnswerQuestion = $("#short_answer_question").val();
-			var shortAnswerAnswer   = $("#short_answer_anwer").val();
-			
-			
-			
-		});
-	});
-	</script>
-	
 	<!-- Add matching JS -->
 	<script>
 		$(document).ready(function()
@@ -622,9 +520,6 @@ $multipleChoiceRadioId = 0;
 			
 				$("#match_answer_letter_tb" + d ).text('match_answer_letter_tb' + d );
 				
-				/*$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
-				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
-				*/
 			});
 			
 			$("#add_match_question_btn").click(function()
@@ -646,24 +541,24 @@ $multipleChoiceRadioId = 0;
 	
 		<!-- All that Apply JS -->
 	<script>
+	var ATACounter = 1;
 		$(document).ready(function()
 		{
 			$("#add_ATA").click(function()
 			{
 				// adds text boxes to ata modal
-				cloned = $('#ata_answer' + c);
-				$("#ata_answer" + c).clone().attr('id', 'ata_answer'+(++c)).insertAfter(cloned);
+				cloned = $('#ata_answer' + ATACounter);
+				$("#ata_answer" + ATACounter).clone().attr('id', 'ata_answer'+(ATACounter+1)).insertAfter(cloned);
 			
-				$("#ata_answer" + c).text('ata_answer' + c);
+				$("#ata_answer" + ATACounter).text('ata_answer' + ATACounter);
 				
 				
-				cloned = $('#ata_answer_cb' + d );
-				$("#ata_answer_cb" + d).clone().attr('id', 'ata_answer_cb'+(++d )).insertAfter(cloned);
+				cloned = $('#ata_answer_cb' + ATACounter );
+				$("#ata_answer_cb" + ATACounter).clone().attr('id', 'ata_answer_cb'+(ATACounter+1 )).insertAfter(cloned);
 			
-				$("#ata_answer_cb" + d ).text('ata_answer_cb' + d );
+				$("#ata_answer_cb" + ATACounter ).text('ata_answer_cb' + ATACounter );
+				ATACounter++;
 				
-				/*$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				); */
 			});
 		});
 	</script>
@@ -672,13 +567,8 @@ $multipleChoiceRadioId = 0;
 		<!-- PROBLEM: in every append, how to generate a different value & id -->
 		<!-- class add_margin_mc doesnt work! :'( -->
 	<script>
-	var MCAnsArray = [];
-	var MCBtnArray = [];
-	var MCCounter = 0;
-	var c = 1;
+	var MCCounter = 1;
 	var cloned;
-	var stuff = [];
-	var d = 1;
 	
 		$(document).ready(function(){
 		
@@ -686,23 +576,18 @@ $multipleChoiceRadioId = 0;
 			<!-- MCCounter++; -->
 			
 				// adds radio buttons to mc modal
-				cloned = $('#mc_answer' + c);
-				$("#mc_answer" + c).clone().attr('id', 'mc_answer'+(++c)).insertAfter(cloned);
-			
-				$("#mc_answer" + c).text('mc_answer' + c);
+				cloned = $('#mc_answer' + MCCounter);
+				$("#mc_answer" + MCCounter).clone().attr('id', 'mc_answer'+(MCCounter+1)).insertAfter(cloned);
 				
 				// adds text boxes to mc modal
-				cloned = $('#multipleText' + d );
-				$("#multipleText" + d).clone().attr('id', 'multipleText'+(++d )).insertAfter(cloned);
-			
-				$("#multipleText" + d ).text('multipleText' + d );
-				
-			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
-			
-			
+				cloned = $('#multipleText' + MCCounter );
+				$("#multipleText" + MCCounter).clone().attr('id', 'multipleText'+(MCCounter+1)).insertAfter(cloned);
+		
+				MCCounter++;
 		});
 	});
 	</script>
+	<!--
 	<script>	
 		$(document).ready(function(){
 				$("#remove_MC").click(function(){
@@ -712,13 +597,12 @@ $multipleChoiceRadioId = 0;
 			$("#MC_AddAns").append(MCBtnArray[MCCounter]);
 		});
 	});
-	</script>
+	</script>-->
 	<script>	
 		var testId = '<?php echo $newTestId; ?>';
 			
 		$(document).ready(function()
 		{
-			
 			/***********************************************************/
 			/* Short answer stuff                                      */
 			/***********************************************************/
@@ -741,7 +625,7 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ sa_question +'</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
 
 			});
@@ -804,7 +688,7 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></a>'
 				);
 
 			});
@@ -837,7 +721,7 @@ $multipleChoiceRadioId = 0;
 				});
 				
 				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= c; i++)
+				for(i = 0; i <= MCCounter; i++)
 				{
 					multipleTextArray[i] = document.getElementById("multipleText" + i).value;
 				}
@@ -857,8 +741,16 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
+				
+				// Resets MC Values
+				for(MCCounter; MCCounter > 1; MCCounter--)
+				{
+					$('#mc_answer'+MCCounter).remove();
+					$('#multipleText'+MCCounter).remove();
+				}
+				
 			});
 			
 			/***********************************************************/
@@ -889,7 +781,7 @@ $multipleChoiceRadioId = 0;
 				});
 				
 				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= c; i++)
+				for(i = 0; i <= ATACounter; i++)
 				{
 					ataTextArray[i] = document.getElementById("ata_answer" + i).value;
 				}
@@ -909,8 +801,16 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
+				
+				// Resets MC Values
+				for(ATACounter; ATACounter > 1; ATACounter--)
+				{
+					$('#ata_answer_cb'+ATACounter).remove();
+					$('#ata_answer'+ATACounter).remove();
+				}
+				
 			});
 			
 			
@@ -957,7 +857,7 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">List Group Item Text</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
 			});
 			
@@ -983,7 +883,7 @@ $multipleChoiceRadioId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">' + question + '</h4> <p class="list-group-item-text">' + answer + '</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Essay</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
 			
 			});
