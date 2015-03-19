@@ -2,7 +2,7 @@
    // Authors: David Hughen - Jake Stevens
 	// Date Created: 3/13/15
 	// Last Modified: 3/13/15 - 3/16/15
-	// This php script handles the db stuff for matching questions
+	// This php script handles the db stuff for saving tests
 	require("../constants.php");
 	
 	// Grab the values posted by testCreationPage.php
@@ -13,7 +13,7 @@
 	
 	// Save a test
 	$saveQuery = "update test set date_begin = ?, date_end = ?, time_limit = ?, max_points = ?,
-					  test_name = ?, pledge = ?, instruction = ?, saved = 1
+					  test_name = ?, pledge = ?, instruction = ?, saved = 1, class_id = ?, teacher_id = ?
 					  where test_id = ?";
 	
 	@$testName = $_POST['testName'];
@@ -24,15 +24,8 @@
 	@$testPledge = $_POST['testPledge'];
 	@$newTestId = $_POST['newTestId'];
 	@$maxPoints = $_POST['maxPoints'];
-	
-	/*echo $testName . " ";
-	echo $dateBegin . " ";
-	echo $dateEnd . " ";
-	echo $timeLimit . " ";
-	echo $specificInstruction . " ";
-	echo $testPledge . " ";
-	echo $newTestId . " ";
-	echo $maxPoints; */
+    @$classId = $_POST['classId'];
+    @$teacherId = $_POST['teacherId'];
 	
 	$dataArray = ["testName" => $testName,
 					  "dateBegin" => $dateBegin, 
@@ -57,7 +50,7 @@
 		@$dateEnd = date("Y-m-d", strtotime($dateEnd));
 	
 	$saveStatement = $database->prepare($saveQuery);
-	$saveStatement->bind_param("ssssssss", $dateBegin, $dateEnd, $timeLimit, $maxPoints, $testName, $testPledge, $specificInstruction, $newTestId);
+	$saveStatement->bind_param("ssssssssss", $dateBegin, $dateEnd, $timeLimit, $maxPoints, $testName, $testPledge, $specificInstruction, $classId, $teacherId, $newTestId);
 	$saveStatement->execute();
 	$saveStatement->close();
 	

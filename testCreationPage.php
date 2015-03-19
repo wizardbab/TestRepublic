@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 
 <!-- 2/21 - Modals added by Victor Jereza -->
@@ -48,6 +45,9 @@ $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
 $sessionTestId = $_SESSION['testId'];
 
+//if(!is_null($_POST['testId']))
+    $sessionTestId = $_POST['testId'];
+    
 if($id == null)
     header('Location: login.html');
     
@@ -63,12 +63,14 @@ $mainClassQuery = "select class_id, class_description from class where class_id 
 $mainClassStatement = $database->prepare($mainClassQuery);
 
 // Generate a test id
-$testIdQuery = "select max(test_id), saved, question_id from test
-				left join question using(test_id)
-				where class_id = ?";
+$testIdQuery = "select a.test_id, a.saved, question_id from test as a
+	left join test as b
+    on (a.test_id < b.test_id)
+    left join question as c on a.test_id = c.test_id
+    where b.test_id is null";
 
 // Create a test
-$createTestQuery = "insert into test(test_id, class_id, teacher_id) values(?, ?, ?)";
+$createTestQuery = "insert into test(test_id) values(?)";
 				  
 // Publish a test
 $publishQuery = "insert into test_list(student_id, test_id)
@@ -216,7 +218,57 @@ global $maxPoints; */
                         ?>
 					</div>
 				</div>
+								<?php
+				// New test id
+				if($sessionTestId == "")
+				{
+					$testIdStatement = $database->prepare($testIdQuery);
+					$testIdStatement->bind_result($tid, $saved, $questionId);
+					$testIdStatement->execute();
+					$testIdStatement->fetch();
+                    // Create a session variable with the test id
+                    if($saved == 0 and is_null($questionId))
+                    {
+                        $newTestId = $tid;
+                        $_SESSION['testId'] = $newTestId;
+                    }
+                    else
+                    {
+                        $newTestId = $tid + 1;
+                        $_SESSION['testId'] = $newTestId;
+                    }
+					$testIdStatement->close();
+				}
+				else
+				{
+					$newTestId = $sessionTestId;
+				}
+				$testCreateStatement = $database->prepare($createTestQuery);
+				$testCreateStatement->bind_param("s", $newTestId);
+                $testCreateStatement->execute();
+				$testCreateStatement->close();
 				
+					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
+					$populateTestCrapStatement->bind_param("s", $newTestId);
+					$populateTestCrapStatement->bind_result($bTestName, $bStartDate, $bEndDate, $bTimeLimit, $bSpecificInstructions, $bTestPledge, $bMaxPoints);
+					$populateTestCrapStatement->execute();
+					while($populateTestCrapStatement->fetch())
+					{
+						$testName = $bTestName;
+	
+						if(!is_null($bStartDate))
+							$startDate = $bStartDate;
+						
+						if(!is_null($bEndDate))
+							$endDate = $bEndDate;
+						
+						$timeLimit = $bTimeLimit;
+						$specificInstructions = $bSpecificInstructions;
+						$testPledge = $bTestPledge;
+						$maxPoints = $bMaxPoints;
+					}
+					$populateTestCrapStatement->close();
+				?>
 				<div class="row" id="test_section">
 				
 					<div class="col-md-4" id="test_information">
@@ -257,13 +309,13 @@ global $maxPoints; */
 							
 							<label class="instruction_lbl">Specific Instructions:</label>
 							<br />
-							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6" value="<?php echo $specificInstructions; ?>"></textarea>
+							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6"><?php echo $specificInstructions; ?></textarea>
 							<p id="test" value="<?php echo $testName; ?>"> Foo </p> 
 						
 							
 							<label class="pledge_lbl">Test Pledge:</label>
 
-							<textarea class="form-control" id="testPledge" name="testPledge" rows="6" value="<?php echo $testPledge; ?>"></textarea>
+							<textarea class="form-control" id="testPledge" name="testPledge" rows="6"><?php echo $testPledge; ?></textarea>
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
@@ -316,56 +368,7 @@ global $maxPoints; */
 						</div>
 					</div>		
                 </div>
-				
-				<?php 
-				// New test id
-				if($sessionTestId == null)
-				{
-					$testIdStatement = $database->prepare($testIdQuery);
-					$testIdStatement->bind_param("s", $classId);
-					$testIdStatement->bind_result($tid, $saved, $questionId);
-					$testIdStatement->execute();
-					while($testIdStatement->fetch())
-					{
-					
-						// Create a session variable with the test id
-						$newTestId = $tid + 1;
-						$_SESSION['testId'] = $newTestId;
-					}
-					$testIdStatement->close();
-				}
-				else
-				{
-					$newTestId = $sessionTestId;
-				}
-					
-				$testCreateStatement = $database->prepare($createTestQuery);
-				$testCreateStatement->bind_param("sss", $newTestId, $classId, $id);
-            $testCreateStatement->execute();
-				$testCreateStatement->close();
-				
-					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
-					$populateTestCrapStatement->bind_param("s", $newTestId);
-					$populateTestCrapStatement->bind_result($bTestName, $bStartDate, $bEndDate, $bTimeLimit, $bSpecificInstructions, $bTestPledge, $bMaxPoints);
-					$populateTestCrapStatement->execute();
-					while($populateTestCrapStatement->fetch())
-					{
-						$testName = $bTestName;
-	
-						if(!is_null($bStartDate))
-							$startDate = $bStartDate;
-						
-						if(!is_null($bEndDate))
-							$endDate = $bEndDate;
-						
-						$timeLimit = $bTimeLimit;
-						$specificInstruction = $bSpecificInstructions;
-						$testPledge = $bTestPledge;
-						$maxPoints = $bMaxPoints;
-					}
-					$populateTestCrapStatement->close();
-					
-				?>
+			
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -640,23 +643,19 @@ global $maxPoints; */
 		var testPledge;
 		var newTestId = '<?php echo $newTestId; ?>';
 		var maxPoints;
+        var classId = '<?php echo $clid; ?>';
+        var teacherId = '<?php echo $id; ?>';
 		
 		$("#saveTestBtn").click(function()
 		{
 			testName = $("#testName").val();
-			alert(testName);
 			dateBegin = $("#dateBegin").val();
-			alert(dateBegin);
 			dateEnd = $("#dateEnd").val();
-			alert(dateEnd);
 			timeLimit = $("#timeLimit").val();
-			alert(timeLimit);
 			specificInstruction = $("#specificInstruction").val();
-			alert(specificInstruction);
 			testPledge = $("#testPledge").val();
-			alert(testPledge);
 			maxPoints = $("#maxPoints").val();
-			alert(maxPoints);
+			alert("Test Saved");
 			
 			$.post("TestButtonScripts/saveButton.php",
 			{
@@ -667,34 +666,51 @@ global $maxPoints; */
 				specificInstruction:specificInstruction,
 				testPledge:testPledge,
 				newTestId:newTestId,
-				maxPoints:maxPoints
+				maxPoints:maxPoints,
+                classId:classId,
+                teacherId:teacherId
 			},
 		function(data)
 		{
-			/*document.getElementById("testName").value = data[0];
-			document.getElementById("dateBegin").value = data[1];
-			document.getElementById("dateEnd").value = data[2];
-			document.getElementById("timeLimit").value = data[3];
-			document.getElementById("specificInstruction").value = data[4];
-			document.getElementById("testPledge").value = data[5];
-			document.getElementById("maxPoints").value = data[6]; */
-			
-		//	document.getElementById("test").innerHTML = data;
-		'<?php echo $testName; ?>' = data["testName"];
-		'<?php echo $startDate; ?>' = data["startDate"];
-		'<?php echo $endDate; ?>' = data["endDate"];
-		'<?php echo $timeLimit; ?>' = data["timeLimit"];
-		'<?php echo $specificInstruction; ?>' = data["specificInstruction"];
-		'<?php echo $testPledge; ?>' = data["testPledge"];
-		'<?php echo $maxPoints; ?>' = data["maxPoints"];
-			
+		
 		});
 			
 		});
 	});
 	</script>
 	
-
+    <script>
+    $(document).ready(function()
+	{
+        var newTestId = '<?php echo $newTestId; ?>';
+        var classId = '<?php echo $clid; ?>';
+        
+        $("#createTestBtn").click(function()
+		{
+			alert("Test published!");
+			$.post("TestButtonScripts/createButton.php",
+			{
+                newTestId:newTestId,
+                classId:classId
+			},
+        function(data)
+        {
+    
+        });
+        });
+	});
+    </script>
+    
+    <script>
+    $(document).ready(function()
+	{
+        $("#cancelTestBtn").click(function()
+		{
+            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId ?>';
+        });
+    });
+    </script>
+    
 	<script>
 	$(document).ready(function()
 	{
