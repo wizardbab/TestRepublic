@@ -20,12 +20,15 @@
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+   <!-- Form Validation Includes -->
+   <link href="css/validation_page.css" rel="stylesheet" type="text/css">
+   <script type="text/javascript" src="js/validation.js"></script>
+
    <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-	
 </head>
 
 <body>
@@ -58,265 +61,283 @@ $email     = (isset($_POST['email']) ? $_POST['email'] : "");
 $password  = (isset($_POST['password']) ? $_POST['password'] : "");
 $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 global $id;
+$success = false;
 ?>
-		
 
-<div id="wrapper">
-	
-
-<form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
-<div id="sidebar-wrapper">
-
-					
-					<a href="logout.php">
-					<!-- Button with a link wrapped around it to go back to the login page -->
-					<button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="window.location.href='login.html'">
-						<i class="glyphicon glyphicon-log-in"></i>Back to Login
-					</button></a>
+   <div id="wrapper">
+      <form name="signUpForm" id="signUpForm" action="signUp.php" onsubmit="return validate(this)" method="post">
+         <div id="sidebar-wrapper">
+            <a href="logout.php">
+               <!-- Button with a link wrapped around it to go back to the login page -->
+               <button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="signUp.php">
+                  <i class="glyphicon glyphicon-log-in"></i>Back to Login
+               </button>
+            </a>
             <ul class="sidebar-nav">
-				<li>
-                    <a href="#" id="student-summary">Summary</a>
-                </li>
-                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
-                    Select a Class:
-                </li>
+               <li>
+                  <a href="#" id="student-summary">Summary</a>
+               </li>
                
-				<?php 
-				
-				// List of classes for the user to select from...we'll need to keep track of what class is selected for the db
-				if ($classList = $database->prepare($listClassQuery)) 
-				{
-					// nothing to bind
-				}
-				else {
-					printf("Errormessage: %s\n", $database->error);
-				}	
-				$classList->bind_result($clid, $clde);
-				$classList->execute();
-				
-				$courseCounter = 1;
-				$classCounter = 1; 
-				while($classList->fetch())
-				{	
-					echo '<li><a href="#"><div class="subject-name">' . $courseCounter++ . ". " . $clde . '</div></a><input type="checkbox" name="classes[]" value="' . $clid . '"></li>';
-					
-				}
-				$classList->close(); 
-				
-				?>
+               <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
+                  Select a Class:
+               </li>
+                  <?php 
+                  // List of classes for the user to select from...we'll need to keep track of what class is selected for the db
+                  if ($classList = $database->prepare($listClassQuery)) 
+                  {
+                     // nothing to bind
+                  }
+                  else {
+                     printf("Error message: %s\n", $database->error);
+                  }	
+                  $classList->bind_result($clid, $clde);
+                  $classList->execute();
+                  
+                  $courseCounter = 1;
+                  $classCounter = 1; 
+                  //global $sidebarArray;
+                  //$sidebarArray = array();
+                  while($classList->fetch())
+                  {
+                     echo '
+                     <li>
+                        <a href="#">
+                           <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
+                        </a>
+                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
+                     </li>
+                     ';
+                  }
+                  $classList->close(); 
+                  ?>
+                  <!--<script>	
+                     var sidebar_array = [];
+                     var i = 0;
+                     $(document).ready(function()
+                     {
+                        $('.sidebar_class').each(function() 
+                        {
+                           sidebar_array.push($(this).is(':checked'));
+                           i++;
+                        });
+                     });
+                     window.alert(sidebar_array[0]);
+                     update_array(sidebar_array);
+                  </script>-->
             </ul>
-				
-				
-        </div>
+         </div>
 
+         <div class="container-fluid">
+            <div class="row">
 
-<div class="container-fluid">
-		<div class="row">
-			
-		<div id="signUpDiv">
-		
-			<div class="sign_up_box">
-				<div class="sign_up_text_area">
-					<img src="images/logo4.png" alt="Our Logo" height="80" width="80">
-					<span class="sign_up_text">&nbsp; Sign Up</span>
-				</div>
-				<h2>Please enter your information.</h2>
-				<br />
-				
-				<label class="survey_style">
-					<div class="row">
-						<div class="col-md-4">First Name:</div>
-						<div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" /></div>
-					</div>
-				</label><br />
-				<label class="survey_style">
-					<div class="row">
-						<div class="col-md-4">Last Name:</div>
-						<div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" /></div>
-					</div>
-				</label><br />
-				<label class="survey_style">
-					<div class="row">
-						<div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-						<div class="col-md-8"><input type="text" name="email" id="email" /></div>
-					</div>
-				</label><br />
-				<label class="survey_style">
-					<div class="row">
-						<div class="col-md-4">Password:</div>
-						<div class="col-md-8"><input type="password" name="password" id="password" /></div>
-					</div>
-				</label><br />
-				<!--<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up" id="create_acc_btn" />-->
-				<input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
-			</div>
-				
-		</form>
+               <div id="signUpDiv">
 
-					
-					<?php 
-					// We have data; begin validation
-					if(is_array($classes))
-					{
-						// Does a preliminary check for email pattern
-						if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
-						{
-							echo "Invalid email ".$email;
-						}
-						// Valid email; validate password
-						else
-						{
-							// Does a preliminary check for required password pattern
-							if(!preg_match('^[[:alpha:]]+[[:digit:]]+^',$password))
-								echo "Need more variety: ";
-							else
-								if(!preg_match('^.{8,20}^', $password))
-									echo "Password needs to be between 8-16 characters";
-								
-								// Valid email and password so we insert into db
-								else
-								{
-									// Assign an id
-									if ($idStatement = $database->prepare($newStudentIdQuery)) 
-									{
-									}
-									else {
-										printf("Error message: %s\n", $database->error);
-									}	
-									
-									$idStatement->bind_result($sid);
-									$idStatement->execute();
-									while($idStatement->fetch())
-									{	
-										$newId = $sid + 1;
-									}
-									$idStatement->close();
-									
-									foreach($classes as $a)
-									{
-										$testCounter = 0;
-                                        $testIdArray[] = null;
-										
-										echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
-										if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
-										{
-										}
-										else {
-										printf("Error message: %s\n", $database->error);
-										}
-										$insertEnrollmentStatement->bind_param("ss", $newId, $a);
-										$insertEnrollmentStatement->execute();
-										$insertEnrollmentStatement->close();
-										
-                                        $testCount = count($testIdArray);
-                                        for($i = 0; $i < $testCount; $i++)
-                                        {
-                                            $testIdArray[$i] = null;
-                                        }
-                                        
-										// Select id for the test
-										if($selectTestIdStatement = $database->prepare($selectTestIdQuery))
-										{
-											
-										}
-										else 
-										{
-											printf("Error message: %s\n", $database->error);
-										}
-										
-										$selectTestIdStatement->bind_param("s", $a);
-										$selectTestIdStatement->bind_result($tid);
-										$selectTestIdStatement->execute();
-										while($selectTestIdStatement->fetch())
-										{	
-											$testIdArray[$testCounter++] = $tid;
-										}
-										$selectTestIdStatement->close();
+                  <div class="sign_up_box">
+                     <div class="sign_up_text_area">
+                        <img src="images/logo4.png" alt="Our Logo" height="80" width="80">
+                        <span class="sign_up_text">&nbsp; Sign Up</span>
+                     </div>
+                     <h2>Please enter your information.</h2>
+                     <br />
+                     
+                     <label class="survey_style">
+                        <div class="row">
+                           <div class="col-md-4">First Name:</div>
+                           <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" /></div>
+                        </div>
+                     </label><br />
+                     <label class="survey_style">
+                        <div class="row">
+                           <div class="col-md-4">Last Name:</div>
+                           <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" /></div>
+                        </div>
+                     </label><br />
+                     <label class="survey_style">
+                        <div class="row">
+                           <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
+                           <div class="col-md-8"><input type="text" name="email" id="email" /></div>
+                        </div>
+                     </label><br />
+                     <label class="survey_style">
+                        <div class="row">
+                           <div class="col-md-4">Password:</div>
+                           <div class="col-md-8"><input type="password" name="password" id="password" /></div>
+                        </div>
+                     </label><br />
+                     <!--<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up" id="create_acc_btn" />-->
+                     <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
+                  </div>
 
-                                        if(is_array($testIdArray))
-                                        {
-                                            foreach($testIdArray as $t)
-                                            {
-                                                $insertTestStatement = $database->prepare($insertTestQuery);
-                                                $insertTestStatement->bind_param("ss", $newId, $t);
-                                                $insertTestStatement->execute();
-                                                $insertTestStatement->close();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            printf("It failed");
-                                        }
-									}
-									
-									if ($insertStudentStatement = $database->prepare($insertStudentQuery))
-									{
-									}
-									else{
-										printf("Error message: %s\n", $database->error);
-									}
-									$insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
-									$insertStudentStatement->execute();
-									$insertStudentStatement->close();
+                        <?php 
+                        $success = 1;
+                        // We have data; begin validation
+                        if(is_array($classes))
+                        {
+                           // Does a preliminary check for email pattern
+                           if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
+                           {
+                              $success = 0;
+                              echo "Invalid email ".$email;
+                           }
+                           // Valid email; validate password
+                           else
+                           {
+                              // Does a preliminary check for required password pattern
+                              if(!preg_match('^[[:alpha:]]+[[:digit:]]+^', $password))
+                              {
+                                 $success = 0;
+                                 echo "Need more variety: ";
+                              }
+                              else
+                                 if(!preg_match('^.{8,20}^', $password))
+                                 {
+                                    $success = 0;
+                                    echo "Password needs to be between 8-16 characters";
+                                 }
+                                 
+                                 // Valid email and password so we insert into db
+                                 else
+                                 {
+                                    // Assign an id
+                                    if ($idStatement = $database->prepare($newStudentIdQuery)) 
+                                    {
+                                       
+                                    }
+                                    else
+                                    {
+                                       printf("Error message: %s\n", $database->error);
+                                    }	
 
-								echo '<h1>' . $newId . '</h1>';
-								$testIdArray = null;
+                                    $idStatement->bind_result($sid);
+                                    $idStatement->execute();
+                                    while($idStatement->fetch())
+                                    {	
+                                       $newId = $sid + 1;
+                                    }
+                                    $idStatement->close();
 
-							}
-						}			
-					}
-					else
-					// do nothing
-					{
-						$success = false;
-					}
-						
-						
-					?>
-					
+                                    foreach($classes as $a)
+                                    {
+                                       $testCounter = 0;
+                                       $testIdArray[] = null;
 
-	</div>
-		</div>
-		</div>
-	
-</div>
-	
-	<!-- Sign Up Modal -->
-		<div id="sign_up_modal" class="modal fade" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-						<h4 class="modal-title">
-							<div class="sign_up_text_area_2">
-								<img src="images/logo4.png" alt="Our Logo" height="50" width="50">
-								<span class="sign_up_text_2">&nbsp; Sign Up</span>
-							</div>
-						</h4>
-					</div>
-					<div class="modal-body">
-						<div class="congrats_text">Congratulations!</div>
-						<div><h4>You have successfully created an account.<h4></div>
-					
-						<?php
-							echo '<div class="name_section">'.ucfirst($firstName) . ' ' .ucfirst($lastName). ' ' .$id. '</div>';
-						?>
-					
-						<div class="course_added_text">Course(s) that you have added:</div>
-						<div>put all the courses here below
-						</div>
-					
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	
+                                       echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
+                                       if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
+                                       {
+                                          
+                                       }
+                                       else
+                                       {
+                                          printf("Error message: %s\n", $database->error);
+                                       }
+                                       $insertEnrollmentStatement->bind_param("ss", $newId, $a);
+                                       $insertEnrollmentStatement->execute();
+                                       $insertEnrollmentStatement->close();
+
+                                       $testCount = count($testIdArray);
+                                       for($i = 0; $i < $testCount; $i++)
+                                       {
+                                          $testIdArray[$i] = null;
+                                       }
+
+                                       // Select id for the test
+                                       if($selectTestIdStatement = $database->prepare($selectTestIdQuery))
+                                       {
+                                          
+                                       }
+                                       else 
+                                       {
+                                          printf("Error message: %s\n", $database->error);
+                                       }
+
+                                       $selectTestIdStatement->bind_param("s", $a);
+                                       $selectTestIdStatement->bind_result($tid);
+                                       $selectTestIdStatement->execute();
+                                       while($selectTestIdStatement->fetch())
+                                       {	
+                                          $testIdArray[$testCounter++] = $tid;
+                                       }
+                                       $selectTestIdStatement->close();
+
+                                       if(is_array($testIdArray))
+                                       {
+                                          foreach($testIdArray as $t)
+                                          {
+                                             $insertTestStatement = $database->prepare($insertTestQuery);
+                                             $insertTestStatement->bind_param("ss", $newId, $t);
+                                             $insertTestStatement->execute();
+                                             $insertTestStatement->close();
+                                          }
+                                       }
+                                       else
+                                       {
+                                         printf("It failed");
+                                       }
+                                    }
+
+                                    if ($insertStudentStatement = $database->prepare($insertStudentQuery))
+                                    {
+                                    }
+                                    else{
+                                       printf("Error message: %s\n", $database->error);
+                                    }
+                                    $insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
+                                    $insertStudentStatement->execute();
+                                    $insertStudentStatement->close();
+
+                                 echo '<h1>' . $newId . '</h1>';
+                                 $testIdArray = null;
+                              }
+                           }			
+                        }
+                        else
+                        // do nothing
+                        {
+                           $success = 0;
+                        }
+                        ?>
+                  </div>
+            </div>
+         </div>
+      </form>
+   </div>
+
+   <!-- Sign Up Modal -->
+   <div id="sign_up_modal" class="modal fade" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">
+                  <div class="sign_up_text_area_2">
+                     <img src="images/logo4.png" alt="Our Logo" height="50" width="50">
+                     <span class="sign_up_text_2">&nbsp; Sign Up</span>
+                  </div>
+               </h4>
+            </div>
+            <div class="modal-body">
+               <div class="congrats_text">Congratulations!</div>
+               <div><h4>You have successfully created an account.<h4></div>
+
+               <?php
+                  echo '<div class="name_section">'.ucfirst($firstName) . ' ' .ucfirst($lastName). ' ' .$id. '</div>';
+               ?>
+
+               <div class="course_added_text">Course(s) that you have added:</div>
+               <div>put all the courses here below
+               </div>
+            </div>
+
+            <div class="modal-footer">
+               <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="js/bootstrap.js"></script>
-	
+   <script src="js/bootstrap.js"></script>
+
    <!-- Menu Toggle Script -->
    <script>
    $("#menu-toggle").click(function(e) {
@@ -329,7 +350,7 @@ global $id;
    $(document).ready(function(){
 		$("#create_acc_btn").click(function() {
 			
-			/* ACTUAL RUNNING CODE
+			/* ACTUAL RUNNING CODE */
 			<?php
 				if ($success == true) { ?>
 					
@@ -338,17 +359,15 @@ global $id;
 					});
 					
 			<?php } ?>
-			*/
+			
 			
 			// TEST: make the modal appears after the button is clicked
 			//
-			$('#sign_up_modal').modal('show');
+			//$('#sign_up_modal').modal('show');
 			
 		});
 	});
 	</script>
-  
-	
-   
+
 </body>
 </html>
