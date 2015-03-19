@@ -81,7 +81,6 @@ $success = false;
                <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
                   Select a Class:
                </li>
-               <div id="sidebar">
                   <?php 
                   // List of classes for the user to select from...we'll need to keep track of what class is selected for the db
                   if ($classList = $database->prepare($listClassQuery)) 
@@ -96,7 +95,8 @@ $success = false;
                   
                   $courseCounter = 1;
                   $classCounter = 1; 
-                  $sidebarArray = array();
+                  //global $sidebarArray;
+                  //$sidebarArray = array();
                   while($classList->fetch())
                   {
                      echo '
@@ -104,14 +104,26 @@ $success = false;
                         <a href="#">
                            <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
                         </a>
-                        <input type="checkbox" name="classes[]" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
+                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
                      </li>
                      ';
-                     //$sidebarArray[] = sidebar-element.checked;
                   }
                   $classList->close(); 
                   ?>
-               </div>
+                  <!--<script>	
+                     var sidebar_array = [];
+                     var i = 0;
+                     $(document).ready(function()
+                     {
+                        $('.sidebar_class').each(function() 
+                        {
+                           sidebar_array.push($(this).is(':checked'));
+                           i++;
+                        });
+                     });
+                     window.alert(sidebar_array[0]);
+                     update_array(sidebar_array);
+                  </script>-->
             </ul>
          </div>
 
@@ -157,13 +169,14 @@ $success = false;
                   </div>
 
                         <?php 
+                        $success = 1;
                         // We have data; begin validation
                         if(is_array($classes))
                         {
                            // Does a preliminary check for email pattern
                            if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
                            {
-                              $success = false;
+                              $success = 0;
                               echo "Invalid email ".$email;
                            }
                            // Valid email; validate password
@@ -172,13 +185,13 @@ $success = false;
                               // Does a preliminary check for required password pattern
                               if(!preg_match('^[[:alpha:]]+[[:digit:]]+^', $password))
                               {
-                                 $success = false;
+                                 $success = 0;
                                  echo "Need more variety: ";
                               }
                               else
                                  if(!preg_match('^.{8,20}^', $password))
                                  {
-                                    $success = false;
+                                    $success = 0;
                                     echo "Password needs to be between 8-16 characters";
                                  }
                                  
@@ -280,7 +293,7 @@ $success = false;
                         else
                         // do nothing
                         {
-                           $success = false;
+                           $success = 0;
                         }
                         ?>
                   </div>
