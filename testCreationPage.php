@@ -77,10 +77,14 @@ $publishQuery = "insert into test_list(student_id, test_id)
 					  
 $populateTestCrapQuery = "select test_name, date_begin, date_end, time_limit, instruction, pledge, max_points
 									from test where test_id = ?";
+                                    
+// Old questions from Db
+$oldQuestionsQuery = "select question_id, question_type, question_value, question_text, question_no,
+                        answer_id, answer_text, correct, heading_id, heading from question
+                        join answer using (question_id)
+                        where test_id = ?";
 
 global $newTestId;
-global $multipleChoiceInputId;
-global $multipleChoiceRadioId;
 
 // These go with the form on the left of the page
 $testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
@@ -188,7 +192,7 @@ global $maxPoints; */
                         ?>
 					</div>
 				</div>
-								<?php
+			<?php
 				// New test id
 				if($sessionTestId == "")
 				{
@@ -333,7 +337,58 @@ global $maxPoints; */
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
-							
+                                <?php
+                /***************************************************************************************************/
+                /* Modal crap for Victor to mess with                                                              */
+                /***************************************************************************************************/
+                                    $oldId = 0;
+                                    $modalId = 0;
+                                    $oldQuestionsStatement = $database->prepare($oldQuestionsQuery);
+                                    $oldQuestionsStatement->bind_param("s", $newTestId);
+                                    $oldQuestionsStatement->bind_result($qid, $qtype, $qvalue, $qtext, $qno, $aid, $atext, $correct, $heading_id, $heading);
+                                    $oldQuestionsStatement->execute();
+                                    while($oldQuestionsStatement->fetch())
+                                    {
+                                        // Checks to see if this is a new question, or just a new answer
+                                        if($oldId != $qid)
+                                        {
+                                            // Modals here will save changes rather than create questions
+                                            if($qtype == "True/False")
+                                            {
+                                                // Echo True/False with info inside
+                                                // This just puts the box thing on test page... not a modal
+                                                echo '<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                            }
+                                            else if($qtype == "Multiple Choice")
+                                            {
+                                                // Echo multiple choice modal with info inside
+                                            }
+                                            else if($qtype == "All That Apply")
+                                            {
+                                                // Echo All that Apply modal with info inside
+                                            }
+                                            else if($qtype == "Matching")
+                                            {
+                                                // Echo Matching modal with info inside
+                                            }
+                                            else if($qtype == "Short Answer")
+                                            {
+                                                // Echo Short Answer Modal with info inside
+                                            }
+                                            else
+                                            {
+                                                // Echo Essay modal with info inside
+                                            }
+                                            $modalId++;
+                                        }
+                                        else
+                                        {
+                                            // Echo another answer into previously made modal using modalId
+                                        }
+                                        $oldId = $qid;
+                                    }
+                                    $oldQuestionsStatement->close();
+                                ?>
 							</div>
 						</div>
 					</div>		
@@ -674,6 +729,14 @@ global $maxPoints; */
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+    
+    <script type="text/javascript">
+    function sooper_looper()
+    {
+        alert("SOOPER_LOOPER!!!!!");
+    }
+    </script>
+    
 	 <script>
 	$(document).ready(function()
 	{
