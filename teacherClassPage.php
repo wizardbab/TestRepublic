@@ -63,8 +63,8 @@ join test using(test_id)
 where class_id = ?";
 
 // Query to populate the first table on the screen
-$firstTableQuery = "select test_name, avg(test_score) from test_list
-join test using(test_id)
+$firstTableQuery = "select test_name, avg(test_score), test_id, student_id from test_list
+right join test using(test_id)
 where class_id = ?
 group by(test_name)
 order by(test_id)";
@@ -73,7 +73,10 @@ order by(test_id)";
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
 // Title bar for student list
-$studentTitleQuery = "select test_name from test where class_id = ?";
+$studentTitleQuery = "select test_name from test
+join test_list using(test_id)
+where class_id = ?
+group by(test_id)";
 
 // Student names for student list
 $studentNamesQuery = "select first_name, last_name from student
@@ -182,8 +185,10 @@ $studentStatement = $database->prepare($studentQuery);
 						$studentCountStatement->close();
 						?></span>
 					</div>
-					
-					<button type="button" class="create_test_button" onclick="location.href='testCreationPage.php'">Create Test</button>
+					<form action="testCreationPage.php" method="post">
+                        <input type="hidden" class="create_test_button" value="" name="testId" id="testId"/>
+                        <input type="submit" class="create_test_button" id="createTestButton" value="Create Test"/>
+                    </form>
 					
 					<div class="test_list_text">
 						Test List
@@ -208,20 +213,24 @@ $studentStatement = $database->prepare($studentQuery);
 						<?php
 							$firstTableStatement = $database->prepare($firstTableQuery);
 							$firstTableStatement->bind_param("s", $classId);
-							$firstTableStatement->bind_result($tname, $tavg);
+							$firstTableStatement->bind_result($tname, $tavg, $tid, $sid);
 							$firstTableStatement->execute();
 							// We should be getting two tests here
 							while($firstTableStatement->fetch())
 							{                                  
                                 $tavg = number_format($tavg, 2);
-                                if($tavg == 0)
+                                if($sid == null)
+                                    $tavg = 'Test not published';
+                                else if($tavg == 0)
                                     $tavg = 'No Tests Taken';
                                 else
                                     $tavg = (float)$tavg.'%';
-								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><button type="button" class="view_test_button"></button></td></tr>';
+								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
+                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></td></form></tr>';
 							}
 							$firstTableStatement->close();
-                            if($tname == null)
+                            if($tid == null)
                                     echo'<tr><td colspan="3">No tests created</td></tr>';
 						?>
 						</tbody>
