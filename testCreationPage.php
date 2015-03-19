@@ -336,15 +336,19 @@ $multipleChoiceRadioId = 0;
 										<div class="form-group">
 											<div class="point_value_section">
 												<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-												<input type="text" id="short_answer_point_value">
+												<input type="number" id="short_answer_point_value">
 											</div>
 											<hr />
 											<div class="question_section">
+											</div>
+											<div class="form-group">
 												<label for="short_answer_question" class="control-label">Question:</label>
 												<input type="text" class="form-control" id="short_answer_question">
 											</div>
-											<label for="short_answer_answer" class="control-label">Answer:</label>
-											<input type="text" class="form-control" id="short_answer_answer">
+											<div class="form-group">
+												<label for="short_answer_answer" class="control-label">Answer:</label>
+												<input type="text" class="form-control" id="short_answer_answer">
+											</div>
 										</div>
 									</form>
 								</div>
@@ -360,18 +364,25 @@ $multipleChoiceRadioId = 0;
 					<div id="EssayModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Essay</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="essay_point_value">
-											<label for="recipient-name" class="control-label">Question:</label>
+											<div class="point_value_section">
+												<label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="essay_point_value">
+											</div>
+										</div>
+										<hr />
+										<div class="form-group">
+											<label for="essay_question" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="essay_question">
-											<label for="recipient-name" class="control-label">Answer:</label>
+										</div>
+										<div class="form-group">
+											<label for="essay_answer" class="control-label">Answer:</label>
 											<input type="text" class="form-control" id="essay_answer">
 										</div>
 									</form>
@@ -446,29 +457,33 @@ $multipleChoiceRadioId = 0;
 												<input type="text" class="form-control" id="mc_question" />
 											</div>
 										</div>
+									<label class="control-label">Answer:</label>
+									<div class="answers_section">
 										<div class="form-group">
-											<label class="control-label">Answer:</label>
-											<div class="row">
+											<div class="row choices">
 												<div class="col-md-1">
 													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
-												<div class="col-md-11">
+												<div class="col-md-10">
 													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
-											<div id="MC_add_answers">
-												<div class="row reduce_margin_top">
+											<div>
+												<div class="row reduce_margin_top choices">
 													<div class="col-md-1">
-														<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+														<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
 													</div>
-													<div class="col-md-11">
+													<div class="col-md-10">
 														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
+													</div>
+													<div class="col-md-1" id="MC_add_trash_btn">
 													</div>
 												</div>
 											</div>
 										</div>
+									</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
@@ -484,28 +499,48 @@ $multipleChoiceRadioId = 0;
 					<div id="ATAModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">All that Apply</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="ata_point_value" />
-											<label for="recipient-name" class="control-label">Question:</label>
+											<div class="point_value_section">
+												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="ata_point_value" />
+											</div>
+										</div>
+										<hr />
+										<div class="form-group">
+											<label for="ata_question" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="ata_question" />
 										</div>
-										<div class="form-group">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<br />
-											<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" />
-											<input type="text" id="ata_answer0" class="ata_tb" />
-										</div>
-										<div class="form-group" id="ATA_AddAns">
-											<div class="ata_margin">
-												<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb"/>
-												<input type="text" id="ata_answer1" class="ata_tb" />
+										<label class="control-label">Answer:</label>
+										<div class="answers_section">
+											<div class="form-group">
+												<div class="row choices">
+													<div class="col-md-1">
+														<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" />
+													</div>
+													<div class="col-md-10">
+														<input type="text" id="ata_answer0" class="ata_tb form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div>
+													<div class="row reduce_margin_top choices">
+														<div class="col-md-1">
+															<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb" />
+														</div>
+														<div class="col-md-10">
+															<input type="text" id="ata_answer1" class="ata_tb form-control" />
+														</div>
+														<div class="col-md-1" id="ATA_add_trash_btn">
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</form>
@@ -523,45 +558,80 @@ $multipleChoiceRadioId = 0;
 					<div id="MatchModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 									<h4 class="modal-title">Matching</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
-										<div class="row">
-											<div class="col-md-10" id="add_match_question">
+										<div class="form-group">
+											<label for="m_heading" class="control-label">Section Heading:</label>
+											<input type="text" class="form-control" id="m_heading" />
+										</div>
+										<div class="form-group">
+											<div class="point_value_section">		
+												<label for="m_point_value" class="control-label">Point Value (ea. question):&nbsp;</label>
+												<input type="number" id="m_point_value" />
+											</div>
+										</div>
+										<hr />
+										<div class="row reduce_margin_top">
+											<div class="col-md-9">
+												<label class="control-label test">Question:</label>
+											</div>
+											<div class="col-md-2">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Section Heading:</label>
-													<input type="text" class="form-control" id="m_heading" />
-													<label for="recipient-name" class="control-label">Point Value (ea. question):</label>
-													<input type="text" class="form-control" id="m_point_value" />
-													<label for="recipient-name" class="control-label">Question:</label>
-													<input type="text" class="m_question" id="match_question_tb0" />
+													<label class="control-label reduce_margin_top">Match:</label>
+												</div>
+											</div>
+										</div>
+										<div class="reduce_margin_bottom">
+										</div>
+										<div class="row matching_question_n_match_section">
+											<div class="col-md-9" id="add_match_question">
+												<div class="form-group">
+													<input type="text" class="m_question form-control" id="match_question_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_question_letter">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Match:</label>
-													<input type="text" class="m_question_letter" id="match_question_letter_tb0" />
+													<input type="text" class="m_question_letter form-control" id="match_question_letter_tb0" />
 												</div>
+											</div>
+											<div class="col-md-1" id="add_match_question_trash_btn">
 											</div>
 										</div>
 										
 										<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_question_btn">Add Item +</button>
 										
 										<div class="row">
-											<div class="col-md-10" id="add_match_answer">
+											<div class="col-md-9">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Answer:</label>
-													<input type="text" class="m_answer" id="match_answer_tb0" />
+													<label class="control-label">Answer:</label>
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_answer_letter">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Letter:</label>
-													<input type="text" class="m_answer_letter" id="match_answer_letter_tb0" />
+													<label class="control-label">Letter:</label>
 												</div>
+											</div>
+											<div class="col-md-1">
+											</div>
+										</div>
+										<div class="reduce_margin_bottom">
+										</div>
+										<div class="row matching_answer_n_match_section">
+											<div class="col-md-9" id="add_match_answer">
+												<div class="form-group">
+													<input type="text" class="m_answer form-control" id="match_answer_tb0" />
+												</div>
+											</div>
+											<div class="col-md-2" id="add_match_answer_letter">
+												<div class="form-group">
+													<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb0" />
+												</div>
+											</div>
+											<div class="col-md-1" id="add_match_answer_trash_btn">
 											</div>
 										</div>
 										</form>
@@ -622,6 +692,8 @@ $multipleChoiceRadioId = 0;
 			
 				$("#match_answer_letter_tb" + d ).text('match_answer_letter_tb' + d );
 				
+				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
+
 				/*$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
 				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
 				*/
@@ -640,6 +712,9 @@ $multipleChoiceRadioId = 0;
 				$("#match_question_letter_tb" + b).clone().attr('id', 'match_question_letter_tb'+(++b )).insertAfter(cloned);
 			
 				$("#match_question_letter_tb" + b ).text('match_question_letter_tb' + b );
+				
+				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
+
 			});
 		});
 	</script>
@@ -661,6 +736,8 @@ $multipleChoiceRadioId = 0;
 				$("#ata_answer_cb" + d).clone().attr('id', 'ata_answer_cb'+(++d )).insertAfter(cloned);
 			
 				$("#ata_answer_cb" + d ).text('ata_answer_cb' + d );
+				
+				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata"><span class="glyphicon glyphicon-trash"></span></button>');
 				
 				/*$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
 				); */
@@ -696,7 +773,11 @@ $multipleChoiceRadioId = 0;
 				$("#multipleText" + d).clone().attr('id', 'multipleText'+(++d )).insertAfter(cloned);
 			
 				$("#multipleText" + d ).text('multipleText' + d );
-				
+			
+			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
+			
+			$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
+			
 			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 			
 			
