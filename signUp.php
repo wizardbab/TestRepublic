@@ -70,7 +70,7 @@ global $id;
 					
 					<a href="logout.php">
 					<!-- Button with a link wrapped around it to go back to the login page -->
-					<button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="signUp.php">
+					<button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="window.location.href='login.html'">
 						<i class="glyphicon glyphicon-log-in"></i>Back to Login
 					</button></a>
             <ul class="sidebar-nav">
