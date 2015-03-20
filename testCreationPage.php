@@ -44,8 +44,10 @@ $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
 $sessionTestId = $_SESSION['testId'];
 
+global $newTestId;
+
 //if(!is_null($_POST['testId']))
-    $sessionTestId = $_POST['testId'];
+   @$sessionTestId = $_POST['testId'];
     
 if($id == null)
     header('Location: login.html');
@@ -84,7 +86,7 @@ $oldQuestionsQuery = "select question_id, question_type, question_value, questio
                         join answer using (question_id)
                         where test_id = ?";
 
-global $newTestId;
+
 
 // These go with the form on the left of the page
 $testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
@@ -118,7 +120,7 @@ global $maxPoints; */
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
 						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId ?></span>
+						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
 					</div>
 				</a>
 			</div>
@@ -219,7 +221,7 @@ global $maxPoints; */
 				}
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("s", $newTestId);
-                $testCreateStatement->execute();
+            $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
 					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
@@ -357,7 +359,48 @@ global $maxPoints; */
                                             {
                                                 // Echo True/False with info inside
                                                 // This just puts the box thing on test page... not a modal
-                                                echo '<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+																
+																echo '<div id="TFModalEdit'.$modalId.'" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header modal_header_color">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									<h4 class="modal-title">True/False</h4>
+								</div>
+								<div class="modal-body">
+									<form role="form">
+										<div class="form-group">
+											<div class="point_value_section">
+												<label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="tf_question_point_value" value=" '. $qvalue. '" />
+											</div>
+											<hr />
+											<div class="question_section">
+												<label for="tf_question" class="control-label">Question:</label>
+												<input type="text" class="form-control" id="tf_question" value= " ' . $qtext . ' "/>
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<div class="radio">
+												<label><input type="radio" class="optradio" name="optradio" value="true" />True</label>
+											</div>
+											<div class="radio">
+												<label><input type="radio" class="optradio" name="optradio" value="false" />False</label>
+											</div>
+										</div>
+										
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+											<button type="button" class="btn btn-primary" data-dismiss="modal" id="saveTrueFalse" onclick="">Save</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>';
+																
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#TFModalEdit'.$modalId.'" data-title="TrueFalse"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
                                             }
                                             else if($qtype == "Multiple Choice")
                                             {
@@ -1212,7 +1255,7 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				$("#testList").append('<a href="#" class="list-group-item" data-toggle="modal" data-target="#TFModalEdit" data-title="TrueFalse"> <h4 class="list-group-item-heading">True/False</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
 			});
 			
