@@ -103,7 +103,7 @@ $success = false;
                         <a href="#">
                            <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
                         </a>
-                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" checked>
+                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
                      </li>
                      ';
                      
