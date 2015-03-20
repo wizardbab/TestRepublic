@@ -69,7 +69,7 @@ $success = false;
          <div id="sidebar-wrapper">
             <a href="logout.php">
                <!-- Button with a link wrapped around it to go back to the login page -->
-               <button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="signUp.php">
+               <button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="window.location.href='logout.php'">
                   <i class="glyphicon glyphicon-log-in"></i>Back to Login
                </button>
             </a>
