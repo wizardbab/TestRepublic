@@ -271,6 +271,7 @@ global $maxPoints; */
 								<input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" /> minutes
 							</label>
 							
+							<br />
 							<label class="time_limit_lbl">Max Points:
 								<input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" /> 
 							</label>
