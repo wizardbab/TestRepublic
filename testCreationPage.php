@@ -390,21 +390,109 @@ global $maxPoints; */
                                                                     
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Create Question</button>
+                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Save Question</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>';
-                                                //echo 'hi';
                                             }
                                             else if($qtype == "Multiple Choice")
                                             {
                                                 // Echo multiple choice modal with info inside
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#MCModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo '<div id="MCModal'.$modalId.'" class="modal fade">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header modal_header_color">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h4 class="modal-title">Multiple Choice</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form role="form">
+                                                                    <div class="form-group">
+                                                                        <div class="point_value_section">
+                                                                            <label for="mc_point_value" class="control-label">Point Value:&nbsp;</label>
+                                                                            <input type="number" id="mc_point_value" value="'.$qvalue.'"/>
+                                                                        </div>
+                                                                        <hr />
+                                                                        <div class="question_section">
+                                                                            <label for="mc_question" class="control-label">Question:</label>
+                                                                            <input type="text" class="form-control" id="mc_question" value="'.$qtext.'"/>
+                                                                        </div>
+                                                                    </div>
+                                                                <label class="control-label">Answer:</label>
+                                                                <div class="answers_section">
+                                                                    <div class="form-group">
+                                                                        <div class="row choices">
+                                                                            <div class="col-md-1">
+                                                                                <input type="radio" name="mc_answer0" id="mc_answer0" '.($correct?"checked":"").'value="multipleRadio0" class="multipleRadio" />
+                                                                            </div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" class="form-control multipleTextboxes" value="'.$atext.'"id="multipleText0" name="multipleText0" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                </div>
+                                                                </form>
+                                                                <button type="button" class="btn btn-default" aria-hidden="true" id="add_MC1">Add Item +</button>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">SaveS Question</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
                                             }
                                             else if($qtype == "All That Apply")
                                             {
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#ATAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo '<div id="ATAModal'.$modalId.'" class="modal fade">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header modal_header_color">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h4 class="modal-title">All that Apply</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form role="form">
+                                                                    <div class="form-group">
+                                                                        <div class="point_value_section">
+                                                                            <label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
+                                                                            <input type="number" id="ata_point_value" value="'.$qvalue.'" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr />
+                                                                    <div class="form-group">
+                                                                        <label for="ata_question" class="control-label">Question:</label>
+                                                                        <input type="text" class="form-control" id="ata_question" value="'.$qtext.'"/>
+                                                                    </div>
+                                                                    <label class="control-label">Answer:</label>
+                                                                    <div class="answers_section">
+                                                                        <div class="form-group">
+                                                                            <div class="row choices">
+                                                                                <div class="col-md-1">
+                                                                                    <input type="checkbox" name="ata_answer" id="ata_answer_cb0" '.($correct?"checked":"").' class="ata_cb" />
+                                                                                </div>
+                                                                                <div class="col-md-10">
+                                                                                    <input type="text" id="ata_answer0" class="ata_tb form-control" value="'.$atext.'"/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                                <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA1">Add Item +</button>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Save Question</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
                                                 // Echo All that Apply modal with info inside
                                             }
                                             else if($qtype == "Matching")
@@ -424,6 +512,10 @@ global $maxPoints; */
                                         else
                                         {
                                             // Echo another answer into previously made modal using modalId
+                                            if($qtype == "Multiple Choice")
+                                            {
+                                                echo '<script type="text/javascript">', 'addMC();', '</script>';
+                                            }
                                         }
                                         $oldId = $qid;
                                     }
@@ -770,13 +862,6 @@ global $maxPoints; */
     });
     </script>
     
-    <script type="text/javascript">
-    function sooper_looper()
-    {
-        alert("SOOPER_LOOPER!!!!!");
-    }
-    </script>
-    
 	 <script>
 	$(document).ready(function()
 	{
@@ -954,15 +1039,15 @@ global $maxPoints; */
 		<!-- Multiple Choice JS -->
 		<!-- PROBLEM: in every append, how to generate a different value & id -->
 		<!-- class add_margin_mc doesnt work! :'( -->
-	<script>
+	<script type="text/javascript">
 	var MCCounter = 1;
 	var cloned;
 	
 		$(document).ready(function(){
 		
-			$("#add_MC").click(function(){
+			$("#add_MC").click(function()
+            {
 			<!-- MCCounter++; -->
-			
 				// adds radio buttons to mc modal
 				cloned = $('#mc_answer' + MCCounter);
 				$("#mc_answer" + MCCounter).clone().attr('id', 'mc_answer'+(MCCounter+1)).insertAfter(cloned);
