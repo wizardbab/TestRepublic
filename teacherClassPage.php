@@ -21,8 +21,9 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
-<?php
+<body>
 
+<?php
 session_start();
 
 // Include the constants used for the db connection
@@ -62,8 +63,8 @@ join test using(test_id)
 where class_id = ?";
 
 // Query to populate the first table on the screen
-$firstTableQuery = "select test_name, avg(test_score) from test_list
-join test using(test_id)
+$firstTableQuery = "select test_name, avg(test_score), test_id, student_id from test_list
+right join test using(test_id)
 where class_id = ?
 group by(test_name)
 order by(test_id)";
@@ -72,7 +73,10 @@ order by(test_id)";
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
 // Title bar for student list
-$studentTitleQuery = "select test_name from test where class_id = ?";
+$studentTitleQuery = "select test_name from test
+join test_list using(test_id)
+where class_id = ?
+group by(test_id)";
 
 // Student names for student list
 $studentNamesQuery = "select first_name, last_name from student
@@ -109,94 +113,9 @@ $studentStatement = $database->prepare($studentQuery);
 
 ?>
 
-<body>
-	<div id="wrapper2"
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-           <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li> 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php // Added by David Hughen
-																												// to display student's name in top right corner
 
-																								if ($topRightStatement = $database->prepare($topRightQuery)) 
-																															{
-																																$topRightStatement->bind_param("s", $id);
-																									
-																															}
-																															else {
-																																printf("Errormessage: %s\n", $database->error);
-																															}							
-																												$topRightStatement->bind_result($first_name, $last_name);
-																												$topRightStatement->execute();
-																												while($topRightStatement->fetch())
-																												{
-																													echo $first_name . " " . $last_name;
-																												}
-																												$topRightStatement->close();?><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
+			<!-- Added by Victor -->
+	<?php require("Nav.php");?>
 	
     <div id="wrapper">
 
@@ -266,8 +185,10 @@ $studentStatement = $database->prepare($studentQuery);
 						$studentCountStatement->close();
 						?></span>
 					</div>
-					
-					<button type="button" class="create_test_button" onclick="location.href='testCreationPage.php'">Create Test</button>
+					<form action="testCreationPage.php" method="post">
+                        <input type="hidden" class="create_test_button" value="" name="testId" id="testId"/>
+                        <input type="submit" class="create_test_button" id="createTestButton" value="Create Test"/>
+                    </form>
 					
 					<div class="test_list_text">
 						Test List
@@ -292,20 +213,24 @@ $studentStatement = $database->prepare($studentQuery);
 						<?php
 							$firstTableStatement = $database->prepare($firstTableQuery);
 							$firstTableStatement->bind_param("s", $classId);
-							$firstTableStatement->bind_result($tname, $tavg);
+							$firstTableStatement->bind_result($tname, $tavg, $tid, $sid);
 							$firstTableStatement->execute();
 							// We should be getting two tests here
 							while($firstTableStatement->fetch())
 							{                                  
                                 $tavg = number_format($tavg, 2);
-                                if($tavg == 0)
+                                if($sid == null)
+                                    $tavg = 'Test not published';
+                                else if($tavg == 0)
                                     $tavg = 'No Tests Taken';
                                 else
                                     $tavg = (float)$tavg.'%';
-								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><button type="button" class="view_test_button"></button></td></tr>';
+								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
+                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></td></form></tr>';
 							}
 							$firstTableStatement->close();
-                            if($tname == null)
+                            if($tid == null)
                                     echo'<tr><td colspan="3">No tests created</td></tr>';
 						?>
 						</tbody>

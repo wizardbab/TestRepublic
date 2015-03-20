@@ -384,24 +384,116 @@ ul.alert-dropdown {
 		margin-top: 8px;
 	}
 	
-
-	.add_margin_match
+	.multipleRadio, .ata_cb
+	{
+		height: 35px;
+	}
+	
+	.multipleTextboxes, .ata_tb
 	{
 		margin-bottom: 10px;
 	}
 	
-	.add_margin_mc
+	#mc_point_value
+	{
+		
+	}
+	
+	.question_section
+	{
+		margin-top: -10px;
+	}
+	
+	#mc_point_value, #tf_question_point_value, #short_answer_point_value, #m_point_value, #ata_point_value, #essay_point_value
+	{
+		width: 13%;
+		height:34px;
+		padding:6px 12px;
+		font-size:14px;
+		line-height:1.42857143;
+		color:#555;
+		background-color:#fff;
+		background-image:none;
+		border:1px solid #ccc;
+		border-radius:4px;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		-webkit-transition:border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		-o-transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	}
+	
+	.point_value_section
+	{
+		
+	}
+	
+	.modal_header_color
+	{
+		background: rgb(55,96,146);
+		color: white;
+		border-radius:4px;
+		
+	}
+	
+	.reduce_margin_top
+	{
+		margin-top: -15px;
+	}
+	
+	.modal .answers_section
+	{
+		max-height: 350px;
+		overflow-y: auto;
+	}
+	
+	.choices
+	{
+		width: 98%;
+		margin-left: 5px;
+	}
+	
+	#mc_answer1, #mc_answer0, #ata_answer_cb1, #ata_answer_cb0
+	{
+		margin-top: -4px;
+	}
+	
+	.m_question, .m_question_letter, .m_answer, .m_answer_letter
 	{
 		margin-bottom: 10px;
 	}
 	
-	.ata_tb
-	{
-		position: relative;
-	}
-	
-	.ata_margin
+	#add_match_question_btn
 	{
 		margin-bottom: 10px;
 	}
+	
+	.modal .matching_question_n_match_section, .modal .matching_answer_n_match_section
+	{
+		max-height: 130px;
+		overflow-y: auto;
+	}
+	
+	.reduce_margin_bottom
+	{
+		margin-bottom: -10px;
+	}
+	
+	#MC_add_trash_btn, #ATA_add_trash_btn
+	{
+		margin-top: 43px;
+		margin-left: -8px;
+	}
+	
+	#add_match_question_trash_btn, #add_match_answer_trash_btn
+	{
+		margin-top: 43px;
+		margin-left: -17px;
+	}
+	
+	.trash_button
+	{
+		margin-bottom: 10px;
+	}
+	
 }

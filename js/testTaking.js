@@ -11,7 +11,7 @@
 			
 			else
 			{
-				$( "#question" ).empty()
+				$( "#question" ).empty();
 				counter++;
 				$("#question").append(testArray[counter]);
 				eraseText();
@@ -25,7 +25,7 @@
 				{}
 			 else
 			 {
-				$( "#question" ).empty()
+				$( "#question" ).empty();
 				counter--;
 				$("#question").append(testArray[counter]);
 				eraseText();

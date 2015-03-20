@@ -8,19 +8,16 @@
 
  <title>Test Republic</title> 
 	
-	    <!-- Bootstrap Core CSS -->
-
+	<!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="css/login.css" rel="stylesheet">
-	
-	   <!-- Custom Fonts -->
+   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	
 </head> 
 <body> 
-<div id="wrapper2">
+<div class="container" id="wrapper2">
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -37,22 +34,22 @@
                 <a href="about.html" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-graduation-cap"></i> About us <b class="caret"></b></a>
                 <ul class="dropdown-menu about-dropdown">
                     <li>
-                        <a href="about.html#David" style="color:#999" >David Hughen</a>
+                        <a href="about.html#david" style="color:#999" >David Hughen</a>
                     </li>
                     <li>
-                        <a href="about.html#Jake" style="color:#999" >Jake Stevens</a>
+                        <a href="about.html#jake" style="color:#999" >Jake Stevens</a>
                     </li>
                     <li>
-                        <a href="about.html#Andrea" style="color:#999" >Andrea Setiawan</a>
+                        <a href="about.html#andrea" style="color:#999" >Andrea Setiawan</a>
                     </li>
                     <li>
-                        <a href="about.html#Cody" style="color:#999" >Cody Carr</a>
+                        <a href="about.html#cody" style="color:#999" >Cody Carr</a>
                     </li>
                     <li>
-                        <a href="about.html#Victor" style="color:#999" >Victor Jereza</a>
+                        <a href="about.html#victor" style="color:#999" >Victor Jereza</a>
                     </li>
                     <li>
-                        <a href="about.html#EnYang" style="color:#999" >EnYang Pang</a>
+                        <a href="about.html#enyang" style="color:#999" >En Yang Pang</a>
                     </li>
                     <li class="divider"></li>
                     <li>
@@ -69,9 +66,15 @@
 						<i class="glyphicon glyphicon-log-in"></i> Log in
 					</button>
 					<a href="signUp.php">
+					<button class="btn btn-block btn-primary" type="button" onclick="window.location.href='signUp.php'" id="loginButton">
+						<i class="glyphicon glyphicon-log-in"></i> Sign Up
+					</button>
+					</a>
+<!--
 					<button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="signUp.php">
 						<i class="glyphicon glyphicon-log-in"></i> Sign Up
-					</button></a>
+					</button>
+-->
 				</form>
 			</li>
         </ul>
