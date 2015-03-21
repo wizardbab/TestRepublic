@@ -14,13 +14,13 @@
     <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link href="css/teacher-create-test.css" rel="stylesheet">
+    <link href="css/teacher-create-test.css" rel="stylesheet" type="text/css" />
 	
 	   <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 	
 	<!-- Custom Test Creation JavaScript --> 
 	<script src="js/testCreation.js"></script>
@@ -44,8 +44,10 @@ $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
 $sessionTestId = $_SESSION['testId'];
 
+global $newTestId;
+
 //if(!is_null($_POST['testId']))
-    $sessionTestId = $_POST['testId'];
+   @$sessionTestId = $_POST['testId'];
     
 if($id == null)
     header('Location: login.html');
@@ -77,10 +79,14 @@ $publishQuery = "insert into test_list(student_id, test_id)
 					  
 $populateTestCrapQuery = "select test_name, date_begin, date_end, time_limit, instruction, pledge, max_points
 									from test where test_id = ?";
+                                    
+// Old questions from Db
+$oldQuestionsQuery = "select question_id, question_type, question_value, question_text, question_no,
+                        answer_id, answer_text, correct, heading_id, heading from question
+                        join answer using (question_id)
+                        where test_id = ?";
 
-global $newTestId;
-global $multipleChoiceInputId;
-global $multipleChoiceRadioId;
+
 
 // These go with the form on the left of the page
 $testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
@@ -114,7 +120,7 @@ global $maxPoints; */
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
 						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId ?></span>
+						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
 					</div>
 				</a>
 			</div>
@@ -188,7 +194,7 @@ global $maxPoints; */
                         ?>
 					</div>
 				</div>
-								<?php
+			<?php
 				// New test id
 				if($sessionTestId == "")
 				{
@@ -215,7 +221,7 @@ global $maxPoints; */
 				}
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("s", $newTestId);
-                $testCreateStatement->execute();
+            $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
 					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
@@ -333,7 +339,168 @@ global $maxPoints; */
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
-							
+                                <?php
+                /***************************************************************************************************/
+                /* Modal crap for Victor to mess with                                                              */
+                /***************************************************************************************************/
+                                    $oldId = 0;
+                                    $modalId = 0;
+                                    $oldQuestionsStatement = $database->prepare($oldQuestionsQuery);
+                                    $oldQuestionsStatement->bind_param("s", $newTestId);
+                                    $oldQuestionsStatement->bind_result($qid, $qtype, $qvalue, $qtext, $qno, $aid, $atext, $correct, $heading_id, $heading);
+                                    $oldQuestionsStatement->execute();
+                                    while($oldQuestionsStatement->fetch())
+                                    {
+                                        // Checks to see if this is a new question, or just a new answer
+                                        if($oldId != $qid)
+                                        {
+                                            // Modals here will save changes rather than create questions
+                                            if($qtype == "True/False")
+                                            {
+                                                // Echo True/False with info inside
+                                                // This just puts the box thing on test page... not a modal
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#TFModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo'<div id="TFModal'.$modalId.'" class="modal fade">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header modal_header_color">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                <h4 class="modal-title">True/False</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form role="form">
+                                                                    <div class="form-group">
+                                                                        <div class="point_value_section">
+                                                                            <label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
+                                                                            <input type="number" id="tf_question_point_value" value="'.$qvalue.'"/>
+                                                                        </div>
+                                                                        <hr />
+                                                                        <div class="question_section">
+                                                                            <label for="tf_question" class="control-label">Question:</label>
+                                                                            <input type="text" class="form-control" id="tf_question" value="'.$qtext.'"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <div class="radio">
+                                                                            <label><input type="radio" class="optradio" name="optradio" '.($correct?"checked":"").' value="true"/>True</label>
+                                                                        </div>
+                                                                        <div class="radio">
+                                                                            <label><input type="radio" class="optradio" name="optradio" '.($correct?"":"checked").' value="false" />False</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Save Changes</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                                //echo 'hi';
+                                            }
+                                            else if($qtype == "Multiple Choice")
+                                            {
+                                                // Echo multiple choice modal with info inside
+                                            }
+                                            else if($qtype == "All That Apply")
+                                            {
+                                                // Echo All that Apply modal with info inside
+                                            }
+                                            else if($qtype == "Matching")
+                                            {
+                                                // Echo Matching modal with info inside
+                                            }
+                                            else if($qtype == "Short Answer")
+                                            {
+                                                // Echo Short Answer Modal with info inside
+																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+																echo '<div id="SAModal'.$modalId.'" class="modal fade">
+																		<div class="modal-dialog">
+																			<div class="modal-content">
+																				<div class="modal-header modal_header_color">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title">Short Answer</h4>
+																				</div>
+																				<div class="modal-body">
+																					<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
+																						<div class="form-group">
+																							<div class="point_value_section">
+																								<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
+																								<input type="number" id="short_answer_point_value" value="'.$qvalue.'">
+																							</div>
+																							<hr />
+																							<div class="question_section">
+																							</div>
+																							<div class="form-group">
+																								<label for="short_answer_question" class="control-label">Question:</label>
+																								<input type="text" class="form-control" id="short_answer_question" value="'.$qtext.'">
+																							</div>
+																							<div class="form-group">
+																								<label for="short_answer_answer" class="control-label">Answer:</label>
+																								<textarea type="text" class="form-control" id="short_answer_answer" rows="8">'.$atext.' </textarea>
+																							</div>
+																						</div>
+																					</form>
+																				</div>
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																					<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>';
+                                            }
+                                            else
+                                            {
+                                                // Echo Essay modal with info inside
+																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+																echo '<div id="EssayModal'.$modalId.'" class="modal fade">
+																		<div class="modal-dialog">
+																			<div class="modal-content">
+																				<div class="modal-header modal_header_color">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title">Essay</h4>
+																				</div>
+																				<div class="modal-body">
+																					<form role="form">
+																						<div class="form-group">
+																							<div class="point_value_section">
+																								<label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
+																								<input type="number" id="essay_point_value" value="'.$qvalue.'">
+																							</div>
+																						</div>
+																						<hr />
+																						<div class="form-group">
+																							<label for="essay_question" class="control-label">Question:</label>
+																							<input type="text" class="form-control" id="essay_question" value="'.$qtext.'">
+																						</div>
+																						<div class="form-group">
+																							<label for="essay_answer" class="control-label">Answer:</label>
+																							<textarea type="text" class="form-control" id="essay_answer" rows="8">'.$atext.' </textarea>
+																						</div>
+																					</form>
+																				</div>
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																					<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Save Changes</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>';
+                                            }
+                                            $modalId++;
+                                        }
+                                        else
+                                        {
+                                            // Echo another answer into previously made modal using modalId
+                                        }
+                                        $oldId = $qid;
+                                    }
+                                    $oldQuestionsStatement->close();
+                                ?>
 							</div>
 						</div>
 					</div>		
@@ -352,15 +519,19 @@ global $maxPoints; */
 										<div class="form-group">
 											<div class="point_value_section">
 												<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-												<input type="text" id="short_answer_point_value">
+												<input type="number" id="short_answer_point_value">
 											</div>
 											<hr />
 											<div class="question_section">
+											</div>
+											<div class="form-group">
 												<label for="short_answer_question" class="control-label">Question:</label>
 												<input type="text" class="form-control" id="short_answer_question">
 											</div>
-											<label for="short_answer_answer" class="control-label">Answer:</label>
-											<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
+											<div class="form-group">
+												<label for="short_answer_answer" class="control-label">Answer:</label>
+												<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
+											</div>
 										</div>
 									</form>
 								</div>
@@ -383,11 +554,18 @@ global $maxPoints; */
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="essay_point_value">
-											<label for="recipient-name" class="control-label">Question:</label>
+											<div class="point_value_section">
+												<label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="essay_point_value">
+											</div>
+										</div>
+										<hr />
+										<div class="form-group">
+											<label for="essay_question" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="essay_question">
-											<label for="recipient-name" class="control-label">Answer:</label>
+										</div>
+										<div class="form-group">
+											<label for="essay_answer" class="control-label">Answer:</label>
 											<textarea type="text" class="form-control" id="essay_answer" rows="8"> </textarea>
 										</div>
 									</form>
@@ -462,29 +640,33 @@ global $maxPoints; */
 												<input type="text" class="form-control" id="mc_question" />
 											</div>
 										</div>
+									<label class="control-label">Answer:</label>
+									<div class="answers_section">
 										<div class="form-group">
-											<label class="control-label">Answer:</label>
-											<div class="row">
+											<div class="row choices">
 												<div class="col-md-1">
 													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
-												<div class="col-md-11">
+												<div class="col-md-10">
 													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
-											<div id="MC_add_answers">
-												<div class="row reduce_margin_top">
+											<div>
+												<div class="row reduce_margin_top choices">
 													<div class="col-md-1">
-														<input type="radio" name="mc_answer0" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+														<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
 													</div>
-													<div class="col-md-11">
+													<div class="col-md-10">
 														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
+													</div>
+													<div class="col-md-1" id="MC_add_trash_btn">
 													</div>
 												</div>
 											</div>
 										</div>
+									</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
@@ -507,21 +689,41 @@ global $maxPoints; */
 								<div class="modal-body">
 									<form role="form">
 										<div class="form-group">
-											<label for="recipient-name" class="control-label">Point Value:</label>
-											<input type="text" class="form-control" id="ata_point_value" />
-											<label for="recipient-name" class="control-label">Question:</label>
+											<div class="point_value_section">
+												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="ata_point_value" />
+											</div>
+										</div>
+										<hr />
+										<div class="form-group">
+											<label for="ata_question" class="control-label">Question:</label>
 											<input type="text" class="form-control" id="ata_question" />
 										</div>
-										<div class="form-group">
-											<label for="recipient-name" class="control-label">Answer:</label>
-											<br />
-											<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" />
-											<input type="text" id="ata_answer0" class="ata_tb" />
-										</div>
-										<div class="form-group" id="ATA_AddAns">
-											<div class="ata_margin">
-												<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb"/>
-												<input type="text" id="ata_answer1" class="ata_tb" />
+										<label class="control-label">Answer:</label>
+										<div class="answers_section">
+											<div class="form-group">
+												<div class="row choices">
+													<div class="col-md-1">
+														<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" />
+													</div>
+													<div class="col-md-10">
+														<input type="text" id="ata_answer0" class="ata_tb form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div>
+													<div class="row reduce_margin_top choices">
+														<div class="col-md-1">
+															<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb" />
+														</div>
+														<div class="col-md-10">
+															<input type="text" id="ata_answer1" class="ata_tb form-control" />
+														</div>
+														<div class="col-md-1" id="ATA_add_trash_btn">
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</form>
@@ -545,39 +747,76 @@ global $maxPoints; */
 								</div>
 								<div class="modal-body">
 									<form role="form">
-										<div class="row">
-											<div class="col-md-10" id="add_match_question">
+										<div class="form-group">
+											<label for="m_heading" class="control-label">Section Heading:</label>
+											<input type="text" class="form-control" id="m_heading" />
+										</div>
+										<div class="form-group">
+											<div class="point_value_section">		
+												<label for="m_point_value" class="control-label">Point Value (ea. question):&nbsp;</label>
+												<input type="number" id="m_point_value" />
+											</div>
+										</div>
+										<hr />
+										<div class="row reduce_margin_top">
+											<div class="col-md-9">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Section Heading:</label>
-													<input type="text" class="form-control" id="m_heading" />
-													<label for="recipient-name" class="control-label">Point Value (ea. question):</label>
-													<input type="text" class="form-control" id="m_point_value" />
-													<label for="recipient-name" class="control-label">Question:</label>
-													<input type="text" class="m_question" id="match_question_tb0" />
+													<label class="control-label test">Question:</label>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label class="control-label reduce_margin_top">Match:</label>
+												</div>
+											</div>
+										</div>
+										<div class="reduce_margin_bottom">
+										</div>
+										<div class="row">
+											<div class="col-md-9" id="add_match_question">
+												<div class="form-group">
+													<input type="text" class="m_question form-control" id="match_question_tb0" />
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_question_letter">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Match:</label>
-													<input type="text" class="m_question_letter" id="match_question_letter_tb0" />
+													<input type="text" class="m_question_letter form-control" id="match_question_letter_tb0" />
 												</div>
+											</div>
+											<div class="col-md-1" id="add_match_question_trash_btn">
 											</div>
 										</div>
 										
 										<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_question_btn">Add Item +</button>
 										
 										<div class="row">
-											<div class="col-md-10" id="add_match_answer">
+											<div class="col-md-9">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Answer:</label>
-													<input type="text" class="m_answer" id="match_answer_tb0" />
+													<label class="control-label">Answer:</label>
 												</div>
 											</div>
 											<div class="col-md-2" id="add_match_answer_letter">
 												<div class="form-group">
-													<label for="recipient-name" class="control-label">Letter:</label>
-													<input type="text" class="m_answer_letter" id="match_answer_letter_tb0" />
+													<label class="control-label">Letter:</label>
 												</div>
+											</div>
+											<div class="col-md-1">
+											</div>
+										</div>
+										<div class="reduce_margin_bottom">
+										</div>
+										<div class="row">
+											<div class="col-md-9" id="add_match_answer">
+												<div class="form-group">
+													<input type="text" class="m_answer form-control" id="match_answer_tb0" />
+												</div>
+											</div>
+											<div class="col-md-2" id="add_match_answer_letter">
+												<div class="form-group">
+													<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb0" />
+												</div>
+											</div>
+											<div class="col-md-1" id="add_match_answer_trash_btn">
 											</div>
 										</div>
 										</form>
@@ -602,6 +841,14 @@ global $maxPoints; */
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+    
+    <script type="text/javascript">
+    function sooper_looper()
+    {
+        alert("SOOPER_LOOPER!!!!!");
+    }
+    </script>
+    
 	 <script>
 	$(document).ready(function()
 	{
@@ -637,8 +884,8 @@ global $maxPoints; */
 				testPledge:testPledge,
 				newTestId:newTestId,
 				maxPoints:maxPoints,
-                classId:classId,
-                teacherId:teacherId
+            classId:classId,
+            teacherId:teacherId
 			},
 		function(data)
 		{
@@ -721,6 +968,11 @@ global $maxPoints; */
 			
 				$("#match_answer_letter_tb" + d ).text('match_answer_letter_tb' + d );
 				
+				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
+
+				/*$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
+				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
+				*/
 			});
 			
 			$("#add_match_question_btn").click(function()
@@ -736,6 +988,9 @@ global $maxPoints; */
 				$("#match_question_letter_tb" + b).clone().attr('id', 'match_question_letter_tb'+(++b )).insertAfter(cloned);
 			
 				$("#match_question_letter_tb" + b ).text('match_question_letter_tb' + b );
+				
+				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
+
 			});
 		});
 	</script>
@@ -760,6 +1015,10 @@ global $maxPoints; */
 				$("#ata_answer_cb" + ATACounter ).text('ata_answer_cb' + ATACounter );
 				ATACounter++;
 				
+				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+				/*$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
+				); */
 			});
 		});
 	</script>
@@ -784,6 +1043,13 @@ global $maxPoints; */
 				$("#multipleText" + MCCounter).clone().attr('id', 'multipleText'+(MCCounter+1)).insertAfter(cloned);
 		
 				MCCounter++;
+			
+			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
+			
+			$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
+			
+			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
+			
 		});
 	});
 	</script>
