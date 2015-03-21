@@ -78,7 +78,7 @@ $success = false;
                   <a href="#" id="student-summary">Summary</a>
                </li>
                
-               <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
+               <li class="sidebar-brand" id="sidebar-classes"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
                   Select a Class:
                </li>
                   <?php 
@@ -95,8 +95,7 @@ $success = false;
                   
                   $courseCounter = 1;
                   $classCounter = 1; 
-                  //global $sidebarArray;
-                  //$sidebarArray = array();
+                  $sidebarArray = array();
                   while($classList->fetch())
                   {
                      echo '
@@ -107,23 +106,24 @@ $success = false;
                         <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
                      </li>
                      ';
+                     
                   }
                   $classList->close(); 
                   ?>
-                  <!--<script>	
-                     var sidebar_array = [];
-                     var i = 0;
-                     $(document).ready(function()
+                  <script>
+                     <?php
+                        $sidebar_array = json_encode($sidebarArray);
+                        echo "var sidebar_array = " . $sidebar_array . ";\n";
+                     ?>
+                     int i = 0;
+                     /*$(document).ready(function()
                      {
                         $('.sidebar_class').each(function() 
                         {
                            sidebar_array.push($(this).is(':checked'));
-                           i++;
                         });
-                     });
-                     window.alert(sidebar_array[0]);
-                     update_array(sidebar_array);
-                  </script>-->
+                     });*/
+                  </script>
             </ul>
          </div>
 

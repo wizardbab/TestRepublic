@@ -30,8 +30,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-	
+	<script> var MCCounter = 1; </script>
 </head>
 <?php
 session_start();
@@ -104,7 +103,7 @@ global $timeLimit;
 global $specificInstructions;
 global $testPledge;
 global $maxPoints; */
-
+$modalId = 0;
 ?>
 <body>
 	<div id="wrapper2">
@@ -339,13 +338,14 @@ global $maxPoints; */
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
-							
+                                
+
                                 <?php
                 /***************************************************************************************************/
                 /* Modal crap for Victor to mess with                                                              */
                 /***************************************************************************************************/
                                     $oldId = 0;
-                                    $modalId = 0;
+                                    $counter = 0;
                                     $oldQuestionsStatement = $database->prepare($oldQuestionsQuery);
                                     $oldQuestionsStatement->bind_param("s", $newTestId);
                                     $oldQuestionsStatement->bind_result($qid, $qtype, $qvalue, $qtext, $qno, $aid, $atext, $correct, $heading_id, $heading);
@@ -355,166 +355,46 @@ global $maxPoints; */
                                         // Checks to see if this is a new question, or just a new answer
                                         if($oldId != $qid)
                                         {
-														 $modalId++;
+                                            $modalId++;
                                             // Modals here will save changes rather than create questions
                                             if($qtype == "True/False")
                                             {
                                                 // Echo True/False with info inside
                                                 // This just puts the box thing on test page... not a modal
-                                                echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#TFModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-                                                echo'<div id="TFModal'.$modalId.'" class="modal fade">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header modal_header_color">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                <h4 class="modal-title">True/False</h4>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form role="form">
-                                                                    <div class="form-group">
-                                                                        <div class="point_value_section">
-                                                                            <label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
-                                                                            <input type="number" id="tf_question_point_value" value="'.$qvalue.'"/>
-                                                                        </div>
-                                                                        <hr />
-                                                                        <div class="question_section">
-                                                                            <label for="tf_question" class="control-label">Question:</label>
-                                                                            <input type="text" class="form-control" id="tf_question" value="'.$qtext.'"/>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <div class="radio">
-                                                                            <label><input type="radio" class="optradio" name="optradio" '.($correct?"checked":"").' value="true"/>True</label>
-                                                                        </div>
-                                                                        <div class="radio">
-                                                                            <label><input type="radio" class="optradio" name="optradio" '.($correct?"":"checked").' value="false" />False</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Save Changes</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                                //echo 'hi';
+
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                
                                             }
                                             else if($qtype == "Multiple Choice")
                                             {
                                                 // Echo multiple choice modal with info inside
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                            
                                             }
                                             else if($qtype == "All That Apply")
                                             {
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                             
                                                 // Echo All that Apply modal with info inside
                                             }
                                             else if($qtype == "Matching")
                                             {
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">'.$qtext.'</p></a>';
                                                 // Echo Matching modal with info inside
                                             }
                                             else if($qtype == "Short Answer")
                                             {
                                                 // Echo Short Answer Modal with info inside
-																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-																echo '<div id="SAModal'.$modalId.'" class="modal fade">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
-																				<div class="modal-header modal_header_color">
-																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																					<h4 class="modal-title">Short Answer</h4>
-																				</div>
-																				<div class="modal-body">
-																					<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
-																						<div class="form-group">
-																							<div class="point_value_section">
-																								<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-																								<input type="number" id="short_answer_point_value" value="'.$qvalue.'">
-																							</div>
-																							<hr />
-																							<div class="question_section">
-																							</div>
-																							<div class="form-group">
-																								<label for="short_answer_question" class="control-label">Question:</label>
-																								<input type="text" class="form-control" id="short_answer_question" value="'.$qtext.'">
-																							</div>
-																							<div class="form-group">
-																								<label for="short_answer_answer" class="control-label">Answer:</label>
-																								<textarea type="text" class="form-control" id="short_answer_answer" rows="8">'.$atext.' </textarea>
-																							</div>
-																						</div>
-																					</form>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																					<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
-																				</div>
-																			</div>
-																		</div>
-																	</div>';
+												echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+
                                             }
                                             else
                                             {
                                                 // Echo Essay modal with info inside
-																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-																echo '<div id="EssayModal'.$modalId.'" class="modal fade">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
-																				<div class="modal-header modal_header_color">
-																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																					<h4 class="modal-title">Essay</h4>
-																				</div>
-																				<div class="modal-body">
-																					<form role="form">
-																						<div class="form-group">
-																							<div class="point_value_section">
-																								<label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
-																								<input type="number" id="essay_point_value" value="'.$qvalue.'">
-																							</div>
-																						</div>
-																						<hr />
-																						<div class="form-group">
-																							<label for="essay_question" class="control-label">Question:</label>
-																							<input type="text" class="form-control" id="essay_question" value="'.$qtext.'">
-																						</div>
-																						<div class="form-group">
-																							<label for="essay_answer" class="control-label">Answer:</label>
-																							<textarea type="text" class="form-control" id="essay_answer" rows="8">'.$atext.' </textarea>
-																						</div>
-																					</form>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																					<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Save Changes</button>
-																				</div>
-																			</div>
-																		</div>
-																	</div>';
-                                            }
-                                            
-                                        }
-                                        else
-                                        {
-                                            // Echo another answer into previously made modal using modalId
-														  
-														  
-															if($qtype == "True/False")
-															{
-															
-																echo '<script type="text/javascript">
-																function run(){
-																	 alert("hello world");
-																}
-																</script>';
-																$var = 9;
-																echo '<h1>' . $var . '</h1>';
+
+												echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
 																
-																	echo'<script> run(); </script>';
-														  
-															}
-													
+                                            }
                                         }
                                         $oldId = $qid;
                                     }
@@ -863,13 +743,6 @@ global $maxPoints; */
 	 
 		
     
-    <script type="text/javascript">
-    function sooper_looper()
-    {
-        alert("SOOPER_LOOPER!!!!!");
-    }
-    </script>
-    
 	 <script>
 	$(document).ready(function()
 	{
@@ -944,11 +817,11 @@ global $maxPoints; */
 	{
         $("#cancelTestBtn").click(function()
 		{
-            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId ?>';
+            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
         });
 		$("#backToClass").click(function()
 		{
-            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId ?>';
+            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
         });
     });
     </script>
@@ -1047,15 +920,14 @@ global $maxPoints; */
 		<!-- Multiple Choice JS -->
 		<!-- PROBLEM: in every append, how to generate a different value & id -->
 		<!-- class add_margin_mc doesnt work! :'( -->
-	<script>
-	var MCCounter = 1;
+	<script type="text/javascript">
 	var cloned;
 	
 		$(document).ready(function(){
 		
-			$("#add_MC").click(function(){
+			$("#add_MC").click(function()
+            {
 			<!-- MCCounter++; -->
-			
 				// adds radio buttons to mc modal
 				cloned = $('#mc_answer' + MCCounter);
 				$("#mc_answer" + MCCounter).clone().attr('id', 'mc_answer'+(MCCounter+1)).insertAfter(cloned);
@@ -1096,7 +968,7 @@ global $maxPoints; */
 			/***********************************************************/
 			$("#SABtn").click(function()
 			{
-				var pointValue = $("#short_anwer_point_value").val();
+				var pointValue = $("#short_answer_point_value").val();
 				var question = $("#short_answer_question").val();
 				var answer = $("#short_answer_answer").val();
 			
