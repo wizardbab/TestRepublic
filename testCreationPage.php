@@ -339,6 +339,7 @@ global $maxPoints; */
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
+							
                                 <?php
                 /***************************************************************************************************/
                 /* Modal crap for Victor to mess with                                                              */
@@ -354,6 +355,7 @@ global $maxPoints; */
                                         // Checks to see if this is a new question, or just a new answer
                                         if($oldId != $qid)
                                         {
+														 $modalId++;
                                             // Modals here will save changes rather than create questions
                                             if($qtype == "True/False")
                                             {
@@ -392,7 +394,7 @@ global $maxPoints; */
                                                                     
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Create Question</button>
+                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Save Changes</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -416,16 +418,103 @@ global $maxPoints; */
                                             else if($qtype == "Short Answer")
                                             {
                                                 // Echo Short Answer Modal with info inside
+																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+																echo '<div id="SAModal'.$modalId.'" class="modal fade">
+																		<div class="modal-dialog">
+																			<div class="modal-content">
+																				<div class="modal-header modal_header_color">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title">Short Answer</h4>
+																				</div>
+																				<div class="modal-body">
+																					<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
+																						<div class="form-group">
+																							<div class="point_value_section">
+																								<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
+																								<input type="number" id="short_answer_point_value" value="'.$qvalue.'">
+																							</div>
+																							<hr />
+																							<div class="question_section">
+																							</div>
+																							<div class="form-group">
+																								<label for="short_answer_question" class="control-label">Question:</label>
+																								<input type="text" class="form-control" id="short_answer_question" value="'.$qtext.'">
+																							</div>
+																							<div class="form-group">
+																								<label for="short_answer_answer" class="control-label">Answer:</label>
+																								<textarea type="text" class="form-control" id="short_answer_answer" rows="8">'.$atext.' </textarea>
+																							</div>
+																						</div>
+																					</form>
+																				</div>
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																					<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>';
                                             }
                                             else
                                             {
                                                 // Echo Essay modal with info inside
+																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+																echo '<div id="EssayModal'.$modalId.'" class="modal fade">
+																		<div class="modal-dialog">
+																			<div class="modal-content">
+																				<div class="modal-header modal_header_color">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title">Essay</h4>
+																				</div>
+																				<div class="modal-body">
+																					<form role="form">
+																						<div class="form-group">
+																							<div class="point_value_section">
+																								<label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
+																								<input type="number" id="essay_point_value" value="'.$qvalue.'">
+																							</div>
+																						</div>
+																						<hr />
+																						<div class="form-group">
+																							<label for="essay_question" class="control-label">Question:</label>
+																							<input type="text" class="form-control" id="essay_question" value="'.$qtext.'">
+																						</div>
+																						<div class="form-group">
+																							<label for="essay_answer" class="control-label">Answer:</label>
+																							<textarea type="text" class="form-control" id="essay_answer" rows="8">'.$atext.' </textarea>
+																						</div>
+																					</form>
+																				</div>
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																					<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Save Changes</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>';
                                             }
-                                            $modalId++;
+                                            
                                         }
                                         else
                                         {
                                             // Echo another answer into previously made modal using modalId
+														  
+														  
+															if($qtype == "True/False")
+															{
+															
+																echo '<script type="text/javascript">
+																function run(){
+																	 alert("hello world");
+																}
+																</script>';
+																$var = 9;
+																echo '<h1>' . $var . '</h1>';
+																
+																	echo'<script> run(); </script>';
+														  
+															}
+													
                                         }
                                         $oldId = $qid;
                                     }
@@ -771,6 +860,8 @@ global $maxPoints; */
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	 
+		
     
     <script type="text/javascript">
     function sooper_looper()
@@ -814,8 +905,8 @@ global $maxPoints; */
 				testPledge:testPledge,
 				newTestId:newTestId,
 				maxPoints:maxPoints,
-                classId:classId,
-                teacherId:teacherId
+            classId:classId,
+            teacherId:teacherId
 			},
 		function(data)
 		{
