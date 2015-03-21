@@ -340,6 +340,7 @@ $modalId = 0;
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
                                 
+
                                 <?php
                 /***************************************************************************************************/
                 /* Modal crap for Victor to mess with                                                              */
@@ -361,6 +362,7 @@ $modalId = 0;
                                             {
                                                 // Echo True/False with info inside
                                                 // This just puts the box thing on test page... not a modal
+
                                                 echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
                                                 
                                             }
@@ -385,10 +387,12 @@ $modalId = 0;
                                             {
                                                 // Echo Short Answer Modal with info inside
 												echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+
                                             }
                                             else
                                             {
                                                 // Echo Essay modal with info inside
+
 												echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
 																
                                             }
@@ -737,6 +741,8 @@ $modalId = 0;
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	 
+		
     
 	 <script>
 	$(document).ready(function()
