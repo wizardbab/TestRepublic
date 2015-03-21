@@ -1041,15 +1041,9 @@ global $maxPoints; */
 				// adds text boxes to mc modal
 				cloned = $('#multipleText' + MCCounter );
 				$("#multipleText" + MCCounter).clone().attr('id', 'multipleText'+(MCCounter+1)).insertAfter(cloned);
-		
+				
+				$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC'+(MCCounter+1)+'"><span class="glyphicon glyphicon-trash"></span></button>');
 				MCCounter++;
-			
-			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
-			
-			$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
-			
-			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
-			
 		});
 	});
 	</script>
@@ -1215,6 +1209,7 @@ global $maxPoints; */
 				{
 					$('#mc_answer'+MCCounter).remove();
 					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
 				}
 				
 			});
