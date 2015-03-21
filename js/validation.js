@@ -1,17 +1,3 @@
-// Pass array in from internal HTML
-/*var sidebarClasses = [];
-int is_checked = true;
-function update_array(array)
-{
-   int i;
-   
-   for(i = 0; i < array.length; i++)
-   {
-      sidebarClasses[i] = array[i];
-   }
-   
-}*/
-
 // form validation function //
 function validate(form)
 {
@@ -21,22 +7,7 @@ function validate(form)
    var password = form.password.value;
    var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
    var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  /* 
-   int i;
-   int is_checked = true;;
-   for(i = 0; i < sidebarClasses.length; i++)
-   {
-      if(sidebarClasses[i] == 0)
-      {
-         is_checked = false;
-      }
-   }
-   if(is_checked == false)
-   {
-      inlineMsg('sidebar-class', 'Do not forget to select classes', 4);
-      return false;
-   }
-   */
+   
    if(firstName == "")
    {
       inlineMsg('firstName', 'Required', 2);
