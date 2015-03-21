@@ -22,7 +22,7 @@
 
    <!-- Form Validation Includes -->
    <link href="css/validation_page.css" rel="stylesheet" type="text/css">
-   <script type="text/javascript" src="js/validation.js"></script>
+   <script type="text/javascript" src="js/signUpValidation.js"></script>
 
    <!-- jQuery -->
     <script src="js/jquery.js"></script>
