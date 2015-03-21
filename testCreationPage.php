@@ -591,7 +591,7 @@ global $maxPoints; */
 						</div>
 					</div>				
 			</div>    				
-			</div>	
+		</div>	
 
 	
 			
@@ -774,7 +774,6 @@ global $maxPoints; */
 		$(document).ready(function(){
 		
 			$("#add_MC").click(function(){
-			<!-- MCCounter++; -->
 			
 				// adds radio buttons to mc modal
 				cloned = $('#mc_answer' + MCCounter);
@@ -826,7 +825,7 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				$("#testList").append('div class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
 				);
 
 			});
@@ -889,7 +888,7 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></a>'
+				$("#testList").append('<div class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
 				);
 
 			});
