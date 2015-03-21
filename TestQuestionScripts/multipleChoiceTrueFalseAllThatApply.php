@@ -32,7 +32,10 @@
 	@$correct = $_POST["correct"]; // boolean value
 	@$textBoxAnswers = $_POST["textBoxes"];
 	@$parameters = $_POST["parameters"]; // an array
-	
+	foreach ($textBoxAnswers as $i)
+	{
+		echo $i." ";
+	}
 	/*if(is_array($parameters))
 	{
 		foreach($parameters as $i)
