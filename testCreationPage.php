@@ -1025,10 +1025,9 @@ global $maxPoints; */
 	</script>
 	
 		<!-- Multiple Choice JS -->
-		<!-- PROBLEM: in every append, how to generate a different value & id -->
-		<!-- class add_margin_mc doesnt work! :'( -->
 	<script>
 	var MCCounter = 1;
+	var trash_index = 3;
 	var cloned;
 	
 		$(document).ready(function(){
@@ -1048,13 +1047,44 @@ global $maxPoints; */
 			
 			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
 			
-			$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
+			//$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
+			
+			
+				
+			var create_trash_btn = document.createElement("button");
+			create_trash_btn.setAttribute("type","button");
+			create_trash_btn.setAttribute("class","btn btn-default btn-md trash_button");
+			create_trash_btn.setAttribute("aria-hidden","true");
+			create_trash_btn.setAttribute("id","mc_trash_button" + trash_index++);
+				
+			document.getElementById("MC_add_trash_btn").appendChild(create_trash_btn); 
+				
+			create_trash_btn.innerHTML += '<span class="glyphicon glyphicon-trash"></span>';
 			
 			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
 			
 		});
+			$(".trash_button").click(function(){
+				alert("meow");
+				
+
+		});
+		
 	});
 	</script>
+	
+	<!-- Access the trash button -->
+	<script>
+    $(document).ready(function()
+	{	
+		var i_test = 3;
+    
+        $("#mc_trash_button3").click(function()
+		{
+			
+        });
+	});
+    </script>
 	<!--
 	<script>	
 		$(document).ready(function(){
@@ -1076,7 +1106,7 @@ global $maxPoints; */
 			/***********************************************************/
 			$("#SABtn").click(function()
 			{
-				var pointValue = $("#short_anwer_point_value").val();
+				var pointValue = $("#short_answer_point_value").val();
 				var question = $("#short_answer_question").val();
 				var answer = $("#short_answer_answer").val();
 			
@@ -1209,14 +1239,68 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
+				// Creates list group item link
+				
+				var a_index = 0;
+				var textnode = document.createTextNode("test");
+				
+				var createA = document.createElement("a");
+				createA.setAttribute("href","#");
+				createA.setAttribute("class","list-group-item");
+				createA.setAttribute("id","mc-" + a_index++);
+				
+				createA.appendChild(textnode);
+				document.getElementById("testList").appendChild(createA); 
+				
+				createA.innerHTML += '<h4 class="list-group-item-heading">Multiple Choice <3</h4>';
+				
+				createA.innerHTML += '<p class="list-group-item-text">' + question + '</p>';
+				
+				// originally it's like this
 				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
+				
+				// Prints the answers
+				var answer;
+				for(i = 0; i < multipleChoiceArray.length; i++)
+				{
+					//$("#testList").append('<p class="list-group-item-text">' + question + '</p>'
+					//);
+					
+					// if using the append, choices will go outside the box
+					/*
+					if(i == true)
+						$("#testList").append('<p class="list-group-item-text"><input type="radio" checked="checked" />' + multipleTextArray[i] + '</p>';
+					else
+						$("#testList").append('<p class="list-group-item-text"><input type="radio" />' + multipleTextArray[i] + '</p>';
+				
+					*/
+					if(i == true)
+					{
+						answer = multipleTextArray[i];
+						alert(answer);
+					}
+					
+					if(i == true)
+						createA.innerHTML += '<p class="list-group-item-text"><input type="radio" checked="checked" />&nbsp;' + multipleTextArray[i] + '</p>';
+					else
+						createA.innerHTML += '<p class="list-group-item-text"><input type="radio" />&nbsp;' + multipleTextArray[i] + '</p>';
+				}
+				
+				//test
+				//var test_link = document.getElementById('YOYO');
+				//test_link.innerHTML = test_link.innerHTML + 'Extra stuff';
 				
 				// Resets MC Values
 				for(MCCounter; MCCounter > 1; MCCounter--)
 				{
 					$('#mc_answer'+MCCounter).remove();
 					$('#multipleText'+MCCounter).remove();
+				}
+				
+				for(trash_index; trash_index >= 3; trash_index--)
+				{
+					$('#mc_trash_button'+trash_index).remove();
 				}
 				
 			});
