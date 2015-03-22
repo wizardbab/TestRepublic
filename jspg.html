@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- 2/21 - Modals added by Victor Jereza -->
+<!-- 2/23 - Added lots of JavaScript -->
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+	
+
+    <title>JS/AJAX/PHP attempt 1</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/teacher-create-test.css" rel="stylesheet">
+	
+   <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- Custom Test Creation JavaScript --> 
+	<script src="js/testCreation.js"></script>
+	
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+	
+	
+	
+</head>
+
+
+<body>
+	<button id="click">To clone</button>
+	
+	<form id="form" name="form" action="jspg.php">
+		<input type="text" id="id0" name="id0"/>
+		<input id="clock" type="submit" />
+	</form>
+	
+		
+		
+	<script>
+
+		var c = 0;
+		var cloned;
+		var stuff = [];
+		var d;
+		
+		
+		
+			$("#click").click(function(){
+				cloned = $('#id' + c);
+				$("#id" + c).clone().attr('id', 'id'+(++c)).insertAfter(cloned);
+			
+				$("#id" + c).text('id' + c);
+				
+			});
+			
+			$("#clock").click(function(){
+				for(d = 0; d <= c; d++)
+				{
+					stuff[d] = document.getElementById("id" + d).value;
+				}
+				
+				$.post("jspg.php",
+				{
+					"parameters[]":stuff
+				},
+				function(data)
+				{
+					alert(data);
+				});
+				
+			
+			});
+		
+		
+	
+	</script>
+		
+		
+
+</body>
+
+	
+
+
+
+
+
+</html>
