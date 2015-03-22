@@ -63,7 +63,7 @@ join test using(test_id)
 where class_id = ?";
 
 // Query to populate the first table on the screen
-$firstTableQuery = "select test_name, avg(test_score), test_id, student_id from test_list
+$firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id from test_list
 right join test using(test_id)
 where class_id = ?
 group by(test_name)
@@ -84,15 +84,15 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select test_score, graded from test_list
+$testScoreQuery = "select test_score/max_points*100, graded from test_list
 join test
 using(test_id)
 where student_id = ? and class_id = ?";
 
 // Average score for student list
-$averageQuery = "select avg(test_score) from test_list
+$averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
 join test using(test_id)
-where student_id = ? and class_id = ?";
+where student_id = ? and class_id = ? and date_taken is not null";
 
 // List of students for student list
 $studentQuery = "select student_id from enrollment
@@ -311,9 +311,11 @@ $studentStatement = $database->prepare($studentQuery);
                                             $graded = '(grade)';
                                         else
                                             $graded = '(view)';
-                                        number_format($testScore, 2);
                                         if($testScore != null)
+                                        {
+                                            $testScore = number_format($testScore, 2);
                                             echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
+                                        }
                                         else
                                             echo '<td>Not Taken</td>';
 									}

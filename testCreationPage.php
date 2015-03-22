@@ -544,7 +544,7 @@ $modalId = 0;
 										<div class="form-group">
 											<div class="row choices">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
+													<input type="radio" name="mc_answer" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-10">
 													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
@@ -552,18 +552,17 @@ $modalId = 0;
 											</div>
 										</div>
 										<div class="form-group">
-											<div>
 												<div class="row reduce_margin_top choices">
-													<div class="col-md-1">
-														<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+													<div class="col-md-1" id="MC_answers">
+														<input type="radio" name="mc_answer" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
 													</div>
-													<div class="col-md-10">
+													<div class="col-md-10" id="MC_text_boxes">
 														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
 													</div>
 													<div class="col-md-1" id="MC_add_trash_btn">
 													</div>
 												</div>
-											</div>
+
 										</div>
 									</div>
 									</form>
@@ -729,7 +728,7 @@ $modalId = 0;
 						</div>
 					</div>				
 			</div>    				
-			</div>	
+		</div>	
 
 	
 			
@@ -922,31 +921,30 @@ $modalId = 0;
 		<!-- class add_margin_mc doesnt work! :'( -->
 	<script type="text/javascript">
 	var cloned;
-	
+	var testArray = [0,1];
 		$(document).ready(function(){
 		
-			$("#add_MC").click(function()
-            {
-			<!-- MCCounter++; -->
+			$("#add_MC").click(function(){
 				// adds radio buttons to mc modal
-				cloned = $('#mc_answer' + MCCounter);
-				$("#mc_answer" + MCCounter).clone().attr('id', 'mc_answer'+(MCCounter+1)).insertAfter(cloned);
-				
+				$("#MC_answers").append('<input type="radio" name="mc_answer" id="mc_answer'+(MCCounter+1)+'" value="multipleRadio'+(MCCounter+1)+'" class="multipleRadio" />');
 				// adds text boxes to mc modal
-				cloned = $('#multipleText' + MCCounter );
-				$("#multipleText" + MCCounter).clone().attr('id', 'multipleText'+(MCCounter+1)).insertAfter(cloned);
-		
+				$("#MC_text_boxes").append('<input type="text" class="form-control multipleTextboxes" id="multipleText'+(MCCounter+1)+'" name="multipleText'+(MCCounter+1)+'"/>');
+				// adds trash button to mc modal
+				$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC'+(MCCounter+1)+'" onclick="removeQuestion('+(MCCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				MCCounter++;
-			
-			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
-			
-			$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
-			
-			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
-			
+				testArray.push(MCCounter);
 		});
 	});
+	
+	function removeQuestion(questionNum)
+	{
+		testArray.splice(questionNum,1);
+		$('#mc_answer'+questionNum).remove();
+		$('#multipleText'+questionNum).remove();
+		$('#remove_MC'+questionNum).remove();
+	}
 	</script>
+	
 	<!--
 	<script>	
 		$(document).ready(function(){
@@ -985,7 +983,7 @@ $modalId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				$("#testList").append('div class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
 				);
 
 			});
@@ -1048,7 +1046,7 @@ $modalId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></a>'
+				$("#testList").append('<div class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
 				);
 
 			});
@@ -1061,31 +1059,26 @@ $modalId = 0;
 				var question = $("#mc_question").val();
 				var multipleChoiceArray = [];
 				var multipleTextArray = [];
-				
-				<!-- check for multiple choice radios -->
-				var i = 0;
-				$('.multipleRadio').each(function() {
-					
-					// If true, assign
-					if($(this).is(':checked'))
+
+				// check for multiple choice radios		
+				for(i = 0; i < testArray.length; i++)
+				{
+					if ($('#mc_answer'+(testArray[i])).is(':checked'))
 					{
 						multipleChoiceArray[i] = 1;
-					  	
 					}
-					// Else false, assign
 					else
 					{
-						multipleChoiceArray[i] = 0;				
+						multipleChoiceArray[i] = 0;	
 					}
-					i++;		
-				});
-				
-				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= MCCounter; i++)
-				{
-					multipleTextArray[i] = document.getElementById("multipleText" + i).value;
 				}
 				
+				
+				// Get and store the possible answers from the multiple choice type 
+				for(i = 0; i < testArray.length; i++)
+				{
+					multipleTextArray[i] = document.getElementById("multipleText" + testArray[i]).value;
+				}
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
@@ -1101,16 +1094,18 @@ $modalId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
-				);
-				
+
 				// Resets MC Values
 				for(MCCounter; MCCounter > 1; MCCounter--)
 				{
 					$('#mc_answer'+MCCounter).remove();
 					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
+					testArray = [1,2];
 				}
-				
+
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				);
 			});
 			
 			/***********************************************************/
