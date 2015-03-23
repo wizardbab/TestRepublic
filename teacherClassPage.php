@@ -227,7 +227,7 @@ $studentStatement = $database->prepare($studentQuery);
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
-                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></td></form></tr>';
+                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></form></td></tr>';
 							}
 							$firstTableStatement->close();
                             if($tid == null)
