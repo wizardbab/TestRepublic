@@ -45,7 +45,7 @@ $sessionTestId = $_SESSION['testId'];
 
 global $newTestId;
 
-//if(!is_null($_POST['testId']))
+if(is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
     
 if($id == null)
@@ -220,7 +220,7 @@ $modalId = 0;
 				}
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("s", $newTestId);
-            $testCreateStatement->execute();
+                $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
 					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
