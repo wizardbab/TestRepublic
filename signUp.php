@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -106,7 +105,7 @@ $success = false;
                         <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
                      </li>
                      ';
-                     
+                     array_push($sidebarArray, isset($_POST['classes']));
                   }
                   $classList->close(); 
                   ?>
@@ -115,7 +114,14 @@ $success = false;
                         $sidebar_array = json_encode($sidebarArray);
                         echo "var sidebar_array = " . $sidebar_array . ";\n";
                      ?>
-                     int i = 0;
+                     var input = document.querySelector('input[type=checkbox]');
+                     
+                     function check(int i)
+                     {
+                        var a = input.checked ? "checked" : "not checked";
+                        sidebar_array[i] = a;
+                     }
+                     input.onchange = check;
                      /*$(document).ready(function()
                      {
                         $('.sidebar_class').each(function() 
