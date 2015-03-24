@@ -30,7 +30,6 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-	<script> var MCCounter = 1; </script>
 </head>
 <?php
 session_start();
@@ -45,7 +44,7 @@ $sessionTestId = $_SESSION['testId'];
 
 global $newTestId;
 
-//if(!is_null($_POST['testId']))
+if(is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
     
 if($id == null)
@@ -220,7 +219,7 @@ $modalId = 0;
 				}
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("s", $newTestId);
-            $testCreateStatement->execute();
+                $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
 					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
@@ -276,7 +275,6 @@ $modalId = 0;
 								<input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" /> minutes
 							</label>
 							
-							<br />
 							<label class="time_limit_lbl">Max Points:
 								<input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" /> 
 							</label>
@@ -545,7 +543,7 @@ $modalId = 0;
 										<div class="form-group">
 											<div class="row choices">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
+													<input type="radio" name="mc_answer" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-10">
 													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
@@ -553,18 +551,17 @@ $modalId = 0;
 											</div>
 										</div>
 										<div class="form-group">
-											<div>
 												<div class="row reduce_margin_top choices">
-													<div class="col-md-1">
-														<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+													<div class="col-md-1" id="MC_answers">
+														<input type="radio" name="mc_answer" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
 													</div>
-													<div class="col-md-10">
+													<div class="col-md-10" id="MC_text_boxes">
 														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
 													</div>
 													<div class="col-md-1" id="MC_add_trash_btn">
 													</div>
 												</div>
-											</div>
+
 										</div>
 									</div>
 									</form>
@@ -614,10 +611,10 @@ $modalId = 0;
 											<div class="form-group">
 												<div>
 													<div class="row reduce_margin_top choices">
-														<div class="col-md-1">
+														<div class="col-md-1" id="ATA_cbs">
 															<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb" />
 														</div>
-														<div class="col-md-10">
+														<div class="col-md-10" id="ATA_answers">
 															<input type="text" id="ata_answer1" class="ata_tb form-control" />
 														</div>
 														<div class="col-md-1" id="ATA_add_trash_btn">
@@ -730,7 +727,7 @@ $modalId = 0;
 						</div>
 					</div>				
 			</div>    				
-			</div>	
+		</div>	
 
 	
 			
@@ -741,9 +738,7 @@ $modalId = 0;
         $("#wrapper").toggleClass("toggled");
     });
     </script>
-	 
-		
-    
+	
 	 <script>
 	$(document).ready(function()
 	{
@@ -784,7 +779,7 @@ $modalId = 0;
 			},
 		function(data)
 		{
-		
+			
 		});
 			
 		});
@@ -893,103 +888,60 @@ $modalId = 0;
 		<!-- All that Apply JS -->
 	<script>
 	var ATACounter = 1;
+	var testATAArray = [0,1];
 		$(document).ready(function()
 		{
 			$("#add_ATA").click(function()
 			{
-				// adds text boxes to ata modal
-				cloned = $('#ata_answer' + ATACounter);
-				$("#ata_answer" + ATACounter).clone().attr('id', 'ata_answer'+(ATACounter+1)).insertAfter(cloned);
-			
-				$("#ata_answer" + ATACounter).text('ata_answer' + ATACounter);
-				
-				
-				cloned = $('#ata_answer_cb' + ATACounter );
-				$("#ata_answer_cb" + ATACounter).clone().attr('id', 'ata_answer_cb'+(ATACounter+1 )).insertAfter(cloned);
-			
-				$("#ata_answer_cb" + ATACounter ).text('ata_answer_cb' + ATACounter );
+				// adds radio buttons to ATA modal
+				$("#ATA_cbs").append('<input type="checkbox" name="ata_answer" id="ata_answer_cb'+(ATACounter+1)+'" class="ata_cb" />');
+				// adds text boxes to ATA modal
+				$("#ATA_answers").append('<input type="text" id="ata_answer'+(ATACounter+1)+'" class="ata_tb form-control" />');
+				// adds trash button to ATA modal
+				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata'+(ATACounter+1)+'" onclick="removeATAQuestion('+(ATACounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				ATACounter++;
-				
-				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata"><span class="glyphicon glyphicon-trash"></span></button>');
-				
-				/*$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				); */
-			});
+				testATAArray.push(ATACounter);
 		});
+	});
+	function removeATAQuestion(questionNum)
+	{
+		testATAArray.splice(questionNum,1);
+		$('#ata_answer_cb'+questionNum).remove();
+		$('#ata_answer'+questionNum).remove();
+		$('#remove_ata'+questionNum).remove();
+	}
 	</script>
 	
 		<!-- Multiple Choice JS -->
-	<script>
+		<!-- PROBLEM: in every append, how to generate a different value & id -->
+		<!-- class add_margin_mc doesnt work! :'( -->
+	<script type="text/javascript">
 	var MCCounter = 1;
-	var trash_index = 3;
 	var cloned;
-	
+	var testMCArray = [0,1];
 		$(document).ready(function(){
 		
-			$("#add_MC").click(function()
-            {
-			<!-- MCCounter++; -->
+			$("#add_MC").click(function(){
 				// adds radio buttons to mc modal
-				cloned = $('#mc_answer' + MCCounter);
-				$("#mc_answer" + MCCounter).clone().attr('id', 'mc_answer'+(MCCounter+1)).insertAfter(cloned);
-				
+				$("#MC_answers").append('<input type="radio" name="mc_answer" id="mc_answer'+(MCCounter+1)+'" value="multipleRadio'+(MCCounter+1)+'" class="multipleRadio" />');
 				// adds text boxes to mc modal
-				cloned = $('#multipleText' + MCCounter );
-				$("#multipleText" + MCCounter).clone().attr('id', 'multipleText'+(MCCounter+1)).insertAfter(cloned);
-		
+				$("#MC_text_boxes").append('<input type="text" class="form-control multipleTextboxes" id="multipleText'+(MCCounter+1)+'" name="multipleText'+(MCCounter+1)+'"/>');
+				// adds trash button to mc modal
+				$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC'+(MCCounter+1)+'" onclick="removeMCQuestion('+(MCCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				MCCounter++;
-			
-			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
-			
-			//$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
-			
-			
-				
-			var create_trash_btn = document.createElement("button");
-			create_trash_btn.setAttribute("type","button");
-			create_trash_btn.setAttribute("class","btn btn-default btn-md trash_button");
-			create_trash_btn.setAttribute("aria-hidden","true");
-			create_trash_btn.setAttribute("id","mc_trash_button" + trash_index++);
-				
-			document.getElementById("MC_add_trash_btn").appendChild(create_trash_btn); 
-				
-			create_trash_btn.innerHTML += '<span class="glyphicon glyphicon-trash"></span>';
-			
-			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
-			
+				testMCArray.push(MCCounter);
 		});
-			$(".trash_button").click(function(){
-				alert("meow");
-				
-
-		});
-		
 	});
+	
+	function removeMCQuestion(questionNum)
+	{
+		testMCArray.splice(questionNum,1);
+		$('#mc_answer'+questionNum).remove();
+		$('#multipleText'+questionNum).remove();
+		$('#remove_MC'+questionNum).remove();
+	}
 	</script>
 	
-	<!-- Access the trash button -->
-	<script>
-    $(document).ready(function()
-	{	
-		var i_test = 3;
-    
-        $("#mc_trash_button3").click(function()
-		{
-			
-        });
-	});
-    </script>
-	<!--
-	<script>	
-		$(document).ready(function(){
-				$("#remove_MC").click(function(){
-				MCArray.push('<input type="text" class="form-control" id="Question">');
-				MCBtnArray.push(' <button type="button" class="btn btn-default" aria-hidden="true" id="remove_MC">remove item</button>');
-			$("#MC_AddAns").append(MCArray[MCCounter]);
-			$("#MC_AddAns").append(MCBtnArray[MCCounter]);
-		});
-	});
-	</script>-->
 	<script>	
 		var testId = '<?php echo $newTestId; ?>';
 			
@@ -1017,7 +969,7 @@ $modalId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				$("#testList").append('div class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
 				);
 
 			});
@@ -1080,7 +1032,7 @@ $modalId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></a>'
+				$("#testList").append('<div class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
 				);
 
 			});
@@ -1093,31 +1045,26 @@ $modalId = 0;
 				var question = $("#mc_question").val();
 				var multipleChoiceArray = [];
 				var multipleTextArray = [];
-				
-				<!-- check for multiple choice radios -->
-				var i = 0;
-				$('.multipleRadio').each(function() {
-					
-					// If true, assign
-					if($(this).is(':checked'))
+
+				// check for multiple choice radios		
+				for(i = 0; i < testMCArray.length; i++)
+				{
+					if ($('#mc_answer'+(testMCArray[i])).is(':checked'))
 					{
 						multipleChoiceArray[i] = 1;
-					  	
 					}
-					// Else false, assign
 					else
 					{
-						multipleChoiceArray[i] = 0;				
+						multipleChoiceArray[i] = 0;	
 					}
-					i++;		
-				});
-				
-				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= MCCounter; i++)
-				{
-					multipleTextArray[i] = document.getElementById("multipleText" + i).value;
 				}
 				
+				
+				// Get and store the possible answers from the multiple choice type 
+				for(i = 0; i < testMCArray.length; i++)
+				{
+					multipleTextArray[i] = document.getElementById("multipleText" + testMCArray[i]).value;
+				}
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
@@ -1133,65 +1080,18 @@ $modalId = 0;
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				// Creates list group item link
-				
-				var a_index = 0;
-				
-				var createA = document.createElement("a");
-				createA.setAttribute("href","#");
-				createA.setAttribute("class","list-group-item");
-				createA.setAttribute("id","mc-" + a_index++);
-				
-				document.getElementById("testList").appendChild(createA); 
-				
-				createA.innerHTML += '<h4 class="list-group-item-heading">Multiple Choice <3</h4>';
-				
-				createA.innerHTML += '<p class="list-group-item-text">' + question + '</p>';
-				
-				// originally it's like this
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
-				);
-				
-				// Prints the answers
-				var answer;
-				for(i = 0; i < multipleChoiceArray.length; i++)
-				{
-					//$("#testList").append('<p class="list-group-item-text">' + question + '</p>'
-					//);
-					
-					// if using the append, choices will go outside the box
-					/*
-					if(i == true)
-						$("#testList").append('<p class="list-group-item-text"><input type="radio" checked="checked" />' + multipleTextArray[i] + '</p>';
-					else
-						$("#testList").append('<p class="list-group-item-text"><input type="radio" />' + multipleTextArray[i] + '</p>';
-				
-					*/
-					
-					if(multipleChoiceArray[i] == true)
-						createA.innerHTML += '<p class="list-group-item-text"><input type="radio" checked="checked" disabled="disabled" />&nbsp;' + multipleTextArray[i] + '</p>';
-					else
-						createA.innerHTML += '<p class="list-group-item-text"><input type="radio" disabled="disabled" />&nbsp;' + multipleTextArray[i] + '</p>';
-				}
-				
-				createA.innerHTML += '<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>';
-				
-				//test
-				//var test_link = document.getElementById('YOYO');
-				//test_link.innerHTML = test_link.innerHTML + 'Extra stuff';
-				
+
 				// Resets MC Values
 				for(MCCounter; MCCounter > 1; MCCounter--)
 				{
 					$('#mc_answer'+MCCounter).remove();
 					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
 				}
-				
-				for(trash_index; trash_index >= 3; trash_index--)
-				{
-					$('#mc_trash_button'+trash_index).remove();
-				}
-				
+					testMCArray = [0,1];
+
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				);
 			});
 			
 			/***********************************************************/
@@ -1202,8 +1102,7 @@ $modalId = 0;
 				var question = $("#ata_question").val();
 				var ataArray = [];
 				var ataTextArray = [];
-				
-				<!-- check for all that apply checkboxes -->
+				//check for all that apply checkboxes
 				var i = 0;
 				$('.ata_cb').each(function() {
 					
@@ -1222,11 +1121,10 @@ $modalId = 0;
 				});
 				
 				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= ATACounter; i++)
+				for(i = 0; i < testATAArray.length; i++)
 				{
 					ataTextArray[i] = document.getElementById("ata_answer" + i).value;
 				}
-				
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
@@ -1241,17 +1139,17 @@ $modalId = 0;
 				{
 					document.getElementById("test").innerHTML = data;
 				});
-				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
-				);
-				
-				// Resets MC Values
+				// Resets ATA Values
 				for(ATACounter; ATACounter > 1; ATACounter--)
 				{
 					$('#ata_answer_cb'+ATACounter).remove();
 					$('#ata_answer'+ATACounter).remove();
+					$('#ATA_add_trash_btn'+ATACounter).remove();
 				}
+				testATAArray = [0,1];
 				
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				);
 			});
 			
 			
@@ -1264,7 +1162,7 @@ $modalId = 0;
 				var trueFalseArray = [];
 				var answerText = ["true", "false"];
 				
-				<!-- check for true/false radios -->
+				//check for true/false radios 
 				var i = 0;
 				$('.optradio').each(function() {
 						 		 
