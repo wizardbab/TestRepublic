@@ -36,6 +36,7 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
+
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 
@@ -57,7 +58,7 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_name, t_status, date_begin, date_end, date_taken from test
+$tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
 // Get the class id for certain user
@@ -65,7 +66,10 @@ where student_id = ? and class_id = ?";
 join enrollment using (student_id)
 join class using (class_id)
 where student_id = ?";*/
+$_SESSION['classId'] = null;
 
+
+$_SESSION['testId'] = null;
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
@@ -166,8 +170,9 @@ $warningstmt = $database->prepare($warningQuery);
 							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
                      $class = $_GET['class_id'];
-							$table->bind_param("ss", $id, $class);
-							$table->bind_result($test_list, $status, $date_begin, $date_end, $date_taken);
+							$classId = $class;
+							$table->bind_param("ss", $id, $classId);
+							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken);
 							$table->execute();
 							while($table->fetch())
 							{
@@ -180,7 +185,11 @@ $warningstmt = $database->prepare($warningQuery);
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{
-											echo '<td><button type="button" class="btn btn-primary">Take Test</button></td>';
+											echo '<td><form action="testPage.php" method="post">
+															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
+															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
+															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
+															<input type="submit" value="Take Test" class="btn btn-primary"/></form></td>';
 										}
 										else
 										{

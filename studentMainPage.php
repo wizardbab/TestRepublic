@@ -164,7 +164,7 @@ $warningstmt = $database->prepare($warningQuery);
 							$table->execute();
 							while($table->fetch())
 							{	
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
+								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?class_id='.str_replace(" ", "%20", $clid).'\'">'.$clid.'</button></td>
 									  <td>'.$update.'</td>
 									  <td>'.$date.'</td></tr>';
 							}
