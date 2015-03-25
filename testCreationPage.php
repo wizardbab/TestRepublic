@@ -985,7 +985,6 @@ $modalId = 0;
 				
 				$("#testList").append('div class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
 				);
-
 			});
 
 			/***********************************************************/

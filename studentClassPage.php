@@ -66,7 +66,10 @@ where student_id = ? and class_id = ?";
 join enrollment using (student_id)
 join class using (class_id)
 where student_id = ?";*/
+$_SESSION['classId'] = null;
 
+
+$_SESSION['testId'] = null;
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
