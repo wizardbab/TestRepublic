@@ -570,7 +570,7 @@ $modalId = 0;
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCCancelBtn">Cancel</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
 								</div>
 							</div>
@@ -629,7 +629,7 @@ $modalId = 0;
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="ATACancelBtn">Cancel</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
@@ -672,13 +672,13 @@ $modalId = 0;
 										<div class="reduce_margin_bottom">
 										</div>
 										<div class="row">
-											<div class="col-md-9" id="add_match_question">
-												<div class="form-group">
+											<div class="col-md-9" >
+												<div class="form-group" id="add_match_question">
 													<input type="text" class="m_question form-control" id="match_question_tb0" />
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_question_letter">
-												<div class="form-group">
+											<div class="col-md-2" >
+												<div class="form-group" id="add_match_question_letter">
 													<input type="text" class="m_question_letter form-control" id="match_question_letter_tb0" />
 												</div>
 											</div>
@@ -694,24 +694,23 @@ $modalId = 0;
 													<label class="control-label">Answer:</label>
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
+											<div class="col-md-2">
 												<div class="form-group">
 													<label class="control-label">Letter:</label>
 												</div>
 											</div>
-											<div class="col-md-1">
-											</div>
+	
 										</div>
 										<div class="reduce_margin_bottom">
 										</div>
 										<div class="row">
-											<div class="col-md-9" id="add_match_answer"> 
-												<div class="form-group">
+											<div class="col-md-9"> 
+												<div class="form-group" id="add_match_answer">
 													<input type="text" class="m_answer form-control" id="match_answer_tb0" />
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
-												<div class="form-group">
+											<div class="col-md-2">
+												<div class="form-group" id="add_match_answer_letter">
 													<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb0" />
 												</div>
 											</div>
@@ -722,8 +721,8 @@ $modalId = 0;
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCancelBtn">Cancel</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -830,9 +829,6 @@ $modalId = 0;
 		{
 			var shortAnswerQuestion = $("#short_answer_question").val();
 			var shortAnswerAnswer   = $("#short_answer_anwer").val();
-			
-			
-			
 		});
 	});
 	</script>
@@ -841,46 +837,64 @@ $modalId = 0;
 	<script>
 		$(document).ready(function()
 		{
-			var mQuestionCounter = 1;
-            var mAnswerCounter = 1;
-            var matchingQuestionArray = [0,1];
-            var matchingAnswerArray = [0,1];
+			var mQuestionCounter = 0;
+            var mAnswerCounter = 0;
+            var matchingQuestionArray = [0];
+            var matchingAnswerArray = [0];
             
-			$("#add_match_answer_btn").click(function()
-			{
-                $("#add_match_answer").append('<div class="form-group"><input type="text" class="m_answer form-control" id="match_answer_tb"'+mAnswerCounter+'></div>');
-				$("#add_match_answer_letter").append('<div class="form-group"><input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb"'+mAnswerCounter+'"></div>');
-				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_answer"'+mAnswerCounter+' onclick="removeMatchingAnswer('+(mAnswerCounter)+')"><span class="glyphicon glyphicon-trash"></span></button>');
-                matchingAnswerArray.push(mAnswerCounter);
-                mAnswerCounter++;
-            });
-			
 			$("#add_match_question_btn").click(function()
 			{
-				$("#add_match_question").append('<div class="form-group"><input type="text" class="m_question form-control" id="match_question_tb"'+mQuestionCounter+'></div>');
-				$("#add_match_question_letter").append('<div class="form-group"><input type="text" class="m_question_letter form-control" id="match_question_letter_tb"'+mQuestionCounter+'"></div>');
-				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"'+mQuestionCounter+' onclick="removeMatchingQuestion('+(mQuestionCounter)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
+				$("#add_match_question_letter").append('<input type="text" class="m_question_letter form-control" id="match_question_letter_tb'+(mQuestionCounter+1)+'">');
+				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question'+(mQuestionCounter+1)+'" onclick="removeMatchingQuestion('+(mQuestionCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				mQuestionCounter++;
                 matchingQuestionArray.push(mQuestionCounter);
-                mQuestionCounter++;
+
 			});
-            
-            function removeMatchingAnswer(mAnswer)
-            {
-                alert("Remove");
-                matchingAnswerArray.splice(mAnswer,1);
-                $('#match_answer_tb'+mAnswer).remove();
-                $('#match_answer_letter_tb'+mAnswer).remove();
-                $('#remove_match_question'+mAnswer).remove();
-            }
-            function removeMatchingQuestion(mQuestion)
-            {
-                alert("Remove");
-                matchingQuestionArray.splice(mQuestion,1);
-                $('#match_question_tb'+mQuestion).remove();
-                $('#match_question_letter_tb'+mQuestion).remove();
-                $('#remove_match_question'+mQuestion).remove();
-            }
+			
+			$("#add_match_answer_btn").click(function()
+			{
+                $("#add_match_answer").append('<input type="text" class="m_answer form-control" id="match_answer_tb'+(mAnswerCounter+1)+'">');
+				$("#add_match_answer_letter").append('<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb'+(mAnswerCounter+1)+'">');
+				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_answer'+(mAnswerCounter+1)+'" onclick="removeMatchingAnswer('+(mAnswerCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                mAnswerCounter++;
+				matchingAnswerArray.push(mAnswerCounter);
+            });
+			
+			$("#MCancelBtn").click(function()
+			{
+				// Resets Matching Values
+				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
+				{
+					$('#match_question_tb'+mQuestionCounter).remove();
+					$('#match_question_letter_tb'+mQuestionCounter).remove();
+					$('#remove_match_question'+mQuestionCounter).remove();
+				}
+				for(mAnswerCounter; mAnswerCounter > 0; mAnswerCounter--)
+				{
+					$('#match_answer_tb'+mAnswerCounter).remove();
+					$('#match_answer_letter_tb'+mAnswerCounter).remove();
+					$('#remove_match_answer'+mAnswerCounter).remove();
+				}
+					matchingQuestionArray = [0];
+					matchingAnswerArray = [0];
+			});
 		});
+		function removeMatchingQuestion(mQuestion)
+		{
+			$('#match_question_tb'+mQuestion).remove();
+			$('#match_question_letter_tb'+mQuestion).remove();
+			$('#remove_match_question'+mQuestion).remove();
+			matchingQuestionArray.splice(mQuestion,1);
+		}
+		
+		function removeMatchingAnswer(mAnswer)
+		{
+			$('#match_answer_tb'+mAnswer).remove();
+			$('#match_answer_letter_tb'+mAnswer).remove();
+			$('#remove_match_answer'+mAnswer).remove();
+			matchingAnswerArray.splice(mAnswer,1);
+		}
 	</script>
 	
 		<!-- All that Apply JS -->
@@ -899,6 +913,18 @@ $modalId = 0;
 				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata'+(ATACounter+1)+'" onclick="removeATAQuestion('+(ATACounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				ATACounter++;
 				testATAArray.push(ATACounter);
+		});
+		
+			$("#ATACancelBtn").click(function()
+			{
+				// Resets ATA Values
+				for(ATACounter; ATACounter > 1; ATACounter--)
+				{
+					$('#ata_answer_cb'+ATACounter).remove();
+					$('#ata_answer'+ATACounter).remove();
+					$('#remove_ata'+ATACounter).remove();
+				}
+				testATAArray = [0,1];
 		});
 	});
 	function removeATAQuestion(questionNum)
@@ -928,6 +954,16 @@ $modalId = 0;
 				$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC'+(MCCounter+1)+'" onclick="removeMCQuestion('+(MCCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				MCCounter++;
 				testMCArray.push(MCCounter);
+		});
+			$("#MCCancelBtn").click(function(){
+				// Resets MC Values
+				for(MCCounter; MCCounter > 1; MCCounter--)
+				{
+					$('#mc_answer'+MCCounter).remove();
+					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
+				}
+					testMCArray = [0,1];
 		});
 	});
 	
