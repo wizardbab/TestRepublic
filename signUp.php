@@ -115,13 +115,14 @@ $success = false;
                         echo "var sidebar_array = " . $sidebar_array . ";\n";
                      ?>
                      var input = document.querySelector('input[type=checkbox]');
-                     
-                     function check(int i)
+                     int i=0;
+                     $('.sidebar_array').each(function check()
                      {
                         var a = input.checked ? "checked" : "not checked";
                         sidebar_array[i] = a;
                      }
-                     input.onchange = check;
+                     }
+                     input.onchange = check();
                      /*$(document).ready(function()
                      {
                         $('.sidebar_class').each(function() 
