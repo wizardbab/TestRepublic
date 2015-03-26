@@ -242,7 +242,6 @@ $_SESSION['testId'] = $testId;
 				} */
 				?>	
    
-   
 	 <!-- Page Content -->
     <div class="container">
 
