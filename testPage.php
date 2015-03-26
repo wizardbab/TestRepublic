@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<!-- Initial Creation by Victor Jereza -->
+	<!-- Initial Creation by Victor Jereza *woot woot* -->
 	
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,9 +14,6 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/TestPage.css" rel="stylesheet">
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -31,11 +26,11 @@
 
 	<!-- Custom TestTaking JavaScript -->
 	<script src="js/testTaking.js"></script> 
-	 
-</head>
-
-<body class="container-fluid">
-
+	
+	<!-- Custom CSS -->
+    <link href="css/TestPage.css" rel="stylesheet">
+	
+	
 <?php
 session_start();
 
@@ -75,6 +70,70 @@ $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
 ?>
+	
+</head>
+
+<body class="container-fluid">
+
+	<div id="wrapper2">
+	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+		   <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
+					<div id="logo-area">
+						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<span class="TestRepublic" id="backToClass">Test Republic</span>
+					</div>
+				</a>
+			</div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+					<?php // Added by David Hughen
+						  // to display student's name in top right corner
+
+							if ($topRightStatement = $database->prepare($topRightQuery)) 
+														{
+															$topRightStatement->bind_param("s", $id);
+														}
+														else {
+															printf("Errormessage: %s\n", $database->error);
+														}							
+											$topRightStatement->bind_result($first_name, $last_name);
+											$topRightStatement->execute();
+											while($topRightStatement->fetch())
+											{
+												echo $first_name . " " . $last_name;
+											}
+											$topRightStatement->close();?><b class="caret"></b></a>
+						
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+	</div>
+
 <?php
 	
 			/*	$queryStatement->bind_param("s", $classId);
@@ -183,12 +242,11 @@ $_SESSION['testId'] = $testId;
 				} */
 				?>	
    
-   
 	 <!-- Page Content -->
     <div class="container">
 
         <!-- Page Heading/Breadcrumbs -->
-        <div class="row">
+        <div class="row increase_margin_top">
             <div class="col-lg-12">
                 <h1 class="page-header">CS 306
                     <small>Test 1</small>
@@ -201,157 +259,204 @@ $_SESSION['testId'] = $testId;
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-group" id="accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
+                    
+					<!-- Multiple Choice /.panel -->
+					<div class="panel panel-default">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
                             </h4>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <h3>Question 1: <small>1+1=?</small><h3>
-								<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio">11</input>
-								<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio">2</input>
-								<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio">14</input>
-								<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio">87</input>
+                                <h4>1.<span class="mc_questions">1 + 1 = ?</span></h4>
+									<div class="mc_answers">
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+											<span class="mc_answer_lbl">11</span>
+										</div>
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+											<span class="mc_answer_lbl">2</span>
+										</div>
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+											<span class="mc_answer_lbl">14</span>
+										</div>
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+											<span class="mc_answer_lbl">87</span>
+										</div>
+									</div>
 							</div>
 							<div class="panel-body">
-								<h3>Question 2: <small>Andrea is ...</small><h3>
-								<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio">Indo</input>
-								<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio">Viet</input>
-								<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio">An Alien</input>
-								<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio">Short</input>
-							</div>
-							<div class="panel-body">
-								<h3>Question 3: <small>Cats are awesome</small><h3>
-								<input type="radio" name="mc_answer3" id="mc_answer3" value="multipleRadio3" class="multipleRadio">True</input>
-								<input type="radio" name="mc_answer3" id="mc_answer3" value="multipleRadio3" class="multipleRadio">rreally true</input>
-								<input type="radio" name="mc_answer3" id="mc_answer3" value="multipleRadio3" class="multipleRadio">very true</input>
-								<input type="radio" name="mc_answer3" id="mc_answer3" value="multipleRadio3" class="multipleRadio">MEGA TRUE</input>
+                                <h4>2.<span class="mc_questions">How do you say "Hello" in Indonesian?</span></h4>
+									<div class="mc_answers">
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
+											<span class="mc_answer_lbl">Yo</span>
+										</div>
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
+											<span class="mc_answer_lbl">Hello</span>
+										</div>
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
+											<span class="mc_answer_lbl">Halo</span>
+										</div>
+										<div class="mc_choice">
+											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
+											<span class="mc_answer_lbl">Aloha</span>
+										</div>
+									</div>
 							</div>
                         </div>
                     </div>
-                    <!-- /.panel -->
+                    
+					<!-- Matching /.panel -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Choice Questions</a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
                             </h4>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse">
                             <div class="panel-body container">
-                                <h3>Question 1: <small>Math Problems!</small><h3>
+                                <h4>Identify the following types as a dog or a cat:</h4>
 								<div class="col-md-6">
-									<input type="text" name="mc_answer1" id="mc_answer1"class="multipleRadio">1+1=</input>
-									<input type="text" name="mc_answer1" id="mc_answer1"class="multipleRadio">2+2=</input>
+									<div class="matching_div">
+										10.<span class="matching_questions">Pomeranian</span>
+										<input type="text" class="matching_answer_tb" />
+									</div>
+									<div class="matching_div">
+										11.<span class="matching_questions">Persian</span>
+										<input type="text" class="matching_answer_tb" />
+									</div>
+									<div class="matching_div">
+										12.<span class="matching_questions">Labrador</span>	
+										<input type="text" class="matching_answer_tb" />
+									</div>
+									<div class="matching_div">
+										13.<span class="matching_questions">Siberian</span>
+										<input type="text" class="matching_answer_tb" />
+									</div>	
+									<div class="matching_div">
+										14.<span class="matching_questions">Husky</span>
+										<input type="text" class="matching_answer_tb" />
+									</div>			
 								</div>
 								<div class="col-md-6">
-									<h1> a. 2</h1>
-									<h1> b. 2</h1>
-									<h1> c. EPIC</h1>
-									<h1> d. 2</h1>
+									<div class="matching_div">
+										a.<span class="matching_questions">Dog</span>
+									</div>
+									<div class="matching_div">
+										b.<span class="matching_questions">Cat</span>
+									</div>
 								</div>
 							</div>
                         </div>
                     </div>
-                    <!-- /.panel -->
+                    
+					<!-- All that Apply /.panel -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
                             </h4>
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <h3>Question 1: <small>Jake is...</small><h3>
-								<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb">Ugly</input>
-								<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb">a DB God</input>
-								<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb">Fat</input>
-								<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb">Assistant Project manager</input>
-							</div>
-							<div class="panel-body">
-								<h3>Question 2: <small>Blue is...</small><h3>
-								<input type="checkbox" name="ata_answer2" id="ata_answer_cb2" class="ata_cb">Ugly</input>
-								<input type="checkbox" name="ata_answer2" id="ata_answer_cb2" class="ata_cb">our color</input>
-								<input type="checkbox" name="ata_answer2" id="ata_answer_cb2" class="ata_cb">meow</input>
-								<input type="checkbox" name="ata_answer2" id="ata_answer_cb2" class="ata_cb">Ugly</input>
-							</div>
-							<div class="panel-body">
-								<h3>Question 3: <small>Death comes to...</small><h3>
-								<input type="checkbox" name="ata_answer3" id="ata_answer_cb3" class="ata_cb">Infidels</input>
-								<input type="checkbox" name="ata_answer3" id="ata_answer_cb3" class="ata_cb">Ugly people</input>
-								<input type="checkbox" name="ata_answer3" id="ata_answer_cb3" class="ata_cb">Pretty People</input>
-								<input type="checkbox" name="ata_answer3" id="ata_answer_cb3" class="ata_cb">Sick people</input>
+                                <h4>20.<span class="ata_questions">Choose all the colors that are in Power Rangers.</span></h4>
+								<div class="ata_answers">
+									<div class="ata_choice">
+										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
+										<span class="ata_answer_lbl">Pink</span>
+									</div>
+									<div class="ata_choice">
+										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
+										<span class="ata_answer_lbl">Red</span>
+									</div>
+									<div class="ata_choice">
+										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
+										<span class="ata_answer_lbl">Purple</span>
+									</div>
+									<div class="ata_choice">
+										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
+										<span class="ata_answer_lbl">Yellow</span>
+									</div>
+									<div class="ata_choice">
+										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
+										<span class="ata_answer_lbl">Blue</span>
+									</div>
+								</div>
 							</div>
                         </div>
                     </div>
-                    <!-- /.panel -->
+                    
+					<!-- True/False /.panel -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
                             </h4>
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <h3>Question 1: <small>David is ugly</small><h3>
-								<input type="radio" name="tf_answer1" id="tf_answer1" value="multipleRadio1" class="multipleRadio">True</input>
-								<input type="radio" name="tf_answer1" id="tf_answer1" value="multipleRadio1" class="multipleRadio">False</input>
+                                <h4>30.<span class="tf_questions">David is ugly.</span></h4>
+								<div class="tf_answers">
+									<div class="tf_choice">
+										<input type="radio" name="tf_answer1" id="tf_answer1" value="multipleRadio1" class="multipleRadio">
+										<span class="mc_answer_lbl">True</span>
+									</div>
+									<div class="tf_choice">
+										<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
+										<span class="mc_answer_lbl">False</span>
+									</div>
+								</div>
 							</div>
 							<div class="panel-body">
-								<h3>Question 2: <small>Dr. Howell is a boss.</small><h3>
-								<input type="radio" name="tf_answer2" id="tf_answer2" value="multipleRadio2" class="multipleRadio">True</input>
-								<input type="radio" name="tf_answer2" id="tf_answer2" value="multipleRadio2" class="multipleRadio">False</input>
-							</div>
-							<div class="panel-body">
-								<h3>Question 3: <small>Cats are awesome</small><h3>
-								<input type="radio" name="tf_answer3" id="tf_answer3" value="multipleRadio3" class="multipleRadio">True</input>
-								<input type="radio" name="tf_answer3" id="tf_answer3" value="multipleRadio3" class="multipleRadio">False</input>
+								Etc.
 							</div>
                         </div>
                     </div>
-                    <!-- /.panel -->
+                    
+					<!-- Short Answer /.panel -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Short Answer</a>
                             </h4>
                         </div>
                         <div id="collapseFive" class="panel-collapse collapse">
 							<div class="panel-body">
-								<h2>Question 1: <small>E=MC?</small><h2>
-								<input type="text" class="m_answer_letter form-control" id="ShortAnswer1" />
+								<h4>100.<span class="sa_questions">What kind of music that are allowed in PCC?</span></h4>
+								<div class="sa_answers">
+									<input type="text" class="m_answer_letter form-control" id="ShortAnswer2" />
+								</div>
 							</div>
 							<div class="panel-body">
-								<h2>Question 2: <small>What is the meaning of life</small><h2>
-								<input type="text" class="m_answer_letter form-control" id="ShortAnswer2" />
-							</div>
-							<div class="panel-body">
-								<h2>Question 3: <small>Who is the main hero in Ranger's Apprentice?</small><h2>
-								<input type="text" class="m_answer_letter form-control" id="ShortAnswer3" />
+								<h4>101.<span class="sa_questions">There are ___ dalmantions in Dalmantions 101.</span></h4>
+								<div class="sa_answers">
+									<input type="text" class="m_answer_letter form-control" id="ShortAnswer3" />
+								</div>
 							</div>
                         </div>
                     </div>
-                    <!-- /.panel -->
+                    
+					<!-- Essay /.panel -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
                             </h4>
                         </div>
                         <div id="collapseSix" class="panel-collapse collapse">
                             <div class="panel-body">
-								<h2>Question 1: <small>Why Should Victor get a raise?</small><h2>
-								<textarea class="form-control" id="EssayQuestion1" name="specificInstruction" rows="6"> </textarea>
+								<h4>120.<span class="essay_questions">Explain why CIS students need to take Systems Design class.</span></h4>
+								<div class="essay_answers">
+									<textarea class="form-control" id="EssayQuestion1" name="specificInstruction" rows="6"> </textarea>
+								</div>
 							</div>
-							<div class="panel-body">
-								<h2>Question 2: <small>Who is your teacher?</small><h2>
-								<textarea class="form-control" id="EssayQuestion2" name="specificInstruction" rows="6"> </textarea>
-						   </div>
-							<div class="panel-body">
-								<h2>Question 3: <small>Which team rocks your socks off?</small><h2>
-								<textarea class="form-control" id="EssayQuestion3" name="specificInstruction" rows="6"> </textarea>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -361,21 +466,9 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<h4 id="pledgeHeader"> Do you accept the terms of agreement? </h4>
+			<button type="button" class="btn btn-success btn-block" id="Submit">Submit</button>
 		</div>
-		
-		<div class="row">
-			<div class="col-md-3">
-				<input type="text" class="form-control" id="Pledge">
-			</div>
-			
-			<div class="col-md-9">	
-				<button type="button" class="btn btn-primary btn-block" id="Submit">Submit</button>
-			</div>
-		</div>
-		
-		
-		
+				
    </div>
    <!-- /. Container -->
    

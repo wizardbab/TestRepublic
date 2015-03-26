@@ -843,33 +843,43 @@ $modalId = 0;
 		{
 			var mQuestionCounter = 1;
             var mAnswerCounter = 1;
+            var matchingQuestionArray = [0,1];
+            var matchingAnswerArray = [0,1];
+            
 			$("#add_match_answer_btn").click(function()
 			{
-				alert("Answer");
                 $("#add_match_answer").append('<div class="form-group"><input type="text" class="m_answer form-control" id="match_answer_tb"'+mAnswerCounter+'></div>');
 				$("#add_match_answer_letter").append('<div class="form-group"><input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb"'+mAnswerCounter+'"></div>');
 				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_answer"'+mAnswerCounter+' onclick="removeMatchingAnswer('+(mAnswerCounter)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                matchingAnswerArray.push(mAnswerCounter);
                 mAnswerCounter++;
-                alert("Answer2");
             });
 			
 			$("#add_match_question_btn").click(function()
 			{
-				// Add the text box for a matching question
-				//cloned = $('#match_question_tb' + a );
-				//$("#match_question_tb" + a).clone().attr('id', 'match_question_tb'+(++a )).insertAfter(cloned);
-			
-				//$("#match_question_tb" + a ).text('match_question_tb' + a );
-				
-				// Add the Match box for the question
-				//cloned = $('#match_question_letter_tb' + b );
-				//$("#match_question_letter_tb" + b).clone().attr('id', 'match_question_letter_tb'+(++b )).insertAfter(cloned);
-			
-				//$("#match_question_letter_tb" + b ).text('match_question_letter_tb' + b );
-				
-				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question" onclick="removeMatchingQuestion('+(mQuestionCounter)+')"><span class="glyphicon glyphicon-trash"></span></button>');
-
+				$("#add_match_question").append('<div class="form-group"><input type="text" class="m_question form-control" id="match_question_tb"'+mQuestionCounter+'></div>');
+				$("#add_match_question_letter").append('<div class="form-group"><input type="text" class="m_question_letter form-control" id="match_question_letter_tb"'+mQuestionCounter+'"></div>');
+				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"'+mQuestionCounter+' onclick="removeMatchingQuestion('+(mQuestionCounter)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                matchingQuestionArray.push(mQuestionCounter);
+                mQuestionCounter++;
 			});
+            
+            function removeMatchingAnswer(mAnswer)
+            {
+                alert("Remove");
+                matchingAnswerArray.splice(mAnswer,1);
+                $('#match_answer_tb'+mAnswer).remove();
+                $('#match_answer_letter_tb'+mAnswer).remove();
+                $('#remove_match_question'+mAnswer).remove();
+            }
+            function removeMatchingQuestion(mQuestion)
+            {
+                alert("Remove");
+                matchingQuestionArray.splice(mQuestion,1);
+                $('#match_question_tb'+mQuestion).remove();
+                $('#match_question_letter_tb'+mQuestion).remove();
+                $('#remove_match_question'+mQuestion).remove();
+            }
 		});
 	</script>
 	
@@ -959,7 +969,6 @@ $modalId = 0;
 				
 				$("#testList").append('div class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
 				);
-
 			});
 
 			/***********************************************************/
