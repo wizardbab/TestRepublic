@@ -58,8 +58,11 @@ $summaryQuery = "select question_no, question_type, question_value, question_tex
 								 from question
 								 where test_id = ?";
 								 
+$headerQuery = "SELECT class_id, test_name from test where test_id = ?";
+								 
 
 $queryStatement = $database->prepare($query);
+$headerStatement = $database->prepare($headerQuery);
 //require("Nav.php");
 
 @$classId = $_POST['classId'];
@@ -68,6 +71,7 @@ $queryStatement = $database->prepare($query);
 
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
+
 
 ?>
 	
@@ -100,12 +104,12 @@ $_SESSION['testId'] = $testId;
 						  // to display student's name in top right corner
 
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
-														{
-															$topRightStatement->bind_param("s", $id);
-														}
-														else {
-															printf("Errormessage: %s\n", $database->error);
-														}							
+											{
+												$topRightStatement->bind_param("s", $id);
+											}
+											else {
+												printf("Errormessage: %s\n", $database->error);
+											}							
 											$topRightStatement->bind_result($first_name, $last_name);
 											$topRightStatement->execute();
 											while($topRightStatement->fetch())
@@ -136,7 +140,7 @@ $_SESSION['testId'] = $testId;
 
 <?php
 	
-			/*	$queryStatement->bind_param("s", $classId);
+				/*$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
 				$queryStatement->execute();
 				while($queryStatement->fetch())
@@ -179,9 +183,8 @@ $_SESSION['testId'] = $testId;
 					{
 						$essayCounter++;
 						array_push($essayArray, $qno, $qtype, $qvalue, $qtext);
-						foreach($essayArray as $e)
-							echo $e . ' ';
-						//print_r($essayArray);
+						
+						print_r($essayArray);
 						echo '<br />';
 						
 					}		
@@ -248,8 +251,19 @@ $_SESSION['testId'] = $testId;
         <!-- Page Heading/Breadcrumbs -->
         <div class="row increase_margin_top">
             <div class="col-lg-12">
-                <h1 class="page-header">CS 306
-                    <small>Test 1</small>
+                <h1 class="page-header">
+					 <?php
+						// Code to display class id and test name
+					   $headerStatement->bind_param("s", $testId);
+						$headerStatement->bind_result($clid, $tname);
+						$headerStatement->execute();
+						while($headerStatement->fetch())
+						{
+							echo $clid . '<small>' . $tname . '</small>';
+							
+						}
+						$headerStatement->close();
+						  ?>
                 </h1>
             </div>
         </div>
