@@ -18,8 +18,13 @@ body
 
 .navbar-header
 {
-	background-color: rgb(55,96,146);
+	background-color: rgb(34,34,34);
 	width: 250px;
+}
+
+.navbar-header:hover
+{
+	background: rgb(55,96,146);
 }
 
 #logo-area
@@ -287,16 +292,15 @@ ul.alert-dropdown {
 	#test_information
 	{
 		/*background: rgba(149,179,215,0.6);*/
-		background: lavender;
+		background: rgba(104,185,232, 0.6);
 		padding-top: 3px;
 		padding-bottom: 3px;
 	}
 	
 	.test-info-text
 	{
-		font-size: 18pt;
-		font-family: 'DejaVu Sans Condensed', Arial;
-		color: rgb(55,96,146);
+		font-size: 20pt;
+		font-weight: bold;
 		text-align: center;
 	}
 	

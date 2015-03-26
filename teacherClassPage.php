@@ -137,14 +137,15 @@ $studentStatement = $database->prepare($studentQuery);
 				while($queryStatement->fetch())
 				{
 					
-					echo '<li><a href=teacherClassPage.php?classId=' . $cid = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
+					echo '<li><a href=teacherClassPage.php?classId=' . $cid = str_replace(" ", "%20", $clid) . '><b>' . $clid . '</b><div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$queryStatement->close();
 				?>
 			
             </ul>
         </div>
-		<?php
+		
+        <?php
 			$mainClassStatement->bind_param("s", $classId);
 			$mainClassStatement->bind_result($clid, $clde);
 			$mainClassStatement->execute();
@@ -163,13 +164,18 @@ $studentStatement = $database->prepare($studentQuery);
 			}
 			$mainClassStatement->close();
 		?>
-        
 		
 		
         <!-- Page Content -->
         <div id="page-content-wrapper">
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
+				<div class="row">
+				
+				</div>
+			</div>
+			
+			<div class="container-fluid align-center">
                 <div class="row">
 				
 					<div class="students_num_text">
@@ -189,11 +195,13 @@ $studentStatement = $database->prepare($studentQuery);
                         <input type="hidden" class="create_test_button" value="" name="testId" id="testId"/>
                         <input type="submit" class="create_test_button" id="createTestButton" value="Create Test"/>
                     </form>
-					
+				</div>
+				<div class="row">
 					<div class="test_list_text">
 						Test List
 					</div>
-					
+				</div>
+				<div class="row">
 					<table class="test_list table-hover">
 						<colgroup>
 							<col class="test_name" />
@@ -236,11 +244,13 @@ $studentStatement = $database->prepare($studentQuery);
 						</tbody>
 						
 					</table>
-					
+				</div>
+				<div class="row">
 					<div class="student_list_text">
 						Student List
 					</div>
-					
+				</div>
+				<div class="row">
 					<table class="student_list table-hover">
 					<tr class="student_list_header">
 					<td>First Name</td>

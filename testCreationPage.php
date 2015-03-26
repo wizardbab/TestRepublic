@@ -256,25 +256,26 @@ $modalId = 0;
 							</label>
 							
 							<label class="date_lbl">Start Date:
-								<input type="text" id="dateBegin" name="dateBegin" value="<?php echo $startDate; ?>" />
+								<input type="text" id="dateBegin" name="dateBegin" value="<?php echo $startDate; ?>" placeholder="mm/dd/yyyy" />
 							</label>
 							
 							<label class="time_lbl">Time:
-								<input type="time" />
+								<input type="time" placeholder="12:00 PM" />
 							</label>
 							
 							<label class="date_lbl">End Date:&nbsp;
-								<input type="text" id="dateEnd" name="dateEnd" value="<?php echo $endDate; ?>" />
+								<input type="text" id="dateEnd" name="dateEnd" value="<?php echo $endDate; ?>" placeholder="mm/dd/yyyy" />
 							</label>
 							
 							<label class="time_lbl">Time:
-								<input type="time" />
+								<input type="time" placeholder="12:00 PM" />
 							</label>
 							
 							<label class="time_limit_lbl">Time Limit:
 								<input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" /> minutes
 							</label>
 							
+							<br />
 							<label class="time_limit_lbl">Max Points:
 								<input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" /> 
 							</label>
