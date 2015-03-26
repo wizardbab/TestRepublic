@@ -54,7 +54,10 @@ $insertStudentQuery = "insert into student values(?, ?, ?, ?, ?)";
 // Insert the classes a student is taking into enrollment
 $insertEnrollmentQuery = "insert into enrollment values(?, ?)";
 $insertTestQuery = "insert into test_list(student_id, test_id) values (?, ?)";
-$selectTestIdQuery = "select test_id from test where class_id = ?";
+$selectTestIdQuery = "select test_id from test
+join test_list using (test_id)
+where class_id = ?
+group by(test_id)";
 @ $database->select_db(DATABASENAME);
 // Check to see if anything was entered, if not assign an empty string
 $firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : "");
