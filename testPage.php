@@ -58,8 +58,11 @@ $summaryQuery = "select question_no, question_type, question_value, question_tex
 								 from question
 								 where test_id = ?";
 								 
+$headerQuery = "SELECT class_id, test_name from test where test_id = ?";
+								 
 
 $queryStatement = $database->prepare($query);
+$headerStatement = $database->prepare($headerQuery);
 //require("Nav.php");
 
 @$classId = $_POST['classId'];
@@ -69,74 +72,19 @@ $queryStatement = $database->prepare($query);
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
+
 ?>
 	
 </head>
 
 <body class="container-fluid">
 
-	<div id="wrapper2">
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-		   <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic" id="backToClass">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-					<?php // Added by David Hughen
-						  // to display student's name in top right corner
+<?php require("Nav.php"); ?>
 
-							if ($topRightStatement = $database->prepare($topRightQuery)) 
-														{
-															$topRightStatement->bind_param("s", $id);
-														}
-														else {
-															printf("Errormessage: %s\n", $database->error);
-														}							
-											$topRightStatement->bind_result($first_name, $last_name);
-											$topRightStatement->execute();
-											while($topRightStatement->fetch())
-											{
-												echo $first_name . " " . $last_name;
-											}
-											$topRightStatement->close();?><b class="caret"></b></a>
-						
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-	</div>
-
+	
 <?php
 	
-			/*	$queryStatement->bind_param("s", $classId);
+				/*$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
 				$queryStatement->execute();
 				while($queryStatement->fetch())
@@ -155,6 +103,13 @@ $_SESSION['testId'] = $testId;
 			
 				$questionArray = array();
 				$essayArray = array();
+				$trueFalseArray = array();
+				$multipleChoiceArray = array();
+				$matchingArray = array();
+				$shortAnswerArray = array();
+				$ataArray = array();
+				
+				
 				$summaryStatement = $database->prepare($summaryQuery);
 				$summaryStatement->bind_param("s", $testId);
 				$summaryStatement->bind_result($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter);
@@ -173,43 +128,42 @@ $_SESSION['testId'] = $testId;
 					array_push($questionArray, array($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter));
 					
 					/***************************************************************************************************/
-               /* Essay type question crapola                                                                     */
+               /* Essay type question                                                                             */
                /***************************************************************************************************/
 					if($qtype == "Essay")
 					{
-						$essayCounter++;
+						
 						array_push($essayArray, $qno, $qtype, $qvalue, $qtext);
-						foreach($essayArray as $e)
-							echo $e . ' ';
-						//print_r($essayArray);
+						
+						print_r($essayArray);
 						echo '<br />';
 						
 					}		
 
 					/***************************************************************************************************/
-               /* True/False type question crapola                                                                */
+               /* True/False type question                                                                        */
                /***************************************************************************************************/
 					else if($qtype == "True/False")
 					{
-						$trueFalseCounter++;
+						array_push($trueFalseArray, $qno, $qtype, $qvalue, $qtext);
 						
 					}
 					
 					/***************************************************************************************************/
-               /* Multiple Choice type question crapola                                                           */
+               /* Multiple Choice type question                                                                   */
                /***************************************************************************************************/
 					else if($qtype == "Multiple Choice")
 					{
-						$multipleChoiceCounter++;
+						array_push($multipleChoiceArray, $qno, $qtype, $qvalue, $qtext);
 						
 					}
 					
 					/***************************************************************************************************/
-               /* Matching type question crapola                                                                  */
+               /* Matching type question                                                                          */
                /***************************************************************************************************/
 					else if($qtype == "Matching")
 					{
-						$matchingCounter++; // Probably have to be incremented more that this xD
+						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter);
 						
 					}
 					
@@ -218,20 +172,26 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Short Answer")
 					{
-						$shortAnswerCounter++;
+						array_push($shortAnswerArray, $qno, $qtype, $qvalue, $qtext);
 					}
 					
 					/***************************************************************************************************/
-               /* All That Apply type question crapola                                                            */
+               /* All That Apply type question                                                                    */
                /***************************************************************************************************/
 					else
 					{
-						$ataCounter++;
+						array_push($ataArray, $qno, $qtype, $qvalue, $qtext);
 						
 					}
 					
 				}
 				$summaryStatement->close();
+				
+				
+				
+				
+				
+				
 		/*	foreach($questionArray as $question)
 				{
 					foreach($question as $key => $value)
@@ -248,8 +208,19 @@ $_SESSION['testId'] = $testId;
         <!-- Page Heading/Breadcrumbs -->
         <div class="row increase_margin_top">
             <div class="col-lg-12">
-                <h1 class="page-header">CS 306
-                    <small>Test 1</small>
+                <h1 class="page-header">
+					 <?php
+						// Code to display class id and test name
+					   $headerStatement->bind_param("s", $testId);
+						$headerStatement->bind_result($clid, $tname);
+						$headerStatement->execute();
+						while($headerStatement->fetch())
+						{
+							echo $clid . '<small>' . $tname . '</small>';
+							
+						}
+						$headerStatement->close();
+						  ?>
                 </h1>
             </div>
         </div>
@@ -419,46 +390,95 @@ $_SESSION['testId'] = $testId;
 							</div>
                         </div>
                     </div>
+						  
+						  
+						  
                     
 					<!-- Short Answer /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Short Answer</a>
-                            </h4>
-                        </div>
-                        <div id="collapseFive" class="panel-collapse collapse">
-							<div class="panel-body">
-								<h4>100.<span class="sa_questions">What kind of music that are allowed in PCC?</span></h4>
-								<div class="sa_answers">
-									<input type="text" class="m_answer_letter form-control" id="ShortAnswer2" />
-								</div>
-							</div>
-							<div class="panel-body">
-								<h4>101.<span class="sa_questions">There are ___ dalmantions in Dalmantions 101.</span></h4>
-								<div class="sa_answers">
-									<input type="text" class="m_answer_letter form-control" id="ShortAnswer3" />
-								</div>
-							</div>
-                        </div>
-                    </div>
                     
-					<!-- Essay /.panel -->
-                    <div class="panel panel-default">
+                    <?php
+						   /***************************************************************************************************/
+							/* Test each question type's array for data; if there's data we add that tab to our page           */
+							/***************************************************************************************************/
+							// Essay stuff
+							if(is_array($essayArray))
+							{
+								
+								
+								
+								echo '<div class="panel panel-default">
                         <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
                             </h4>
                         </div>
-                        <div id="collapseSix" class="panel-collapse collapse">
-                            <div class="panel-body">
-								<h4>120.<span class="essay_questions">Explain why CIS students need to take Systems Design class.</span></h4>
-								<div class="essay_answers">
-									<textarea class="form-control" id="EssayQuestion1" name="specificInstruction" rows="6"> </textarea>
-								</div>
-							</div>
+							  <div id="collapseSix" class="panel-collapse collapse">
+									<div class="panel-body">';
+									
+									for($i = 0; $i < count($essayArray); $i+=4)
+									{
+										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
+											<div class="essay_answers">
+												<textarea class="form-control" id="EssayQuestion1" name="specificInstruction" rows="6"> </textarea></div>';
+			
+									}
+								echo'		
+									</div>
+							  </div>
+							      </div>';
+							}
+							
+							// True/False stuff
+							if(is_array($trueFalseArray))
+							{
+								// echo accordian
+							}
+							
+							// Multiple Choice stuff
+							if(is_array($multipleChoiceArray))
+							{
+								// echo accordian
+							}
+							
+							// Matching stuff
+							if(is_array($matchingArray))
+							{
+								// echo accordian
+							}
+							
+							// Short Answer stuff
+							if(is_array($shortAnswerArray))
+							{
+								echo'<div class="panel panel-default">
+                        <div class="panel-heading" id="panel-color">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Short Answer</a>
+                            </h4>
                         </div>
-                    </div>
+                        <div id="collapseFive" class="panel-collapse collapse">';
+								for($i = 0; $i < count($shortAnswerArray); $i+=4)
+								{
+									echo'<div class="panel-body">
+										<h4>'.$shortAnswerArray[$i].'<span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
+										<div class="sa_answers">
+											<input type="text" class="m_answer_letter form-control" id="ShortAnswer2" />
+										</div>
+									</div>';
+								}
+									
+								echo'
+									</div>
+								</div>';
+							}
+							
+							// All That Apply stuff
+							if(is_array($ataArray))
+							{
+								// echo accordian
+							}
+						  ?>
+					<!-- Essay /.panel -->
+                    
                 </div>
                 <!-- /.panel-group -->
             </div>
