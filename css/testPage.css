@@ -280,6 +280,87 @@ ul.alert-dropdown {
 	text-align: center;
 }
 
+.increase_margin_top
+{
+	margin-top: 30px;
+}
+
+#panel-color
+{
+	background-color: rgba(55,96,146, .9);
+	color: white;
+	font-weight: bold;
+}
+
+.panel-color
+{
+	background-color: rgb(55,96,146);
+	color: white;
+	font-weight: bold;
+}
+
+.mc_answers, .ata_answers, .tf_answers, .sa_answers, .essay_answers
+{
+	display: block;
+	margin-left: 40px;
+}
+
+.mc_questions, .ata_questions, .tf_questions, .sa_questions, .essay_questions
+{
+	position: absolute;
+	left: 70px;
+}
+
+.mc_choice, .ata_choice, .tf_choice
+{
+	display: block;
+	margin-bottom: 5px;
+}
+
+.mc_answer_lbl, .ata_answer_lbl, .tf_answer_lbl
+{
+	margin-left: 2px;
+}
+
+.matching_questions
+{
+	position: relative;
+	left: 10px;
+}
+
+.matching_answer_tb
+{
+	position: relative;
+	left: 20px;
+	width: 2em;
+}
+
+.matching_div
+{
+	margin-bottom: 5px;
+}
+
+.ata_cb
+{
+	padding-right: 30px;
+}
+
+.sign_name_text
+{
+	margin-top: 50px;
+	font-weight: bold;
+}
+
+.sign_name_tb
+{
+	width: 20em;
+}
+
+.increase_margin
+{
+	margin-top: 30px;
+}
+
 @media(min-width:768px) 
 {
 		#wrapper {

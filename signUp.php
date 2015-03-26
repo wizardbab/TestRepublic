@@ -34,6 +34,8 @@
 
 <?php
 session_start();
+
+$_SESSION['username'] = null;
 // Include the constants used for the db connection
 require("constants.php");
 // The database variable holds the connection so you can access it
@@ -139,7 +141,7 @@ $success = false;
 
                <div id="signUpDiv">
 
-                  <div class="sign_up_box">
+                  <div class="sign_up_box" id="sign_up_box">
                      <div class="sign_up_text_area">
                         <img src="images/logo4.png" alt="Our Logo" height="80" width="80">
                         <span class="sign_up_text">&nbsp; Sign Up</span>
@@ -183,7 +185,7 @@ $success = false;
                            // Does a preliminary check for email pattern
                            if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
                            {
-                              $success = 0;
+                             
                               echo "Invalid email ".$email;
                            }
                            // Valid email; validate password
@@ -192,13 +194,13 @@ $success = false;
                               // Does a preliminary check for required password pattern
                               if(!preg_match('^[[:alpha:]]+[[:digit:]]+^', $password))
                               {
-                                 $success = 0;
+                                 
                                  echo "Need more variety: ";
                               }
                               else
                                  if(!preg_match('^.{8,20}^', $password))
                                  {
-                                    $success = 0;
+                                   
                                     echo "Password needs to be between 8-16 characters";
                                  }
                                  
@@ -291,9 +293,32 @@ $success = false;
                                     $insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
                                     $insertStudentStatement->execute();
                                     $insertStudentStatement->close();
-
+									
                                  echo '<h1>' . $newId . '</h1>';
+								 $success = 1;
                                  $testIdArray = null;
+								 
+								 $_SESSION['username'] = $newId;
+								 
+								
+								
+								// echo'<script> window.location="login.php"; </script> ';
+								
+								
+								// header('Location: studentMainPage.php');
+								
+								/*$result = preg_replace('#<div class="sign_up_box" id="sign_up_box">(.*?)</div>#', ' ', $incoming_data);*/
+								
+								/*echo "<script language=javascript>alert('SUP')</script>";*/
+								
+								/*echo '	<div class="sign_up_text_area_2">
+											<img src="images/logo4.png" alt="Our Logo" height="50" width="50">
+											<span class="sign_up_text_2">&nbsp; Sign Up</span>
+										</div>';
+								echo '<div class="congrats_text">Congratulations!</div>
+										<div><h4>You have successfully created an account.<h4></div>
+										<div class="name_section">'.ucfirst($firstName) . ' ' .ucfirst($lastName). ' ' .$id. '</div>';*/
+								
                               }
                            }			
                         }
@@ -358,14 +383,17 @@ $success = false;
 		$("#create_acc_btn").click(function() {
 			
 			/* ACTUAL RUNNING CODE */
-			<?php
-				if ($success == true) { ?>
-					
-					 $(function() {
-						$('#sign_up_modal').modal('show');
-					});
-					
-			<?php } ?>
+		var success = '<?php echo $success; ?>';
+		 $(function test() {
+			//$('#sign_up_modal').modal('show');
+			if(success == 1)
+			{
+				alert("HEY");
+				
+			}
+			
+		});
+			
 			
 			
 			// TEST: make the modal appears after the button is clicked
