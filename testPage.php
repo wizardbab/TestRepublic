@@ -276,13 +276,11 @@ $_SESSION['testId'] = $testId;
                     
 					<!-- Multiple Choice /.panel -->
 					<div class="panel panel-default">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-						<div class="panel-heading" id="panel-color">
+                        <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
-                                Multiple Choice Questions
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
                             </h4>
                         </div>
-						</a>
                         <div id="collapseOne" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <h4>1.<span class="mc_questions">1 + 1 = ?</span></h4>
@@ -482,7 +480,7 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block" id="Submit">Finish</button>
+			<button type="button" class="btn btn-success btn-block" id="Submit">Submit</button>
 		</div>
 				
    </div>

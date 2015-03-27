@@ -30,6 +30,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="js/allThatApplyValidation.js"></script>
 </head>
 <?php
 session_start();
@@ -44,7 +46,7 @@ $sessionTestId = $_SESSION['testId'];
 
 global $newTestId;
 
-if(is_null($_POST['testId']))
+if(!is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
     
 if($id == null)
@@ -569,7 +571,7 @@ $modalId = 0;
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCCancelBtn">Cancel</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
 								</div>
 							</div>
@@ -585,7 +587,7 @@ $modalId = 0;
 									<h4 class="modal-title">All that Apply</h4>
 								</div>
 								<div class="modal-body">
-									<form role="form">
+									<form role="form" onsubmit="return validate(this)">
 										<div class="form-group">
 											<div class="point_value_section">
 												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
@@ -628,7 +630,7 @@ $modalId = 0;
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="ATACancelBtn">Cancel</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
@@ -671,13 +673,13 @@ $modalId = 0;
 										<div class="reduce_margin_bottom">
 										</div>
 										<div class="row">
-											<div class="col-md-9" id="add_match_question">
-												<div class="form-group">
+											<div class="col-md-9" >
+												<div class="form-group" id="add_match_question">
 													<input type="text" class="m_question form-control" id="match_question_tb0" />
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_question_letter">
-												<div class="form-group">
+											<div class="col-md-2" >
+												<div class="form-group" id="add_match_question_letter">
 													<input type="text" class="m_question_letter form-control" id="match_question_letter_tb0" />
 												</div>
 											</div>
@@ -693,24 +695,23 @@ $modalId = 0;
 													<label class="control-label">Answer:</label>
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
+											<div class="col-md-2">
 												<div class="form-group">
 													<label class="control-label">Letter:</label>
 												</div>
 											</div>
-											<div class="col-md-1">
-											</div>
+	
 										</div>
 										<div class="reduce_margin_bottom">
 										</div>
 										<div class="row">
-											<div class="col-md-9" id="add_match_answer">
-												<div class="form-group">
+											<div class="col-md-9"> 
+												<div class="form-group" id="add_match_answer">
 													<input type="text" class="m_answer form-control" id="match_answer_tb0" />
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
-												<div class="form-group">
+											<div class="col-md-2">
+												<div class="form-group" id="add_match_answer_letter">
 													<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb0" />
 												</div>
 											</div>
@@ -721,8 +722,8 @@ $modalId = 0;
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCancelBtn">Cancel</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -730,8 +731,7 @@ $modalId = 0;
 			</div>    				
 		</div>	
 
-	
-			
+
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {
@@ -830,9 +830,6 @@ $modalId = 0;
 		{
 			var shortAnswerQuestion = $("#short_answer_question").val();
 			var shortAnswerAnswer   = $("#short_answer_anwer").val();
-			
-			
-			
 		});
 	});
 	</script>
@@ -841,49 +838,64 @@ $modalId = 0;
 	<script>
 		$(document).ready(function()
 		{
-			var c = 0;
-			var d = 0;
-			var a = 0;
-			var b = 0;
-			$("#add_match_answer_btn").click(function()
-			{
-				// Add the text box for a matching answer
-				cloned = $('#match_answer_tb' + c );
-				$("#match_answer_tb" + c).clone().attr('id', 'match_answer_tb'+(++c )).insertAfter(cloned);
-			
-				$("#match_answer_tb" + c ).text('match_answer_tb' + c );
-				
-				// Add the Letter box for the answer
-				cloned = $('#match_answer_letter_tb' + d );
-				$("#match_answer_letter_tb" + d).clone().attr('id', 'match_answer_letter_tb'+(++d )).insertAfter(cloned);
-			
-				$("#match_answer_letter_tb" + d ).text('match_answer_letter_tb' + d );
-				
-				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
-
-				/*$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
-				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
-				*/
-			});
-			
+			var mQuestionCounter = 0;
+            var mAnswerCounter = 0;
+            var matchingQuestionArray = [0];
+            var matchingAnswerArray = [0];
+            
 			$("#add_match_question_btn").click(function()
 			{
-				// Add the text box for a matching question
-				cloned = $('#match_question_tb' + a );
-				$("#match_question_tb" + a).clone().attr('id', 'match_question_tb'+(++a )).insertAfter(cloned);
-			
-				$("#match_question_tb" + a ).text('match_question_tb' + a );
-				
-				// Add the Match box for the question
-				cloned = $('#match_question_letter_tb' + b );
-				$("#match_question_letter_tb" + b).clone().attr('id', 'match_question_letter_tb'+(++b )).insertAfter(cloned);
-			
-				$("#match_question_letter_tb" + b ).text('match_question_letter_tb' + b );
-				
-				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
+				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
+				$("#add_match_question_letter").append('<input type="text" class="m_question_letter form-control" id="match_question_letter_tb'+(mQuestionCounter+1)+'">');
+				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question'+(mQuestionCounter+1)+'" onclick="removeMatchingQuestion('+(mQuestionCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				mQuestionCounter++;
+                matchingQuestionArray.push(mQuestionCounter);
 
 			});
+			
+			$("#add_match_answer_btn").click(function()
+			{
+                $("#add_match_answer").append('<input type="text" class="m_answer form-control" id="match_answer_tb'+(mAnswerCounter+1)+'">');
+				$("#add_match_answer_letter").append('<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb'+(mAnswerCounter+1)+'">');
+				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_answer'+(mAnswerCounter+1)+'" onclick="removeMatchingAnswer('+(mAnswerCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                mAnswerCounter++;
+				matchingAnswerArray.push(mAnswerCounter);
+            });
+			
+			$("#MCancelBtn").click(function()
+			{
+				// Resets Matching Values
+				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
+				{
+					$('#match_question_tb'+mQuestionCounter).remove();
+					$('#match_question_letter_tb'+mQuestionCounter).remove();
+					$('#remove_match_question'+mQuestionCounter).remove();
+				}
+				for(mAnswerCounter; mAnswerCounter > 0; mAnswerCounter--)
+				{
+					$('#match_answer_tb'+mAnswerCounter).remove();
+					$('#match_answer_letter_tb'+mAnswerCounter).remove();
+					$('#remove_match_answer'+mAnswerCounter).remove();
+				}
+					matchingQuestionArray = [0];
+					matchingAnswerArray = [0];
+			});
 		});
+		function removeMatchingQuestion(mQuestion)
+		{
+			$('#match_question_tb'+mQuestion).remove();
+			$('#match_question_letter_tb'+mQuestion).remove();
+			$('#remove_match_question'+mQuestion).remove();
+			matchingQuestionArray.splice(mQuestion,1);
+		}
+		
+		function removeMatchingAnswer(mAnswer)
+		{
+			$('#match_answer_tb'+mAnswer).remove();
+			$('#match_answer_letter_tb'+mAnswer).remove();
+			$('#remove_match_answer'+mAnswer).remove();
+			matchingAnswerArray.splice(mAnswer,1);
+		}
 	</script>
 	
 		<!-- All that Apply JS -->
@@ -902,6 +914,18 @@ $modalId = 0;
 				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata'+(ATACounter+1)+'" onclick="removeATAQuestion('+(ATACounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				ATACounter++;
 				testATAArray.push(ATACounter);
+		});
+		
+			$("#ATACancelBtn").click(function()
+			{
+				// Resets ATA Values
+				for(ATACounter; ATACounter > 1; ATACounter--)
+				{
+					$('#ata_answer_cb'+ATACounter).remove();
+					$('#ata_answer'+ATACounter).remove();
+					$('#remove_ata'+ATACounter).remove();
+				}
+				testATAArray = [0,1];
 		});
 	});
 	function removeATAQuestion(questionNum)
@@ -931,6 +955,16 @@ $modalId = 0;
 				$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC'+(MCCounter+1)+'" onclick="removeMCQuestion('+(MCCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				MCCounter++;
 				testMCArray.push(MCCounter);
+		});
+			$("#MCCancelBtn").click(function(){
+				// Resets MC Values
+				for(MCCounter; MCCounter > 1; MCCounter--)
+				{
+					$('#mc_answer'+MCCounter).remove();
+					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
+				}
+					testMCArray = [0,1];
 		});
 	});
 	
@@ -1102,6 +1136,7 @@ $modalId = 0;
 				var question = $("#ata_question").val();
 				var ataArray = [];
 				var ataTextArray = [];
+                var question_no = 0;
 				//check for all that apply checkboxes
 				var i = 0;
 				$('.ata_cb').each(function() {
@@ -1119,7 +1154,6 @@ $modalId = 0;
 					}
 					i++;		
 				});
-				
 				// Get and store the possible answers from the multiple choice type
 				for(i = 0; i < testATAArray.length; i++)
 				{
@@ -1137,19 +1171,18 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					document.getElementById("test").innerHTML = data;
+					question_no = data;
+                    $("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ question_no +'. All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				);
 				});
 				// Resets ATA Values
 				for(ATACounter; ATACounter > 1; ATACounter--)
 				{
 					$('#ata_answer_cb'+ATACounter).remove();
 					$('#ata_answer'+ATACounter).remove();
-					$('#ATA_add_trash_btn'+ATACounter).remove();
+					$('#remove_ata'+ATACounter).remove();
 				}
 				testATAArray = [0,1];
-				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
-				);
 			});
 			
 			
