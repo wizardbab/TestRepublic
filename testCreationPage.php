@@ -30,8 +30,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-	
+    
+    <script type="text/javascript" src="js/allThatApplyValidation.js"></script>
 </head>
 <?php
 session_start();
@@ -46,7 +46,7 @@ $sessionTestId = $_SESSION['testId'];
 
 global $newTestId;
 
-//if(!is_null($_POST['testId']))
+if(!is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
     
 if($id == null)
@@ -104,7 +104,7 @@ global $timeLimit;
 global $specificInstructions;
 global $testPledge;
 global $maxPoints; */
-
+$modalId = 0;
 ?>
 <body>
 	<div id="wrapper2">
@@ -221,7 +221,7 @@ global $maxPoints; */
 				}
 				$testCreateStatement = $database->prepare($createTestQuery);
 				$testCreateStatement->bind_param("s", $newTestId);
-            $testCreateStatement->execute();
+                $testCreateStatement->execute();
 				$testCreateStatement->close();
 				
 					$populateTestCrapStatement = $database->prepare($populateTestCrapQuery);
@@ -339,12 +339,14 @@ global $maxPoints; */
 						
 						<div class="container-fluid">
 							<div class="list-group" id ="testList">
+                                
+
                                 <?php
                 /***************************************************************************************************/
                 /* Modal crap for Victor to mess with                                                              */
                 /***************************************************************************************************/
                                     $oldId = 0;
-                                    $modalId = 0;
+                                    $counter = 0;
                                     $oldQuestionsStatement = $database->prepare($oldQuestionsQuery);
                                     $oldQuestionsStatement->bind_param("s", $newTestId);
                                     $oldQuestionsStatement->bind_result($qid, $qtype, $qvalue, $qtext, $qno, $aid, $atext, $correct, $heading_id, $heading);
@@ -354,148 +356,46 @@ global $maxPoints; */
                                         // Checks to see if this is a new question, or just a new answer
                                         if($oldId != $qid)
                                         {
+                                            $modalId++;
                                             // Modals here will save changes rather than create questions
                                             if($qtype == "True/False")
                                             {
                                                 // Echo True/False with info inside
                                                 // This just puts the box thing on test page... not a modal
-                                                echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#TFModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-                                                echo'<div id="TFModal'.$modalId.'" class="modal fade">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header modal_header_color">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                <h4 class="modal-title">True/False</h4>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form role="form">
-                                                                    <div class="form-group">
-                                                                        <div class="point_value_section">
-                                                                            <label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
-                                                                            <input type="number" id="tf_question_point_value" value="'.$qvalue.'"/>
-                                                                        </div>
-                                                                        <hr />
-                                                                        <div class="question_section">
-                                                                            <label for="tf_question" class="control-label">Question:</label>
-                                                                            <input type="text" class="form-control" id="tf_question" value="'.$qtext.'"/>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <div class="radio">
-                                                                            <label><input type="radio" class="optradio" name="optradio" '.($correct?"checked":"").' value="true"/>True</label>
-                                                                        </div>
-                                                                        <div class="radio">
-                                                                            <label><input type="radio" class="optradio" name="optradio" '.($correct?"":"checked").' value="false" />False</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Save Changes</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                                //echo 'hi';
+
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                
                                             }
                                             else if($qtype == "Multiple Choice")
                                             {
                                                 // Echo multiple choice modal with info inside
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                            
                                             }
                                             else if($qtype == "All That Apply")
                                             {
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                             
                                                 // Echo All that Apply modal with info inside
                                             }
                                             else if($qtype == "Matching")
                                             {
+                                                echo '<a href="#" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">'.$qtext.'</p></a>';
                                                 // Echo Matching modal with info inside
                                             }
                                             else if($qtype == "Short Answer")
                                             {
                                                 // Echo Short Answer Modal with info inside
-																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-																echo '<div id="SAModal'.$modalId.'" class="modal fade">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
-																				<div class="modal-header modal_header_color">
-																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																					<h4 class="modal-title">Short Answer</h4>
-																				</div>
-																				<div class="modal-body">
-																					<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
-																						<div class="form-group">
-																							<div class="point_value_section">
-																								<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-																								<input type="number" id="short_answer_point_value" value="'.$qvalue.'">
-																							</div>
-																							<hr />
-																							<div class="question_section">
-																							</div>
-																							<div class="form-group">
-																								<label for="short_answer_question" class="control-label">Question:</label>
-																								<input type="text" class="form-control" id="short_answer_question" value="'.$qtext.'">
-																							</div>
-																							<div class="form-group">
-																								<label for="short_answer_answer" class="control-label">Answer:</label>
-																								<textarea type="text" class="form-control" id="short_answer_answer" rows="8">'.$atext.' </textarea>
-																							</div>
-																						</div>
-																					</form>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																					<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
-																				</div>
-																			</div>
-																		</div>
-																	</div>';
+												echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+
                                             }
                                             else
                                             {
                                                 // Echo Essay modal with info inside
-																echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-																echo '<div id="EssayModal'.$modalId.'" class="modal fade">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
-																				<div class="modal-header modal_header_color">
-																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																					<h4 class="modal-title">Essay</h4>
-																				</div>
-																				<div class="modal-body">
-																					<form role="form">
-																						<div class="form-group">
-																							<div class="point_value_section">
-																								<label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
-																								<input type="number" id="essay_point_value" value="'.$qvalue.'">
-																							</div>
-																						</div>
-																						<hr />
-																						<div class="form-group">
-																							<label for="essay_question" class="control-label">Question:</label>
-																							<input type="text" class="form-control" id="essay_question" value="'.$qtext.'">
-																						</div>
-																						<div class="form-group">
-																							<label for="essay_answer" class="control-label">Answer:</label>
-																							<textarea type="text" class="form-control" id="essay_answer" rows="8">'.$atext.' </textarea>
-																						</div>
-																					</form>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																					<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Save Changes</button>
-																				</div>
-																			</div>
-																		</div>
-																	</div>';
+
+												echo '<a href="#" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$qno. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+																
                                             }
-                                            $modalId++;
-                                        }
-                                        else
-                                        {
-                                            // Echo another answer into previously made modal using modalId
                                         }
                                         $oldId = $qid;
                                     }
@@ -645,7 +545,7 @@ global $maxPoints; */
 										<div class="form-group">
 											<div class="row choices">
 												<div class="col-md-1">
-													<input type="radio" name="mc_answer0" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
+													<input type="radio" name="mc_answer" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
 												</div>
 												<div class="col-md-10">
 													<input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
@@ -653,25 +553,24 @@ global $maxPoints; */
 											</div>
 										</div>
 										<div class="form-group">
-											<div>
 												<div class="row reduce_margin_top choices">
-													<div class="col-md-1">
-														<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+													<div class="col-md-1" id="MC_answers">
+														<input type="radio" name="mc_answer" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
 													</div>
-													<div class="col-md-10">
+													<div class="col-md-10" id="MC_text_boxes">
 														<input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
 													</div>
 													<div class="col-md-1" id="MC_add_trash_btn">
 													</div>
 												</div>
-											</div>
+
 										</div>
 									</div>
 									</form>
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCCancelBtn">Cancel</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
 								</div>
 							</div>
@@ -687,7 +586,7 @@ global $maxPoints; */
 									<h4 class="modal-title">All that Apply</h4>
 								</div>
 								<div class="modal-body">
-									<form role="form">
+									<form role="form" onsubmit="return validate(this)">
 										<div class="form-group">
 											<div class="point_value_section">
 												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
@@ -714,10 +613,10 @@ global $maxPoints; */
 											<div class="form-group">
 												<div>
 													<div class="row reduce_margin_top choices">
-														<div class="col-md-1">
+														<div class="col-md-1" id="ATA_cbs">
 															<input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb" />
 														</div>
-														<div class="col-md-10">
+														<div class="col-md-10" id="ATA_answers">
 															<input type="text" id="ata_answer1" class="ata_tb form-control" />
 														</div>
 														<div class="col-md-1" id="ATA_add_trash_btn">
@@ -730,7 +629,7 @@ global $maxPoints; */
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="ATACancelBtn">Cancel</button>
 									<button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
@@ -773,13 +672,13 @@ global $maxPoints; */
 										<div class="reduce_margin_bottom">
 										</div>
 										<div class="row">
-											<div class="col-md-9" id="add_match_question">
-												<div class="form-group">
+											<div class="col-md-9" >
+												<div class="form-group" id="add_match_question">
 													<input type="text" class="m_question form-control" id="match_question_tb0" />
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_question_letter">
-												<div class="form-group">
+											<div class="col-md-2" >
+												<div class="form-group" id="add_match_question_letter">
 													<input type="text" class="m_question_letter form-control" id="match_question_letter_tb0" />
 												</div>
 											</div>
@@ -795,24 +694,23 @@ global $maxPoints; */
 													<label class="control-label">Answer:</label>
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
+											<div class="col-md-2">
 												<div class="form-group">
 													<label class="control-label">Letter:</label>
 												</div>
 											</div>
-											<div class="col-md-1">
-											</div>
+	
 										</div>
 										<div class="reduce_margin_bottom">
 										</div>
 										<div class="row">
-											<div class="col-md-9" id="add_match_answer">
-												<div class="form-group">
+											<div class="col-md-9"> 
+												<div class="form-group" id="add_match_answer">
 													<input type="text" class="m_answer form-control" id="match_answer_tb0" />
 												</div>
 											</div>
-											<div class="col-md-2" id="add_match_answer_letter">
-												<div class="form-group">
+											<div class="col-md-2">
+												<div class="form-group" id="add_match_answer_letter">
 													<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb0" />
 												</div>
 											</div>
@@ -823,17 +721,16 @@ global $maxPoints; */
 									<button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCancelBtn">Cancel</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
 					</div>				
 			</div>    				
-			</div>	
+		</div>	
 
-	
-			
+
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {
@@ -841,14 +738,7 @@ global $maxPoints; */
         $("#wrapper").toggleClass("toggled");
     });
     </script>
-    
-    <script type="text/javascript">
-    function sooper_looper()
-    {
-        alert("SOOPER_LOOPER!!!!!");
-    }
-    </script>
-    
+	
 	 <script>
 	$(document).ready(function()
 	{
@@ -889,7 +779,7 @@ global $maxPoints; */
 			},
 		function(data)
 		{
-		
+			
 		});
 			
 		});
@@ -923,11 +813,11 @@ global $maxPoints; */
 	{
         $("#cancelTestBtn").click(function()
 		{
-            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId ?>';
+            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
         });
 		$("#backToClass").click(function()
 		{
-            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId ?>';
+            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
         });
     });
     </script>
@@ -939,9 +829,6 @@ global $maxPoints; */
 		{
 			var shortAnswerQuestion = $("#short_answer_question").val();
 			var shortAnswerAnswer   = $("#short_answer_anwer").val();
-			
-			
-			
 		});
 	});
 	</script>
@@ -950,121 +837,145 @@ global $maxPoints; */
 	<script>
 		$(document).ready(function()
 		{
-			var c = 0;
-			var d = 0;
-			var a = 0;
-			var b = 0;
-			$("#add_match_answer_btn").click(function()
-			{
-				// Add the text box for a matching answer
-				cloned = $('#match_answer_tb' + c );
-				$("#match_answer_tb" + c).clone().attr('id', 'match_answer_tb'+(++c )).insertAfter(cloned);
-			
-				$("#match_answer_tb" + c ).text('match_answer_tb' + c );
-				
-				// Add the Letter box for the answer
-				cloned = $('#match_answer_letter_tb' + d );
-				$("#match_answer_letter_tb" + d).clone().attr('id', 'match_answer_letter_tb'+(++d )).insertAfter(cloned);
-			
-				$("#match_answer_letter_tb" + d ).text('match_answer_letter_tb' + d );
-				
-				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
-
-				/*$("#add_match_answer").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_tb"></div>');
-				$("#add_match_answer_letter").append('<div class="add_margin_match"><input type="text" class="form-control" id="match_answer_letter_tb"></div>');
-				*/
-			});
-			
+			var mQuestionCounter = 0;
+            var mAnswerCounter = 0;
+            var matchingQuestionArray = [0];
+            var matchingAnswerArray = [0];
+            
 			$("#add_match_question_btn").click(function()
 			{
-				// Add the text box for a matching question
-				cloned = $('#match_question_tb' + a );
-				$("#match_question_tb" + a).clone().attr('id', 'match_question_tb'+(++a )).insertAfter(cloned);
-			
-				$("#match_question_tb" + a ).text('match_question_tb' + a );
-				
-				// Add the Match box for the question
-				cloned = $('#match_question_letter_tb' + b );
-				$("#match_question_letter_tb" + b).clone().attr('id', 'match_question_letter_tb'+(++b )).insertAfter(cloned);
-			
-				$("#match_question_letter_tb" + b ).text('match_question_letter_tb' + b );
-				
-				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question"><span class="glyphicon glyphicon-trash"></span></button>');
+				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
+				$("#add_match_question_letter").append('<input type="text" class="m_question_letter form-control" id="match_question_letter_tb'+(mQuestionCounter+1)+'">');
+				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question'+(mQuestionCounter+1)+'" onclick="removeMatchingQuestion('+(mQuestionCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				mQuestionCounter++;
+                matchingQuestionArray.push(mQuestionCounter);
 
 			});
+			
+			$("#add_match_answer_btn").click(function()
+			{
+                $("#add_match_answer").append('<input type="text" class="m_answer form-control" id="match_answer_tb'+(mAnswerCounter+1)+'">');
+				$("#add_match_answer_letter").append('<input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb'+(mAnswerCounter+1)+'">');
+				$("#add_match_answer_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_answer'+(mAnswerCounter+1)+'" onclick="removeMatchingAnswer('+(mAnswerCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                mAnswerCounter++;
+				matchingAnswerArray.push(mAnswerCounter);
+            });
+			
+			$("#MCancelBtn").click(function()
+			{
+				// Resets Matching Values
+				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
+				{
+					$('#match_question_tb'+mQuestionCounter).remove();
+					$('#match_question_letter_tb'+mQuestionCounter).remove();
+					$('#remove_match_question'+mQuestionCounter).remove();
+				}
+				for(mAnswerCounter; mAnswerCounter > 0; mAnswerCounter--)
+				{
+					$('#match_answer_tb'+mAnswerCounter).remove();
+					$('#match_answer_letter_tb'+mAnswerCounter).remove();
+					$('#remove_match_answer'+mAnswerCounter).remove();
+				}
+					matchingQuestionArray = [0];
+					matchingAnswerArray = [0];
+			});
 		});
+		function removeMatchingQuestion(mQuestion)
+		{
+			$('#match_question_tb'+mQuestion).remove();
+			$('#match_question_letter_tb'+mQuestion).remove();
+			$('#remove_match_question'+mQuestion).remove();
+			matchingQuestionArray.splice(mQuestion,1);
+		}
+		
+		function removeMatchingAnswer(mAnswer)
+		{
+			$('#match_answer_tb'+mAnswer).remove();
+			$('#match_answer_letter_tb'+mAnswer).remove();
+			$('#remove_match_answer'+mAnswer).remove();
+			matchingAnswerArray.splice(mAnswer,1);
+		}
 	</script>
 	
 		<!-- All that Apply JS -->
 	<script>
 	var ATACounter = 1;
+	var testATAArray = [0,1];
 		$(document).ready(function()
 		{
 			$("#add_ATA").click(function()
 			{
-				// adds text boxes to ata modal
-				cloned = $('#ata_answer' + ATACounter);
-				$("#ata_answer" + ATACounter).clone().attr('id', 'ata_answer'+(ATACounter+1)).insertAfter(cloned);
-			
-				$("#ata_answer" + ATACounter).text('ata_answer' + ATACounter);
-				
-				
-				cloned = $('#ata_answer_cb' + ATACounter );
-				$("#ata_answer_cb" + ATACounter).clone().attr('id', 'ata_answer_cb'+(ATACounter+1 )).insertAfter(cloned);
-			
-				$("#ata_answer_cb" + ATACounter ).text('ata_answer_cb' + ATACounter );
+				// adds radio buttons to ATA modal
+				$("#ATA_cbs").append('<input type="checkbox" name="ata_answer" id="ata_answer_cb'+(ATACounter+1)+'" class="ata_cb" />');
+				// adds text boxes to ATA modal
+				$("#ATA_answers").append('<input type="text" id="ata_answer'+(ATACounter+1)+'" class="ata_tb form-control" />');
+				// adds trash button to ATA modal
+				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata'+(ATACounter+1)+'" onclick="removeATAQuestion('+(ATACounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				ATACounter++;
-				
-				$("#ATA_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_ata"><span class="glyphicon glyphicon-trash"></span></button>');
-				
-				/*$("#ATA_AddAns").append('<div class="ata_margin"><input type="checkbox" name="ata_answer" id="ata_answer2" /><input type="text" id="ata_addtn_answer" class="ata_tb" /><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></div>'
-				); */
-			});
+				testATAArray.push(ATACounter);
 		});
+		
+			$("#ATACancelBtn").click(function()
+			{
+				// Resets ATA Values
+				for(ATACounter; ATACounter > 1; ATACounter--)
+				{
+					$('#ata_answer_cb'+ATACounter).remove();
+					$('#ata_answer'+ATACounter).remove();
+					$('#remove_ata'+ATACounter).remove();
+				}
+				testATAArray = [0,1];
+		});
+	});
+	function removeATAQuestion(questionNum)
+	{
+		testATAArray.splice(questionNum,1);
+		$('#ata_answer_cb'+questionNum).remove();
+		$('#ata_answer'+questionNum).remove();
+		$('#remove_ata'+questionNum).remove();
+	}
 	</script>
 	
 		<!-- Multiple Choice JS -->
 		<!-- PROBLEM: in every append, how to generate a different value & id -->
 		<!-- class add_margin_mc doesnt work! :'( -->
-	<script>
+	<script type="text/javascript">
 	var MCCounter = 1;
 	var cloned;
-	
+	var testMCArray = [0,1];
 		$(document).ready(function(){
 		
 			$("#add_MC").click(function(){
-			<!-- MCCounter++; -->
-			
 				// adds radio buttons to mc modal
-				cloned = $('#mc_answer' + MCCounter);
-				$("#mc_answer" + MCCounter).clone().attr('id', 'mc_answer'+(MCCounter+1)).insertAfter(cloned);
-				
+				$("#MC_answers").append('<input type="radio" name="mc_answer" id="mc_answer'+(MCCounter+1)+'" value="multipleRadio'+(MCCounter+1)+'" class="multipleRadio" />');
 				// adds text boxes to mc modal
-				cloned = $('#multipleText' + MCCounter );
-				$("#multipleText" + MCCounter).clone().attr('id', 'multipleText'+(MCCounter+1)).insertAfter(cloned);
-		
+				$("#MC_text_boxes").append('<input type="text" class="form-control multipleTextboxes" id="multipleText'+(MCCounter+1)+'" name="multipleText'+(MCCounter+1)+'"/>');
+				// adds trash button to mc modal
+				$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC'+(MCCounter+1)+'" onclick="removeMCQuestion('+(MCCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				MCCounter++;
-			
-			//$('<button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>').insertAfter(cloned);
-			
-			$("#MC_add_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button>');
-			
-			//$("#MC_add_answers").append('<div class="add_margin_mc"><div class="col-md-1"><input type="radio" name="mc_answer" class="multipleRadio" value=""  /></div><div class="col-md-9"><input type="text" class="form-control" id=cloned /></div><div class="col-md-2"><button type="button" class="btn btn-default btn-md" aria-hidden="true" id="remove_MC"><span class="glyphicon glyphicon-trash"></span></button></div></div>');
-			
+				testMCArray.push(MCCounter);
+		});
+			$("#MCCancelBtn").click(function(){
+				// Resets MC Values
+				for(MCCounter; MCCounter > 1; MCCounter--)
+				{
+					$('#mc_answer'+MCCounter).remove();
+					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
+				}
+					testMCArray = [0,1];
 		});
 	});
+	
+	function removeMCQuestion(questionNum)
+	{
+		testMCArray.splice(questionNum,1);
+		$('#mc_answer'+questionNum).remove();
+		$('#multipleText'+questionNum).remove();
+		$('#remove_MC'+questionNum).remove();
+	}
 	</script>
-	<!--
-	<script>	
-		$(document).ready(function(){
-				$("#remove_MC").click(function(){
-				MCArray.push('<input type="text" class="form-control" id="Question">');
-				MCBtnArray.push(' <button type="button" class="btn btn-default" aria-hidden="true" id="remove_MC">remove item</button>');
-			$("#MC_AddAns").append(MCArray[MCCounter]);
-			$("#MC_AddAns").append(MCBtnArray[MCCounter]);
-		});
-	});
-	</script>-->
+	
 	<script>	
 		var testId = '<?php echo $newTestId; ?>';
 			
@@ -1075,7 +986,7 @@ global $maxPoints; */
 			/***********************************************************/
 			$("#SABtn").click(function()
 			{
-				var pointValue = $("#short_anwer_point_value").val();
+				var pointValue = $("#short_answer_point_value").val();
 				var question = $("#short_answer_question").val();
 				var answer = $("#short_answer_answer").val();
 			
@@ -1092,9 +1003,8 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				$("#testList").append('div class="list-group-item"> <h4 class="list-group-item-heading">Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
 				);
-
 			});
 
 			/***********************************************************/
@@ -1155,7 +1065,7 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></a>'
+				$("#testList").append('<div class="list-group-item"> <h4 class="list-group-item-heading">Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
 				);
 
 			});
@@ -1168,31 +1078,26 @@ global $maxPoints; */
 				var question = $("#mc_question").val();
 				var multipleChoiceArray = [];
 				var multipleTextArray = [];
-				
-				<!-- check for multiple choice radios -->
-				var i = 0;
-				$('.multipleRadio').each(function() {
-					
-					// If true, assign
-					if($(this).is(':checked'))
+
+				// check for multiple choice radios		
+				for(i = 0; i < testMCArray.length; i++)
+				{
+					if ($('#mc_answer'+(testMCArray[i])).is(':checked'))
 					{
 						multipleChoiceArray[i] = 1;
-					  	
 					}
-					// Else false, assign
 					else
 					{
-						multipleChoiceArray[i] = 0;				
+						multipleChoiceArray[i] = 0;	
 					}
-					i++;		
-				});
-				
-				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= MCCounter; i++)
-				{
-					multipleTextArray[i] = document.getElementById("multipleText" + i).value;
 				}
 				
+				
+				// Get and store the possible answers from the multiple choice type 
+				for(i = 0; i < testMCArray.length; i++)
+				{
+					multipleTextArray[i] = document.getElementById("multipleText" + testMCArray[i]).value;
+				}
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
@@ -1208,16 +1113,18 @@ global $maxPoints; */
 					document.getElementById("test").innerHTML = data;
 				});
 				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
-				);
-				
+
 				// Resets MC Values
 				for(MCCounter; MCCounter > 1; MCCounter--)
 				{
 					$('#mc_answer'+MCCounter).remove();
 					$('#multipleText'+MCCounter).remove();
+					$('#remove_MC'+MCCounter).remove();
 				}
-				
+					testMCArray = [0,1];
+
+				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
+				);
 			});
 			
 			/***********************************************************/
@@ -1228,8 +1135,8 @@ global $maxPoints; */
 				var question = $("#ata_question").val();
 				var ataArray = [];
 				var ataTextArray = [];
-				
-				<!-- check for all that apply checkboxes -->
+                var question_no = 0;
+				//check for all that apply checkboxes
 				var i = 0;
 				$('.ata_cb').each(function() {
 					
@@ -1246,13 +1153,11 @@ global $maxPoints; */
 					}
 					i++;		
 				});
-				
 				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i <= ATACounter; i++)
+				for(i = 0; i < testATAArray.length; i++)
 				{
 					ataTextArray[i] = document.getElementById("ata_answer" + i).value;
 				}
-				
 				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
@@ -1265,19 +1170,18 @@ global $maxPoints; */
 				},
 				function(data)
 				{
-					document.getElementById("test").innerHTML = data;
-				});
-				
-				$("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					question_no = data;
+                    $("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">'+ question_no +'. All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
 				);
-				
-				// Resets MC Values
+				});
+				// Resets ATA Values
 				for(ATACounter; ATACounter > 1; ATACounter--)
 				{
 					$('#ata_answer_cb'+ATACounter).remove();
 					$('#ata_answer'+ATACounter).remove();
+					$('#remove_ata'+ATACounter).remove();
 				}
-				
+				testATAArray = [0,1];
 			});
 			
 			
@@ -1290,7 +1194,7 @@ global $maxPoints; */
 				var trueFalseArray = [];
 				var answerText = ["true", "false"];
 				
-				<!-- check for true/false radios -->
+				//check for true/false radios 
 				var i = 0;
 				$('.optradio').each(function() {
 						 		 

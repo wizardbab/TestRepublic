@@ -35,6 +35,8 @@
 
 <?php
 session_start();
+
+$_SESSION['username'] = null;
 // Include the constants used for the db connection
 require("constants.php");
 // The database variable holds the connection so you can access it
@@ -52,7 +54,10 @@ $insertStudentQuery = "insert into student values(?, ?, ?, ?, ?)";
 // Insert the classes a student is taking into enrollment
 $insertEnrollmentQuery = "insert into enrollment values(?, ?)";
 $insertTestQuery = "insert into test_list(student_id, test_id) values (?, ?)";
-$selectTestIdQuery = "select test_id from test where class_id = ?";
+$selectTestIdQuery = "select test_id from test
+join test_list using (test_id)
+where class_id = ?
+group by(test_id)";
 @ $database->select_db(DATABASENAME);
 // Check to see if anything was entered, if not assign an empty string
 $firstName = (isset($_POST['firstName']) ? $_POST['firstName'] : "");
@@ -78,7 +83,7 @@ $success = false;
                   <a href="#" id="student-summary">Summary</a>
                </li>
                
-               <li class="sidebar-brand"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
+               <li class="sidebar-brand" id="sidebar-classes"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
                   Select a Class:
                </li>
                   <?php 
@@ -95,8 +100,7 @@ $success = false;
                   
                   $courseCounter = 1;
                   $classCounter = 1; 
-                  //global $sidebarArray;
-                  //$sidebarArray = array();
+                  $sidebarArray = array();
                   while($classList->fetch())
                   {
                      echo '
@@ -107,23 +111,24 @@ $success = false;
                         <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
                      </li>
                      ';
+                     
                   }
                   $classList->close(); 
                   ?>
-                  <!--<script>	
-                     var sidebar_array = [];
-                     var i = 0;
-                     $(document).ready(function()
+                  <script>
+                     <?php
+                        $sidebar_array = json_encode($sidebarArray);
+                        echo "var sidebar_array = " . $sidebar_array . ";\n";
+                     ?>
+                     int i = 0;
+                     /*$(document).ready(function()
                      {
                         $('.sidebar_class').each(function() 
                         {
                            sidebar_array.push($(this).is(':checked'));
-                           i++;
                         });
-                     });
-                     window.alert(sidebar_array[0]);
-                     update_array(sidebar_array);
-                  </script>-->
+                     });*/
+                  </script>
             </ul>
          </div>
 
@@ -132,7 +137,7 @@ $success = false;
 
                <div id="signUpDiv">
 
-                  <div class="sign_up_box">
+                  <div class="sign_up_box" id="sign_up_box">
                      <div class="sign_up_text_area">
                         <img src="images/logo4.png" alt="Our Logo" height="80" width="80">
                         <span class="sign_up_text">&nbsp; Sign Up</span>
@@ -176,7 +181,7 @@ $success = false;
                            // Does a preliminary check for email pattern
                            if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
                            {
-                              $success = 0;
+                             
                               echo "Invalid email ".$email;
                            }
                            // Valid email; validate password
@@ -185,13 +190,13 @@ $success = false;
                               // Does a preliminary check for required password pattern
                               if(!preg_match('^[[:alpha:]]+[[:digit:]]+^', $password))
                               {
-                                 $success = 0;
+                                 
                                  echo "Need more variety: ";
                               }
                               else
                                  if(!preg_match('^.{8,20}^', $password))
                                  {
-                                    $success = 0;
+                                   
                                     echo "Password needs to be between 8-16 characters";
                                  }
                                  
@@ -284,9 +289,32 @@ $success = false;
                                     $insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
                                     $insertStudentStatement->execute();
                                     $insertStudentStatement->close();
-
+									
                                  echo '<h1>' . $newId . '</h1>';
+								 $success = 1;
                                  $testIdArray = null;
+								 
+								 $_SESSION['username'] = $newId;
+								 
+								
+								
+								// echo'<script> window.location="login.php"; </script> ';
+								
+								
+								// header('Location: studentMainPage.php');
+								
+								/*$result = preg_replace('#<div class="sign_up_box" id="sign_up_box">(.*?)</div>#', ' ', $incoming_data);*/
+								
+								/*echo "<script language=javascript>alert('SUP')</script>";*/
+								
+								/*echo '	<div class="sign_up_text_area_2">
+											<img src="images/logo4.png" alt="Our Logo" height="50" width="50">
+											<span class="sign_up_text_2">&nbsp; Sign Up</span>
+										</div>';
+								echo '<div class="congrats_text">Congratulations!</div>
+										<div><h4>You have successfully created an account.<h4></div>
+										<div class="name_section">'.ucfirst($firstName) . ' ' .ucfirst($lastName). ' ' .$id. '</div>';*/
+								
                               }
                            }			
                         }
@@ -351,14 +379,17 @@ $success = false;
 		$("#create_acc_btn").click(function() {
 			
 			/* ACTUAL RUNNING CODE */
-			<?php
-				if ($success == true) { ?>
-					
-					 $(function() {
-						$('#sign_up_modal').modal('show');
-					});
-					
-			<?php } ?>
+		var success = '<?php echo $success; ?>';
+		 $(function test() {
+			//$('#sign_up_modal').modal('show');
+			if(success == 1)
+			{
+				alert("HEY");
+				
+			}
+			
+		});
+			
 			
 			
 			// TEST: make the modal appears after the button is clicked

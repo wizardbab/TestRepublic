@@ -32,9 +32,8 @@ session_start();
 // Include the constants used for the db connection
 require("constants.php");
 
-// 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
-
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
+
 
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
@@ -47,6 +46,8 @@ if (mysqli_connect_errno())
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
 
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
@@ -57,24 +58,23 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_name, t_status, date_begin, date_end, date_taken from test
+$tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
-// Get the class id for certain user
-/*"select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";*/
+$_SESSION['classId'] = null;
 
+$_SESSION['testId'] = null;
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
 
 // The statement variable holds your query      
 $stmt = $database->prepare($query);
+$mainClassStatement = $database->prepare($mainClassQuery);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+global $class_id;
 
 ?>
 		<!-- Added by Victor -->
@@ -100,14 +100,39 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
+					
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+					echo '<li><a href=studentClassPage.php?class_id='.str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+					
 				}
 				$stmt->close();
 				?>
             </ul>
         </div>
+		  
+		  <?php
+		  // This is excellent program practice xD - By David Hughen
+		   $class_id = $_GET['class_id'];
+			$classId = str_replace("%20", " ", $class_id);
+			$mainClassStatement->bind_param("s", $classId);
+			$mainClassStatement->bind_result($clid, $clde);
+			$mainClassStatement->execute();
+			while($mainClassStatement->fetch())
+			{
+				echo '<div class="course_header">
+	
+			<div class="course_number">'
+				. $clid .
+			'</div>
+			
+			<div class="class_name">'
+				. $clde . 
+			'</div>
+			</div>'; 
+			}
+			$mainClassStatement->close();
+		?>
 		
         <!-- /#sidebar-wrapper -->
 
@@ -166,8 +191,9 @@ $warningstmt = $database->prepare($warningQuery);
 							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
                      $class = $_GET['class_id'];
-							$table->bind_param("ss", $id, $class);
-							$table->bind_result($test_list, $status, $date_begin, $date_end, $date_taken);
+							$classId = $class;
+							$table->bind_param("ss", $id, $classId);
+							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken);
 							$table->execute();
 							while($table->fetch())
 							{
@@ -180,7 +206,11 @@ $warningstmt = $database->prepare($warningQuery);
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{
-											echo '<td><button type="button" class="btn btn-primary">Take Test</button></td>';
+											echo '<td><form action="testPage.php" method="post">
+															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
+															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
+															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
+															<input type="submit" value="Take Test" class="btn btn-primary"/></form></td>';
 										}
 										else
 										{
