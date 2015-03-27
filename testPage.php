@@ -54,15 +54,27 @@ $topRightQuery = "select first_name, last_name from student where student_id = ?
 // Class id and description query
 $query = "select class_id, class_description from class where class_id = ?";
 
-$summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter
+$summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id
 								 from question
 								 where test_id = ?";
 								 
 $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
+
+$multipleChoiceQuery = "select answer_text from answer where question_id = ?";
+$ataQuery = "select answer_text from answer where question_id = ?";
+
+$matchingQuery = "SELECT question_letter, answer_text
+from answer
+join question
+using(question_id)
+where heading_id = ?";
 								 
 
 $queryStatement = $database->prepare($query);
 $headerStatement = $database->prepare($headerQuery);
+$multipleChoiceStatement = $database->prepare($multipleChoiceQuery);
+$ataStatement = $database->prepare($ataQuery);
+$matchingStatement = $database->prepare($matchingQuery);
 //require("Nav.php");
 
 @$classId = $_POST['classId'];
@@ -80,7 +92,7 @@ $_SESSION['testId'] = $testId;
 <body class="container-fluid">
 
 
-<?php require("Nav.php"); ?>
+<?php //require("Nav.php"); ?>
 	
 <?php
 	
@@ -112,7 +124,9 @@ $_SESSION['testId'] = $testId;
 				
 				$summaryStatement = $database->prepare($summaryQuery);
 				$summaryStatement->bind_param("s", $testId);
-				$summaryStatement->bind_result($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter);
+				$summaryStatement->bind_result($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid);
+				
+				
 				$summaryStatement->execute();
 				
 				$essayCounter = 0;
@@ -125,7 +139,8 @@ $_SESSION['testId'] = $testId;
 				while($summaryStatement->fetch())
 				{
 					// Add individual question to our total list of questions
-					array_push($questionArray, array($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter));
+					array_push($questionArray, array($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid));
+					
 					
 					/***************************************************************************************************/
                /* Essay type question                                                                             */
@@ -154,7 +169,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Multiple Choice")
 					{
-						array_push($multipleChoiceArray, $qno, $qtype, $qvalue, $qtext);
+						array_push($multipleChoiceArray, $qno, $qtype, $qvalue, $qtext, $qid);
 						
 					}
 					
@@ -163,7 +178,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Matching")
 					{
-						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter);
+						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid);
 						
 					}
 					
@@ -180,12 +195,13 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else
 					{
-						array_push($ataArray, $qno, $qtype, $qvalue, $qtext);
+						array_push($ataArray, $qno, $qtype, $qvalue, $qtext, $qid);
 						
 					}
 					
 				}
 				$summaryStatement->close();
+				print_r($multipleChoiceArray);
 				
 				
 				
@@ -232,164 +248,20 @@ $_SESSION['testId'] = $testId;
                 <div class="panel-group" id="accordion">
                     
 					<!-- Multiple Choice /.panel -->
-					<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <h4>1.<span class="mc_questions">1 + 1 = ?</span></h4>
-									<div class="mc_answers">
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-											<span class="mc_answer_lbl">11</span>
-										</div>
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-											<span class="mc_answer_lbl">2</span>
-										</div>
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-											<span class="mc_answer_lbl">14</span>
-										</div>
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-											<span class="mc_answer_lbl">87</span>
-										</div>
-									</div>
-							</div>
-							<div class="panel-body">
-                                <h4>2.<span class="mc_questions">How do you say "Hello" in Indonesian?</span></h4>
-									<div class="mc_answers">
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
-											<span class="mc_answer_lbl">Yo</span>
-										</div>
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
-											<span class="mc_answer_lbl">Hello</span>
-										</div>
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
-											<span class="mc_answer_lbl">Halo</span>
-										</div>
-										<div class="mc_choice">
-											<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
-											<span class="mc_answer_lbl">Aloha</span>
-										</div>
-									</div>
-							</div>
-                        </div>
-                    </div>
+					
                     
 					<!-- Matching /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body container">
-                                <h4>Identify the following types as a dog or a cat:</h4>
-								<div class="col-md-6">
-									<div class="matching_div">
-										10.<span class="matching_questions">Pomeranian</span>
-										<input type="text" class="matching_answer_tb" />
-									</div>
-									<div class="matching_div">
-										11.<span class="matching_questions">Persian</span>
-										<input type="text" class="matching_answer_tb" />
-									</div>
-									<div class="matching_div">
-										12.<span class="matching_questions">Labrador</span>	
-										<input type="text" class="matching_answer_tb" />
-									</div>
-									<div class="matching_div">
-										13.<span class="matching_questions">Siberian</span>
-										<input type="text" class="matching_answer_tb" />
-									</div>	
-									<div class="matching_div">
-										14.<span class="matching_questions">Husky</span>
-										<input type="text" class="matching_answer_tb" />
-									</div>			
-								</div>
-								<div class="col-md-6">
-									<div class="matching_div">
-										a.<span class="matching_questions">Dog</span>
-									</div>
-									<div class="matching_div">
-										b.<span class="matching_questions">Cat</span>
-									</div>
-								</div>
-							</div>
-                        </div>
-                    </div>
+				  
+								  
+								  
+						
+				  </div>
                     
 					<!-- All that Apply /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <h4>20.<span class="ata_questions">Choose all the colors that are in Power Rangers.</span></h4>
-								<div class="ata_answers">
-									<div class="ata_choice">
-										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
-										<span class="ata_answer_lbl">Pink</span>
-									</div>
-									<div class="ata_choice">
-										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
-										<span class="ata_answer_lbl">Red</span>
-									</div>
-									<div class="ata_choice">
-										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
-										<span class="ata_answer_lbl">Purple</span>
-									</div>
-									<div class="ata_choice">
-										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
-										<span class="ata_answer_lbl">Yellow</span>
-									</div>
-									<div class="ata_choice">
-										<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
-										<span class="ata_answer_lbl">Blue</span>
-									</div>
-								</div>
-							</div>
-                        </div>
-                    </div>
+                    
                     
 					<!-- True/False /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <h4>30.<span class="tf_questions">David is ugly.</span></h4>
-								<div class="tf_answers">
-									<div class="tf_choice">
-										<input type="radio" name="tf_answer1" id="tf_answer1" value="multipleRadio1" class="multipleRadio">
-										<span class="mc_answer_lbl">True</span>
-									</div>
-									<div class="tf_choice">
-										<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
-										<span class="mc_answer_lbl">False</span>
-									</div>
-								</div>
-							</div>
-							<div class="panel-body">
-								Etc.
-							</div>
-                        </div>
-                    </div>
+                    
 						  
 						  
 						  
@@ -431,19 +303,115 @@ $_SESSION['testId'] = $testId;
 							// True/False stuff
 							if(is_array($trueFalseArray))
 							{
-								// echo accordian
+								echo'<div class="panel panel-default">
+									<div class="panel-heading" id="panel-color">
+										 <h4 class="panel-title">
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
+										 </h4>
+									</div>
+									<div id="collapseFour" class="panel-collapse collapse">';
+									for($i = 0; $i < count($trueFalseArray); $i+=4)
+									{	
+									echo'<div class="panel-body">
+											  <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
+												<div class="tf_answers">
+													<div class="tf_choice">
+														<input type="radio" name="tf_answer1" id="tf_answer1" value="multipleRadio1" class="multipleRadio">
+														<span class="mc_answer_lbl">True</span>
+													</div>
+													<div class="tf_choice">
+														<input type="radio" name="mc_answer2" id="mc_answer2" value="multipleRadio2" class="multipleRadio" />
+														<span class="mc_answer_lbl">False</span>
+													</div>
+												</div>
+										</div>';
+									}
+										
+							echo '</div>
+							  </div>';
 							}
 							
 							// Multiple Choice stuff
 							if(is_array($multipleChoiceArray))
 							{
-								// echo accordian
+								echo'
+								<div class="panel panel-default">
+									<div class="panel-heading" id="panel-color">
+										<h4 class="panel-title">
+											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
+										</h4>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse">';
+									for($i = 0; $i < count($multipleChoiceArray); $i+=5)
+									{	
+										echo'	<div class="panel-body">
+												<h4>'.$multipleChoiceArray[$i].'<span class="mc_questions">'.$multipleChoiceArray[$i+3].'</span></h4><h4>Point Value: '.$multipleChoiceArray[$i+2].'</h4>
+													<div class="mc_answers">';
+													$multipleChoiceStatement->bind_param("s", $multipleChoiceArray[$i+4]);
+													$multipleChoiceStatement->bind_result($atext);
+													$multipleChoiceStatement->execute();
+													while($multipleChoiceStatement->fetch())
+													{
+														echo '<div class="mc_choice">
+															<input type="radio" name="mc_answer1" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
+															<span class="mc_answer_lbl">'.$atext.'</span>
+														</div>';
+														
+													}
+													
+														
+											echo'		</div>
+											</div>';
+									}
+									$multipleChoiceStatement->close();
+								echo'
+									</div>
+								</div>';
 							}
 							
 							// Matching stuff
 							if(is_array($matchingArray))
 							{
-								// echo accordian
+								echo'
+								<div class="panel panel-default">
+									<div class="panel-heading" id="panel-color">
+										 <h4 class="panel-title">
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
+										 </h4>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse">
+										 <div class="panel-body container">';
+								
+								for($i = 0; $i < count($matchingArray); $i+=8)
+								{	
+									
+										echo'<h4>'.$matchingArray[$i+4].'</h4>';
+								echo'	<div class="col-md-6">
+										<div class="matching_div">'
+										.$matchingArray[$i].'<span class="matching_questions">'.$matchingArray[$i+3].'</span>
+											<input type="text" class="matching_answer_tb" />
+										</div>			
+									</div>';
+									
+									
+									echo'<div class="col-md-6">';
+										$matchingStatement->bind_param("s", $matchingArray[$i+5]);
+										$matchingStatement->bind_result($qletter, $atext);
+										$matchingStatement->execute();
+										while($matchingStatement->fetch())
+										{
+											echo'<div class="matching_div">
+												'.$qletter.'<span class="matching_questions">'.$atext.'</span>
+											</div>';
+										}
+										
+										
+								echo'</div>';
+								}
+								$matchingStatement->close();
+								echo'
+									</div>
+						</div>  </div>';
 							}
 							
 							// Short Answer stuff
@@ -474,14 +442,45 @@ $_SESSION['testId'] = $testId;
 							// All That Apply stuff
 							if(is_array($ataArray))
 							{
-								// echo accordian
+								echo'
+								<div class="panel panel-default">
+									<div class="panel-heading" id="panel-color">
+										 <h4 class="panel-title">
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
+										 </h4>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse">';
+									for($i = 0; $i < count($ataArray); $i+=5)
+									{
+										$ataStatement->bind_param("s", $ataArray[$i+4]);
+										$ataStatement->bind_result($atext);
+										$ataStatement->execute();
+										
+										 echo'<div class="panel-body">
+											  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
+											  <div class="ata_answers">';
+													while($ataStatement->fetch())
+													{
+													echo'
+														<div class="ata_choice">
+															<input type="checkbox" name="ata_answer1" id="ata_answer_cb1" class="ata_cb" />
+															<span class="ata_answer_lbl">'.$atext.'</span>
+														</div>';
+													}
+										
+								echo'</div>';
+									
+									}
+									$ataStatement->close();
+									echo'</div>
+								</div>  </div>';
 							}
 						  ?>
 					<!-- Essay /.panel -->
                     
-                </div>
+              
                 <!-- /.panel-group -->
-            </div>
+          
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
