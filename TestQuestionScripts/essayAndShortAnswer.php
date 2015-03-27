@@ -40,6 +40,8 @@
 	}
 	$questionIdStatement->close();
 	
+    echo $newQuestionId;
+    
 	// assign a new answer id
 	$answerIdStatement = $database->prepare($answerIdQuery);
 	$answerIdStatement->bind_result($qid);
@@ -49,7 +51,7 @@
 		$newAnswerId = $qid + 1;
 	}
 	$answerIdStatement->close();
-	
+    
 	// Generate new question number
 	$questionNumberStatement = $database->prepare($questionNumberQuery);
 	$questionNumberStatement->bind_param("s", $testId);
@@ -60,8 +62,6 @@
 		$newQuestionNumber = $qno + 1;
 	}
 	$questionNumberStatement->close();
-	
-	echo $testId;
 	
 	// Insert into question table after question is created
 	$insertQuestionStatement = $database->prepare($insertQuestionQuery);
