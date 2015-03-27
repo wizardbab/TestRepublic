@@ -103,8 +103,7 @@ global $class_id;
 					
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-					echo '<li><a href=studentClassPage.php?class_id='.str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
-					
+					echo '<li><a href=studentClassPage.php?class_id='.str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -141,26 +140,6 @@ global $class_id;
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12" id="warning_box1">
-                        <div class="warning_box">
-							<p class="warning_msg"><?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                            </p>
-						</div>
-                    </div>
 					
 					<!-- our code starts here :) -->
 					<table class="class_table">
