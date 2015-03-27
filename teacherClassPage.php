@@ -122,7 +122,7 @@ $studentStatement = $database->prepare($studentQuery);
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-					 <li>
+				<li>
                     <a href="teacherMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
