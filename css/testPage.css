@@ -10,6 +10,8 @@ body
 {
 	/*background-image: url("../images/background.png");*/
 	background-image: url("../images/photo2.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 	color: black;
 }
 
@@ -17,8 +19,6 @@ body
 .navbar-header
 {
 	background-color: black;
-	background-repeat: no-repeat;
-	background-size: cover;
 	width: 250px;
 }
 

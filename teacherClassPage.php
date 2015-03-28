@@ -205,6 +205,8 @@ $studentStatement = $database->prepare($studentQuery);
 					<table class="test_list table-hover">
 						<colgroup>
 							<col class="test_name" />
+							<col class="start_date" />
+							<col class="ending_date" />
 							<col class="test_average" />
 							<col class="view_button_col" />
 						</colgroup>
@@ -212,6 +214,8 @@ $studentStatement = $database->prepare($studentQuery);
 						<thead>
 						<tr>
 							<th>Test Name</th>
+							<th>Start Date</th>
+							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
 						</tr>

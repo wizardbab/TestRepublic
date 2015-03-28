@@ -10,16 +10,21 @@ body
 {
 	/*background-image: url("../images/background.png");*/
 	background-image: url("../images/photo2.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
 	color: black;
 }
 
-
 /* added by Andrea */
-
 .navbar-header
 {
 	background-color: rgb(34,34,34);
 	width: 250px;
+}
+
+.navbar-header:hover
+{
+	background: black;
 }
 
 #logo-area
@@ -35,16 +40,9 @@ body
 	font-size: 20px;
 }
 
-.navbar-header:hover
-{
-	background-color: black;
-}
-
-/* */
-
 #wrapper2{
     padding-left: 0;
-	background-color: rgb(55,96,146);
+	background-color: rgb(34,34,34);
 }
 .top-nav {
     padding: 0 15px;
@@ -62,6 +60,11 @@ body
     color: #999;
 }
 
+/* This is the color of the text within the dropdowns */
+.top-nav>li>ul>li>a{
+    color: white;
+}
+
 .dropdown:hover>.dropdown-menu,
 .dropdown:hover>.dropdown-menu:hover {
     display: block;
@@ -70,10 +73,12 @@ body
     float: left;
     position: absolute;
     margin-top: 0;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
     border: 1px solid rgba(0,0,0,.15);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    background-color: #fff;
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
@@ -101,6 +106,7 @@ body
 
 .top-nav>.open>.dropdown-menu>li>a {
     white-space: normal;
+    color: #000;
 }
 
 ul.message-dropdown {
@@ -108,6 +114,24 @@ ul.message-dropdown {
     max-height: 250px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+li.message-preview {
+    width: 275px;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+li.message-preview>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+li.message-footer {
+    margin: 5px 0;
+}
+
+ul.alert-dropdown {
+    width: 200px;
 }
 
 li.message-preview {
@@ -176,7 +200,7 @@ ul.alert-dropdown {
 
 .sidebar-nav {
     position: absolute;
-    top: 50px;
+    top: 20px;
     width: 250px;
     margin: 0;
     padding: 0;
@@ -188,8 +212,7 @@ ul.alert-dropdown {
     text-indent: 15px;
     line-height: 25px;
 	font-size: 13pt;
-	border-bottom: 1px solid black;
-	border-right: 1px solid black;
+	color: black;
 }
 
 .sidebar-nav li a {
@@ -210,11 +233,9 @@ ul.alert-dropdown {
 
 .sidebar-nav > .sidebar-brand {
     height: 40px;
-    font-size: 28px;
-	font-weight: bold;
+    font-size: 24px;
     line-height: 40px;
-	background-color: rgb(55,96,146);
-	color: white;
+	color: rgb(0,0,0);
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -231,49 +252,15 @@ ul.alert-dropdown {
 #student-summary
 {
 	line-height: 50px;
-	font-size: 24px;
-	font-weight: bold;
 }
 
-@media(min-width:768px) 
-{
-		#wrapper {
-			padding-left: 250px;
-		}
-
-		#wrapper.toggled {
-			padding-left: 0;
-		}
-
-		#sidebar-wrapper {
-			width: 250px;
-			font-size: 14px;
-		}
-
-		#wrapper.toggled #sidebar-wrapper {
-			width: 0;
-		}
-
-		#page-content-wrapper 
-		{
-			padding: 20px;
-			position: relative;
-		}
-
-		#wrapper.toggled #page-content-wrapper {
-			position: relative;
-			margin-right: 0;
-		}
-		
-	/*testing stuff */
-	
-	.course_header
+.course_header
 	{
 		width: 100%;
 		position: fixed;
 		padding: 8px;
 		
-		margin-top: 51px;
+		margin-top: 50px;
 		height: 99px;
 		background: black;
 		font-size: 20pt;
@@ -291,78 +278,61 @@ ul.alert-dropdown {
 	{
 		margin-left: 40pt;
 	}
-	
-	#warning_box1
-	{
-		background-color: pink;
-		height: 100px;
-	}
-	
-	.warning_msg
-	{
-		font-size: 14pt;
-		padding: 5px;
-	}
-	
-	.warning_sign_msg
-	{
-		margin-top: 40px;
-		color:#FF0000;
-	}
-	
-	table.class_table
-	{
-		position: relative;
-		top: 170px;
-		font-size: 14pt;
-		border: 2px solid black;
-		border-collapse: collapse;
-		width: 80%;
-		text-align: center;
-		margin: 0px auto;
-	}
-	
-	table.class_table td, table.class_table th
-	{
-		border: 1px solid black;
-		padding: 8px;
-	}
-	
-	table.class_table thead
-	{
-		background-color: rgb(149,179,215);
-		border-bottom: 2px solid black;
-	}
-	
-	table.class_table th
-	{
-		text-align: center;
-	}
-	
-	table.class_table col.list_test
-	{
-		width: 20%;
-	}
-	
-	table.class_table col.status
-	{
-		width: 25%;
-	}
-	
-	table.class_table col.date_frame
-	{
-		width: 35%;
-	}
 
-	.course_button
-	{
-		padding: 8px;
-		color: white;
-		height: 45px;
-		width: 110px;
-		font-size: 14pt;
-		background-color: rgb(55,96,146);
-	}
+.main_section
+{
+	margin-left: 50px;
+	margin-right: 50px;
+}	
 	
+.test_title
+{
+	margin-top: 160px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 22pt;
+	text-decoration: underline;
+}
 
+.test_instruction_section
+{
+	margin-top: 10px;
+}
+
+.test_instruction_txt
+{
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+.instruction_tb
+{
+	margin-top: 5px;
+	color: black;
+}
+
+.time_limit
+{
+	margin-top: 10px;
+	font-size: 18pt;
+	font-weight: bold;
+	/*background: rgb(149,179,215);*/
+}
+
+.red_text
+{
+	color: red;
+	font-weight: none;
+}
+
+.additional_instruction
+{
+	text-align: center;
+	margin-top: 30px;
+	font-size: 22px;
+}
+
+.start_btn
+{
+	margin-top: 50px;
 }

@@ -66,7 +66,7 @@ body
 
 /* This is the color of the text within the dropdowns */
 .top-nav>li>ul>li>a{
-    color: #999;
+    color: white;
 }
 
 .dropdown:hover>.dropdown-menu,
@@ -498,11 +498,11 @@ ul.alert-dropdown {
 	table.test_list
 	{
 		position: relative;
-		top: 5px;
+		top: 10px;
 		font-size: 12pt;
 		border: 2px solid black;
 		border-collapse: collapse;
-		width: 35%;
+		width: 70%;
 		text-align: center;
 		margin: 0px auto;
 	}
@@ -522,12 +522,22 @@ ul.alert-dropdown {
 	
 	table.test_list col.test_name
 	{
-		width: 40%;
+		width: 30%;
+	}
+	
+	table.test_list col.start_date
+	{
+		width: 20%;
+	}
+	
+	table.test_list col.end_date
+	{
+		width: 30%;
 	}
 	
 	table.test_list col.test_average
 	{
-		width: 30%;
+		width: 10%;
 	}
 	
 	table.test_list col.view_button_col
@@ -542,7 +552,7 @@ ul.alert-dropdown {
 	
 	.student_list_text
 	{
-		margin-top: 30px;
+		margin-top: 40px;
 		margin-bottom: 5px;
 		font-size: 18pt;
 		font-weight: bold;
@@ -553,7 +563,7 @@ ul.alert-dropdown {
 	table.student_list
 	{
 		position: relative;
-		top: 5px;
+		top: 10px;
 		font-size: 12pt;
 		border: 2px solid black;
 		border-collapse: collapse;

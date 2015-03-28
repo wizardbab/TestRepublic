@@ -370,9 +370,8 @@ ul.alert-dropdown {
 	
 	.create-questions-text
 	{
-		font-size: 20pt;
-		font-family: 'DejaVu Sans Condensed', Arial;
-		color: rgb(55,96,146);
+		font-size: 22pt;
+		font-weight: bold;
 		margin-bottom: 8px;
 	}
 	

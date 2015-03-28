@@ -193,7 +193,7 @@ global $class_id;
 										}
 										else
 										{
-											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
+											echo '<td><button type="button" class="btn btn-danger" disabled>Unavailable</button></td>';
 										}
 										echo '</tr>';
 							}
@@ -202,8 +202,11 @@ global $class_id;
 							?>			
 					</table>
                 </div>
-
             </div>
+			
+			
+				<!-- Test -->
+				<a href="testInstructionPage.php"><button type="button" class="btn btn-primary">INSTRUCTION</button></a>
         </div>
         <!-- /#page-content-wrapper -->
 
