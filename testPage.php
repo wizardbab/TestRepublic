@@ -299,7 +299,7 @@ $_SESSION['testId'] = $testId;
 									{
 										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
-												<textarea class="form-control" id="EssayQuestion'.$essayCounter.'" name="specificInstruction" rows="6"> </textarea></div>';
+												<textarea class="form-control" id="EssayQuestion'.$essayArray[4].'" name="specificInstruction" rows="6"> </textarea></div>';
                                         $essayCounter++;
 									}
 								echo'		
