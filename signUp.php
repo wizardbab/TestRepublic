@@ -28,6 +28,9 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <!-- Parsley -->
+    <script src="js/Parsley.js/dist/parsley.js"></script>
 </head>
 
 <body>
@@ -104,7 +107,7 @@ $success = false;
                         <a href="#">
                            <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
                         </a>
-                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
+                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" data-parsley-mincheck="1" />
                      </li>
                      ';
                      array_push($sidebarArray, isset($_POST['classes']));
@@ -164,7 +167,7 @@ $success = false;
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-                           <div class="col-md-8"><input type="text" name="email" id="email" /></div>
+                           <div class="col-md-8"><input type="email" name="email" id="email" /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">

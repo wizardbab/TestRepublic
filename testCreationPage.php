@@ -31,6 +31,10 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     
+    <!-- Parsley JavaScript -->
+    <script src="js/Parsley.js/dist/parsley.js"></script>
+    
+    <!-- Custom Validation -->
     <link href="css/validation_page.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/testCreationPageValidation.js"></script>
 </head>
@@ -587,24 +591,24 @@ $modalId = 0;
 									<h4 class="modal-title">All that Apply</h4>
 								</div>
 								<div class="modal-body" id="modal-body">
-									<form role="form" id="ata_form">
+									<form role="form" id="ata_form" data-parsley-validate>
 										<div class="form-group">
 											<div class="point_value_section">
-												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
-												<input type="number" id="ata_point_value" />
+												<label for="ata_point_value" class="control-label">Point Value:&nbsp;</label>
+												<input type="number" id="ata_point_value" required />
 											</div>
 										</div>
 										<hr />
 										<div class="form-group">
 											<label for="ata_question" class="control-label">Question:</label>
-											<input type="text" class="form-control" id="ata_question" />
+											<input type="text" class="form-control" id="ata_question" required />
 										</div>
 										<label class="control-label">Answer:</label>
 										<div class="answers_section">
 											<div class="form-group">
 												<div class="row choices">
 													<div class="col-md-1">
-														<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" />
+														<input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" data-parsley-mincheck="1" />
 													</div>
 													<div class="col-md-10">
 														<input type="text" id="ata_answer0" class="ata_tb form-control" />
@@ -1097,81 +1101,60 @@ $modalId = 0;
 			});
 			
 			/***********************************************************/
-			/* All that apply stuff                                    */
+         /* All that apply stuff                                    */
 			/***********************************************************/
-         var pointValue = $("#ata_point_value").val();
-         var ata_rule = {
-            pointValue: {
-               required: true
-            }
-         };
-         var ata_message = {
-            pointValue: {
-               required: "Required"
-            }
-         };
-			$("#ATABtn").click(function(){
-            var form = $("#ata_form");
-            form.validate({ata_rule: ata_rule, ata_message: ata_message});
-				if(form.valid())
-            {
-              
-               var question = $("#ata_question").val();
-               var ataArray = [];
-               var ataTextArray = [];
-               //check for all that apply checkboxes
-               var i = 0;
-               $('.ata_cb').each(function() {
+            var pointValue = $("#ata_point_value").val();
+            var question = $("#ata_question").val();
+            var ataArray = [];
+            var ataTextArray = [];
+            //check for all that apply checkboxes
+            var i = 0;
+            $('.ata_cb').each(function() {
+               
+               // If true, assign
+               if($(this).is(':checked'))
+               {
+                  ataArray[i] = 1;
                   
-                  // If true, assign
-                  if($(this).is(':checked'))
-                  {
-                     ataArray[i] = 1;
-                     
-                  }
-                  // Else false, assign
-                  else
-                  {
-                     ataArray[i] = 0;				
-                  }
-                  i++;		
-               });
-               
-               // Get and store the possible answers from the multiple choice type
-               for(i = 0; i < testATAArray.length; i++)
-               {
-                  ataTextArray[i] = document.getElementById("ata_answer" + i).value;
                }
-               
-               $.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+               // Else false, assign
+               else
                {
-                  pointValue:pointValue,
-                  questionType:"All That Apply",
-                  question:question,
-                  "parameters[]":ataArray,
-                  "textBoxes[]":ataTextArray,
-                  testId:testId
-               },
-               function(data)
-               {
-                  document.getElementById("test").innerHTML = data;
-               });
-               // Resets ATA Values
-               for(ATACounter; ATACounter > 1; ATACounter--)
-               {
-                  $('#ata_answer_cb'+ATACounter).remove();
-                  $('#ata_answer'+ATACounter).remove();
-                  $('#ATA_add_trash_btn'+ATACounter).remove();
+                  ataArray[i] = 0;				
                }
-               testATAArray = [0,1];
-               
-               $("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
-               );
-            }
-            else
+               i++;		
+            });
+            
+            // Get and store the possible answers from the multiple choice type
+            for(i = 0; i < testATAArray.length; i++)
             {
-               alert("Hello");  
+               ataTextArray[i] = document.getElementById("ata_answer" + i).value;
             }
+            
+            $.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+            {
+               pointValue:pointValue,
+               questionType:"All That Apply",
+               question:question,
+               "parameters[]":ataArray,
+               "textBoxes[]":ataTextArray,
+               testId:testId
+            },
+            function(data)
+            {
+               document.getElementById("test").innerHTML = data;
+            });
+            // Resets ATA Values
+            for(ATACounter; ATACounter > 1; ATACounter--)
+            {
+               $('#ata_answer_cb'+ATACounter).remove();
+               $('#ata_answer'+ATACounter).remove();
+               $('#ATA_add_trash_btn'+ATACounter).remove();
+            }
+            testATAArray = [0,1];
+            
+            $("#testList").append('<a href="#" class="list-group-item"> <h4 class="list-group-item-heading">All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
+            );
          });
 			
 			
