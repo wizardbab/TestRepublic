@@ -102,7 +102,7 @@ $warningstmt = $database->prepare($warningQuery);
 
 				while($stmt->fetch())
 				{
-               echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+               echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>

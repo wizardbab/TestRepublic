@@ -10,12 +10,13 @@ body
 {
 	/*background-image: url("../images/background.png");*/
 	background-image: url("../images/photo2.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
 	color: black;
 }
 
-
 /* added by Andrea */
-
 .navbar-header
 {
 	background-color: rgb(34,34,34);
@@ -34,13 +35,6 @@ body
 	color: white;
 	font-size: 20px;
 }
-
-.navbar-header:hover
-{
-	background-color: black;
-}
-
-/* */
 
 #wrapper2{
     padding-left: 0;
@@ -176,7 +170,7 @@ ul.alert-dropdown {
 
 .sidebar-nav {
     position: absolute;
-    top: 50px;
+    top: 20px;
     width: 250px;
     margin: 0;
     padding: 0;
@@ -188,8 +182,7 @@ ul.alert-dropdown {
     text-indent: 15px;
     line-height: 25px;
 	font-size: 13pt;
-	border-bottom: 1px solid black;
-	border-right: 1px solid black;
+	color: black;
 }
 
 .sidebar-nav li a {
@@ -210,11 +203,9 @@ ul.alert-dropdown {
 
 .sidebar-nav > .sidebar-brand {
     height: 40px;
-    font-size: 28px;
-	font-weight: bold;
+    font-size: 24px;
     line-height: 40px;
-	background-color: rgb(55,96,146);
-	color: white;
+	color: rgb(0,0,0);
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -231,13 +222,97 @@ ul.alert-dropdown {
 #student-summary
 {
 	line-height: 50px;
-	font-size: 24px;
+}
+
+.course_header
+	{
+		width: 100%;
+		position: fixed;
+		padding: 8px;
+		
+		margin-top: 50px;
+		height: 99px;
+		background: black;
+		font-size: 20pt;
+		color: white;
+		font-weight: bold;
+		z-index: 1;
+	}
+	
+	.course_number
+	{
+		margin-left: 10pt;
+	}
+	
+	.class_name
+	{
+		margin-left: 40pt;
+	}
+
+.main_section
+{
+	margin-left: 50px;
+	margin-right: 50px;
+}	
+	
+.test_title
+{
+	margin-top: 160px;
+	text-align: center;
 	font-weight: bold;
+	font-size: 22pt;
+	text-decoration: underline;
+}
+
+.test_pledge_section
+{
+	margin-top: 10px;
+}
+
+.test_pledge_txt
+{
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+.pledge_tb
+{
+	margin-top: 5px;
+	color: black;
+}
+
+.sign_name_txt
+{
+	margin-top: 50px;
+	font-size: 17pt;
+	font-weight: bold;
+	/*background: rgb(149,179,215);*/
+}
+
+.sign_name_tb
+{
+	width: 20em;
+	font-weight: normal;
+	color: black;
+	text-align: center;
+}
+
+.student_name
+{
+	margin-top: 5px;
+	width: 20em;
+	text-align: center;
+}
+
+.increase_margin
+{
+	margin-top: 50px;
 }
 
 @media(min-width:768px) 
 {
 		#wrapper {
+			padding-top: 149px;
 			padding-left: 250px;
 		}
 
@@ -266,103 +341,8 @@ ul.alert-dropdown {
 		}
 		
 	/*testing stuff */
-	
-	.course_header
-	{
-		width: 100%;
-		position: fixed;
-		padding: 8px;
-		
-		margin-top: 51px;
-		height: 99px;
-		background: black;
-		font-size: 20pt;
-		color: white;
-		font-weight: bold;
-		z-index: 1;
-	}
-	
-	.course_number
-	{
-		margin-left: 10pt;
-	}
-	
-	.class_name
-	{
-		margin-left: 40pt;
-	}
-	
-	#warning_box1
-	{
-		background-color: pink;
-		height: 100px;
-	}
-	
-	.warning_msg
-	{
-		font-size: 14pt;
-		padding: 5px;
-	}
-	
-	.warning_sign_msg
-	{
-		margin-top: 40px;
-		color:#FF0000;
-	}
-	
-	table.class_table
-	{
-		position: relative;
-		top: 170px;
-		font-size: 14pt;
-		border: 2px solid black;
-		border-collapse: collapse;
-		width: 80%;
-		text-align: center;
-		margin: 0px auto;
-	}
-	
-	table.class_table td, table.class_table th
-	{
-		border: 1px solid black;
-		padding: 8px;
-	}
-	
-	table.class_table thead
-	{
-		background-color: rgb(149,179,215);
-		border-bottom: 2px solid black;
-	}
-	
-	table.class_table th
-	{
-		text-align: center;
-	}
-	
-	table.class_table col.list_test
-	{
-		width: 20%;
-	}
-	
-	table.class_table col.status
-	{
-		width: 25%;
-	}
-	
-	table.class_table col.date_frame
-	{
-		width: 35%;
-	}
-
-	.course_button
-	{
-		padding: 8px;
-		color: white;
-		height: 45px;
-		width: 110px;
-		font-size: 14pt;
-		background-color: rgb(55,96,146);
-	}
-	
-
-}
+		textarea
+		{
+			resize:none;
+				
+		}

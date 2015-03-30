@@ -32,8 +32,6 @@ session_start();
 // Include the constants used for the db connection
 require("constants.php");
 
-// 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
-
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
 
@@ -48,6 +46,8 @@ if (mysqli_connect_errno())
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
 
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
@@ -61,13 +61,7 @@ where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end
 $tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
-// Get the class id for certain user
-/*"select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";*/
 $_SESSION['classId'] = null;
-
 
 $_SESSION['testId'] = null;
 
@@ -76,9 +70,11 @@ $_SESSION['testId'] = null;
 
 // The statement variable holds your query      
 $stmt = $database->prepare($query);
+$mainClassStatement = $database->prepare($mainClassQuery);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+global $class_id;
 
 ?>
 		<!-- Added by Victor -->
@@ -104,14 +100,38 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
+					
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+					echo '<li><a href=studentClassPage.php?class_id='.str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
             </ul>
         </div>
+		  
+		  <?php
+		  // This is excellent program practice xD - By David Hughen
+		   $class_id = $_GET['class_id'];
+			$classId = str_replace("%20", " ", $class_id);
+			$mainClassStatement->bind_param("s", $classId);
+			$mainClassStatement->bind_result($clid, $clde);
+			$mainClassStatement->execute();
+			while($mainClassStatement->fetch())
+			{
+				echo '<div class="course_header">
+	
+			<div class="course_number">'
+				. $clid .
+			'</div>
+			
+			<div class="class_name">'
+				. $clde . 
+			'</div>
+			</div>'; 
+			}
+			$mainClassStatement->close();
+		?>
 		
         <!-- /#sidebar-wrapper -->
 
@@ -120,26 +140,6 @@ $warningstmt = $database->prepare($warningQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12" id="warning_box1">
-                        <div class="warning_box">
-							<p class="warning_msg"><?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                            </p>
-						</div>
-                    </div>
 					
 					<!-- our code starts here :) -->
 					<table class="class_table">
@@ -193,7 +193,7 @@ $warningstmt = $database->prepare($warningQuery);
 										}
 										else
 										{
-											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
+											echo '<td><button type="button" class="btn btn-danger" disabled>Unavailable</button></td>';
 										}
 										echo '</tr>';
 							}
@@ -202,8 +202,11 @@ $warningstmt = $database->prepare($warningQuery);
 							?>			
 					</table>
                 </div>
-
             </div>
+			
+			
+				<!-- Test -->
+				<a href="testInstructionPage.php"><button type="button" class="btn btn-primary">INSTRUCTION</button></a>
         </div>
         <!-- /#page-content-wrapper -->
 

@@ -56,6 +56,8 @@
 	}
 	$questionIdStatement->close();
 	
+    echo $newQuestionId;
+    
 	// assign a new answer id
 	$answerIdStatement = $database->prepare($answerIdQuery);
 	$answerIdStatement->bind_result($qid);

@@ -110,7 +110,7 @@ $table = $database->prepare($tableQuery);
 				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
 				{	
-					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
+					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' .'<b>'. $clid .'</b>'. '<div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>

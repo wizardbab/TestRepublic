@@ -32,10 +32,6 @@
 	@$correct = $_POST["correct"]; // boolean value
 	@$textBoxAnswers = $_POST["textBoxes"];
 	@$parameters = $_POST["parameters"]; // an array
-	foreach ($textBoxAnswers as $i)
-	{
-		echo $i." ";
-	}
 	/*if(is_array($parameters))
 	{
 		foreach($parameters as $i)
@@ -58,6 +54,8 @@
 	}
 	$questionIdStatement->close();
 	
+    echo $newQuestionId;
+    
 	// assign a new answer id
 	$answerIdStatement = $database->prepare($answerIdQuery);
 	$answerIdStatement->bind_result($qid);
@@ -78,8 +76,6 @@
 		$newQuestionNumber = $qno + 1;
 	}
 	$questionNumberStatement->close();
-	
-	
 	
 	// Insert into question table after question is created
 	$insertQuestionStatement = $database->prepare($insertQuestionQuery);
