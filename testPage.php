@@ -574,6 +574,21 @@ $_SESSION['testId'] = $testId;
                 shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
                 alert(shortAnswerAnswerArray[counter]);
             }
+				
+				
+				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+				{
+					"essayIds[]":essayArray,
+					"essayChoices[]":essayAnswerArray,
+					"shortAnswerIds[]":shortAnswerArray,
+					"shortAnswerChoices[]":shortAnswerAnswerArray
+				},
+				function(data)
+				{
+					
+				});
+				
+				
         });
 	});
 	</script>

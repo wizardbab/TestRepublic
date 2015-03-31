@@ -25,6 +25,50 @@
 
 </head>
 
+<?php
+
+session_start();
+
+
+// Include the constants used for the db connection
+require("constants.php");
+
+// The database variable holds the connection so you can access it
+$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
+
+// Gets the class id appended to url from teacherMainPage.php
+$id = $_SESSION['username']; // Just a random variable gotten from the URL
+
+@$classId = $_POST['classId'];
+@$testId = $_POST['testId'];
+@$testName = $_POST['testName'];
+
+$_SESSION['classId'] = $classId;
+$_SESSION['testId'] = $testId;
+$_SESSION['testName'] = $testName;
+
+if($id == null)
+    header('Location: login.html');
+ 
+@ $database->select_db(DATABASENAME);
+
+// Student first and last name to display on top right of screen
+$topRightQuery = "select first_name, last_name from student where student_id = ?";
+
+// Display the class id and description at top of the screen
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
+// Display the test name at the top of the page
+$testNameQuery = "select test_name, instruction, time_limit from test where test_id = ?";
+
+$topRightStatement = $database->prepare($topRightQuery);
+$mainClassStatement = $database->prepare($mainClassQuery);
+$testNameStatement = $database->prepare($testNameQuery);
+
+
+?>
+
+
 <body class="container-fluid">
 	<div id="wrapper2"
 	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -39,28 +83,49 @@
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
 						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Back to CS 555-2</span>
-					</div>
+						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
+					</div> 
 				</a>
 			</div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
+			<ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>John Smith<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+					<?php // Added by David Hughen
+						  // to display student's name in top right corner
+
+							if ($topRightStatement = $database->prepare($topRightQuery)) 
+														{
+															$topRightStatement->bind_param("s", $id);
+														}
+														else {
+															printf("Errormessage: %s\n", $database->error);
+														}							
+											$topRightStatement->bind_result($first_name, $last_name);
+											$topRightStatement->execute();
+											while($topRightStatement->fetch())
+											{
+												echo $first_name . " " . $last_name;
+											}
+											$topRightStatement->close();?><b class="caret"></b></a>
+						
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
                         <li>
                             <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
                 </li>
             </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            
 
             <!-- /.navbar-collapse -->
         </nav>
@@ -68,30 +133,55 @@
 	
 	<!-- Page Content -->
     
-	
-	<div class="row course_header">
-		<div class="course_number col-lg-12">
-			CS 555-2
-		</div>
+	<?php
+		$mainClassStatement->bind_param("s", $classId);
+		$mainClassStatement->bind_result($clid, $clde);
+		$mainClassStatement->execute();
+		while($mainClassStatement->fetch())
+		{
+			echo
+			'<div class="row course_header">
+				<div class="course_number col-lg-12">
+					'.$clid.'
+				</div>
 				
-		<div class="class_name">
-			Server/Client Relationship
-		</div>
-	</div>
+				<div class="class_name">
+					'.$clde.'
+				</div>
+			</div>';
+			
+		}
+		$mainClassStatement->close(); 
+			
+	?>
+			
+			
+	
 	
 	<div class="container-fluid main_section">
-	
-		<div class="row test_title">
-			Test 1 - Network Introduction
-		</div>
+		<?php
+		echo'<h1>'.$testId.'</h1>';
+			$testNameStatement->bind_param("s", $testId);
+			$testNameStatement->bind_result($tname, $instruction, $timeLimit);
+			$testNameStatement->execute();
+			while($testNameStatement->fetch())
+			{
+				echo
+					'<div class="row test_title">
+						'.$tname.'
+					</div>';
+			}
+			
+			$testNameStatement->close();
+		?>
 		
 		<div class="row test_instruction_section">
 			<span class="test_instruction_txt">Test Instruction</span>
-			<textarea class="form-control instruction_tb" name="specificInstruction" rows="8">Read all the questions carefully. If you miss one question, do not dare to come to class.</textarea>
+			<textarea class="form-control instruction_tb" name="specificInstruction" rows="8"> <?php echo $instruction; ?> </textarea>
 		</div>
 	
 		<div class="row time_limit">
-            Time Limit: <span class="red_text">00:50</span>
+            Time Limit: <span class="red_text"> <?php echo $timeLimit; ?> </span>
 		</div>
 	
 		<div class="row additional_instruction">
@@ -101,7 +191,13 @@
 		</div>
 	
 		<div class="row start_btn">
-            <button type="button" class="btn btn-primary btn-block">Start</button>
+			<form action="testPage.php" method="post">
+				<input type="hidden" value="<?php echo $classId; ?>" name="classId" id="classId"/>
+				<input type="hidden" value="<?php echo $testId; ?>" name="testId" id="testId"/>
+				<input type="hidden" value="<?php echo $testName; ?>" name="testName" id="testName"/>
+				<input type="submit" value="Start" class="btn btn-primary btn-block"/>
+			</form>
+          
 		</div>
 	
 	</div>
@@ -122,6 +218,13 @@
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	 
+	 <script>
+	 $("#backToClass").click(function()
+		{
+            window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+        });
+	 </script>
 	
 
 </body>
