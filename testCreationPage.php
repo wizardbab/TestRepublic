@@ -426,7 +426,7 @@ $modalId = 0;
 										<div class="form-group">
 											<div class="point_value_section">
 												<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-												<input type="number" id="short_answer_point_value" required />
+												<input type="number" name="short_answer_point_value" id="short_answer_point_value" />
 											</div>
 											<hr />
 											<div class="question_section">
@@ -439,17 +439,56 @@ $modalId = 0;
 												<label for="short_answer_answer" class="control-label">Answer:</label>
 												<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
 											</div>
+                                 <hr />
+                                 <div class="form-group">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
+                                 </div>
 										</div>
 									</form>
 								</div>
-								<div class="modal-footer">
+								<!--<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 									<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
-								</div>
+								</div>-->
 							</div>
 						</div>
 					</div>
-					
+					<script>
+                     $(document).ready(function() {
+                        $('#shortAnswerForm').formValidation({
+                           framework: 'bootstrap',
+                           icon: {
+                              valid: 'glyphicon glyphicon-ok',
+                              invalid: 'glyphicon glyphicon-remove',
+                              validating: 'glyphicon glyphicon-refresh'
+                           },
+                           fields: {
+                              short_answer_point_value: {
+                                 validators: {
+                                    notEmpty: {
+                                       message: 'The point value is required'
+                                    }
+                                 }
+                              },
+                              short_answer_question: {
+                                 validators: {
+                                    notEmpty: {
+                                       message: 'The question field is required'
+                                    }
+                                 }
+                              },
+                              short_answer_answer: {
+                                 validators: {
+                                    notEmpty: {
+                                       message: 'The answer field is required'
+                                    }
+                                 }
+                              }
+                           }
+                        });
+                     });
+                     </script>
 				<!-- Essay Modal -->
 					<div id="EssayModal" class="modal fade">
 						<div class="modal-dialog">
