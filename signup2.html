@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="">
+   <meta name="author" content="">
+
+   <title>Test Republic</title>
+
+   <!-- Bootstrap Core CSS -->
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Custom CSS -->
+   <link href="css/signup2.css" rel="stylesheet">
+
+   <!-- Custom Fonts -->
+   <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+   <!-- Form Validation Includes -->
+   <link href="css/validation_page.css" rel="stylesheet" type="text/css">
+   <script type="text/javascript" src="js/validation.js"></script>
+
+   <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+	<!-- Select & Options Library -->
+	<link href="path/to/multiselect.css" media="screen" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+      <form name="signUpForm" id="signUpForm" action="signUp.php" onsubmit="return validate(this)" method="post">
+         <div class="container-fluid">
+            <div class="row">
+				<div class="sign_up_text_area">
+					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">
+					<span class="sign_up_text">&nbsp; Sign Up</span>
+				</div>
+			</div>
+			<div class="row">
+				<h2>Please enter your information.</h2>
+			</div>
+			
+			<label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">First Name:</div>
+                    <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="" /></div>
+                </div>
+            </label><br />
+            <label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">Last Name:</div>
+                    <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="" /></div>
+                </div>
+            </label><br />
+            <label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
+                    <div class="col-md-8"><input type="text" name="email" id="email" /></div>
+                </div>
+            </label><br />
+            <label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">Password:</div>
+                    <div class="col-md-8"><input type="password" name="password" id="password" /></div>
+                </div>
+            </label>
+			
+			<div class="row">
+				<div class="col-md-6 class_section">Select a Class</div>
+				<div class="col-md-6 class_section">Your Classes</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-6">
+				
+					<!-- Test -->
+					<select multiple="multiple" id="my-select" name="my-select[]" size="15">
+						<optgroup label="Art" />
+							<option id='class0'>AR 101 - Introduction to Art</option>
+							<option id='class1'>AR 201 - Drawings</option>
+							<option id='class2'>AR 203 - Introduction to Typography</option>
+							<option id='class3'>AR 401 - Sculpture</option>
+						<optgroup label="Bible" />
+							<option id='class4'>BI 101 - New Testament Survey</option>
+							<option id='class5'>BI 102 - New Testament Survey</option>
+							<option id='class6'>BI 201 - Old Testament Survey</option>
+						<optgroup label="Computer Science" />
+							<option id='class7'>CS 101 - Introduction to Computer Application</option>
+							<option id='class8'>CS 202 - Introduction to Programming</option>
+							<option id='class9'>CS 214 - C Programming</option>
+					</select>
+				</div>
+				
+				<div class="col-md-6 your_class_section">
+					<div>
+						<!-- Test -->
+						<select multiple="multiple" id="my-select" name="my-select[]" size="15">
+							<optgroup label="Art" />
+								<option id='class0'>AR 101 - Introduction to Art</option>
+								<option id='class1'>AR 201 - Drawings</option>
+								<option id='class2'>AR 203 - Introduction to Typography</option>
+								<option id='class3'>AR 401 - Sculpture</option>
+							<optgroup label="Bible" />
+								<option id='class4'>BI 101 - New Testament Survey</option>
+								<option id='class5'>BI 102 - New Testament Survey</option>
+								<option id='class6'>BI 201 - Old Testament Survey</option>
+							<optgroup label="Computer Science" />
+								<option id='class7'>CS 101 - Introduction to Computer Application</option>
+								<option id='class8'>CS 202 - Introduction to Programming</option>
+								<option id='class9'>CS 214 - C Programming</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+			<div class="row">
+				 <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
+			</div>
+			
+        </div>
+      </form>
+
+	<script src="path/to/jquery.multi-select.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+
+   <!-- Menu Toggle Script -->
+   <script>
+   $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+   });
+   </script>
+   <!-- if the info is valid, show the modal -->
+	<script>
+		var class_counter = 10;
+		var array1[0,1,2,3,4,5,6,7,8,9];
+		var array2[];
+	
+	</script>
+	
+	
+	<script>
+		$('#my-select').multiSelect();
+	</script>
+	
+</body>
+</html>
