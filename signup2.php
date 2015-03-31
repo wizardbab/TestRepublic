@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,27 +15,31 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
    <!-- Custom CSS -->
-   <link href="css/signup.css" rel="stylesheet">
+   <link href="css/signup2.css" rel="stylesheet">
 
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
    <!-- Form Validation Includes -->
    <link href="css/validation_page.css" rel="stylesheet" type="text/css">
-   <script type="text/javascript" src="js/signUpValidation.js"></script>
+   <script type="text/javascript" src="js/validation.js"></script>
 
    <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    
-    <!-- Parsley -->
-    <script src="js/Parsley.js/dist/parsley.js"></script>
+
+	<!-- Select & Options Library -->
+	<link href="path/to/multiselect.css" media="screen" rel="stylesheet" type="text/css">
+
+	<link href="css/multi-select.css" media="screen" rel="stylesheet" type="text/css" />
+	<script src="js/jquery.multi-select.js" type="text/javascript"></script>
+    <script src="js/application.js" type="text/javascript"></script>
+	
 </head>
 
 <body>
-
 <?php
 session_start();
 
@@ -71,24 +76,51 @@ global $id;
 $success = false;
 ?>
 
-   <div id="wrapper">
-      <form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
-         <div id="sidebar-wrapper">
-            <a href="logout.php">
-               <!-- Button with a link wrapped around it to go back to the login page -->
-               <button class="btn btn-block btn-primary" type="button" id="signUpButton" onclick="window.location.href='logout.php'">
-                  <i class="glyphicon glyphicon-log-in"></i>Back to Login
-               </button>
-            </a>
-            <ul class="sidebar-nav">
-               <li>
-                  <a href="#" id="student-summary">Summary</a>
-               </li>
-               
-               <li class="sidebar-brand" id="sidebar-classes"><!-- VIC AND ANDREA, I'D LIKE FOR THIS TO "SELECT A CLASS TO ADD:" (formatting needed) -->
-                  Select a Class:
-               </li>
-                  <?php 
+
+      <form name="signUpForm" id="signUpForm" action="signUp2.php" onsubmit="return validate(this)" method="post">
+         <div class="container-fluid">
+            <div class="row">
+				<div class="sign_up_text_area">
+					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">
+					<span class="sign_up_text">&nbsp; Sign Up</span>
+				</div>
+			</div>
+			<div class="row">
+				<h2>Please enter your information.</h2>
+			</div>
+			
+			<label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">First Name:</div>
+                    <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="" /></div>
+                </div>
+            </label><br />
+            <label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">Last Name:</div>
+                    <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="" /></div>
+                </div>
+            </label><br />
+            <label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
+                    <div class="col-md-8"><input type="text" name="email" id="email" /></div>
+                </div>
+            </label><br />
+            <label class="survey_style">
+                <div class="row">
+                    <div class="col-md-4">Password:</div>
+                    <div class="col-md-8"><input type="password" name="password" id="password" /></div>
+                </div>
+            </label>
+			
+			<div class="row">
+				<div class="col-md-6 class_section">Select a Class</div>
+				<div class="col-md-6 class_section">Your Classes</div>
+			</div>
+			
+			<div class="row">
+				<?php 
                   // List of classes for the user to select from...we'll need to keep track of what class is selected for the db
                   if ($classList = $database->prepare($listClassQuery)) 
                   {
@@ -103,65 +135,24 @@ $success = false;
                   $courseCounter = 1;
                   $classCounter = 1; 
                   $sidebarArray = array();
+				  echo '<select multiple class="" id="aloha" name="classes[]">';
                   while($classList->fetch())
                   {
                      echo '
-                     <li>
-                        <a href="#">
-                           <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
-                        </a>
-                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" />
-                     </li>
+							<option value="'.$clid.'">'.$clid.' '.$clde.'</option>
                      ';
-                     array_push($sidebarArray, isset($_POST['classes']));
+
                   }
+				echo '</select>';
                   $classList->close(); 
                   ?>
-            </ul>
-         </div>
+			</div>
 
-         <div class="container-fluid">
-            <div class="row">
-
-               <div id="signUpDiv">
-
-                  <div class="sign_up_box" id="sign_up_box">
-                     <div class="sign_up_text_area">
-                        <img src="images/logo4.png" alt="Our Logo" height="80" width="80">
-                        <span class="sign_up_text">&nbsp; Sign Up</span>
-                     </div>
-                     <h2>Please enter your information.</h2>
-                     <br />
-                     
-                     <label class="survey_style">
-                        <div class="row">
-                           <div class="col-md-4">First Name:</div>
-                           <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" required /></div>
-                        </div>
-                     </label><br />
-                     <label class="survey_style">
-                        <div class="row">
-                           <div class="col-md-4">Last Name:</div>
-                           <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" required /></div>
-                        </div>
-                     </label><br />
-                     <label class="survey_style">
-                        <div class="row">
-                           <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-                           <div class="col-md-8"><input type="email" name="email" id="email" required /></div>
-                        </div>
-                     </label><br />
-                     <label class="survey_style">
-                        <div class="row">
-                           <div class="col-md-4">Password:</div>
-                           <div class="col-md-8"><input title="Must contain at least one uppercase, one lowercase, one number, and be a minimum of 8 characters."type="password" name="password" id="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
-                        </div>
-                     </label><br />
-                     <!--<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up" id="create_acc_btn" />-->
-                     <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
-                  </div>
-
-                        <?php 
+			
+			<div class="row">
+				 <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
+			</div>
+			   <?php 
                         $success = 1;
                         // We have data; begin validation
                         if(is_array($classes))
@@ -312,14 +303,12 @@ $success = false;
                            $success = 0;
                         }
                         ?>
-                  </div>
-            </div>
-         </div>
+        </div>
       </form>
-   </div>
 
+	<script src="path/to/jquery.multi-select.js" type="text/javascript"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-   <script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.js"></script>
 
    <!-- Menu Toggle Script -->
    <script>
@@ -329,6 +318,19 @@ $success = false;
    });
    </script>
 
-
+<!--
+	<script>
+		var class_counter = 10;
+		var array1[0,1,2,3,4,5,6,7,8,9];
+		var array2[];
+		
+		function testFunction(var classType, var idNum)
+		{
+		
+		
+		}
+	
+	</script>-->
+	
 </body>
 </html>

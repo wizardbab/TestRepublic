@@ -100,7 +100,7 @@ $_SESSION['testId'] = $testId;
 <body class="container-fluid">
 
 
-<?php //require("Nav.php"); ?>
+<?php require("Nav.php"); ?>
 	
 <?php
 	
