@@ -34,6 +34,8 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
+if($id == null)
+    header('Location: login.html');
 
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
