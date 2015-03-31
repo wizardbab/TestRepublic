@@ -72,7 +72,7 @@ $success = false;
 ?>
 
    <div id="wrapper">
-      <form name="signUpForm" id="signUpForm" action="signUp.php" onsubmit="return validate(this)" method="post">
+      <form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
          <div id="sidebar-wrapper">
             <a href="logout.php">
                <!-- Button with a link wrapped around it to go back to the login page -->
@@ -176,7 +176,7 @@ $success = false;
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">Password:</div>
-                           <div class="col-md-8"><input type="password" name="password" id="password" required /></div>
+                           <div class="col-md-8"><input title="Must contain at least one uppercase, one lowercase, one number, and be a minimum of 8 characters."type="password" name="password" id="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
                         </div>
                      </label><br />
                      <!--<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up" id="create_acc_btn" />-->
