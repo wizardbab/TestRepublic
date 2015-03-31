@@ -49,6 +49,9 @@ if (mysqli_connect_errno())
 
 $_SESSION['username'] = $id;
 
+if($id == null)
+    header('Location: login.html');
+
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
 
