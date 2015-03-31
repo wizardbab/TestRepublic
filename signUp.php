@@ -113,7 +113,6 @@ $success = false;
                         <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" />
                      </li>
                      ';
-                     array_push($sidebarArray, isset($_POST['classes']));
                   }
                   $classList->close(); 
                   ?>
