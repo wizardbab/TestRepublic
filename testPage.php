@@ -436,9 +436,9 @@ $_SESSION['testId'] = $testId;
                                                 echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
                                                             '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
-                                                        </div>';
-                                                    
-                                                    
+                                                        </div>
+                                                        <br />';
+                                                        
                                                 $matchingCounter++;	
                                                 $j+=9;
                                             echo'</div>';
@@ -580,7 +580,6 @@ $_SESSION['testId'] = $testId;
             var ataAnswerArray = [];
             var matchingAnswerArray = [];
 			var i = 0;
-            alert(matchingArray);
             alert("clicked submit");
             
             for(counter = 0; counter < essayArray.length; counter++)
@@ -628,8 +627,22 @@ $_SESSION['testId'] = $testId;
             for(counter = 0; counter < matchingArray.length; counter++)
             {
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
-                alert(matchingAnswerArray[counter]);
             }
+            
+            $.post("TestAnswerScripts/mcmatatf.php",
+				{
+					"multipleChoiceArray[]":multipleChoiceArray,
+                    "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
+                    "trueFalseArray[]":trueFalseArray,
+                    "trueFalseAnswerArray[]":trueFalseAnswerArray,
+                    "ataArray[]":ataArray,
+                    "ataAnswerArray[]":ataAnswerArray,
+                    "matchingArray[]":matchingArray,
+                    "matchingAnswerArray[]":matchingAnswerArray
+				},
+				function(data)
+				{
+				});
         });
 	});
 	</script>
