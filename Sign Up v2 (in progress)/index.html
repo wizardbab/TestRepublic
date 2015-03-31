@@ -23,7 +23,7 @@
 				<div class="fs-title">
 					<h1>Test Republic <small>Sign up </small></h1>
 					<div class="codrops-top">
-						<a class="codrops-icon codrops-icon-prev" href="http://csweb/CS414/Team1/Git/TestRepublicVic/login.html"><span>Back to Login</span></a>
+						<a class="codrops-icon codrops-icon-prev" href="../login.html"><span>Back to Login</span></a>
 					</div>
 				</div>
 				<form id="myform" class="fs-form fs-form-full" autocomplete="off">
@@ -52,12 +52,7 @@
 								<option value="EN 201">EN 201</option>
 								<option value="BI 101">BI 101</option>
 							</select>
-							<select class=" cs-select cs-skin-boxes fs-anim-lower">
-								<option value="" disabled selected>Pick a color</option>
-								<option value="CS 306">CS 306</option>
-								<option value="EN 201">EN 201</option>
-								<option value="BI 101">BI 101</option>
-							</select>
+							
 						</li>
 					</ol><!-- /fs-fields -->
 					<button class="fs-submit" type="submit">Send answers</button>
@@ -68,7 +63,10 @@
 		<script src="js/selectFx.js"></script>
 		<script src="js/fullscreenForm.js"></script>
 		<script>
-		
+		$(function()
+		{
+			$("select").multiselect(); 
+		});
 		
 		</script>
 		<script>
