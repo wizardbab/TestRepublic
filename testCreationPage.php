@@ -439,18 +439,13 @@ $modalId = 0;
 												<label for="short_answer_answer" class="control-label">Answer:</label>
 												<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
 											</div>
-                                 <hr />
-                                 <div class="form-group">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
-                                 </div>
 										</div>
 									</form>
 								</div>
-								<!--<div class="modal-footer">
+								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 									<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
-								</div>-->
+								</div>
 							</div>
 						</div>
 					</div>
