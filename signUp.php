@@ -110,7 +110,7 @@ $success = false;
                         <a href="#">
                            <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
                         </a>
-                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" data-parsley-mincheck="1" />
+                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" />
                      </li>
                      ';
                      array_push($sidebarArray, isset($_POST['classes']));
@@ -158,25 +158,25 @@ $success = false;
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">First Name:</div>
-                           <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" /></div>
+                           <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" required /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">Last Name:</div>
-                           <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" /></div>
+                           <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" required /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-                           <div class="col-md-8"><input type="email" name="email" id="email" /></div>
+                           <div class="col-md-8"><input type="email" name="email" id="email" required /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">Password:</div>
-                           <div class="col-md-8"><input type="password" name="password" id="password" /></div>
+                           <div class="col-md-8"><input type="password" name="password" id="password" required /></div>
                         </div>
                      </label><br />
                      <!--<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up" id="create_acc_btn" />-->

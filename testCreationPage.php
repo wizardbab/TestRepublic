@@ -293,7 +293,7 @@ $modalId = 0;
 							<br />
 
 							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6"><?php echo $specificInstructions; ?></textarea>
-							<p id="test" value="<?php echo $testName; ?>"> Foo </p> 
+							<p id="test" value="<?php echo $testName; ?>">Foo</p> 
 
 							<label class="pledge_lbl">Test Pledge:</label>
 
@@ -426,14 +426,14 @@ $modalId = 0;
 										<div class="form-group">
 											<div class="point_value_section">
 												<label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-												<input type="number" id="short_answer_point_value">
+												<input type="number" id="short_answer_point_value" required />
 											</div>
 											<hr />
 											<div class="question_section">
 											</div>
 											<div class="form-group">
 												<label for="short_answer_question" class="control-label">Question:</label>
-												<input type="text" class="form-control" id="short_answer_question">
+												<input type="text" class="form-control" id="short_answer_question" />
 											</div>
 											<div class="form-group">
 												<label for="short_answer_answer" class="control-label">Answer:</label>
@@ -856,7 +856,7 @@ $modalId = 0;
 		});
 	});
 	</script>
-	
+
 	<!-- Add matching JS -->
 	<script>
 		$(document).ready(function()
@@ -865,7 +865,7 @@ $modalId = 0;
             var mAnswerCounter = 0;
             var matchingQuestionArray = [0];
             var matchingAnswerArray = [0];
-            
+
 			$("#add_match_question_btn").click(function()
 			{
 				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
