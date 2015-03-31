@@ -591,6 +591,19 @@ $_SESSION['testId'] = $testId;
             {
                 shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
             }
+		
+				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+				{
+					"essayIds[]":essayArray,
+					"essayChoices[]":essayAnswerArray,
+					"shortAnswerIds[]":shortAnswerArray,
+					"shortAnswerChoices[]":shortAnswerAnswerArray
+				},
+				function(data)
+				{
+					
+				});
+				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
                 if ($('#mc_answer'+multipleChoiceArray[counter]).is(':checked'))
