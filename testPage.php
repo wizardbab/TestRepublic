@@ -40,13 +40,26 @@ require("constants.php");
 $id = $_SESSION['username'];
 //$classId = $_SESSION['classId'];
 //$testId = $_SESSION['testId'];
-
+echo '<h1>Hey</h1>';
+echo '<h1>Hey</h1>';
+echo '<h1>Hey</h1>';
+echo '<h1>Hey</h1>';
 if($id == null)
     header('Location: login.html');
  
- // The database variable holds the connection so you can access it
+  // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 @ $database->select_db(DATABASENAME);
+
+	
+	 // session variable_exists, use that
+	 $timeLimit = $_SESSION['timeLimit'];
+
+		
+		
+
+ 
+
 
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
@@ -97,12 +110,55 @@ $_SESSION['testId'] = $testId;
 	
 </head>
 
-<body class="container-fluid">
+<body class="container-fluid" onload="myFunction()">
+<div id="wrapper2"> 
+	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+		   <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
+					<div id="logo-area">
+						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<span class="TestRepublic">Test Republic</span>
+					</div>
+				</a>
+			</div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+					<?php // Added by David Hughen
+						  // to display student's name in top right corner
+
+							if ($topRightStatement = $database->prepare($topRightQuery)) 
+							{
+								$topRightStatement->bind_param("s", $id);
+							}
+							else {
+								printf("Errormessage: %s\n", $database->error);
+							}							
+								$topRightStatement->bind_result($first_name, $last_name);
+								$topRightStatement->execute();
+								while($topRightStatement->fetch())
+								{
+									echo $first_name . " " . $last_name;
+								}
+								$topRightStatement->close();?><b class="caret"></b></a>
+						
+                </li>
+            </ul>
+        </nav>
+	</div>	
 
 
-<?php require("Nav.php"); ?>
 	
 <?php
+
 	
 				/*$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
@@ -249,6 +305,7 @@ $_SESSION['testId'] = $testId;
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-group" id="accordion">
+					 <div id="test"></div>
                     
 					<!-- Multiple Choice /.panel -->
 					
@@ -272,6 +329,9 @@ $_SESSION['testId'] = $testId;
 					<!-- Short Answer /.panel -->
                     
                     <?php
+						  // Set the hours, minutes, and seconds into their own array
+						  $timeArray = explode(":", $timeLimit);
+						 
                         $essayCounter = 0;
                         $trueFalseCounter = 0;
                         $multipleChoiceCounter = 0;
@@ -493,26 +553,26 @@ $_SESSION['testId'] = $testId;
 									<div id="collapseThree" class="panel-collapse collapse">';
 									for($i = 0; $i < count($ataArray); $i+=6)
 									{
-                                        if($oldQuestion != $ataArray[$i+4])
-                                        {
-                                            $oldQuestion = $ataArray[$i+4];
-                                            $ataStatement->bind_param("s", $ataArray[$i+4]);
-                                            $ataStatement->bind_result($atext, $aid);
-                                            $ataStatement->execute();
-                                             echo'<div class="panel-body">
-                                                  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
-                                                  <div class="ata_answers">';
-                                                        while($ataStatement->fetch())
-                                                        {
-                                                        echo'
-                                                            <div class="ata_choice">
-                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
-                                                                <span class="ata_answer_lbl">'.$atext.'</span>
-                                                            </div>';
-                                                        }
-                                            
-                                            echo'</div>';
-                                        }
+										 if($oldQuestion != $ataArray[$i+4])
+										 {
+											  $oldQuestion = $ataArray[$i+4];
+											  $ataStatement->bind_param("s", $ataArray[$i+4]);
+											  $ataStatement->bind_result($atext, $aid);
+											  $ataStatement->execute();
+												echo'<div class="panel-body">
+													  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
+													  <div class="ata_answers">';
+															  while($ataStatement->fetch())
+															  {
+															  echo'
+																	<div class="ata_choice">
+																		 <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
+																		 <span class="ata_answer_lbl">'.$atext.'</span>
+																	</div>';
+															  }
+											  
+											  echo'</div>';
+										 }
 									}
 									$ataStatement->close();
 									echo'</div>
@@ -592,7 +652,7 @@ $_SESSION['testId'] = $testId;
                 shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
             }
 		
-				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+			/*	$.post("TestAnswerScripts/essayAndShortAnswer.php",
 				{
 					"essayIds[]":essayArray,
 					"essayChoices[]":essayAnswerArray,
@@ -602,7 +662,7 @@ $_SESSION['testId'] = $testId;
 				function(data)
 				{
 					
-				});
+				}); */
 				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
@@ -642,7 +702,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-            $.post("TestAnswerScripts/mcmatatf.php",
+           /* $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
@@ -655,9 +715,18 @@ $_SESSION['testId'] = $testId;
 				},
 				function(data)
 				{
-				});
+				}); */
+				
+				
+			
+				
+			
+				window.location = "pledgePage.php";
+				
+			
         });
 	});
+	
 	</script>
 	
     <!-- Menu Toggle Script -->
@@ -667,6 +736,72 @@ $_SESSION['testId'] = $testId;
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	 
+	 <script>
+	
+	 var timeLimit = '<?php echo $timeLimit; ?>';
+	 
+	 var hours = '<?php echo $timeArray[0]; ?>';
+	 var minutes = '<?php echo $timeArray[1]; ?>';
+	 var seconds = '<?php echo $timeArray[2]; ?>';
+	 
+	 
+	function myFunction()
+	{
+	
+	 
+    setInterval(function(){ myTimer() }, 1000)
+	}
+
+	function pad2(number)
+	{
+	
+		if(number > "00")
+			return number;
+		
+		
+     return (number < 10 ? '0' : '') + number;
+   
+   }
+	
+	function myTimer() 
+	{
+		//var d = new Date();
+		//var t = d.toLocaleTimeString();
+		if(hours == 0 && minutes == 0 && seconds == 0)
+		{
+			//alert("time's up");
+		}
+		else
+		{
+			if(seconds > 0)
+			{
+				seconds--;
+				
+			}
+			if(seconds == 0)
+			{
+				
+				if(minutes > 0)
+				{
+					minutes--;
+					seconds = 59;
+				}
+				
+			}
+			if(minutes == 0)
+			{
+				if(hours > 0)
+				{
+					hours--;
+					minutes = 59;
+				}
+			}
+		}
+		document.getElementById("test").innerHTML = pad2(hours) + ":" +  pad2(minutes) + ":" + pad2(seconds);
+	}
+	 
+	 </script>
 	
 
 </body>
