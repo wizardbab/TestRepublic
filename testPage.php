@@ -98,11 +98,54 @@ $_SESSION['testId'] = $testId;
 </head>
 
 <body class="container-fluid">
+<div id="wrapper2">
+	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+		   <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
+					<div id="logo-area">
+						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<span class="TestRepublic">Test Republic</span>
+					</div>
+				</a>
+			</div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+					<?php // Added by David Hughen
+						  // to display student's name in top right corner
+
+							if ($topRightStatement = $database->prepare($topRightQuery)) 
+							{
+								$topRightStatement->bind_param("s", $id);
+							}
+							else {
+								printf("Errormessage: %s\n", $database->error);
+							}							
+								$topRightStatement->bind_result($first_name, $last_name);
+								$topRightStatement->execute();
+								while($topRightStatement->fetch())
+								{
+									echo $first_name . " " . $last_name;
+								}
+								$topRightStatement->close();?><b class="caret"></b></a>
+						
+                </li>
+            </ul>
+        </nav>
+	</div>	
 
 
-<?php require("Nav.php"); ?>
 	
 <?php
+
 	
 				/*$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
@@ -493,26 +536,26 @@ $_SESSION['testId'] = $testId;
 									<div id="collapseThree" class="panel-collapse collapse">';
 									for($i = 0; $i < count($ataArray); $i+=6)
 									{
-                                        if($oldQuestion != $ataArray[$i+4])
-                                        {
-                                            $oldQuestion = $ataArray[$i+4];
-                                            $ataStatement->bind_param("s", $ataArray[$i+4]);
-                                            $ataStatement->bind_result($atext, $aid);
-                                            $ataStatement->execute();
-                                             echo'<div class="panel-body">
-                                                  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
-                                                  <div class="ata_answers">';
-                                                        while($ataStatement->fetch())
-                                                        {
-                                                        echo'
-                                                            <div class="ata_choice">
-                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
-                                                                <span class="ata_answer_lbl">'.$atext.'</span>
-                                                            </div>';
-                                                        }
-                                            
-                                            echo'</div>';
-                                        }
+										 if($oldQuestion != $ataArray[$i+4])
+										 {
+											  $oldQuestion = $ataArray[$i+4];
+											  $ataStatement->bind_param("s", $ataArray[$i+4]);
+											  $ataStatement->bind_result($atext, $aid);
+											  $ataStatement->execute();
+												echo'<div class="panel-body">
+													  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
+													  <div class="ata_answers">';
+															  while($ataStatement->fetch())
+															  {
+															  echo'
+																	<div class="ata_choice">
+																		 <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
+																		 <span class="ata_answer_lbl">'.$atext.'</span>
+																	</div>';
+															  }
+											  
+											  echo'</div>';
+										 }
 									}
 									$ataStatement->close();
 									echo'</div>
@@ -592,7 +635,7 @@ $_SESSION['testId'] = $testId;
                 shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
             }
 		
-				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+			/*	$.post("TestAnswerScripts/essayAndShortAnswer.php",
 				{
 					"essayIds[]":essayArray,
 					"essayChoices[]":essayAnswerArray,
@@ -602,7 +645,7 @@ $_SESSION['testId'] = $testId;
 				function(data)
 				{
 					
-				});
+				}); */
 				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
@@ -642,7 +685,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-            $.post("TestAnswerScripts/mcmatatf.php",
+           /* $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
@@ -655,9 +698,18 @@ $_SESSION['testId'] = $testId;
 				},
 				function(data)
 				{
-				});
+				}); */
+				
+				
+			
+				
+			
+				window.location = "pledgePage.php";
+				
+			
         });
 	});
+	
 	</script>
 	
     <!-- Menu Toggle Script -->
