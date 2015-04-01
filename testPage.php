@@ -732,9 +732,8 @@ $_SESSION['testId'] = $testId;
             function(data)
             {
             });
+            window.location = "pledgePage.php";
 		});
-        
-		window.location = "pledgePage.php";
     });
 	
 	</script>
@@ -804,7 +803,7 @@ $_SESSION['testId'] = $testId;
 				if(hours > 0)
 				{
 					hours--;
-					minutes = 59;
+					minutes = 60;
 				}
 			}
 		}
