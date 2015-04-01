@@ -34,6 +34,8 @@ require("constants.php");
 
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 
+if($id == null)
+    header('Location: login.html');
 
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
@@ -103,8 +105,7 @@ global $class_id;
 					
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-					echo '<li><a href=studentClassPage.php?class_id='.str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
-					
+					echo '<li><a href=studentClassPage.php?classId='.str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -113,7 +114,7 @@ global $class_id;
 		  
 		  <?php
 		  // This is excellent program practice xD - By David Hughen
-		   $class_id = $_GET['class_id'];
+		   $class_id = $_GET['classId'];
 			$classId = str_replace("%20", " ", $class_id);
 			$mainClassStatement->bind_param("s", $classId);
 			$mainClassStatement->bind_result($clid, $clde);
@@ -141,26 +142,6 @@ global $class_id;
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12" id="warning_box1">
-                        <div class="warning_box">
-							<p class="warning_msg"><?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                            </p>
-						</div>
-                    </div>
 					
 					<!-- our code starts here :) -->
 					<table class="class_table">
@@ -190,7 +171,7 @@ global $class_id;
 							
 							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
-                     $class = $_GET['class_id'];
+                     $class = $_GET['classId'];
 							$classId = $class;
 							$table->bind_param("ss", $id, $classId);
 							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken);
@@ -206,7 +187,7 @@ global $class_id;
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{
-											echo '<td><form action="testPage.php" method="post">
+											echo '<td><form action="testInstructionPage.php" method="post">
 															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
 															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
 															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
@@ -214,7 +195,7 @@ global $class_id;
 										}
 										else
 										{
-											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
+											echo '<td><button type="button" class="btn btn-danger" disabled>Unavailable</button></td>';
 										}
 										echo '</tr>';
 							}
@@ -223,8 +204,10 @@ global $class_id;
 							?>			
 					</table>
                 </div>
-
             </div>
+			
+			
+				
         </div>
         <!-- /#page-content-wrapper -->
 
