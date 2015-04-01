@@ -54,37 +54,38 @@ $topRightQuery = "select first_name, last_name from student where student_id = ?
 // Class id and description query
 $query = "select class_id, class_description from class where class_id = ?";
 
-$summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id, answer_id
+$summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id, answer_id, student_answer, student_selection, correct
 								 from question
                                  join answer using(question_id)
 								 where test_id = ?";
 								 
 $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 
-$multipleChoiceQuery = "select answer_text, answer_id from answer where question_id = ?";
-$ataQuery = "select answer_text, answer_id from answer where question_id = ?";
+$multipleChoiceQuery = "select answer_text, answer_id, student_selection, correct from answer where question_id = ?";
+$ataQuery = "select answer_text, answer_id, student_selection, correct from answer where question_id = ?";
 
-$matchingQuery = "SELECT question_letter, answer_text, answer_id
+$matchingQuery = "SELECT question_letter, answer_text, answer_id, student_selection
 from answer
 join question using(question_id)
 where heading_id = ?
 order by(question_letter)";
 
-$matchingAnswerQuery = "select answer_text";
+$matchingCorrectQuery = "SELECT correct
+from answer
+join question using(question_id)
+where heading_id = ?";
 
 $matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ?";
 
-$trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
-
-
+$trueFalseQuery = "select answer_id, answer_text, student_selection, correct from answer where question_id = ?";
 								 
 $matchingHeadStatement = $database->prepare($matchingHeadQuery);
 $queryStatement = $database->prepare($query);
 $headerStatement = $database->prepare($headerQuery);
 $multipleChoiceStatement = $database->prepare($multipleChoiceQuery);
 $ataStatement = $database->prepare($ataQuery);
-$matchingStatement = $database->prepare($matchingQuery);
 $trueFalseStatement = $database->prepare($trueFalseQuery);
+$matchingStatement = $database->prepare($matchingQuery);
 //require("Nav.php");
 
 @$classId = $_POST['classId'];
@@ -134,7 +135,7 @@ $_SESSION['testId'] = $testId;
 				
 				$summaryStatement = $database->prepare($summaryQuery);
 				$summaryStatement->bind_param("s", $testId);
-				$summaryStatement->bind_result($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid);
+				$summaryStatement->bind_result($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid, $studentAnswer, $studentSelection, $correct);
 				
 				
 				$summaryStatement->execute();
@@ -149,7 +150,7 @@ $_SESSION['testId'] = $testId;
 				while($summaryStatement->fetch())
 				{
 					// Add individual question to our total list of questions
-					array_push($questionArray, array($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid));
+					array_push($questionArray, array($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid, $studentAnswer, $studentSelection));
 					
 					
 					/***************************************************************************************************/
@@ -158,7 +159,7 @@ $_SESSION['testId'] = $testId;
 					if($qtype == "Essay")
 					{
 						
-						array_push($essayArray, $qno, $qtype, $qvalue, $qtext, $qid);
+						array_push($essayArray, $qno, $qtype, $qvalue, $qtext, $qid, $studentAnswer);
 						
 					}		
 
@@ -167,7 +168,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "True/False")
 					{
-						array_push($trueFalseArray, $qno, $qtype, $qvalue, $qtext, $qid, $aid);
+						array_push($trueFalseArray, $qno, $qtype, $qvalue, $qtext, $qid, $aid, $studentSelection);
 						
 					}
 					
@@ -176,7 +177,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Multiple Choice")
 					{
-						array_push($multipleChoiceArray, $qno, $qtype, $qvalue, $qtext, $qid, $aid);
+						array_push($multipleChoiceArray, $qno, $qtype, $qvalue, $qtext, $qid, $aid, $studentSelection);
 						
 					}
 					
@@ -185,7 +186,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Matching")
 					{
-						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid);
+						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid, $studentSelection, $correct);
 						
 					}
 					
@@ -194,7 +195,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Short Answer")
 					{
-						array_push($shortAnswerArray, $qno, $qtype, $qvalue, $qtext, $qid);
+						array_push($shortAnswerArray, $qno, $qtype, $qvalue, $qtext, $qid, $studentAnswer);
 					}
 					
 					/***************************************************************************************************/
@@ -202,7 +203,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else
 					{
-						array_push($ataArray, $qno, $qtype, $qvalue, $qtext, $qid, $aid);	
+						array_push($ataArray, $qno, $qtype, $qvalue, $qtext, $qid, $aid, $studentSelection);	
 					}
 					
 				}
@@ -296,11 +297,11 @@ $_SESSION['testId'] = $testId;
 							  <div id="collapseSix" class="panel-collapse collapse">
 									<div class="panel-body">';
 									
-									for($i = 0; $i < count($essayArray); $i+=5)
+									for($i = 0; $i < count($essayArray); $i+=6)
 									{
 										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
-												<textarea class="form-control" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6"> </textarea></div>';
+												<textarea class="form-control" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6">'.$essayArray[$i+5].'</textarea></div>';
                                         $essayCounter++;
 									}
 								echo'		
@@ -320,7 +321,7 @@ $_SESSION['testId'] = $testId;
 										 </h4>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse">';
-									for($i = 0; $i < count($trueFalseArray); $i+=6)
+									for($i = 0; $i < count($trueFalseArray); $i+=7)
 									{
                                     if($oldQuestion != $trueFalseArray[$i])
                                         {
@@ -329,14 +330,20 @@ $_SESSION['testId'] = $testId;
                                                   <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
                                                     <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
-													$trueFalseStatement->bind_result($answer_id, $answer_text);
+													$trueFalseStatement->bind_result($answer_id, $answer_text, $stuSelection, $correct);
 													$trueFalseStatement->execute();
 													while($trueFalseStatement->fetch())
 													{
+                                                        $checked = ($stuSelection == 1)?'checked':'';
                                                         echo'<div class="tf_choice">
-                                                            <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
-                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>
-                                                            </div>';
+                                                            <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" ' .$checked . ' value="multipleRadio1" class="multipleRadio">
+                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>';
+                                                        if($correct == 1)
+                                                        {
+                                                            echo "   --   Correct Answer";
+                                                        }
+                                                        echo'</div>';
+                                                        
                                                     }
                                                    echo' </div>
                                             </div>';
@@ -360,7 +367,7 @@ $_SESSION['testId'] = $testId;
 										</h4>
 									</div>
 									<div id="collapseOne" class="panel-collapse collapse">';
-									for($i = 0; $i < count($multipleChoiceArray); $i+=6)
+									for($i = 0; $i < count($multipleChoiceArray); $i+=7)
 									{	
                                         if($oldQuestion != $multipleChoiceArray[$i+4])
                                         {
@@ -369,14 +376,19 @@ $_SESSION['testId'] = $testId;
 													<div class="mc_answers" >';
                                                     $oldQuestion = $multipleChoiceArray[$i+4];
 													$multipleChoiceStatement->bind_param("s", $multipleChoiceArray[$i+4]);
-													$multipleChoiceStatement->bind_result($atext, $mcAnswerId);
+													$multipleChoiceStatement->bind_result($atext, $mcAnswerId, $stuSelection, $correct);
 													$multipleChoiceStatement->execute();
 													while($multipleChoiceStatement->fetch())
 													{
+                                                        $checked = ($stuSelection == 1)?'checked':'';
 														echo '<div class="mc_choice" >
-															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
-															<span class="mc_answer_lbl">'.$atext.'</span>
-                                                            </div>';
+															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" '.$checked.'/>
+															<span class="mc_answer_lbl">'.$atext.'</span>';
+                                                            if($correct == 1)
+                                                            {
+                                                                echo "   --   Correct Answer";
+                                                            }
+                                                        echo '</div>';
 													}	
 											echo'	</div>
 											</div>';
@@ -416,23 +428,27 @@ $_SESSION['testId'] = $testId;
                                         for($k = 0; $k < count($headingArray); $k++)
                                         {
                                             echo'<h4>'.$headingArray[$k].'</h4>';
+                                            
                                             $matchingStatement->bind_param("s", $headingIdArray[$k]);
-                                            $matchingStatement->bind_result($qletter, $atext, $aid);
+                                            $matchingStatement->bind_result($qletter, $atext, $aid, $stuSelection);
                                             $matchingStatement->execute();
                                             while($matchingStatement->fetch())
                                             {
                                                 $matchingAnswer[] = $qletter;
                                                 $matchingAnswer[] = $atext;
+                                                $matchingAnswer[] = $stuSelection;
                                             }
-                                            for($i = 0; $i < count($matchingAnswer); $i+=2)
+                                            
+                                            echo count($matchingAnswer);
+                                            for($i = 0; $i < count($matchingAnswer); $i+=3)
                                             {	
                                             echo'	<div class="col-md-6">
                                                     <div class="matching_div">'
                                                     .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                        <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
-                                                    </div>
-                                                </div>';
-                                                
+                                                        <input type="text" class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
+                                                    echo '__ Correct -- '. $matchingArray[$j+10];
+                                                    echo'</div>';
+                                                echo'</div>';
                                                 
                                                 echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
@@ -441,17 +457,16 @@ $_SESSION['testId'] = $testId;
                                                         <br />';
                                                         
                                                 $matchingCounter++;	
-                                                $j+=9;
+                                                $j+=11;
                                             echo'</div>';
                                             }
                                             $matchingAnswer = null;
                                         }       
                                         $matchingStatement->close();
-                                        
 								echo'
 									</div>
 						</div>  </div>';
-                                $headingCounter += 9;
+                                $headingCounter += 11;
 							}
 							
 							// Short Answer stuff
@@ -464,12 +479,12 @@ $_SESSION['testId'] = $testId;
                             </h4>
                         </div>
                         <div id="collapseFive" class="panel-collapse collapse">';
-								for($i = 0; $i < count($shortAnswerArray); $i+=5)
+								for($i = 0; $i < count($shortAnswerArray); $i+=6)
 								{
 									echo'<div class="panel-body">
 										<h4>'.$shortAnswerArray[$i].'<span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
 										<div class="sa_answers">
-											<input type="text" class="m_answer_letter form-control" id="ShortAnswer'.$shortAnswerArray[$i+4].'" />
+											<input type="text" class="m_answer_letter form-control" id="ShortAnswer'.$shortAnswerArray[$i+4].'" value="'.$shortAnswerArray[$i+5].'" />
 										</div>
 									</div>';
                                     $shortAnswerCounter++;
@@ -492,24 +507,29 @@ $_SESSION['testId'] = $testId;
 										 </h4>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse">';
-									for($i = 0; $i < count($ataArray); $i+=6)
+									for($i = 0; $i < count($ataArray); $i+=7)
 									{
                                         if($oldQuestion != $ataArray[$i+4])
                                         {
                                             $oldQuestion = $ataArray[$i+4];
                                             $ataStatement->bind_param("s", $ataArray[$i+4]);
-                                            $ataStatement->bind_result($atext, $aid);
+                                            $ataStatement->bind_result($atext, $aid, $stuSelection, $correct);
                                             $ataStatement->execute();
                                              echo'<div class="panel-body">
                                                   <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
                                                   <div class="ata_answers">';
                                                         while($ataStatement->fetch())
                                                         {
+                                                        $checked = ($stuSelection == 1)?'checked':'';
                                                         echo'
                                                             <div class="ata_choice">
-                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
-                                                                <span class="ata_answer_lbl">'.$atext.'</span>
-                                                            </div>';
+                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" '.$checked.'/>
+                                                                <span class="ata_answer_lbl">'.$atext.'</span>';
+                                                            if($correct == 1)
+                                                            {
+                                                                echo "   --   Correct Answer";
+                                                            }
+                                                            echo '</div>';
                                                         }
                                             
                                             echo'</div>';
@@ -531,148 +551,11 @@ $_SESSION['testId'] = $testId;
         <!-- /.row -->
 		<div class="row">
 			<button type="button" class="btn btn-success btn-block" id="Submit">Submit</button>
+			<button type="button" class="btn btn-success btn-block" id="Save">Save</button>
 		</div>
 				
    </div>
    <!-- /. Container -->
-   
-	
-
-    
-		<script>
-	$(document).ready(function()
-	{
-		$("#summaryRadio").click(function()
-		{
-			alert("clicked summary");
-		  
-		});
-        
-        $("#Submit").click(function()
-        {
-            var counter;
-            var essayArray = [];
-            <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
-                    essayArray.push('<?php echo $essayArray[$i+4];?>');
-                <?php } ?>
-            var shortAnswerArray = [];
-                <?php for($i = 0; $i < count($shortAnswerArray); $i+=5){ ?>
-                    shortAnswerArray.push('<?php echo $shortAnswerArray[$i+4];?>');
-                <?php } ?>
-            var multipleChoiceArray = [];
-                <?php for($i = 0; $i < count($multipleChoiceArray); $i+=6){ ?>
-                    multipleChoiceArray.push('<?php echo $multipleChoiceArray[$i+5];?>');
-                <?php } ?>
-            var trueFalseArray = [];
-                <?php for($i = 0; $i < count($trueFalseArray); $i+=6){ ?>
-                    trueFalseArray.push('<?php echo $trueFalseArray[$i+5];?>');
-                <?php } ?>
-            var ataArray = [];
-                <?php for($i = 0; $i < count($ataArray); $i+=6){ ?>
-                    ataArray.push('<?php echo $ataArray[$i+5];?>');
-                <?php } ?>
-            var matchingArray = [];
-                <?php for($i = 0; $i < count($matchingArray); $i+=9){ ?>
-                    matchingArray.push('<?php echo $matchingArray[$i+8];?>');
-                <?php } ?>
-            var essayAnswerArray = [];
-            var shortAnswerAnswerArray = [];
-            var multipleChoiceAnswerArray = [];
-            var trueFalseAnswerArray = [];
-            var ataAnswerArray = [];
-            var matchingAnswerArray = [];
-			var i = 0;
-            var id = '<?php echo $id; ?>';
-            var testId = '<?php echo $testId; ?>';
-            alert("clicked submit");
-            
-            for(counter = 0; counter < essayArray.length; counter++)
-            {
-                essayAnswerArray[counter] = $("#EssayQuestion"+essayArray[counter]).val();
-            }
-            
-            for(counter = 0; counter < shortAnswerArray.length; counter++)
-            {
-                shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
-            }
-		
-				$.post("TestAnswerScripts/essayAndShortAnswer.php",
-				{
-					"essayIds[]":essayArray,
-					"essayChoices[]":essayAnswerArray,
-					"shortAnswerIds[]":shortAnswerArray,
-					"shortAnswerChoices[]":shortAnswerAnswerArray
-				},
-				function(data)
-				{
-					
-				});
-				
-            for(counter = 0; counter < multipleChoiceArray.length; counter++)
-            {
-                if ($('#mc_answer'+multipleChoiceArray[counter]).is(':checked'))
-                {
-                    multipleChoiceAnswerArray[counter] = 1;
-                }
-                else
-                {
-                    multipleChoiceAnswerArray[counter] = 0;	
-                }
-            }
-            for(counter = 0; counter < trueFalseArray.length; counter++)
-            {
-                if ($('#tf_answer'+trueFalseArray[counter]).is(':checked'))
-                {
-                    trueFalseAnswerArray[counter] = 1;
-                }
-                else
-                {
-                    trueFalseAnswerArray[counter] = 0;	
-                }
-            }
-            for(counter = 0; counter < ataArray.length; counter++)
-            {
-                if ($('#ata_answer_cb'+ataArray[counter]).is(':checked'))
-                {
-                    ataAnswerArray[counter] = 1;
-                }
-                else
-                {
-                    ataAnswerArray[counter] = 0;	
-                }
-            }
-            for(counter = 0; counter < matchingArray.length; counter++)
-            {
-                matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
-            }
-            
-            $.post("TestAnswerScripts/mcmatatf.php",
-				{
-					"multipleChoiceArray[]":multipleChoiceArray,
-                    "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
-                    "trueFalseArray[]":trueFalseArray,
-                    "trueFalseAnswerArray[]":trueFalseAnswerArray,
-                    "ataArray[]":ataArray,
-                    "ataAnswerArray[]":ataAnswerArray,
-                    "matchingArray[]":matchingArray,
-                    "matchingAnswerArray[]":matchingAnswerArray
-				},
-				function(data)
-				{
-				});
-                
-            $.post("TestAnswerScripts/submit.php",
-            {
-                id:id,
-                testId:testId
-            },
-            function(data)
-            {
-            });
-            
-        });
-	});
-	</script>
 	
     <!-- Menu Toggle Script -->
     <script>
