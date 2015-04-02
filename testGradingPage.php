@@ -64,7 +64,7 @@ $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 $multipleChoiceQuery = "select answer_text, answer_id, student_selection, correct from answer where question_id = ?";
 $ataQuery = "select answer_text, answer_id, student_selection, correct from answer where question_id = ?";
 
-$matchingQuery = "SELECT question_letter, answer_text, answer_id, student_selection
+$matchingQuery = "SELECT question_letter, answer_text, question_id, student_selection
 from answer
 join question using(question_id)
 where heading_id = ?
@@ -281,6 +281,7 @@ $_SESSION['testId'] = $testId;
                         $matchingCounter = 0;
                         $shortAnswerCounter = 0;
                         $allThatApplyCounter = 0;
+                        $pointsEarned = 0;
 						   /***************************************************************************************************/
 							/* Test each question type's array for data; if there's data we add that tab to our page           */
 							/***************************************************************************************************/
@@ -299,7 +300,7 @@ $_SESSION['testId'] = $testId;
 									
 									for($i = 0; $i < count($essayArray); $i+=6)
 									{
-										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
+										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><input type=text class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
 												<textarea class="form-control" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6">'.$essayArray[$i+5].'</textarea></div>';
                                         $essayCounter++;
@@ -341,11 +342,15 @@ $_SESSION['testId'] = $testId;
                                                         if($correct == 1)
                                                         {
                                                             echo "   --   Correct Answer";
+                                                            if($correct == $stuSelection)
+                                                                $pointsEarned = $trueFalseArray[$i+2];
+                                                            else
+                                                                $pointsEarned = 0;
                                                         }
                                                         echo'</div>';
                                                         
                                                     }
-                                                   echo' </div>
+                                                   echo' </div>Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/>
                                             </div>';
                                             $trueFalseCounter++;
                                         }
@@ -387,10 +392,14 @@ $_SESSION['testId'] = $testId;
                                                             if($correct == 1)
                                                             {
                                                                 echo "   --   Correct Answer";
+                                                                if($correct == $stuSelection)
+                                                                    $pointsEarned = $multipleChoiceArray[$i+2];
+                                                                else
+                                                                    $pointsEarned = 0;
                                                             }
                                                         echo '</div>';
 													}	
-											echo'	</div>
+											echo'	</div>Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$multipleChoiceArray[$i+4].'" name="TFPoints"/>
 											</div>';
                                             $multipleChoiceCounter++;
                                         }
@@ -430,24 +439,28 @@ $_SESSION['testId'] = $testId;
                                             echo'<h4>'.$headingArray[$k].'</h4>';
                                             
                                             $matchingStatement->bind_param("s", $headingIdArray[$k]);
-                                            $matchingStatement->bind_result($qletter, $atext, $aid, $stuSelection);
+                                            $matchingStatement->bind_result($qletter, $atext, $questionId, $stuSelection);
                                             $matchingStatement->execute();
                                             while($matchingStatement->fetch())
                                             {
                                                 $matchingAnswer[] = $qletter;
                                                 $matchingAnswer[] = $atext;
+                                                $matchingAnswer[] = $questionId;
                                                 $matchingAnswer[] = $stuSelection;
                                             }
                                             
-                                            echo count($matchingAnswer);
-                                            for($i = 0; $i < count($matchingAnswer); $i+=3)
+                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
                                             {	
                                             echo'	<div class="col-md-6">
                                                     <div class="matching_div">'
                                                     .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
                                                         <input type="text" class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
-                                                    echo '__ Correct -- '. $matchingArray[$j+10];
-                                                    echo'</div>';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Correct -- '. $matchingArray[$j+10];
+                                                    if($matchingArray[$j+10] == $matchingArray[$j+9])
+                                                        $pointsEarned = $matchingArray[$j+2];
+                                                    else
+                                                        $pointsEarned = 0;
+                                                    echo'Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$matchingAnswer[$i+2].'" name="TFPoints"/></div>';
                                                 echo'</div>';
                                                 
                                                 echo'<div class="col-md-6">';
@@ -483,6 +496,7 @@ $_SESSION['testId'] = $testId;
 								{
 									echo'<div class="panel-body">
 										<h4>'.$shortAnswerArray[$i].'<span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
+                                        Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$shortAnswerArray[$i+4].'" name="shortAnswerPoints"/></div>
 										<div class="sa_answers">
 											<input type="text" class="m_answer_letter form-control" id="ShortAnswer'.$shortAnswerArray[$i+4].'" value="'.$shortAnswerArray[$i+5].'" />
 										</div>
@@ -498,6 +512,8 @@ $_SESSION['testId'] = $testId;
 							// All That Apply stuff
 							if(count($ataArray) > 0)
 							{
+                                $pointsEarnedCounter = 0;
+                                $pointsPossibleCounter = 0;
                                 $oldQuestion = 0;
 								echo'
 								<div class="panel panel-default">
@@ -529,9 +545,12 @@ $_SESSION['testId'] = $testId;
                                                             {
                                                                 echo "   --   Correct Answer";
                                                             }
+                                                            if($correct == $stuSelection)
+                                                                $pointsEarnedCounter += 1;
+                                                            $pointsPossibleCounter += 1;
                                                             echo '</div>';
                                                         }
-                                            
+                                            echo 'Points Earned<input type=text value="'.number_format($pointsEarnedCounter / $pointsPossibleCounter * $ataArray[$i+2], 1, '.', ',').'" class="matching_answer_tb" id="TFPoints'.$ataArray[$i+4].'" name="TFPoints"/>';
                                             echo'</div>';
                                             echo'</div>';
                                         }
