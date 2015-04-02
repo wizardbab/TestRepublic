@@ -275,25 +275,6 @@ $success = false;
 								 
 								 $_SESSION['username'] = $newId;
 								 
-								
-								
-								// echo'<script> window.location="login.php"; </script> ';
-								
-								
-								// header('Location: studentMainPage.php');
-								
-								/*$result = preg_replace('#<div class="sign_up_box" id="sign_up_box">(.*?)</div>#', ' ', $incoming_data);*/
-								
-								/*echo "<script language=javascript>alert('SUP')</script>";*/
-								
-								/*echo '	<div class="sign_up_text_area_2">
-											<img src="images/logo4.png" alt="Our Logo" height="50" width="50">
-											<span class="sign_up_text_2">&nbsp; Sign Up</span>
-										</div>';
-								echo '<div class="congrats_text">Congratulations!</div>
-										<div><h4>You have successfully created an account.<h4></div>
-										<div class="name_section">'.ucfirst($firstName) . ' ' .ucfirst($lastName). ' ' .$id. '</div>';*/
-								
                               }
                            }			
                         }
@@ -317,20 +298,6 @@ $success = false;
       $("#wrapper").toggleClass("toggled");
    });
    </script>
-
-<!--
-	<script>
-		var class_counter = 10;
-		var array1[0,1,2,3,4,5,6,7,8,9];
-		var array2[];
-		
-		function testFunction(var classType, var idNum)
-		{
-		
-		
-		}
-	
-	</script>-->
 	
 </body>
 </html>
