@@ -64,12 +64,11 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 
 
 
-$tableQuery = "select class_id, count(student_id), date_taken
-from test_list
-join test using(test_id) 
-right join class using(class_id, teacher_id)
-where teacher_id = ? and (graded != 1 or student_id is null)
-group by(class_id)";
+$tableQuery = "select class_id, count(graded), date_taken from class
+left join test using(class_id, teacher_id)
+left join test_list using(test_id)
+where teacher_id = ? and (graded != 1 or graded is null)
+group by class_id";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
