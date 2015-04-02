@@ -296,15 +296,15 @@ $modalId = 0;
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
+								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
 							</div>
 							
 							<div class="col-md-6">	
-								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn">Save</button>
+								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
 							</div>
 						</div>
 						
-						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create and Publish</button>
+						<button type="button" class="btn btn-success btn-block" id="createTestBtn"><span class="glyphicon glyphicon-export"></span> Create and Publish</button>
 					</div>
 					
 					<div class="col-md-8" id="create_questions">
