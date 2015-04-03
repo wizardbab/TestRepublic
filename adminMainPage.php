@@ -60,9 +60,12 @@ $mainTableQuery = "select class_id, class_description, teacher_id, first_name, l
 $teacherListQuery = "select teacher_id, first_name, last_name, teacher_password, email
 						from teacher";
 						
+$selectTeacherQuery = "select teacher_id from teacher";
+						
 $mainTableStatement = $database->prepare($mainTableQuery);
 $adminStatement = $database->prepare($adminId);
 $teacherListStatement = $database->prepare($teacherListQuery);
+$selectTeacherStatement = $database->prepare($selectTeacherQuery);
 
 
 
@@ -139,6 +142,11 @@ $teacherListStatement = $database->prepare($teacherListQuery);
 				<li>
 					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#CModal" data-title="MultipleChoice">
 						<span class="glyphicon glyphicon-record"></span> Add Class
+					</button>
+				</li>
+				<li>
+					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#UpdateModal" data-title="MultipleChoice">
+						<span class="glyphicon glyphicon-record"></span> Update Class
 					</button>
 				</li>
             </ul>
@@ -223,13 +231,24 @@ $teacherListStatement = $database->prepare($teacherListQuery);
 							while($mainTableStatement->fetch())
 							{
 							echo '<tr><td>' . $clid .'</td><td>'. $clde . '</td><td>' .$tid . '</td><td>' .$fname. '</td><td>' . $lname. '</td></tr>';
-							
+							$classArray[] = $clid;
 							}
 							$mainTableStatement->close();
 						?>
 					
 					
 					</tbody>
+					
+					<?php
+					// Loop and store all valid teacher; if the entry by admin doesn't match we don't enter into db
+					$selectTeacherStatement->bind_result($teacher);
+					$selectTeacherStatement->execute();
+					while($selectTeacherStatement->fetch())
+					{
+						$teacherArray[] = $teacher;
+					}
+					$selectTeacherStatement->close();
+					?>
 
 
 						
@@ -254,26 +273,26 @@ $teacherListStatement = $database->prepare($teacherListQuery);
 										<hr />
 										<div class="form-group">
 											<label for="first_name" class="control-label">First Name:</label>
-											<input type="text" class="form-control" id="short_answer_question">
+											<input type="text" class="form-control" id="firstNameText">
 										</div>
 										<div class="form-group">
 											<label for="last_name" class="control-label">Last Name:</label>
-											<input type="text" class="form-control" id="short_answer_question">
+											<input type="text" class="form-control" id="lastNameText">
 										</div>
 										<div class="form-group">
 											<label for="email" class="control-label">Email:</label>
-											<input type="text" class="form-control" id="short_answer_question">
+											<input type="text" class="form-control" id="emailText">
 										</div>
 										<div class="form-group">
 											<label for="email" class="control-label">Password:</label>
-											<input type="text" class="form-control" id="short_answer_question">
+											<input type="text" class="form-control" id="passwordText">
 										</div>
 									</div>
 								</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Teacher</button>
+								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="createTeacherButton" name="create" value="create" >Create Teacher</button>
 							</div>
 						</div>
 					</div>
@@ -291,21 +310,49 @@ $teacherListStatement = $database->prepare($teacherListQuery);
 								<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
 										<div class="form-group">
 											<label for="short_answer_question" class="control-label">Class Id:</label>
-											<input type="text" class="form-control" id="short_answer_question">
+											<input type="text" class="form-control" id="classIdText">
 										</div>
 										<div class="form-group">
 											<label for="short_answer_answer" class="control-label">Class Des:</label>
-											<input type="text" class="form-control" id="short_answer_question">
+											<input type="text" class="form-control" id="classDescriptionText">
 										</div>
 										<div class="form-group">
 											<label for="short_answer_answer" class="control-label">Teacher ID:</label>
-											<input type="number"  id="short_answer_question">
+											<input type="number"  id="teacherIdText">
 										</div>
 								</form>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="CBtn" name="create" value="create" >Create Class</button>
+								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="createClassButton" name="create" value="create" >Create Class</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!--Class Update Modal -->
+				<div id="UpdateModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header modal_header_color">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h4 class="modal-title">Update Class</h4>
+							</div>
+							<div class="modal-body">
+								<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
+										<div class="form-group">
+											<label for="short_answer_question" class="control-label">Class Id:</label>
+											<input type="text" class="form-control" id="classIdUpdateText">
+										</div>
+										<div class="form-group">
+											<label for="short_answer_answer" class="control-label">New Teacher Id:</label>
+											<input type="text" class="form-control" id="teacherIdUpdateText">
+										</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="updateClassButton" name="create" value="create" >Create Class</button>
 							</div>
 						</div>
 					</div>
@@ -329,6 +376,110 @@ $teacherListStatement = $database->prepare($teacherListQuery);
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+	
+	<script>
+	$(document).ready(function()
+	{
+		// Check if the teacher exists
+			function inArray(array, id) 
+			{	
+				for(var i = 0; i < array.length; i++)
+				{
+					if(array[i] == id)
+						return true;// We're good
+				}
+				return false;
+			}
+			
+		$("#createTeacherButton").click(function()
+		{
+			var firstName = $("#firstNameText").val();
+			var lastName = $("#lastNameText").val();
+			var email = $("#emailText").val();
+			var password = $("#passwordText").val();
+			/*$.post("AdminScripts/addTeacherScript.php",
+				{
+					firstName:firstName,
+					lastName:lastName,
+					email:email,
+					password:password
+				},
+				function(data)
+				{
+					alert(data);
+					
+				}); */
+		}); 
+		
+		$("#createClassButton").click(function()
+		{
+			var teacherArray = [];
+			 <?php for($i = 0; $i < count($teacherArray); $i++){ ?>
+                    teacherArray.push('<?php echo $teacherArray[$i];?>');
+                <?php } ?>
+				
+			var classId = $("#classIdText").val();
+			var classDescription = $("#classDescriptionText").val();
+			var teacherId = $("#teacherIdText").val();
+			
+			
+			
+			if(inArray(teacherArray, teacherId))
+			{
+				$.post("AdminScripts/addClassScript.php",
+				{
+					classId:classId,
+					classDescription:classDescription,
+					teacherId:teacherId
+				},
+				function(data)
+				{
+					alert(data);
+					
+				});
+			
+			}
+			else
+				alert("teacher not valid");
+				
+		}); 
+		
+		$("#updateClassButton").click(function()
+		{
+			var teacherArray = [];
+			var classArray = [];
+			var classId = $("#classIdUpdateText").val();
+			var teacherId = $("#teacherIdUpdateText").val();
+			
+			 <?php for($i = 0; $i < count($teacherArray); $i++){ ?>
+                    teacherArray.push('<?php echo $teacherArray[$i];?>');
+                <?php } ?>
+				
+			<?php for($i = 0; $i < count($classArray); $i++){ ?>
+                    classArray.push('<?php echo $classArray[$i];?>');
+                <?php } ?>
+				
+			if(inArray(teacherArray, teacherId) && inArray(classArray, classId))
+			{
+				$.post("AdminScripts/updateClassScript.php",
+				{
+					classId:classId,
+					teacherId:teacherId
+				},
+				function(data)
+				{
+					alert(data);
+					
+				});
+			}
+			else
+				alert("invalid teacher or class");
+		
+		});
+	
+	});
+	
+	</script>
 
 </body>
 
