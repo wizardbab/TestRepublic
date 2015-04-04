@@ -94,19 +94,19 @@ $testNameStatement = $database->prepare($testNameQuery);
 						  // to display student's name in top right corner
 
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
-														{
-															$topRightStatement->bind_param("s", $id);
-														}
-														else {
-															printf("Errormessage: %s\n", $database->error);
-														}							
-											$topRightStatement->bind_result($first_name, $last_name);
-											$topRightStatement->execute();
-											while($topRightStatement->fetch())
-											{
-												echo $first_name . " " . $last_name;
-											}
-											$topRightStatement->close();?><b class="caret"></b></a>
+							{
+								$topRightStatement->bind_param("s", $id);
+							}
+							else {
+								printf("Errormessage: %s\n", $database->error);
+							}							
+							$topRightStatement->bind_result($first_name, $last_name);
+							$topRightStatement->execute();
+							while($topRightStatement->fetch())
+							{
+								echo $first_name . " " . $last_name;
+							}
+							$topRightStatement->close();?><b class="caret"></b></a>
 						
                     <ul class="dropdown-menu">
                         <li>
@@ -160,7 +160,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 	
 	<div class="container-fluid main_section">
 		<?php
-		echo'<h1>'.$testId.'</h1>';
+		
 			$testNameStatement->bind_param("s", $testId);
 			$testNameStatement->bind_result($tname, $instruction, $timeLimit);
 			$testNameStatement->execute();
@@ -170,13 +170,14 @@ $testNameStatement = $database->prepare($testNameQuery);
 					'<div class="row test_title">
 						'.$tname.'
 					</div>';
+				
+				$_SESSION['timeLimit'] = $timeLimit;
 			}
-			
 			$testNameStatement->close();
 		?>
 		
 		<div class="row test_instruction_section">
-			<span class="test_instruction_txt">Test Instruction</span>
+			<span class="test_instruction_txt">Test Instructions</span>
 			<textarea class="form-control instruction_tb" name="specificInstruction" rows="8"> <?php echo $instruction; ?> </textarea>
 		</div>
 	
