@@ -63,7 +63,7 @@ join test using(test_id)
 where class_id = ?";
 
 // Query to populate the first table on the screen
-$firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id from test_list
+$firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id, date_begin, date_end from test_list
 right join test using(test_id)
 where class_id = ?
 group by(test_name)
@@ -84,7 +84,7 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select test_score/max_points*100, graded from test_list
+$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
 join test
 using(test_id)
 where student_id = ? and class_id = ?";
@@ -179,7 +179,7 @@ $studentStatement = $database->prepare($studentQuery);
                 <div class="row">
 				
 					<div class="students_num_text">
-						No of Students:
+						Number of Students:
 						<span class="students_number"><?php 
 						$studentCountStatement->bind_param("s", $classId);
 						$studentCountStatement->bind_result($studentCount);
@@ -225,7 +225,7 @@ $studentStatement = $database->prepare($studentQuery);
 						<?php
 							$firstTableStatement = $database->prepare($firstTableQuery);
 							$firstTableStatement->bind_param("s", $classId);
-							$firstTableStatement->bind_result($tname, $tavg, $tid, $sid);
+							$firstTableStatement->bind_result($tname, $tavg, $tid, $sid, $dateBegin, $dateEnd);
 							$firstTableStatement->execute();
 							// We should be getting two tests here
 							while($firstTableStatement->fetch())
@@ -237,7 +237,7 @@ $studentStatement = $database->prepare($studentQuery);
                                     $tavg = 'No Tests Taken';
                                 else
                                     $tavg = (float)$tavg.'%';
-								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
                                                                                 <input type="submit" value="Edit Test" class="view_test_button"/></form></td></tr>';
 							}
@@ -315,17 +315,23 @@ $studentStatement = $database->prepare($studentQuery);
 								
 									$testScoreStatement = $database->prepare($testScoreQuery);
 									$testScoreStatement->bind_param("ss", $studentArray[$i], $classId);
-									$testScoreStatement->bind_result($testScore, $graded);
+									$testScoreStatement->bind_result($studentId, $testScore, $graded, $testId, $testName, $dateTaken);
 									$testScoreStatement->execute();
 									while($testScoreStatement->fetch())
 									{
                                         // Determines whether test is graded or not
                                         // This will become a button link to grade the test
                                         if($graded == 0)
-                                            $graded = '(grade)';
+                                            $graded = '<form action="testGradingPage.php" method="post">
+                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
+                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
+                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
+                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
+                                            <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
+                                            </form>';
                                         else
                                             $graded = '(view)';
-                                        if($testScore != null)
+                                        if($dateTaken != null)
                                         {
                                             $testScore = number_format($testScore, 2);
                                             echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
