@@ -64,7 +64,9 @@
         $newQuestionNumber = $qno + 1;
     }
     $questionNumberStatement->close();
-	        echo $newQuestionNumber;
+
+	echo $newQuestionNumber;
+	
 	// assign a new question id
     for($k = 0; $k < count($idArray); $k++)
     {

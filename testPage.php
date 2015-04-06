@@ -314,7 +314,7 @@ $_SESSION['testId'] = $testId;
 								  
 								  
 						
-				  </div>
+				</div>
                     
 					<!-- All that Apply /.panel -->
                     

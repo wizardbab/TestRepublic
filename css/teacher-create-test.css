@@ -494,9 +494,21 @@ ul.alert-dropdown {
 		margin-left: -17px;
 	}
 	
+	.q_trash_button
+	{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+	
 	.trash_button
 	{
 		margin-bottom: 10px;
+	}
+	
+	#testList
+	{
+		margin-top: 10px;
 	}
 	
 }

@@ -14,8 +14,7 @@
    <!-- Bootstrap Core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-   <!-- Custom CSS -->
-   <link href="css/signup2.css" rel="stylesheet">
+   
 
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,12 +29,13 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-	<!-- Select & Options Library -->
-	<link href="path/to/multiselect.css" media="screen" rel="stylesheet" type="text/css">
-
+	<!-- Multi Select -->
 	<link href="css/multi-select.css" media="screen" rel="stylesheet" type="text/css" />
 	<script src="js/jquery.multi-select.js" type="text/javascript"></script>
     <script src="js/application.js" type="text/javascript"></script>
+	
+	<!-- Custom CSS -->
+   <link href="css/signup2.css" rel="stylesheet">
 	
 </head>
 
@@ -80,6 +80,9 @@ $success = false;
       <form name="signUpForm" id="signUpForm" action="signUp2.php" onsubmit="return validate(this)" method="post">
          <div class="container-fluid">
             <div class="row">
+				<div class="back_section">
+					<button type="button" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+				</div>
 				<div class="sign_up_text_area">
 					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">
 					<span class="sign_up_text">&nbsp; Sign Up</span>
@@ -135,7 +138,7 @@ $success = false;
                   $courseCounter = 1;
                   $classCounter = 1; 
                   $sidebarArray = array();
-				  echo '<select multiple class="" id="aloha" name="classes[]">';
+				  echo '<select multiple class="yo" id="aloha" name="classes[]">';
                   while($classList->fetch())
                   {
                      echo '
