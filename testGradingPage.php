@@ -301,7 +301,7 @@ $_SESSION['testId'] = $testId;
 									
 									for($i = 0; $i < count($essayArray); $i+=6)
 									{
-										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><input type=text class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
+										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4>Points Earned<input type=text class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
 												<textarea class="form-control" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6">'.$essayArray[$i+5].'</textarea></div>';
                                         $essayCounter++;

@@ -10,9 +10,13 @@
     
     $gradeQuery = "update test_list set graded = 1 where student_id = ? and test_id = ?";
     $updateQuestionQuery = "update question set points_earned = ? where question_id = ?";
+    $pointsEarnedQuery = "update test_list set test_score = ? where test_id = ? and student_id = ?";
+    $testPointsQuery = "select max_points, sum(question_value) from question where test_id = ? and student_id = ?";
     
     $gradeStatement = $database->prepare($gradeQuery);
     $updateQuestionStatement = $database->prepare($updateQuestionQuery);
+    $pointsEarnedStatement = $database->prepare($pointsEarnedQuery);
+    $testPointsStatement = $database->prepare($testPointsQuery);
     
     @$studentId = $_POST['studentId'];
     @$testId = $_POST['testId'];
@@ -29,7 +33,18 @@
         $updateQuestionStatement->execute();
     }
     $updateQuestionStatement->close();
+    
+    $testPointsStatement->bind_param("ss", $testId, $studentId);
+    $testPointsStatement->bind_result($maxPoints, $sumPoints);
+    $testPointsStatement->execute();
+    $testPointsStatement->fetch();
+    $testPointsStatement->close();
+    
+    $sum = 0;
     foreach($pointsEarnedArray as $k)
-        echo $k;
-        echo count($pointsEarnedArray);
+        $sum += $k;
+        $sum = $sum / $sumPoints * $maxPoints;
+    $pointsEarnedStatement->bind_param("sss", $sum, $testId, $studentId);
+    $pointsEarnedStatement->execute();
+    $pointsEarnedStatement->close();
 ?>

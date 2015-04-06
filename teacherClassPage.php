@@ -84,10 +84,11 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
-join test
-using(test_id)
-where student_id = ? and class_id = ?";
+$testScoreQuery = "select student_id, sum(points_earned)/sum(question_value)*100, graded, test_id, test_name, date_taken from test_list
+join test using(test_id)
+join question using(test_id, student_id)
+where student_id = ? and class_id = ?
+group by(test_id)";
 
 // Average score for student list
 $averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
@@ -322,6 +323,7 @@ $studentStatement = $database->prepare($studentQuery);
                                         // Determines whether test is graded or not
                                         // This will become a button link to grade the test
                                         if($graded == 0)
+                                        {
                                             $graded = '<form action="testGradingPage.php" method="post">
                                             <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
                                             <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
@@ -329,10 +331,17 @@ $studentStatement = $database->prepare($studentQuery);
                                             <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
                                             <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
                                             </form>';
-                                        else
-                                            $graded = '(view)';
-                                        if($dateTaken != null)
+                                            echo '<td>' . $graded.'</td>';
+                                        }
+                                        else if($graded == 1)
                                         {
+                                            $graded = '<form action="testGradingPage.php" method="post">
+                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
+                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
+                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
+                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
+                                            <input type="submit" value="View" class="btn btn-primary btn-block"/>
+                                            </form>';
                                             $testScore = number_format($testScore, 2);
                                             echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
                                         }
