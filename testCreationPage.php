@@ -135,16 +135,6 @@ $modalId = 0;
 						
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
@@ -417,7 +407,7 @@ $modalId = 0;
 											</div>
 											<div class="form-group">
 												<label for="short_answer_answer" class="control-label">Answer:</label>
-												<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
+												<textarea type="text" class="form-control" id="short_answer_answer" rows="2"></textarea>
 											</div>
 										</div>
 									</form>
@@ -1151,6 +1141,7 @@ $modalId = 0;
                     );
 					alert(data);
                     $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+
 					alert(data);
 				});
 				

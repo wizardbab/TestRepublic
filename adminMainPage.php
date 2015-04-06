@@ -61,14 +61,18 @@ $teacherListQuery = "select teacher_id, first_name, last_name, teacher_password,
 						from teacher";
 						
 $selectTeacherQuery = "select teacher_id from teacher";
+
+$maxTeacherQuery = "select max(teacher_id) from teacher";
 						
 $mainTableStatement = $database->prepare($mainTableQuery);
 $adminStatement = $database->prepare($adminId);
 $teacherListStatement = $database->prepare($teacherListQuery);
 $selectTeacherStatement = $database->prepare($selectTeacherQuery);
+$maxTeacherStatement = $database->prepare($maxTeacherQuery);
 
-
-
+echo '<h1>Hi</h1>';
+echo '<h1>Hi</h1>';
+echo '<h1>Hi</h1>';
 ?>
 
 <div id="wrapper2">
@@ -104,16 +108,6 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 						$adminStatement->close();
 						?>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
                         <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
@@ -248,6 +242,15 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 						$teacherArray[] = $teacher;
 					}
 					$selectTeacherStatement->close();
+					
+					
+					$maxTeacherStatement->bind_result($tid);
+					$maxTeacherStatement->execute();
+					while($maxTeacherStatement->fetch())
+					{
+						$teacherId = $tid + 1;
+					}
+					$maxTeacherStatement->close();
 					?>
 
 
@@ -268,7 +271,7 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 								<form name="TeacherForm" id="TeacherForm" method="post">
 									<div class="form-group">
 										<div class="point_value_section">
-											<label for="short_answer_point_value" class="control-label">ID#:&nbsp;</label>
+											<label for="short_answer_point_value" class="control-label">ID#:&nbsp;<?php echo $teacherId; ?></label>
 										</div>
 										<hr />
 										<div class="form-group">
@@ -397,7 +400,7 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 			var lastName = $("#lastNameText").val();
 			var email = $("#emailText").val();
 			var password = $("#passwordText").val();
-			/*$.post("AdminScripts/addTeacherScript.php",
+			$.post("AdminScripts/addTeacherScript.php",
 				{
 					firstName:firstName,
 					lastName:lastName,
@@ -408,7 +411,7 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 				{
 					alert(data);
 					
-				}); */
+				}); 
 		}); 
 		
 		$("#createClassButton").click(function()

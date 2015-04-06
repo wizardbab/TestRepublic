@@ -37,6 +37,7 @@
 	// Author: David Hughen
 	// Date:   2/11/2015
 	session_start();
+	$_SESSION = array();
 	session_destroy();
 	
 	// TIMER CODE SHOULD GO HERE SOMEWHERE
