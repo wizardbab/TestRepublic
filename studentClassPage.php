@@ -60,7 +60,7 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken from test
+$tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken, graded from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
 $_SESSION['classId'] = null;
@@ -174,7 +174,7 @@ global $class_id;
                      $class = $_GET['classId'];
 							$classId = $class;
 							$table->bind_param("ss", $id, $classId);
-							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken);
+							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken, $graded);
 							$table->execute();
 							while($table->fetch())
 							{
@@ -183,7 +183,10 @@ global $class_id;
 									   <td>'.$date_begin.' - '.$date_end.'</td>';
 										if($date_taken != null)
 										{
-											echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
+                                            if($graded != 1)
+                                                echo '<td>Grading Pending</td>';
+                                            else
+                                                echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{

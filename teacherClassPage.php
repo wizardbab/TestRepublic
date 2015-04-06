@@ -84,7 +84,7 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
+$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
 join test
 using(test_id)
 where student_id = ? and class_id = ?";
@@ -315,7 +315,7 @@ $studentStatement = $database->prepare($studentQuery);
 								
 									$testScoreStatement = $database->prepare($testScoreQuery);
 									$testScoreStatement->bind_param("ss", $studentArray[$i], $classId);
-									$testScoreStatement->bind_result($testScore, $graded, $testId, $testName, $dateTaken);
+									$testScoreStatement->bind_result($studentId, $testScore, $graded, $testId, $testName, $dateTaken);
 									$testScoreStatement->execute();
 									while($testScoreStatement->fetch())
 									{
@@ -326,6 +326,7 @@ $studentStatement = $database->prepare($studentQuery);
                                             <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
                                             <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
                                             <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
+                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
                                             <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
                                             </form>';
                                         else

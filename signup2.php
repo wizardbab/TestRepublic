@@ -81,7 +81,7 @@ $success = false;
          <div class="container-fluid">
             <div class="row">
 				<div class="back_section">
-					<button type="button" id="back_btn"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+					<button type="button" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
 				</div>
 				<div class="sign_up_text_area">
 					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">
@@ -163,7 +163,6 @@ $success = false;
                            // Does a preliminary check for email pattern
                            if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
                            {
-                             
                               echo "Invalid email ".$email;
                            }
                            // Valid email; validate password
@@ -178,7 +177,6 @@ $success = false;
                               else
                                  if(!preg_match('^.{8,20}^', $password))
                                  {
-                                   
                                     echo "Password needs to be between 8-16 characters";
                                  }
                                  
