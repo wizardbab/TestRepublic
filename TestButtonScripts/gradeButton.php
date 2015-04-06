@@ -11,7 +11,7 @@
     $gradeQuery = "update test_list set graded = 1 where student_id = ? and test_id = ?";
     $updateQuestionQuery = "update question set points_earned = ? where question_id = ?";
     $pointsEarnedQuery = "update test_list set test_score = ? where test_id = ? and student_id = ?";
-    $testPointsQuery = "select max_points, sum(question_value) from question where test_id = ? and student_id = ?";
+    $testPointsQuery = "select max_points, sum(question_value) from question join test using(test_id) where test_id = ? and student_id = ?";
     
     $gradeStatement = $database->prepare($gradeQuery);
     $updateQuestionStatement = $database->prepare($updateQuestionQuery);

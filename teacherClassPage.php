@@ -244,7 +244,7 @@ $studentStatement = $database->prepare($studentQuery);
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="3">No tests created</td></tr>';
+                                    echo'<tr><td colspan="5">No tests created</td></tr>';
 						?>
 						</tbody>
 						
@@ -321,21 +321,13 @@ $studentStatement = $database->prepare($studentQuery);
 									while($testScoreStatement->fetch())
 									{
                                         // Determines whether test is graded or not
-                                        // This will become a button link to grade the test
-                                        if($graded == 0)
+                                        if(is_null($graded))
                                         {
-                                            $graded = '<form action="testGradingPage.php" method="post">
-                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
-                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
-                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
-                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
-                                            <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
-                                            </form>';
-                                            echo '<td>' . $graded.'</td>';
+                                            echo '<td>Not Taken</td>';
                                         }
                                         else if($graded == 1)
                                         {
-                                            $graded = '<form action="testGradingPage.php" method="post">
+                                            $state = '<form action="testGradingPage.php" method="post">
                                             <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
                                             <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
                                             <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
@@ -343,11 +335,20 @@ $studentStatement = $database->prepare($studentQuery);
                                             <input type="submit" value="View" class="btn btn-primary btn-block"/>
                                             </form>';
                                             $testScore = number_format($testScore, 2);
-                                            echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
+                                            echo '<td>' . (float)$testScore.'% ' . $state.'</td>';
                                         }
                                         else
-                                            echo '<td>Not Taken</td>';
-									}
+                                        {
+                                            $state = '<form action="testGradingPage.php" method="post">
+                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
+                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
+                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
+                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
+                                            <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
+                                            </form>';
+                                            echo '<td>' . $state.'</td>';
+                                        }
+                                    }
 									
 									$testScoreStatement->close();
 									
