@@ -329,7 +329,7 @@ $_SESSION['testId'] = $testId;
                                         {
                                         $oldQuestion = $trueFalseArray[$i];
                                             echo'<div class="panel-body">
-                                                  <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
+                                                  <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</span></h4>
                                                     <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
 													$trueFalseStatement->bind_result($answer_id, $answer_text, $stuSelection, $correct);
@@ -342,16 +342,22 @@ $_SESSION['testId'] = $testId;
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span>';
                                                         if($correct == 1)
                                                         {
-                                                            echo "   --   Correct Answer";
                                                             if($correct == $stuSelection)
+															{
                                                                 $pointsEarned = $trueFalseArray[$i+2];
+																echo " <img src='images/sign.png' />";
+															}
                                                             else
+															{
                                                                 $pointsEarned = 0;
+																echo " <img src='images/cross.jpg' />";
+															}
                                                         }
                                                         echo'</div>';
                                                         
                                                     }
-                                                   echo' </div>Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/>
+                                                   echo' </div>
+												   <div class="points_earned_section">Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/></div>
                                             </div>';
                                             $trueFalseCounter++;
                                         }

@@ -35,17 +35,13 @@
 </head>
 <?php
 session_start();
-
 // Include the constants used for the db connection
 require("constants.php");
-
 // Gets the class id appended to url from teacherMainPage.php
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
 $sessionTestId = $_SESSION['testId'];
-
 global $newTestId;
-
 if(!is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
     
@@ -55,21 +51,17 @@ if($id == null)
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 @ $database->select_db(DATABASENAME);
-
 // Teacher first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
-
 // Class ID and description at the top of the page
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
 $mainClassStatement = $database->prepare($mainClassQuery);
-
 // Generate a test id
 $testIdQuery = "select a.test_id, a.saved, question_id from test as a
 	left join test as b
     on (a.test_id < b.test_id)
     left join question as c on a.test_id = c.test_id
     where b.test_id is null";
-
 // Create a test
 $createTestQuery = "insert into test(test_id) values(?)";
 				  
@@ -85,9 +77,6 @@ $oldQuestionsQuery = "select question_id, question_type, question_value, questio
                         answer_id, answer_text, correct, heading_id, heading from question
                         join answer using (question_id)
                         where test_id = ? group by(question_no)";
-
-
-
 // These go with the form on the left of the page
 $testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
 $startDate = (isset($_POST['startDate']) ? $_POST['startDate'] : "");
@@ -96,7 +85,6 @@ $timeLimit = (isset($_POST['timeLimit']) ? $_POST['timeLimit'] : "");
 $specificInstructions = (isset($_POST['specificInstructions']) ? $_POST['specificInstructions'] : "");
 $testPledge = (isset($_POST['testPledge']) ? $_POST['testPledge'] : "");
 $maxPoints = (isset($_POST['maxPoints']) ? $_POST['maxPoints'] : "");
-
 /*global $testName;
 global $startDate;
 global $endDate;
@@ -130,7 +118,6 @@ $modalId = 0;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
 					<?php // Added by David Hughen
 						  // to display student's name in top right corner
-
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
 														{
 															$topRightStatement->bind_param("s", $id);
@@ -170,7 +157,6 @@ $modalId = 0;
                         while($mainClassStatement->fetch())
                         {
                             echo '<div class="course_header">
-
                         <div class="course_number">'
                             . $clid .
                         '</div>
@@ -354,7 +340,6 @@ $modalId = 0;
                                             {
                                                 // Echo True/False with info inside
                                                 // This just puts the box thing on test page... not a modal
-
                                                 echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
                                                 echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                             }
@@ -721,8 +706,6 @@ $modalId = 0;
 					</div>				
 			</div>    				
 		</div>	
-
-
         
     <script>
     function removeQuestion(qno)
@@ -847,7 +830,6 @@ $modalId = 0;
 				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question'+(mQuestionCounter+1)+'" onclick="removeMatchingQuestion('+(mQuestionCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				mQuestionCounter++;
                 matchingQuestionArray.push(mQuestionCounter);
-
 			});
 			
 			$("#add_match_answer_btn").click(function()
@@ -927,7 +909,6 @@ $modalId = 0;
 					$('#ata_answer_cb'+ATACounter).remove();
 					$('#ata_answer'+ATACounter).remove();
 					$('#remove_ata'+ATACounter).remove();
-
 				}
 				$('input:checkbox').removeAttr('checked');;
 				$('#ata_answer0').val("");
@@ -988,7 +969,6 @@ $modalId = 0;
 		$('#mc_answer'+questionNum).remove();
 		$('#multipleText'+questionNum).remove();
 		$('#remove_MC'+questionNum).remove();
-
 	}
 	</script>
 	
@@ -1026,7 +1006,6 @@ $modalId = 0;
 				$('#short_answer_point_value').val("");
 				
 			});
-
 			$("#SACancelBtn").click(function()
 			{
 				$('#short_answer_question').val("");
@@ -1034,13 +1013,11 @@ $modalId = 0;
 				$('#short_answer_point_value').val("");
 				
 			});
-
 			/***********************************************************/
 			/* Matching stuff                                          */
 			/***********************************************************/
 			$("#MBtn").click(function()
 			{
-
 				var pointValue = $("#m_point_value").val();
 				var heading = $("#m_heading").val();
 				
@@ -1119,9 +1096,7 @@ $modalId = 0;
 					$('#match_answer_letter_tb0').val("");
 					$('#m_heading').val("");
 					$('#m_point_value').val("");	
-
 			});
-
 			/***********************************************************/
 			/* Multiple choice stuff                                   */
 			/***********************************************************/
@@ -1130,7 +1105,6 @@ $modalId = 0;
 				var question = $("#mc_question").val();
 				var multipleChoiceArray = [];
 				var multipleTextArray = [];
-
 				// check for multiple choice radios		
 				for(i = 0; i < testMCArray.length; i++)
 				{
@@ -1165,11 +1139,12 @@ $modalId = 0;
 				{
 					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
                     );
+					alert(data);
                     $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-			alert(data);
+
+					alert(data);
 				});
 				
-
 				// Resets MC Values
 				for(MCCounter; MCCounter > 1; MCCounter--)
 				{
@@ -1242,8 +1217,6 @@ $modalId = 0;
 					$('#ata_answer'+ATACounter).remove();
 					$('#remove_ata'+ATACounter).remove();
 				}
-
-
 				$('input:checkbox').removeAttr('checked');
 				$('#ata_answer0').val("");
 				$('#ata_answer1').val("");
@@ -1343,7 +1316,5 @@ $modalId = 0;
 			});
 		});
 	</script>
-
 </body>
-
 </html>

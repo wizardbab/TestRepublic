@@ -173,11 +173,11 @@ body
 
 .class_section
 {
-	width: 49%;
+	width: 47%;
 	background: rgb(149,179,215);
 	font-weight: bold;
 	font-size: 20pt;
-	margin-left: 8px;
+	margin-left: 2%;
 	margin-top: 5px;
 }
 
@@ -193,11 +193,6 @@ body
 	font-size: 26pt;
 	font-family: Rockwell, Arial;
 	color: white;
-}
-
-.department
-{
-	margin-top: 10px;
 }
 
 #create_acc_btn
@@ -219,14 +214,36 @@ body
 	border: 1px solid black;
 }
 
-.your_class_section
-{
-	
-}
-
 label.survey_style input
 {
 	padding: 5px;
+}
+
+.ms-container
+{
+	margin-top: 20px;
+	margin-left: 4%;
+	width: 94%;
+	color: black;
+}
+
+.ms-container .ms-list
+{
+	height: 330px;
+}
+
+.back_section
+{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+}
+
+#back_btn
+{
+	background: white;
+	font-size: 16pt;
+	width: 100px;
 }
 
 #wrapper.toggled #signUpDiv {
