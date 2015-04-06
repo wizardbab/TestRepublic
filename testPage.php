@@ -40,10 +40,7 @@ require("constants.php");
 $id = $_SESSION['username'];
 //$classId = $_SESSION['classId'];
 //$testId = $_SESSION['testId'];
-echo '<h1>Hey</h1>';
-echo '<h1>Hey</h1>';
-echo '<h1>Hey</h1>';
-echo '<h1>Hey</h1>';
+
 if($id == null)
     header('Location: login.html');
  
@@ -70,7 +67,7 @@ $query = "select class_id, class_description from class where class_id = ?";
 $summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id, answer_id
 								 from question
                                  join answer using(question_id)
-								 where test_id = ?";
+								 where test_id = ? and student_id = ?";
 								 
 $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 
@@ -80,12 +77,10 @@ $ataQuery = "select answer_text, answer_id from answer where question_id = ?";
 $matchingQuery = "SELECT question_letter, answer_text, answer_id
 from answer
 join question using(question_id)
-where heading_id = ?
+where heading_id = ? and student_id = ?
 order by(question_letter)";
 
-$matchingAnswerQuery = "select answer_text";
-
-$matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ?";
+$matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ? and student_id = ?";
 
 $trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
 
@@ -191,7 +186,7 @@ $_SESSION['testId'] = $testId;
 				
 				
 				$summaryStatement = $database->prepare($summaryQuery);
-				$summaryStatement->bind_param("s", $testId);
+				$summaryStatement->bind_param("ss", $testId, $id);
 				$summaryStatement->bind_result($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid);
 				
 				
@@ -243,8 +238,8 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Matching")
 					{
+                        echo '<br /><br /><br />';
 						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid);
-						
 					}
 					
 					/***************************************************************************************************/
@@ -464,7 +459,7 @@ $_SESSION['testId'] = $testId;
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse">
 										 <div class="panel-body container">';
-                                        $matchingHeadStatement->bind_param("s", $testId);
+                                        $matchingHeadStatement->bind_param("ss", $testId, $id);
 										$matchingHeadStatement->bind_result($hid, $heading);
 										$matchingHeadStatement->execute();
 										while($matchingHeadStatement->fetch())
@@ -478,15 +473,16 @@ $_SESSION['testId'] = $testId;
                                         for($k = 0; $k < count($headingArray); $k++)
                                         {
                                             echo'<h4>'.$headingArray[$k].'</h4>';
-                                            $matchingStatement->bind_param("s", $headingIdArray[$k]);
+                                            $matchingStatement->bind_param("ss", $headingIdArray[$k], $id);
                                             $matchingStatement->bind_result($qletter, $atext, $aid);
                                             $matchingStatement->execute();
                                             while($matchingStatement->fetch())
                                             {
                                                 $matchingAnswer[] = $qletter;
                                                 $matchingAnswer[] = $atext;
+                                                $matchingAnswer[] = $aid;
                                             }
-                                            for($i = 0; $i < count($matchingAnswer); $i+=2)
+                                            for($i = 0; $i < count($matchingAnswer); $i+=3)
                                             {	
                                             echo'	<div class="col-md-6">
                                                     <div class="matching_div">'
@@ -615,7 +611,7 @@ $_SESSION['testId'] = $testId;
         {
             var counter;
             var essayArray = [];
-            <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
+                <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
                     essayArray.push('<?php echo $essayArray[$i+4];?>');
                 <?php } ?>
             var shortAnswerArray = [];
@@ -659,7 +655,7 @@ $_SESSION['testId'] = $testId;
                 shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
             }
 		
-				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+			/*	$.post("TestAnswerScripts/essayAndShortAnswer.php",
 				{
 					"essayIds[]":essayArray,
 					"essayChoices[]":essayAnswerArray,
@@ -669,7 +665,7 @@ $_SESSION['testId'] = $testId;
 				function(data)
 				{
 					
-				});
+				}); */
 				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
@@ -709,7 +705,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-            $.post("TestAnswerScripts/mcmatatf.php",
+           /* $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
@@ -722,6 +718,7 @@ $_SESSION['testId'] = $testId;
 				},
 				function(data)
 				{
+
 				});
                 
             $.post("TestAnswerScripts/submit.php",
@@ -803,6 +800,7 @@ $_SESSION['testId'] = $testId;
 				if(hours > 0)
 				{
 					hours--;
+
 					minutes = 60;
 				}
 			}

@@ -9,12 +9,12 @@
 	$database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 	@ $database->select_db(DATABASENAME);
     
-    $deleteQuestionQuery = "delete from question where question_id = ?";
+    $deleteQuestionQuery = "delete from question where question_no = ?";
     
-    @$qid = $_POST["qid"];
+    @$qno = $_POST["qno"];
     
 	$deleteQuestionStatement = $database->prepare($deleteQuestionQuery);
-	$deleteQuestionStatement->bind_param("s", $qid);
+	$deleteQuestionStatement->bind_param("s", $qno);
 	$deleteQuestionStatement->execute();
 	$deleteQuestionStatement->close();
 ?>
