@@ -36,6 +36,24 @@
 	
 	<!-- Custom CSS -->
    <link href="css/signup2.css" rel="stylesheet">
+   
+   <script src="path/to/jquery.multi-select.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+
+   <!-- Menu Toggle Script -->
+   <script>
+   $(document).ready(function()
+	{
+		
+	
+	});
+	
+	function redirect()
+	{
+		window.location = "redirect.php";
+	}
+	</script>
 	
 </head>
 
@@ -74,9 +92,9 @@ $password  = (isset($_POST['password']) ? $_POST['password'] : "");
 $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 global $id;
 $success = false;
+
+
 ?>
-
-
       <form name="signUpForm" id="signUpForm" action="signUp2.php" onsubmit="return validate(this)" method="post">
          <div class="container-fluid">
             <div class="row">
@@ -156,7 +174,7 @@ $success = false;
 				 <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
 			</div>
 			   <?php 
-                        $success = 1;
+                        
                         // We have data; begin validation
                         if(is_array($classes))
                         {
@@ -206,7 +224,7 @@ $success = false;
                                        $testCounter = 0;
                                        $testIdArray[] = null;
 
-                                       echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
+                                       //echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
                                        if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
                                        {
                                           
@@ -269,30 +287,28 @@ $success = false;
                                     $insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
                                     $insertStudentStatement->execute();
                                     $insertStudentStatement->close();
+									$password = null;
 									
-                                 echo '<h1>' . $newId . '</h1>';
-								 $success = 1;
+                                // echo '<h1>' . $newId . '</h1>';
+								 $success = true;
                                  $testIdArray = null;
 								 
 								 $_SESSION['username'] = $newId;
-								 
+								 echo '<script type="text/javascript">';
+								 echo 'redirect();';
+								 echo '</script>';
                               }
                            }			
                         }
                         else
                         // do nothing
                         {
-                           $success = 0;
+                           $success = false;
                         }
                         ?>
         </div>
       </form>
-
-	<script src="path/to/jquery.multi-select.js" type="text/javascript"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="js/bootstrap.js"></script>
-
-   <!-- Menu Toggle Script -->
+	
    <script>
    $("#menu-toggle").click(function(e) {
       e.preventDefault();

@@ -36,7 +36,9 @@ require("constants.php");
 @$sid = $_POST['studentId'];
 
 
-$id = $_SESSION['username']; // Just a random variable gotten from the URL
+$id = isset($_POST['studentId']) ? $_POST['studentId'] : $_SESSION['username'];
+
+//$id = $_SESSION['username']; // Just a random variable gotten from the URL
 
 if($id == null)
     header('Location: login.html');

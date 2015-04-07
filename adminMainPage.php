@@ -148,7 +148,9 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
 				<div class="row">
-				
+					<div class="back_section">
+					<button type="button" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+				</div>
 				</div>
 			</div>
 			

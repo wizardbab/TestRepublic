@@ -136,7 +136,6 @@ $table = $database->prepare($tableQuery);
 						<tr>
 							<th>Classes</th>
 							<th>Recent Updates</th>
-							<th>Updated</th>
 						</tr>
 						</thead>
 						
@@ -149,8 +148,7 @@ $table = $database->prepare($tableQuery);
 							while($table->fetch())
 							{	
 								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'teacherClassPage.php?classId='.$clid.'\'">'.$clid.'</button></td>
-									  <td>'.$update.' test(s) to grade</td>
-									  <td>'.$date.'</td></tr>';
+									  <td>'.$update.' test(s) to grade</td></tr>';
 							}
 							$table->close(); 
 							?>			
