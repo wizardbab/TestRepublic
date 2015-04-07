@@ -10,6 +10,8 @@ body
 {
 	/*background-image: url("../images/background.png");*/
 	background-image: url("../images/photo2.jpg");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 	color: black;
 }
 
@@ -497,8 +499,8 @@ ul.alert-dropdown {
 	.q_trash_button
 	{
 		position: absolute;
-		top: 10px;
-		right: 10px;
+		top: 20px;
+		right: 20px;
 	}
 	
 	.trash_button
@@ -508,7 +510,35 @@ ul.alert-dropdown {
 	
 	#testList
 	{
-		margin-top: 10px;
+		width: 80%;
+		margin: 0px auto;
+		margin-top: 20px;
+	}
+
+	.list-group-item
+	{
+		text-align: left;
+		padding: 20px;
+		padding-left: 50px;
+	}
+
+	.list_heading
+	{
+		color: rgb(55,96,146);
+		font-weight: bold;
+		font-size: 20pt;
+		width: 80%;
+	}
+
+	.answer_text
+	{
+		color: red;
+	}
+
+	img
+	{
+		width: 30px;
+		height: 30px;
 	}
 	
 }

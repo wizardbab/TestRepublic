@@ -1,5 +1,5 @@
 <?php
-   // Authors: Jake Stevens
+    // Authors: Jake Stevens
 	// Date Created: 3/31/15
 	// Last Modified: 3/31/15
 	// This php script handles the db stuff for submitting a test for grading
