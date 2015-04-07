@@ -18,6 +18,9 @@ if (mysqli_connect_errno())
 // The question mark is for the bind_param below. Replace all variables with a question mark.
 $query = "SELECT first_name, last_name from student WHERE student_id = ? and student_password = ?";
 
+// The question mark is for the bind_param below. Replace all variables with a question mark.
+$adminQuery = "SELECT admin_id, admin_password from admin WHERE admin_id = ? and admin_password = ?";
+
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
 
@@ -31,11 +34,15 @@ if($tea == false)
 	echo "fail!";
 }
 
+$adminStmt = $database->prepare($adminQuery);
+
 // Bind the result to PHP variables. The number of results MUST match the number specified in the query above. Names don't have to be the same.
 $stmt->bind_param("ss", $id, $password);
 $stmt->bind_result($stu1, $stu2);
 $tea->bind_param("ss", $id, $password);
 $tea->bind_result($tea1, $tea2);
+$adminStmt->bind_param("ss", $id, $password);
+$adminStmt->bind_result($admin1, $admin2);
 
 // ALWAYS use bind_param when you have a WHERE clause with $_GET and $_POST variables. This prevents SQL injection attacks.
 // Otherwise someone could put "drop table users" in the get url and drop your table. This prevents that.
@@ -60,6 +67,12 @@ while($tea->fetch())
    echo $tea1 . " - " . $tea2 . " - ";
 }
 
+$adminStmt->execute();
+while($adminStmt->fetch())
+{
+   echo $admin1 . " - " . $admin2 . " - ";
+}
+
 // Post student id and go to student main page
 if($stu1 != null)
 {
@@ -71,6 +84,12 @@ else if($tea1 != null)
 {
 	$_SESSION['username'] = $id;
 	header('Location: teacherMainPage.php');
+}
+// Post administrator id and go to administrator main page
+else if($admin1 != null)
+{
+	$_SESSION['username'] = $id;
+	header('Location: adminMainPage.php');
 }
 else
 {
