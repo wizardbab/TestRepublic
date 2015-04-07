@@ -64,6 +64,7 @@
         $newQuestionNumber = $qno + 1;
     }
     $questionNumberStatement->close();
+
 	echo $newQuestionNumber;
 	
 	// assign a new question id
@@ -77,8 +78,6 @@
             $newQuestionId = $qid + 1;
         }
         $questionIdStatement->close();
-        
-        
         
         // assign a new answer id
         $answerIdStatement = $database->prepare($answerIdQuery);

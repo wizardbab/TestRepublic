@@ -186,7 +186,12 @@ global $class_id;
                                             if($graded != 1)
                                                 echo '<td>Grading Pending</td>';
                                             else
-                                                echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
+                                                echo '<td><form action="testViewing.php" method="post">
+															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
+															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
+															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
+															<input type="hidden" value="'.$id.'" name="studentId" id="studentId"/>
+															<input type="submit" value="View Test" class="btn btn-primary"/></form></td>';
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{

@@ -1137,9 +1137,9 @@ $modalId = 0;
 				{
 					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">MULTIPLE CHOICE</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
                     );
-					alert(data);
+					
                     $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-					alert(data);
+					
 
 					for (i = 0; i < multipleChoiceArray.length; i++)
 					{
