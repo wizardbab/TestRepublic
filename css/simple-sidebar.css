@@ -617,4 +617,35 @@ ul.alert-dropdown {
 	{
 		background-color: rgba(55,96,146,0.4);
 	}
+	
+	/* admin page */
+	.add_margin_top
+	{
+		margin-top: 50px;
+	}
+	
+	.admin_icon
+	{
+		width: 30px;
+	}
+	
+	.admin_icon:hover
+	{
+		background: pink;
+	}
+	
+	.admin_button
+	{
+		background: rgba(255,255,255,0.0);
+		font-size: 14pt;
+		color: black;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		width: 200px;
+	}
+	
+	.btn:hover
+	{
+		background: pink;
+	}
 }

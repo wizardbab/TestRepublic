@@ -70,9 +70,6 @@ $teacherListStatement = $database->prepare($teacherListQuery);
 $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 
-echo '<h1>Hi</h1>';
-echo '<h1>Hi</h1>';
-echo '<h1>Hi</h1>';
 ?>
 
 <div id="wrapper2">
@@ -96,7 +93,7 @@ echo '<h1>Hi</h1>';
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
-				<b class="caret"></b></a>
+				
 						<?php
 						$adminStatement->bind_param("s", $id);
 						$adminStatement->bind_result($aid);
@@ -106,7 +103,7 @@ echo '<h1>Hi</h1>';
 							echo $aid;
 						}
 						$adminStatement->close();
-						?>
+						?>&nbsp;<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
@@ -129,18 +126,18 @@ echo '<h1>Hi</h1>';
                     Admin Tools
                 </li>
 				<li>
-					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#TModal" data-title="MultipleChoice">
-						<span class="glyphicon glyphicon-record"></span> Add Teacher
+					<button type="button" class="btn btn-default btn-sm admin_button" data-toggle="modal" data-target="#TModal" data-title="MultipleChoice">
+						<img src="images/add_user.png" class="admin_icon" /> Add Teacher
 					</button>
 				</li>
 				<li>
-					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#CModal" data-title="MultipleChoice">
-						<span class="glyphicon glyphicon-record"></span> Add Class
+					<button type="button" class="btn btn-default btn-sm admin_button" data-toggle="modal" data-target="#CModal" data-title="MultipleChoice">
+						<img src="images/add.png" class="admin_icon" /> Add Class
 					</button>
 				</li>
 				<li>
-					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#UpdateModal" data-title="MultipleChoice">
-						<span class="glyphicon glyphicon-record"></span> Update Class
+					<button type="button" class="btn btn-default btn-sm admin_button" data-toggle="modal" data-target="#UpdateModal" data-title="MultipleChoice">
+						<img src="images/add.png" class="admin_icon" /> Update Class
 					</button>
 				</li>
             </ul>
@@ -156,7 +153,7 @@ echo '<h1>Hi</h1>';
 			</div>
 			
 			<div class="container-fluid align-center">
-                <div class="row">
+                <div class="row add_margin_top">
 				
 
 				</div>
