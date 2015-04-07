@@ -135,16 +135,6 @@ $modalId = 0;
 						
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
                     </ul>
@@ -286,11 +276,11 @@ $modalId = 0;
 							</div>
 							
 							<div class="col-md-6">	
-								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+								<button type="button" class="btn btn-primary btn-block" id="saveTestBtn">Save</button>
 							</div>
 						</div>
 						
-						<button type="button" class="btn btn-success btn-block" id="createTestBtn"><span class="glyphicon glyphicon-export"></span> Create and Publish</button>
+						<button type="button" class="btn btn-success btn-block" id="createTestBtn">Create and Publish</button>
 					</div>
 					
 					<div class="col-md-8" id="create_questions">
@@ -417,7 +407,7 @@ $modalId = 0;
 											</div>
 											<div class="form-group">
 												<label for="short_answer_answer" class="control-label">Answer:</label>
-												<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
+												<textarea type="text" class="form-control" id="short_answer_answer" rows="2"></textarea>
 											</div>
 										</div>
 									</form>
@@ -686,7 +676,6 @@ $modalId = 0;
 													<label class="control-label">Letter:</label>
 												</div>
 											</div>
-	
 										</div>
 										<div class="reduce_margin_bottom">
 										</div>
@@ -826,13 +815,12 @@ $modalId = 0;
 	
 	<!-- Add matching JS -->
 	<script>
+		var mQuestionCounter = 0;
+		var mAnswerCounter = 0;
+		var matchingQuestionArray = [0];
+		var matchingAnswerArray = [0];
 		$(document).ready(function()
 		{
-			var mQuestionCounter = 0;
-            var mAnswerCounter = 0;
-            var matchingQuestionArray = [0];
-            var matchingAnswerArray = [0];
-            
 			$("#add_match_question_btn").click(function()
 			{
 				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
@@ -1080,12 +1068,12 @@ $modalId = 0;
 				},
 				function(data)
 				{
+
 					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
                     );
                     $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				});
-				
-				/* Counters not working? Used to reset matching modal*/
+
 				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
 				{
 					$('#match_question_tb'+mQuestionCounter).remove();
@@ -1098,8 +1086,6 @@ $modalId = 0;
 					$('#match_answer_letter_tb'+mAnswerCounter).remove();
 					$('#remove_match_answer'+mAnswerCounter).remove();
 				}
-				
-				alert("meow");
 					matchingQuestionArray = [0];
 					matchingAnswerArray = [0];
 					$('#match_question_tb0').val("");
@@ -1107,7 +1093,7 @@ $modalId = 0;
 					$('#match_answer_tb0').val("");
 					$('#match_answer_letter_tb0').val("");
 					$('#m_heading').val("");
-					$('#m_point_value').val("");	
+					$('#m_point_value').val("");
 			});
 			/***********************************************************/
 			/* Multiple choice stuff                                   */
@@ -1268,7 +1254,7 @@ $modalId = 0;
 				var pointValue = $("#tf_question_point_value").val();
 				var question = $("#tf_question").val();
 				var trueFalseArray = [];
-				var answerText = ["True", "False"];
+				var answerText = ["true", "false"];
 				
 				//check for true/false radios 
 				var i = 0;
@@ -1365,4 +1351,5 @@ $modalId = 0;
 		});
 	</script>
 </body>
+
 </html>

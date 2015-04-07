@@ -61,14 +61,18 @@ $teacherListQuery = "select teacher_id, first_name, last_name, teacher_password,
 						from teacher";
 						
 $selectTeacherQuery = "select teacher_id from teacher";
+
+$maxTeacherQuery = "select max(teacher_id) from teacher";
 						
 $mainTableStatement = $database->prepare($mainTableQuery);
 $adminStatement = $database->prepare($adminId);
 $teacherListStatement = $database->prepare($teacherListQuery);
 $selectTeacherStatement = $database->prepare($selectTeacherQuery);
+$maxTeacherStatement = $database->prepare($maxTeacherQuery);
 
-
-
+echo '<h1>Hi</h1>';
+echo '<h1>Hi</h1>';
+echo '<h1>Hi</h1>';
 ?>
 
 <div id="wrapper2">
@@ -104,16 +108,6 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 						$adminStatement->close();
 						?>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
                         <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
@@ -167,93 +161,107 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 
 				</div>
 				<div class="row">
-					<div class="teacher_list_text">
-						Teacher List
-					</div>
-				</div>
-				<div class="row">
-					<table class="test_list table-hover">
-						<colgroup>
-							<col class="test_name" />
-							<col class="start_date" />
-							<col class="ending_date" />
-							<col class="test_average" />
-							<col class="view_button_col" />
-						</colgroup>
-					
-						<thead>
-						<tr>
-							<th>Test Name</th>
-							<th>Start Date</th>
-							<th>End Date</th>
-							<th>Average</th>
-							<th>View Test</th>
-						</tr>
-						</thead>
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> Teacher List </a>
+								</h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse">
+							   <div class="panel-body">
+									<table class="test_list table-hover">
+										<colgroup>
+											<col class="test_name" />
+											<col class="start_date" />
+											<col class="ending_date" />
+											<col class="test_average" />
+											<col class="view_button_col" />
+										</colgroup>
+									
+										<thead>
+										<tr>
+											<th>Test Name</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th>Average</th>
+											<th>View Test</th>
+										</tr>
+										</thead>
+										
+										<tbody>
+											<?php
+												$teacherListStatement->bind_result($tid, $fname, $lname, $password, $email);
+												$teacherListStatement->execute();
+
+												while($teacherListStatement->fetch())
+												{
+												echo '<tr><td>'. $tid .'</td><td>'. $fname . '</td><td>' .$lname . '</td><td>' .$password. '</td><td>' . $email. '</td></tr>';
+												
+												}
+												$teacherListStatement->close();
+											?>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 						
-						<tbody>
-							<?php
-								$teacherListStatement->bind_result($tid, $fname, $lname, $password, $email);
-								$teacherListStatement->execute();
-
-								while($teacherListStatement->fetch())
-								{
-								echo '<tr><td>'. $tid .'</td><td>'. $fname . '</td><td>' .$lname . '</td><td>' .$password. '</td><td>' . $email. '</td></tr>';
-								
-								}
-								$teacherListStatement->close();
-							?>
-
-						</tbody>
-					</table>
-				</div>
-				<div class="row">
-					<div class="student_list_text">
-						Class List
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo"> Class List </a>
+								</h4>
+							</div>
+							<div id="collapsetwo" class="panel-collapse collapse">
+								<table class="test_list table-hover">
+									<thead>
+										<tr>
+										<th>Class ID</th>
+										<th>Class Desc.</th>
+										<th>Teacher ID</th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+										<?php
+											$mainTableStatement->bind_result($clid, $clde, $tid, $fname, $lname);
+											$mainTableStatement->execute();
+											while($mainTableStatement->fetch())
+											{
+											echo '<tr><td>' . $clid .'</td><td>'. $clde . '</td><td>' .$tid . '</td><td>' .$fname. '</td><td>' . $lname. '</td></tr>';
+											$classArray[] = $clid;
+											}
+											$mainTableStatement->close();
+										?>
+									</tbody>
+									
+									<?php
+									// Loop and store all valid teacher; if the entry by admin doesn't match we don't enter into db
+									$selectTeacherStatement->bind_result($teacher);
+									$selectTeacherStatement->execute();
+									while($selectTeacherStatement->fetch())
+									{
+										$teacherArray[] = $teacher;
+									}
+									$selectTeacherStatement->close();
+									
+									
+									$maxTeacherStatement->bind_result($tid);
+									$maxTeacherStatement->execute();
+									while($maxTeacherStatement->fetch())
+									{
+										$teacherId = $tid + 1;
+									}
+									$maxTeacherStatement->close();
+									?>
+								</table>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<table class="test_list table-hover">
-					<thead>
-						<tr>
-						<th>Class ID</th>
-						<th>Class Desc.</th>
-						<th>Teacher ID</th>
-						<th>First Name</th>
-						<th>Last Name</th>
-						</tr>
-					</thead>
-					
-					<tbody>
-						<?php
-							$mainTableStatement->bind_result($clid, $clde, $tid, $fname, $lname);
-							$mainTableStatement->execute();
-							while($mainTableStatement->fetch())
-							{
-							echo '<tr><td>' . $clid .'</td><td>'. $clde . '</td><td>' .$tid . '</td><td>' .$fname. '</td><td>' . $lname. '</td></tr>';
-							$classArray[] = $clid;
-							}
-							$mainTableStatement->close();
-						?>
-					
-					
-					</tbody>
-					
-					<?php
-					// Loop and store all valid teacher; if the entry by admin doesn't match we don't enter into db
-					$selectTeacherStatement->bind_result($teacher);
-					$selectTeacherStatement->execute();
-					while($selectTeacherStatement->fetch())
-					{
-						$teacherArray[] = $teacher;
-					}
-					$selectTeacherStatement->close();
-					?>
-
-
-						
-					</table>
-                </div>
             </div>
 			
 				<!--Teacher Creation Modal -->
@@ -268,7 +276,7 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 								<form name="TeacherForm" id="TeacherForm" method="post">
 									<div class="form-group">
 										<div class="point_value_section">
-											<label for="short_answer_point_value" class="control-label">ID#:&nbsp;</label>
+											<label for="short_answer_point_value" class="control-label">ID#:&nbsp;<?php echo $teacherId; ?></label>
 										</div>
 										<hr />
 										<div class="form-group">
@@ -397,7 +405,7 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 			var lastName = $("#lastNameText").val();
 			var email = $("#emailText").val();
 			var password = $("#passwordText").val();
-			/*$.post("AdminScripts/addTeacherScript.php",
+			$.post("AdminScripts/addTeacherScript.php",
 				{
 					firstName:firstName,
 					lastName:lastName,
@@ -408,7 +416,7 @@ $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 				{
 					alert(data);
 					
-				}); */
+				}); 
 		}); 
 		
 		$("#createClassButton").click(function()

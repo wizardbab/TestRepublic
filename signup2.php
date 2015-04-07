@@ -81,7 +81,7 @@ $success = false;
          <div class="container-fluid">
             <div class="row">
 				<div class="back_section">
-					<button type="button" id="back_btn"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+					<button type="button" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
 				</div>
 				<div class="sign_up_text_area">
 					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">

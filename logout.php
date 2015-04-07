@@ -22,7 +22,7 @@
 </head> 
 <body> 
 <div class="centralBox">
-	<img class="centralLogo" src="images/logo2.png" alt="Our Logo"/>
+	<img class="centralLogo" src="images/newlogo.png" alt="Our Logo"/>
 	<h1 align="center">Thank you for using Test Republic!</h1>
 	<div class="progress">
 		<div class="progress-bar progress-bar-striped active" role="progressbar"
@@ -37,6 +37,7 @@
 	// Author: David Hughen
 	// Date:   2/11/2015
 	session_start();
+	$_SESSION = array();
 	session_destroy();
 	
 	// TIMER CODE SHOULD GO HERE SOMEWHERE

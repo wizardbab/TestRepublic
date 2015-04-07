@@ -40,6 +40,7 @@ require("constants.php");
 $id = $_SESSION['username'];
 //$classId = $_SESSION['classId'];
 //$testId = $_SESSION['testId'];
+
 if($id == null)
     header('Location: login.html');
  
@@ -313,7 +314,7 @@ $_SESSION['testId'] = $testId;
 								  
 								  
 						
-				  </div>
+				</div>
                     
 					<!-- All that Apply /.panel -->
                     
@@ -654,7 +655,7 @@ $_SESSION['testId'] = $testId;
                 shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
             }
 		
-				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+			/*	$.post("TestAnswerScripts/essayAndShortAnswer.php",
 				{
 					"essayIds[]":essayArray,
 					"essayChoices[]":essayAnswerArray,
@@ -664,7 +665,7 @@ $_SESSION['testId'] = $testId;
 				function(data)
 				{
 					
-				});
+				}); */
 				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
@@ -704,7 +705,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-            $.post("TestAnswerScripts/mcmatatf.php",
+           /* $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
@@ -717,6 +718,7 @@ $_SESSION['testId'] = $testId;
 				},
 				function(data)
 				{
+
 				});
                 
             $.post("TestAnswerScripts/submit.php",
@@ -798,6 +800,7 @@ $_SESSION['testId'] = $testId;
 				if(hours > 0)
 				{
 					hours--;
+
 					minutes = 60;
 				}
 			}
