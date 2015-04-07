@@ -108,7 +108,7 @@ $_SESSION['testId'] = $testId;
 	
 <?php
 	
-				/*$queryStatement->bind_param("s", $classId);
+				$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
 				$queryStatement->execute();
 				while($queryStatement->fetch())
@@ -118,11 +118,11 @@ $_SESSION['testId'] = $testId;
 								<div class="course_number col-lg-12">
 									'.$clid.'
 								</div><div class="class_name">
-									'.$clde.' ' .$testName.'
+									'.$clde.'
 								</div>
 							</div>';
 				}
-				$queryStatement->close(); */
+				$queryStatement->close();
 				//$questionArray = array(array("number" => 0, "type" => 0, "value" => 0, "text" => 0, "heading" => 0, "id" => 0, "letter" => 0));
 			
 				$questionArray = array();
@@ -154,7 +154,7 @@ $_SESSION['testId'] = $testId;
 					array_push($questionArray, array($qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid, $studentAnswer, $studentSelection));
 					
 					
-					/***************************************************************************************************/
+			/***************************************************************************************************/
                /* Essay type question                                                                             */
                /***************************************************************************************************/
 					if($qtype == "Essay")
@@ -239,7 +239,7 @@ $_SESSION['testId'] = $testId;
 						$headerStatement->execute();
 						while($headerStatement->fetch())
 						{
-							echo $clid . '<small>' . $tname . '</small>';
+							echo $tname;
 							
 						}
 						$headerStatement->close();
@@ -291,19 +291,27 @@ $_SESSION['testId'] = $testId;
 							{
 								
 								echo '<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
-                            </h4>
-                        </div>
+                        
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+	                                <div class="panel-heading" id="panel-color">
+	                            	<h4 class="panel-title"><span class="glyphicon glyphicon-pencil"></span>  ESSAY</h4>
+	                            	</div>
+                            	</a>
+                        
 							  <div id="collapseSix" class="panel-collapse collapse">
 									<div class="panel-body">';
 									
 									for($i = 0; $i < count($essayArray); $i+=6)
 									{
-										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4>Points Earned<input type=text class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
+
+										echo'<h4><p class="question_num make_inline">'.$essayArray[$i].'.</p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
+										<h4></h4>
 											<div class="essay_answers">
-												<textarea class="form-control" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6">'.$essayArray[$i+5].'</textarea></div>';
+												<textarea class="form-control essay_textarea" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="5">'.$essayArray[$i+5].'</textarea>
+												<div class="answer_text">Answer:</div>
+												<textarea class="form-control essay_textarea" rows="4">Put teacher answer here</textarea>
+											</div>
+												<div class="points_earned_section_essay"><span class="points_earned_txt">Points Earned</span><input type=text class="essay_points_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/></div><br />';
                                         $essayCounter++;
 									}
 								echo'		
@@ -317,11 +325,13 @@ $_SESSION['testId'] = $testId;
 							{
                                 $oldQuestion = 0;
 								echo'<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												  <span class="glyphicon glyphicon-ok"></span> TRUE/FALSE
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseFour" class="panel-collapse collapse">';
 									for($i = 0; $i < count($trueFalseArray); $i+=7)
 									{
@@ -329,7 +339,7 @@ $_SESSION['testId'] = $testId;
                                         {
                                         $oldQuestion = $trueFalseArray[$i];
                                             echo'<div class="panel-body">
-                                                  <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</span></h4>
+                                                  <h4><p class="question_num make_inline">'.$trueFalseArray[$i].'.</p>'.'<p class="tf_questions make_inline">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</p></h4>
                                                     <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
 													$trueFalseStatement->bind_result($answer_id, $answer_text, $stuSelection, $correct);
@@ -340,7 +350,7 @@ $_SESSION['testId'] = $testId;
                                                         echo'<div class="tf_choice">
                                                             <input type="radio" disabled="disabled" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" ' .$checked . ' value="multipleRadio1" class="multipleRadio">
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span>';
-                                                        if($correct == 1)
+                                                        if($stuSelection == 1)
                                                         {
                                                             if($correct == $stuSelection)
 															{
@@ -353,11 +363,15 @@ $_SESSION['testId'] = $testId;
 																echo " <img src='images/cross.jpg' />";
 															}
                                                         }
+                                                        if($correct == 1 and $stuSelection != 1)
+                                                        {
+                                                        	echo " <img src='images/sign.png' />";
+                                                        }
                                                         echo'</div>';
                                                         
                                                     }
                                                    echo' </div>
-												   <div class="points_earned_section">Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/></div>
+												   <div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$pointsEarned.'" class="tf_points_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/></div>
                                             </div>';
                                             $trueFalseCounter++;
                                         }
@@ -373,18 +387,21 @@ $_SESSION['testId'] = $testId;
                                 $oldQuestion = 0;
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
-										</h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+										<div class="panel-heading" id="panel-color">
+											<h4 class="panel-title">
+												<span class="glyphicon glyphicon-record"></span> MULTIPLE CHOICE
+											</h4>
+										</div>
+									</a>
 									<div id="collapseOne" class="panel-collapse collapse">';
 									for($i = 0; $i < count($multipleChoiceArray); $i+=7)
 									{	
                                         if($oldQuestion != $multipleChoiceArray[$i+4])
                                         {
                                             echo'	<div class="panel-body" >
-												<h4>'.$multipleChoiceArray[$i].'<span class="mc_questions">'.$multipleChoiceArray[$i+3].'</span></h4><h4>Point Value: '.$multipleChoiceArray[$i+2].'</h4>
+
+												<h4><p class="question_num make_inline">'.$multipleChoiceArray[$i].'.</p>'.'<p class="mc_questions make_inline">'.$multipleChoiceArray[$i+3].' ('.$multipleChoiceArray[$i+2].')'.'</p></h4>
 													<div class="mc_answers" >';
                                                     $oldQuestion = $multipleChoiceArray[$i+4];
 													$multipleChoiceStatement->bind_param("s", $multipleChoiceArray[$i+4]);
@@ -396,17 +413,28 @@ $_SESSION['testId'] = $testId;
 														echo '<div class="mc_choice" >
 															<input type="radio" disabled="disabled" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" '.$checked.'/>
 															<span class="mc_answer_lbl">'.$atext.'</span>';
-                                                            if($correct == 1)
-                                                            {
-                                                                echo "   --   Correct Answer";
-                                                                if($correct == $stuSelection)
-                                                                    $pointsEarned = $multipleChoiceArray[$i+2];
-                                                                else
-                                                                    $pointsEarned = 0;
-                                                            }
+
+                                                        if($stuSelection == 1)
+                                                        {
+                                                            if($correct == $stuSelection)
+															{
+                                                                $pointsEarned = $multipleChoiceArray[$i+2];
+																echo " <img src='images/sign.png' />";
+															}
+                                                            else
+															{
+                                                                $pointsEarned = 0;
+																echo " <img src='images/cross.jpg' />";
+															}
+                                                        }
+                                                        if($correct == 1 and $stuSelection != 1)
+                                                        {
+                                                        	echo " <img src='images/sign.png' />";
+                                                        }    
+
                                                         echo '</div>';
 													}	
-											echo'	</div>Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/>
+											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$pointsEarned.'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
 											</div>';
                                             $multipleChoiceCounter++;
                                         }
@@ -423,11 +451,13 @@ $_SESSION['testId'] = $testId;
 							{
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												  <span class="glyphicon glyphicon-th-large"></span> MATCHING
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseTwo" class="panel-collapse collapse">
 										 <div class="panel-body container">';
                                         $matchingHeadStatement->bind_param("s", $testId);
@@ -456,23 +486,38 @@ $_SESSION['testId'] = $testId;
                                                 $matchingAnswer[] = $stuSelection;
                                             }
                                             
+                                            echo '<div class="m_question_section make_inline2">';
                                             for($i = 0; $i < count($matchingAnswer); $i+=4)
                                             {	
-                                            echo'	<div class="col-md-6">
-                                                    <div class="matching_div">'
-                                                    .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
+                                            echo'	<div class="">
+                                            		<div class="question123">
+                                                    <p class="question_num make_inline">'
+                                                    .$matchingArray[$j].'.</p>'.'<p class="match_questions make_inline">'.$matchingArray[$j+3].'
                                                         <input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
-                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Correct -- '. $matchingArray[$j+10];
                                                     if($matchingArray[$j+10] == $matchingArray[$j+9])
+                                                    {
                                                         $pointsEarned = $matchingArray[$j+2];
+                                                        echo '<img src="images/sign.png" /></p>';
+                                                    }
                                                     else
+                                                    {
                                                         $pointsEarned = 0;
-                                                    echo'Points Earned<input type=text value="'.$pointsEarned.'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
+                                                        echo '<img src="images/cross.jpg" />';
+                                                        echo '&nbsp;'.$matchingArray[$j+10].'</p>';
+                                                    }
+                                                    
+
+                                                    echo'<div class="points_earned_section add_margin_top"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$pointsEarned.'" class="match_points_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div></div>';
                                                 echo'</div>';
-                                                
-                                                echo'<div class="col-md-6">';
+                                            }
+                                            echo '</div>';
+
+                                            echo '<div class="m_answer_section make_inline2">';
+                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            {    
+                                                echo'<div class="testcrap">';
                                                         echo'<div class="matching_div">
-                                                            '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
+                                                            <p class="question_num make_inline">'.$matchingAnswer[$i].'.</p><p class="match_questions make_inline"><span class="matching_questions">'.$matchingAnswer[$i+1].'</span></p>
                                                         </div>
                                                         <br />';
                                                         
@@ -480,6 +525,7 @@ $_SESSION['testId'] = $testId;
                                                 $j+=11;
                                             echo'</div>';
                                             }
+                                            echo '</div>';
                                             $matchingAnswer = null;
                                         }       
                                         $matchingStatement->close();
@@ -493,20 +539,25 @@ $_SESSION['testId'] = $testId;
 							if(count($shortAnswerArray))
 							{
 								echo'<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Short Answer</a>
-                            </h4>
-                        </div>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+	                        <div class="panel-heading" id="panel-color">
+	                            <h4 class="panel-title">
+	                                <span class="glyphicon glyphicon-minus"></span> SHORT ANSWER
+	                            </h4>
+	                        </div>
+	                    </a>
                         <div id="collapseFive" class="panel-collapse collapse">';
 								for($i = 0; $i < count($shortAnswerArray); $i+=6)
 								{
 									echo'<div class="panel-body">
-										<h4>'.$shortAnswerArray[$i].'<span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
-                                        Points Earned<input type=text value="" class="matching_answer_tb" id="SAPoints'.$shortAnswerArray[$i+4].'" name="shortAnswerPoints"/></div>
+										<h4><p class="question_num make_inline">'.$shortAnswerArray[$i].'.'.'<p class="sa_questions make_inline">'.$shortAnswerArray[$i+3].' ('.$shortAnswerArray[$i+2].')'.'</p></h4>
+                                        </div>
 										<div class="sa_answers">
-											<input type="text" disabled class="m_answer_letter form-control" id="ShortAnswer'.$shortAnswerArray[$i+4].'" value="'.$shortAnswerArray[$i+5].'" />
-										</div>';
+											<input type="text" disabled class="form-control sa_answers_tb" id="ShortAnswer'.$shortAnswerArray[$i+4].'" value="'.$shortAnswerArray[$i+5].'" />
+											<div class="answer_text">Answer:</div>
+											<input type="text" class="form-control sa_teacher_answers_tb" value="Put teacher answer here" />
+										</div>
+										<div class="points_earned_section"><span class="points_earned_txt">Points Earned<input type=text value="" class="sa_points_tb" id="SAPoints'.$shortAnswerArray[$i+4].'" name="shortAnswerPoints"/></div><br />';
                                     $shortAnswerCounter++;
 								}
 									
@@ -523,22 +574,25 @@ $_SESSION['testId'] = $testId;
                                 $oldQuestion = 0;
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												  <span class="glyphicon glyphicon-check"></span> ALL THAT APPLY
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseThree" class="panel-collapse collapse">';
 									for($i = 0; $i < count($ataArray); $i+=7)
 									{
                                         if($oldQuestion != $ataArray[$i+4])
                                         {
+                                        	$pointsEarnedCounter = 0;
                                             $oldQuestion = $ataArray[$i+4];
                                             $ataStatement->bind_param("s", $ataArray[$i+4]);
                                             $ataStatement->bind_result($atext, $aid, $stuSelection, $correct);
                                             $ataStatement->execute();
                                              echo'<div class="panel-body">
-                                                  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
+                                                  <h4><p class="question_num make_inline">'.$ataArray[$i].'.</p>'.'<p class="ata_questions make_inline">'.$ataArray[$i+3].' ('.$ataArray[$i+2].')</p></h4>
                                                   <div class="ata_answers">';
                                                         while($ataStatement->fetch())
                                                         {
@@ -547,23 +601,37 @@ $_SESSION['testId'] = $testId;
                                                             <div class="ata_choice">
                                                                 <input type="checkbox" disabled="disabled" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" '.$checked.'/>
                                                                 <span class="ata_answer_lbl">'.$atext.'</span>';
-                                                            if($correct == 1)
-                                                            {
-                                                                echo "   --   Correct Answer";
-                                                            }
-                                                            if($correct == $stuSelection)
-                                                                $pointsEarnedCounter += 1;
+                                                            if($stuSelection == 1)
+                                                        	{
+	                                                            if($correct == $stuSelection)
+																{
+																	echo " <img src='images/sign.png' />";
+																}
+	                                                            else
+																{
+																	echo " <img src='images/cross.jpg' />";
+																}
+                                                        	}
+	                                                        if($correct == 1 and $stuSelection != 1)
+	                                                        {
+	                                                        	echo " <img src='images/sign.png' />";
+	                                                        }
+	                                                        if($correct == $stuSelection)
+	                                                        {
+	                                                            $pointsEarnedCounter += 1;
+	                                                        }
                                                             $pointsPossibleCounter += 1;
                                                             echo '</div>';
                                                         }
-                                            echo 'Points Earned<input type=text value="'.number_format($pointsEarnedCounter / $pointsPossibleCounter * $ataArray[$i+2], 1, '.', ',').'" class="matching_answer_tb" id="ATAPoints'.$ataArray[$i+4].'" name="TFPoints"/>';
                                             echo'</div>';
+                                            echo '<div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.number_format($pointsEarnedCounter / $pointsPossibleCounter * $ataArray[$i+2], 1, '.', ',').'" class="ata_points_tb" id="ATAPoints'.$ataArray[$i+4].'" name="TFPoints"/>';
+                                            
                                             echo'</div>';
                                         }
 									}
 									$ataStatement->close();
 									
-								echo'</div>  </div>';
+								echo'</div>  </div></div>';
 							}
 						  ?>
 					<!-- Essay /.panel -->
@@ -575,7 +643,7 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block" id="Submit">Submit</button>
+			<button type="button" class="btn btn-success btn-block" id="submit"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
 		</div>
 				
    </div>

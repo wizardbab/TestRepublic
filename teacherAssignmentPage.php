@@ -84,11 +84,10 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select student_id, sum(points_earned)/sum(question_value)*100, graded, test_id, test_name, date_taken from test_list
-join test using(test_id)
-join question using(test_id, student_id)
-where student_id = ? and class_id = ?
-group by(test_id)";
+$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
+join test
+using(test_id)
+where student_id = ? and class_id = ?";
 
 // Average score for student list
 $averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
@@ -119,7 +118,6 @@ $studentStatement = $database->prepare($studentQuery);
 	<?php require("Nav.php");?>
 	
     <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -127,7 +125,7 @@ $studentStatement = $database->prepare($studentQuery);
                     <a href="teacherMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
-                    Select a Class:
+                    Select an Assignment:
                 </li>
                 <?php 
 				// Added by David Hughen
@@ -192,69 +190,7 @@ $studentStatement = $database->prepare($studentQuery);
 						$studentCountStatement->close();
 						?></span>
 					</div>
-					<form action="testCreationPage.php" method="post">
-                        <input type="hidden" class="create_test_button" value="" name="testId" id="testId"/>
-                        <input type="submit" class="create_test_button" id="createTestButton" value="Create Test"/>
-                    </form>
-				</div>
-				<div class="row">
-					<div class="test_list_text">
-						Test List
-					</div>
-				</div>
-				<div class="row">
-					<table class="test_list table-hover">
-						<colgroup>
-							<col class="test_name" />
-							<col class="start_date" />
-							<col class="ending_date" />
-							<col class="test_average" />
-							<col class="view_button_col" />
-						</colgroup>
 					
-						<thead>
-						<tr>
-							<th>Test Name</th>
-							<th>Start Date</th>
-							<th>End Date</th>
-							<th>Average</th>
-							<th>View Test</th>
-							<th> View all grades </th>
-						</tr>
-						</thead>
-						
-						<tbody>
-						<?php
-							$firstTableStatement = $database->prepare($firstTableQuery);
-							$firstTableStatement->bind_param("s", $classId);
-							$firstTableStatement->bind_result($tname, $tavg, $tid, $sid, $dateBegin, $dateEnd);
-							$firstTableStatement->execute();
-							// We should be getting two tests here
-							while($firstTableStatement->fetch())
-							{                                  
-                                $tavg = number_format($tavg, 2);
-                                if($sid == null)
-                                    $tavg = 'Test not published';
-                                else if($tavg == 0)
-                                    $tavg = 'No Tests Taken';
-                                else
-                                    $tavg = (float)$tavg.'%';
-								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
-                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
-                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></form></td>
-																				</td><td><form action="teacherAssignmentPage.php" method="post">
-                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
-																				<input type="submit" value="View All" class="view_test_button"/></form>
-																				</tr>';
-							}
-							$firstTableStatement->close();
-                            if($tid == null)
-                                    echo'<tr><td colspan="5">No tests created</td></tr>';
-						?>
-						</tbody>
-						
-					</table>
-				</div>
 				<div class="row">
 					<div class="student_list_text">
 						Student List
@@ -326,34 +262,25 @@ $studentStatement = $database->prepare($studentQuery);
 									while($testScoreStatement->fetch())
 									{
                                         // Determines whether test is graded or not
-                                        if(is_null($graded))
-                                        {
-                                            echo '<td>Not Taken</td>';
-                                        }
-                                        else if($graded == 1)
-                                        {
-                                            $state = '<form action="teacherTestView.php" method="post">
-                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
-                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
-                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
-                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
-                                            <input type="submit" value="View" class="btn btn-primary btn-block"/>
-                                            </form>';
-                                            $testScore = number_format($testScore, 2);
-                                            echo '<td>' . (float)$testScore.'% ' . $state.'</td>';
-                                        }
-                                        else
-                                        {
-                                            $state = '<form action="testGradingPage.php" method="post">
+                                        // This will become a button link to grade the test
+                                        if($graded == 0)
+                                            $graded = '<form action="testGradingPage.php" method="post">
                                             <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
                                             <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
                                             <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
                                             <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
                                             <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
                                             </form>';
-                                            echo '<td>' . $state.'</td>';
+                                        else
+                                            $graded = '(view)';
+                                        if($dateTaken != null)
+                                        {
+                                            $testScore = number_format($testScore, 2);
+                                            echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
                                         }
-                                    }
+                                        else
+                                            echo '<td>Not Taken</td>';
+									}
 									
 									$testScoreStatement->close();
 									

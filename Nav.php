@@ -36,7 +36,7 @@
 											$topRightStatement->execute();
 											while($topRightStatement->fetch())
 											{
-												echo $first_name . " " . $last_name;
+												echo $first_name . " " . $last_name." ";
 											}
 											$topRightStatement->close();?><b class="caret"></b></a>
 						
