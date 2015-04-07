@@ -327,7 +327,7 @@ $studentStatement = $database->prepare($studentQuery);
                                         }
                                         else if($graded == 1)
                                         {
-                                            $state = '<form action="testGradingPage.php" method="post">
+                                            $state = '<form action="teacherTestView.php" method="post">
                                             <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
                                             <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
                                             <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>

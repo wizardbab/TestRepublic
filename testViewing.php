@@ -451,7 +451,7 @@ $_SESSION['testId'] = $testId;
                                                     .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
                                                         <input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
                                                     echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Correct -- '. $matchingArray[$j+10];
-                                                    echo'Points Earned<input type=text disabled value="'.$matchingAnswer[$j+11].'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
+                                                    echo'Points Earned<input type=text disabled value="'.$matchingArray[$j+11].'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
                                                 echo'</div>';
                                                 
                                                 echo'<div class="col-md-6">';

@@ -254,10 +254,6 @@ $success = false;
                                              $insertTestStatement->close();
                                           }
                                        }
-                                       else
-                                       {
-                                         printf("It failed");
-                                       }
                                     }
 
                                     if ($insertStudentStatement = $database->prepare($insertStudentQuery))
