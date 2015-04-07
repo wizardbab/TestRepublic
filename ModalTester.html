@@ -98,8 +98,14 @@
 		<!-- Button HTML (to Trigger Modal) -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SAModal" data-title="ShortAnswer">Short Answer</button>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#MCModal" data-title="MultipleChoice">Multiple Choice</button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-title="Contact Us">Contact Us</button>
+    <button type="button" class="btn btn-primary"onclick="tester()">Contact Us</button>
     
+	<script>
+		function tester()
+		{
+			$('#SAModal').modal('show'); 
+		}
+	</script>
     <!-- Modal HTML -->
     <div id="SAModal" class="modal fade">
         <div class="modal-dialog">

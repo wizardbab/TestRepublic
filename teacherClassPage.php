@@ -219,7 +219,6 @@ $studentStatement = $database->prepare($studentQuery);
 							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
-							<th> View all grades </th>
 						</tr>
 						</thead>
 						
@@ -242,10 +241,7 @@ $studentStatement = $database->prepare($studentQuery);
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
                                                                                 <input type="submit" value="Edit Test" class="view_test_button"/></form></td>
-																				</td><td><form action="teacherAssignmentPage.php" method="post">
-                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
-																				<input type="submit" value="View All" class="view_test_button"/></form>
-																				</tr>';
+																				</td></tr>';
 							}
 							$firstTableStatement->close();
                             if($tid == null)
