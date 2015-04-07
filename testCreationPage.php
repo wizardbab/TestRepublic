@@ -676,7 +676,6 @@ $modalId = 0;
 													<label class="control-label">Letter:</label>
 												</div>
 											</div>
-	
 										</div>
 										<div class="reduce_margin_bottom">
 										</div>
@@ -816,13 +815,12 @@ $modalId = 0;
 	
 	<!-- Add matching JS -->
 	<script>
+		var mQuestionCounter = 0;
+		var mAnswerCounter = 0;
+		var matchingQuestionArray = [0];
+		var matchingAnswerArray = [0];
 		$(document).ready(function()
 		{
-			var mQuestionCounter = 0;
-            var mAnswerCounter = 0;
-            var matchingQuestionArray = [0];
-            var matchingAnswerArray = [0];
-            
 			$("#add_match_question_btn").click(function()
 			{
 				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
@@ -1068,12 +1066,12 @@ $modalId = 0;
 				},
 				function(data)
 				{
+
 					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
                     );
                     $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				});
-				
-				/* Counters not working? Used to reset matching modal*/
+
 				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
 				{
 					$('#match_question_tb'+mQuestionCounter).remove();
@@ -1086,8 +1084,6 @@ $modalId = 0;
 					$('#match_answer_letter_tb'+mAnswerCounter).remove();
 					$('#remove_match_answer'+mAnswerCounter).remove();
 				}
-				
-				alert("meow");
 					matchingQuestionArray = [0];
 					matchingAnswerArray = [0];
 					$('#match_question_tb0').val("");
@@ -1095,7 +1091,7 @@ $modalId = 0;
 					$('#match_answer_tb0').val("");
 					$('#match_answer_letter_tb0').val("");
 					$('#m_heading').val("");
-					$('#m_point_value').val("");	
+					$('#m_point_value').val("");
 			});
 			/***********************************************************/
 			/* Multiple choice stuff                                   */
@@ -1139,10 +1135,7 @@ $modalId = 0;
 				{
 					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
                     );
-					alert(data);
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-
-					alert(data);
+                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');;
 				});
 				
 				// Resets MC Values
