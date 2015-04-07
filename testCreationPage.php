@@ -272,7 +272,7 @@ $modalId = 0;
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
+								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
 							</div>
 							
 							<div class="col-md-6">	
@@ -389,7 +389,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Short Answer</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-minus"></span> Short Answer</h4>
 								</div>
 								<div class="modal-body">
 									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
@@ -426,7 +426,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Essay</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-pencil"></span> Essay</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -461,7 +461,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">True/False</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-ok"></span> True/False</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -502,7 +502,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Multiple Choice</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-record"></span> Multiple Choice</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -560,13 +560,13 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">All that Apply</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-check"></span> All that Apply</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form" onsubmit="return validate(this)">
 										<div class="form-group">
 											<div class="point_value_section">
-												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
+												<label for="ata_point_value" class="control-label">Point Value:&nbsp;</label>
 												<input type="number" id="ata_point_value" />
 											</div>
 										</div>
@@ -619,7 +619,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Matching</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-th-large"></span> Matching</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -995,9 +995,11 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">' + (++counter) + '. Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
+					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">SHORT ANSWER</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></div>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+                    $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
 				});
 				$('#short_answer_question').val("");
 				$('#short_answer_answer').val("");
@@ -1133,9 +1135,23 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">MULTIPLE CHOICE</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');;
+					alert(data);
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+					alert(data);
+
+					for (i = 0; i < multipleChoiceArray.length; i++)
+					{
+						if(multipleChoiceArray[i] == true)
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + multipleTextArray[i] + ' <img src="images/sign.png" /></div>');
+						}
+						else
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled /> ' + multipleTextArray[i] + '</div>');
+						}
+					}
 				});
 				
 				// Resets MC Values
@@ -1199,9 +1215,21 @@ $modalId = 0;
 				},
 				function(data)
 				{
-                    $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
+                    $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ALL THAT APPLY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+                    for (i = 0; i < ataArray.length; i++)
+					{
+						if(ataArray[i] == true)
+						{
+							$("#list_group"+data).append('<div><input type="checkbox" disabled checked="checked" /> ' + ataTextArray[i] + ' <img src="images/sign.png" /></div>');
+						}
+						else
+						{
+							$("#list_group"+data).append('<div ><input type="checkbox" disabled /> ' + ataTextArray[i] + '</div>');
+						}
+					}
 				});
 				// Resets ATA Values
 				for(ATACounter; ATACounter > 1; ATACounter--)
@@ -1258,9 +1286,21 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. True/False</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">TRUE/FALSE</h4><br /> <p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+                    for (i = 0; i < trueFalseArray.length; i++)
+					{
+						if(trueFalseArray[i] == true)
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + answerText[i] + ' <img src="images/sign.png" /></div>');
+						}
+						else
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled /> ' + answerText[i] + '</div>');
+						}
+					}
 				});
 				$('#tf_question').val("");
 				$('#tf_question_point_value').val("");
@@ -1292,10 +1332,11 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. Essay</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ESSAY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-			
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+                    $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
 				});	
 				$('#essay_answer').val("");
 				$('#essay_question').val("");
@@ -1310,4 +1351,5 @@ $modalId = 0;
 		});
 	</script>
 </body>
+
 </html>
