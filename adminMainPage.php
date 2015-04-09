@@ -162,11 +162,13 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 				<div class="row">
 					<div class="panel-group" id="accordion">
 						<div class="panel panel-default">
-							<div class="panel-heading">
+							<a class="accordion-toggle accordian_link" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+							<div class="panel-heading accordion_heading">
 								<h4 class="panel-title">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> Teacher List </a>
+									<span class="accordian_title">TEACHER LIST</span>
 								</h4>
 							</div>
+							</a>
 							<div id="collapseOne" class="panel-collapse collapse">
 							   <div class="panel-body">
 									<table class="test_list table-hover">
@@ -209,9 +211,11 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 						
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo"> Class List </a>
-								</h4>
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo">
+									<h4 class="panel-title">
+										 Class List
+									</h4>
+								</a>
 							</div>
 							<div id="collapsetwo" class="panel-collapse collapse">
 								<table class="test_list table-hover">
