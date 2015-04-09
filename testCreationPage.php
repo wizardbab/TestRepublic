@@ -417,7 +417,7 @@ $modalId = 0;
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="SACancelBtn">Cancel</button>
-									<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
+									<button type="submit" class="btn btn-primary " id="SABtn" name="create" value="create" >Create Question</button>
 								</div>
 							</div>
 						</div>
