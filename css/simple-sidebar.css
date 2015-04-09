@@ -654,7 +654,7 @@ ul.alert-dropdown {
 	.btn:hover, .btn:active, .btn:visited
 	{
 		background: rgba(55,96,146,0.6);
-		color: black;
+		color: white;
 	}
 	
 	.accordion_heading
@@ -662,10 +662,150 @@ ul.alert-dropdown {
 		background: rgb(55,96,146);
 	}
 	
-	.accordian_title
+	.accordion_title
 	{
 		color: white;
 		font-size: 16pt;
 		font-weight: bold;
+	}
+	
+	.sidebar-nav > .admin_tools_text
+	{
+		line-height: 50px;
+		height: 50px;
+	}
+	
+	.dropdown-toggle:hover
+	{
+		text-decoration: none;
+	}
+	
+	.add_margin_bottom
+	{
+		margin-bottom: 30px;
+	}
+	
+	.modal_header_color
+	{
+		background: rgb(55,96,146);
+		color: white;
+		border-radius:4px;
+	}
+	
+	.textbox_style_add_class
+	{
+		width: 50%;
+		height:34px;
+		padding:6px 12px;
+		font-size:14px;
+		line-height:1.42857143;
+		color:#555;
+		background-color:#fff;
+		background-image:none;
+		border:1px solid #ccc;
+		border-radius:4px;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		-webkit-transition:border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		-o-transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		position: absolute;
+		left: 170px;
+	}
+	
+	.add_class_modal
+	{
+		position: relative;
+		left: 50px;
+	}
+	
+	.add_teacher_modal
+	{
+		position: relative;
+		left: 80px;
+	}
+	
+	.class_update_modal
+	{
+		position: relative;
+		left: 80px;
+	}
+	
+	.textbox_style_add_class
+	{
+		width: 50%;
+		height:34px;
+		padding:6px 12px;
+		font-size:14px;
+		line-height:1.42857143;
+		color:black;
+		background-color:#fff;
+		background-image:none;
+		border:1px solid #ccc;
+		border-radius:4px;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		-webkit-transition:border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		-o-transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		position: absolute;
+		left: 150px;
+	}
+	
+	.textbox_style_add_teacher
+	{
+		width: 50%;
+		height:34px;
+		padding:6px 12px;
+		font-size:14px;
+		line-height:1.42857143;
+		color:black;
+		background-color:#fff;
+		background-image:none;
+		border:1px solid #ccc;
+		border-radius:4px;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		-webkit-transition:border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		-o-transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		position: absolute;
+		left: 130px;
+	}
+	
+	.textbox_style_update_class
+	{
+		width: 50%;
+		height:34px;
+		padding:6px 12px;
+		font-size:14px;
+		line-height:1.42857143;
+		color:black;
+		background-color:#fff;
+		background-image:none;
+		border:1px solid #ccc;
+		border-radius:4px;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);
+		-webkit-transition:border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+		-o-transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		transition:border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+		position: absolute;
+		left: 140px;
+	}
+	
+	.form_elements
+	{
+		text-align: left;
+	}
+	
+	.bottom_modal
+	{
+		text-align: center;
+	}
+	
+	.cancel_icon
+	{
+		width: 20px;
 	}
 }

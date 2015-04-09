@@ -69,7 +69,6 @@ $adminStatement = $database->prepare($adminId);
 $teacherListStatement = $database->prepare($teacherListQuery);
 $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 $maxTeacherStatement = $database->prepare($maxTeacherQuery);
-
 ?>
 
 <div id="wrapper2">
@@ -119,10 +118,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-				<li>
-                    <a href="#" id="student-summary">Main Page</a>
-                </li>
-                <li class="sidebar-brand">
+                <li class="sidebar-brand admin_tools_text">
                     Admin Tools
                 </li>
 				<li>
@@ -132,12 +128,12 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 				</li>
 				<li>
 					<button type="button" class="btn btn-default btn-sm admin_button" data-toggle="modal" data-target="#CModal" data-title="MultipleChoice">
-						<img src="images/add.png" class="admin_icon" /> Add Class
+						<img src="images/add.png" class="admin_icon" /> Add a Class
 					</button>
 				</li>
 				<li>
 					<button type="button" class="btn btn-default btn-sm admin_button" data-toggle="modal" data-target="#UpdateModal" data-title="MultipleChoice">
-						<img src="images/add.png" class="admin_icon" /> Update Class
+						<img src="images/update.png" class="admin_icon" /> Update a Class
 					</button>
 				</li>
             </ul>
@@ -165,7 +161,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 							<a class="accordion-toggle accordian_link" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
 							<div class="panel-heading accordion_heading">
 								<h4 class="panel-title">
-									<span class="accordian_title">TEACHER LIST</span>
+									<span class="accordion_title">TEACHER LIST</span>
 								</h4>
 							</div>
 							</a>
@@ -182,11 +178,11 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 									
 										<thead>
 										<tr>
-											<th>Test Name</th>
-											<th>Start Date</th>
-											<th>End Date</th>
-											<th>Average</th>
-											<th>View Test</th>
+											<th>Teacher ID</th>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Password</th>
+											<th>Email</th>
 										</tr>
 										</thead>
 										
@@ -210,19 +206,19 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 						</div>
 						
 						<div class="panel panel-default">
-							<div class="panel-heading">
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo">
-									<h4 class="panel-title">
-										 Class List
-									</h4>
-								</a>
+							<a class="accordion-toggle accordion_link" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo">
+							<div class="panel-heading accordion_heading">
+								<h4 class="panel-title">
+									<span class="accordion_title">CLASS LIST</span>
+								</h4>
 							</div>
-							<div id="collapsetwo" class="panel-collapse collapse">
+							</a>
+							<div id="collapsetwo" class="panel-collapse collapse add_margin_bottom">
 								<table class="test_list table-hover">
 									<thead>
 										<tr>
 										<th>Class ID</th>
-										<th>Class Desc.</th>
+										<th>Class Description</th>
 										<th>Teacher ID</th>
 										<th>First Name</th>
 										<th>Last Name</th>
@@ -273,36 +269,38 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 						<div class="modal-content">
 							<div class="modal-header modal_header_color">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h4 class="modal-title">New Teacher</h4>
+								<h4 class="modal-title"><img src="images/add_user.png" class="admin_icon" /> New Teacher</h4>
 							</div>
 							<div class="modal-body">
 								<form name="TeacherForm" id="TeacherForm" method="post">
 									<div class="form-group">
 										<div class="point_value_section">
-											<label for="short_answer_point_value" class="control-label">ID#:&nbsp;<?php echo $teacherId; ?></label>
+											<label class="control-label">ID#:&nbsp;<?php echo $teacherId; ?></label>
 										</div>
 										<hr />
-										<div class="form-group">
-											<label for="first_name" class="control-label">First Name:</label>
-											<input type="text" class="form-control" id="firstNameText">
-										</div>
-										<div class="form-group">
-											<label for="last_name" class="control-label">Last Name:</label>
-											<input type="text" class="form-control" id="lastNameText">
-										</div>
-										<div class="form-group">
-											<label for="email" class="control-label">Email:</label>
-											<input type="text" class="form-control" id="emailText">
-										</div>
-										<div class="form-group">
-											<label for="email" class="control-label">Password:</label>
-											<input type="text" class="form-control" id="passwordText">
+										<div class="add_teacher_modal">
+											<div class="form-group form_elements">
+												<label for="firstNameText" class="control-label">First Name:</label>
+												<input type="text" class="textbox_style_add_teacher" id="firstNameText">
+											</div>
+											<div class="form-group form_elements">
+												<label for="lastNameText" class="control-label">Last Name:</label>
+												<input type="text" class="textbox_style_add_teacher" id="lastNameText">
+											</div>
+											<div class="form-group form_elements">
+												<label for="emailText" class="control-label">Email:</label>
+												<input type="text" class="textbox_style_add_teacher" id="emailText">
+											</div>
+											<div class="form-group form_elements">
+												<label for="passwordText" class="control-label">Password:</label>
+												<input type="text" class="textbox_style_add_teacher" id="passwordText">
+											</div>
 										</div>
 									</div>
 								</form>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<div class="modal-footer bottom_modal">
+								<button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
 								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="createTeacherButton" name="create" value="create" >Create Teacher</button>
 							</div>
 						</div>
@@ -315,26 +313,26 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 						<div class="modal-content">
 							<div class="modal-header modal_header_color">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h4 class="modal-title">New Class</h4>
+								<h4 class="modal-title"><img src="images/add.png" class="admin_icon" /> New Class</h4>
 							</div>
-							<div class="modal-body">
+							<div class="modal-body add_class_modal">
 								<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
-										<div class="form-group">
-											<label for="short_answer_question" class="control-label">Class Id:</label>
-											<input type="text" class="form-control" id="classIdText">
+										<div class="form-group form_elements">
+											<label for="classIdText" class="control-label">Class ID:</label>
+											<input type="text" class="textbox_style_add_class" id="classIdText">
 										</div>
-										<div class="form-group">
-											<label for="short_answer_answer" class="control-label">Class Des:</label>
-											<input type="text" class="form-control" id="classDescriptionText">
+										<div class="form-group form_elements">
+											<label for="classDescriptionText" class="control-label">Class Description:</label>
+											<input type="text" class="textbox_style_add_class" id="classDescriptionText">
 										</div>
-										<div class="form-group">
-											<label for="short_answer_answer" class="control-label">Teacher ID:</label>
-											<input type="number"  id="teacherIdText">
+										<div class="form-group form_elements">
+											<label for="teacherIdText" class="control-label">Teacher ID:</label>
+											<input type="number" class="textbox_style_add_class" id="teacherIdText">
 										</div>
 								</form>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<div class="modal-footer bottom_modal">
+								<button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
 								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="createClassButton" name="create" value="create" >Create Class</button>
 							</div>
 						</div>
@@ -347,22 +345,22 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 						<div class="modal-content">
 							<div class="modal-header modal_header_color">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h4 class="modal-title">Update Class</h4>
+								<h4 class="modal-title"><img src="images/update.png" class="admin_icon" /> Update Class</h4>
 							</div>
-							<div class="modal-body">
+							<div class="modal-body class_update_modal">
 								<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
-										<div class="form-group">
-											<label for="short_answer_question" class="control-label">Class Id:</label>
-											<input type="text" class="form-control" id="classIdUpdateText">
+										<div class="form-group form_elements">
+											<label for="classIdUpdateText" class="control-label">Class ID:</label>
+											<input type="text" class="textbox_style_update_class" id="classIdUpdateText">
 										</div>
-										<div class="form-group">
-											<label for="short_answer_answer" class="control-label">New Teacher Id:</label>
-											<input type="text" class="form-control" id="teacherIdUpdateText">
+										<div class="form-group form_elements">
+											<label for="teacherIdUpdateText" class="control-label">New Teacher ID:</label>
+											<input type="text" class="textbox_style_update_class" id="teacherIdUpdateText">
 										</div>
 								</form>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<div class="modal-footer bottom_modal">
+								<button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
 								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="updateClassButton" name="create" value="create" >Create Class</button>
 							</div>
 						</div>
