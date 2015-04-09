@@ -35,17 +35,13 @@
 </head>
 <?php
 session_start();
-
 // Include the constants used for the db connection
 require("constants.php");
-
 // Gets the class id appended to url from teacherMainPage.php
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
 $sessionTestId = $_SESSION['testId'];
-
 global $newTestId;
-
 if(!is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
     
@@ -55,21 +51,17 @@ if($id == null)
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 @ $database->select_db(DATABASENAME);
-
 // Teacher first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
-
 // Class ID and description at the top of the page
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
 $mainClassStatement = $database->prepare($mainClassQuery);
-
 // Generate a test id
 $testIdQuery = "select a.test_id, a.saved, question_id from test as a
 	left join test as b
     on (a.test_id < b.test_id)
     left join question as c on a.test_id = c.test_id
     where b.test_id is null";
-
 // Create a test
 $createTestQuery = "insert into test(test_id) values(?)";
 				  
@@ -84,10 +76,7 @@ $populateTestCrapQuery = "select test_name, date_begin, date_end, time_limit, in
 $oldQuestionsQuery = "select question_id, question_type, question_value, question_text, question_no,
                         answer_id, answer_text, correct, heading_id, heading from question
                         join answer using (question_id)
-                        where test_id = ?";
-
-
-
+                        where test_id = ? group by(question_no)";
 // These go with the form on the left of the page
 $testName = (isset($_POST['testName']) ? $_POST['testName'] : "");
 $startDate = (isset($_POST['startDate']) ? $_POST['startDate'] : "");
@@ -96,7 +85,6 @@ $timeLimit = (isset($_POST['timeLimit']) ? $_POST['timeLimit'] : "");
 $specificInstructions = (isset($_POST['specificInstructions']) ? $_POST['specificInstructions'] : "");
 $testPledge = (isset($_POST['testPledge']) ? $_POST['testPledge'] : "");
 $maxPoints = (isset($_POST['maxPoints']) ? $_POST['maxPoints'] : "");
-
 /*global $testName;
 global $startDate;
 global $endDate;
@@ -130,7 +118,6 @@ $modalId = 0;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
 					<?php // Added by David Hughen
 						  // to display student's name in top right corner
-
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
 														{
 															$topRightStatement->bind_param("s", $id);
@@ -142,21 +129,11 @@ $modalId = 0;
 											$topRightStatement->execute();
 											while($topRightStatement->fetch())
 											{
-												echo $first_name . " " . $last_name;
+												echo $first_name . " " . $last_name .", " . $id;
 											}
 											$topRightStatement->close();?><b class="caret"></b></a>
 						
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
                         <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
@@ -180,7 +157,6 @@ $modalId = 0;
                         while($mainClassStatement->fetch())
                         {
                             echo '<div class="course_header">
-
                         <div class="course_number">'
                             . $clid .
                         '</div>
@@ -288,7 +264,7 @@ $modalId = 0;
 							<br />
 
 							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6"><?php echo $specificInstructions; ?></textarea>
-							<p id="test" value="<?php echo $testName; ?>"> Foo </p> 
+							
 
 							<label class="pledge_lbl">Test Pledge:</label>
 
@@ -296,7 +272,7 @@ $modalId = 0;
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn">Cancel</button>
+								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
 							</div>
 							
 							<div class="col-md-6">	
@@ -364,39 +340,38 @@ $modalId = 0;
                                             {
                                                 // Echo True/False with info inside
                                                 // This just puts the box thing on test page... not a modal
-
-                                                echo '<a href="#" id="list_group'.$qid.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qid.'" onclick="removeQuestion('.$qid.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                             }
                                             else if($qtype == "Multiple Choice")
                                             {
                                                 // Echo multiple choice modal with info inside
-                                                echo '<a href="#" id="list_group'.$qid.'" class="list-group-item" data-toggle="modal"> <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qid.'" onclick="removeQuestion('.$qid.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                             }
                                             else if($qtype == "All That Apply")
                                             {
-                                                echo '<a href="#" id="list_group'.$qid.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qid.'" onclick="removeQuestion('.$qid.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                                 // Echo All that Apply modal with info inside
                                             }
                                             else if($qtype == "Matching")
                                             {
-                                                echo '<a href="#" id="list_group'.$qid.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">'.$qtext.'</p></a>';
-                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qid.'" onclick="removeQuestion('.$qid.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">'.$qtext.'</p></a>';
+                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                                 // Echo Matching modal with info inside
                                             }
                                             else if($qtype == "Short Answer")
                                             {
                                                 // Echo Short Answer Modal with info inside
-												echo '<a href="#" id="list_group'.$qid.'" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qid.'" onclick="removeQuestion('.$qid.')"><span class="glyphicon glyphicon-trash"></span></button>';
+												echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal" data-target="#SAModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+                                                echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                             }
                                             else
                                             {
                                                 // Echo Essay modal with info inside
-												echo '<a href="#" id="list_group'.$qid.'" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
-												echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qid.'" onclick="removeQuestion('.$qid.')"><span class="glyphicon glyphicon-trash"></span></button>';				
+												echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal" data-target="#EssayModal'.$modalId.'"> <h4 class="list-group-item-heading">'.$counter. '. '.$qtype.'</h4> <p class="list-group-item-text">' . $qtext . '</p></a>';
+												echo '<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';				
                                             }
                                         }
                                         $oldId = $qid;
@@ -414,7 +389,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Short Answer</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-minus"></span> Short Answer</h4>
 								</div>
 								<div class="modal-body">
 									<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
@@ -432,13 +407,13 @@ $modalId = 0;
 											</div>
 											<div class="form-group">
 												<label for="short_answer_answer" class="control-label">Answer:</label>
-												<textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
+												<textarea type="text" class="form-control" id="short_answer_answer" rows="2"></textarea>
 											</div>
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="SACancelBtn">Cancel</button>
 									<button type="submit" class="btn btn-primary " data-dismiss="modal" id="SABtn" name="create" value="create" >Create Question</button>
 								</div>
 							</div>
@@ -451,7 +426,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Essay</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-pencil"></span> Essay</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -473,8 +448,8 @@ $modalId = 0;
 									</form>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="ECancelBtn">Cancel</button>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -486,7 +461,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">True/False</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-ok"></span> True/False</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -512,7 +487,7 @@ $modalId = 0;
 										</div>
 										
 										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+											<button type="button" class="btn btn-default" data-dismiss="modal" id="TFCancelBtn">Cancel</button>
 											<button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Create Question</button>
 										</div>
 									</form>
@@ -527,7 +502,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Multiple Choice</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-record"></span> Multiple Choice</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -585,13 +560,13 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">All that Apply</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-check"></span> All that Apply</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form" onsubmit="return validate(this)">
 										<div class="form-group">
 											<div class="point_value_section">
-												<label for="ata_point_value class="control-label">Point Value:&nbsp;</label>
+												<label for="ata_point_value" class="control-label">Point Value:&nbsp;</label>
 												<input type="number" id="ata_point_value" />
 											</div>
 										</div>
@@ -644,7 +619,7 @@ $modalId = 0;
 							<div class="modal-content">
 								<div class="modal-header modal_header_color">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-									<h4 class="modal-title">Matching</h4>
+									<h4 class="modal-title"><span class="glyphicon glyphicon-th-large"></span> Matching</h4>
 								</div>
 								<div class="modal-body">
 									<form role="form">
@@ -701,7 +676,6 @@ $modalId = 0;
 													<label class="control-label">Letter:</label>
 												</div>
 											</div>
-	
 										</div>
 										<div class="reduce_margin_bottom">
 										</div>
@@ -731,18 +705,16 @@ $modalId = 0;
 					</div>				
 			</div>    				
 		</div>	
-
-
         
     <script>
-    function removeQuestion(qid)
+    function removeQuestion(qno)
     {
-        $('#list_group'+qid).remove();
-        $('#remove_Question'+qid).remove();
+        $('#list_group'+qno).remove();
+        $('#remove_Question'+qno).remove();
         
         $.post("TestQuestionScripts/deleteQuestion.php",
 			{
-				qid:qid
+				qno:qno
 			},
         function(data)
 		{
@@ -840,27 +812,15 @@ $modalId = 0;
         });
     });
     </script>
-    
-	<script>
-	$(document).ready(function()
-	{
-		$("#SABtn").click(function()
-		{
-			var shortAnswerQuestion = $("#short_answer_question").val();
-			var shortAnswerAnswer   = $("#short_answer_anwer").val();
-		});
-	});
-	</script>
 	
 	<!-- Add matching JS -->
 	<script>
+		var mQuestionCounter = 0;
+		var mAnswerCounter = 0;
+		var matchingQuestionArray = [0];
+		var matchingAnswerArray = [0];
 		$(document).ready(function()
 		{
-			var mQuestionCounter = 0;
-            var mAnswerCounter = 0;
-            var matchingQuestionArray = [0];
-            var matchingAnswerArray = [0];
-            
 			$("#add_match_question_btn").click(function()
 			{
 				$("#add_match_question").append('<input type="text" class="m_question form-control" id="match_question_tb'+(mQuestionCounter+1)+'">');
@@ -868,7 +828,6 @@ $modalId = 0;
 				$("#add_match_question_trash_btn").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_match_question'+(mQuestionCounter+1)+'" onclick="removeMatchingQuestion('+(mQuestionCounter+1)+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				mQuestionCounter++;
                 matchingQuestionArray.push(mQuestionCounter);
-
 			});
 			
 			$("#add_match_answer_btn").click(function()
@@ -897,6 +856,12 @@ $modalId = 0;
 				}
 					matchingQuestionArray = [0];
 					matchingAnswerArray = [0];
+					$('#match_question_tb0').val("");
+					$('#match_question_letter_tb0').val("");
+					$('#match_answer_tb0').val("");
+					$('#match_answer_letter_tb0').val("");
+					$('#m_heading').val("");
+					$('#m_point_value').val("");		
 			});
 		});
 		function removeMatchingQuestion(mQuestion)
@@ -916,7 +881,7 @@ $modalId = 0;
 		}
 	</script>
 	
-		<!-- All that Apply JS -->
+	<!-- All that Apply JS -->
 	<script>
 	var ATACounter = 1;
 	var testATAArray = [0,1];
@@ -943,6 +908,11 @@ $modalId = 0;
 					$('#ata_answer'+ATACounter).remove();
 					$('#remove_ata'+ATACounter).remove();
 				}
+				$('input:checkbox').removeAttr('checked');;
+				$('#ata_answer0').val("");
+				$('#ata_answer1').val("");
+				$('#ata_question').val("");
+				$('#ata_point_value').val("");
 				testATAArray = [0,1];
 		});
 	});
@@ -955,13 +925,12 @@ $modalId = 0;
 	}
 	</script>
 	
-		<!-- Multiple Choice JS -->
-		<!-- PROBLEM: in every append, how to generate a different value & id -->
-		<!-- class add_margin_mc doesnt work! :'( -->
-	<script type="text/javascript">
+	<!-- Multiple Choice JS -->
+	<script >
 	var MCCounter = 1;
 	var cloned;
 	var testMCArray = [0,1];
+    var classId = '<?php echo $classId; ?>';
 		$(document).ready(function(){
 		
 			$("#add_MC").click(function(){
@@ -982,6 +951,12 @@ $modalId = 0;
 					$('#multipleText'+MCCounter).remove();
 					$('#remove_MC'+MCCounter).remove();
 				}
+					$('#mc_answer0').val("");
+					$('#multipleText0').val("");	
+					$('#mc_answer1').val("");
+					$('#multipleText1').val("");
+					$('#mc_question').val("");
+					$('#mc_point_value').val("");
 					testMCArray = [0,1];
 		});
 	});
@@ -1013,26 +988,36 @@ $modalId = 0;
 				{
 					pointValue:pointValue,
 					question:question,
+                    classId:classId,
 					answer:answer,
 					testId:testId,
 					questionType:"Short Answer"
 				},
 				function(data)
 				{
-					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">' + (++counter) + '. Short Answer</h4> <p class="list-group-item-text">' + question + '</p></div>'
+					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">SHORT ANSWER</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></div>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				});
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				
+                    $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
+				});
+				$('#short_answer_question').val("");
+				$('#short_answer_answer').val("");
+				$('#short_answer_point_value').val("");
 				
 			});
-
+			$("#SACancelBtn").click(function()
+			{
+				$('#short_answer_question').val("");
+				$('#short_answer_answer').val("");
+				$('#short_answer_point_value').val("");
+				
+			});
 			/***********************************************************/
 			/* Matching stuff                                          */
 			/***********************************************************/
 			$("#MBtn").click(function()
 			{
-
 				var pointValue = $("#m_point_value").val();
 				var heading = $("#m_heading").val();
 				
@@ -1075,6 +1060,7 @@ $modalId = 0;
 					questionType:"Matching",
 					"questions[]":questionArray,
 					"questionLetters[]":questionLetterArray,
+                    classId:classId,
 					"answers[]":answerArray,
 					"answerLetters[]":answerLetterArray,
 					testId:testId,
@@ -1082,14 +1068,33 @@ $modalId = 0;
 				},
 				function(data)
 				{
+
 					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
                     );
                     $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-
 				});
 
+				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
+				{
+					$('#match_question_tb'+mQuestionCounter).remove();
+					$('#match_question_letter_tb'+mQuestionCounter).remove();
+					$('#remove_match_question'+mQuestionCounter).remove();
+				}
+				for(mAnswerCounter; mAnswerCounter > 0; mAnswerCounter--)
+				{
+					$('#match_answer_tb'+mAnswerCounter).remove();
+					$('#match_answer_letter_tb'+mAnswerCounter).remove();
+					$('#remove_match_answer'+mAnswerCounter).remove();
+				}
+					matchingQuestionArray = [0];
+					matchingAnswerArray = [0];
+					$('#match_question_tb0').val("");
+					$('#match_question_letter_tb0').val("");
+					$('#match_answer_tb0').val("");
+					$('#match_answer_letter_tb0').val("");
+					$('#m_heading').val("");
+					$('#m_point_value').val("");
 			});
-
 			/***********************************************************/
 			/* Multiple choice stuff                                   */
 			/***********************************************************/
@@ -1098,7 +1103,6 @@ $modalId = 0;
 				var question = $("#mc_question").val();
 				var multipleChoiceArray = [];
 				var multipleTextArray = [];
-
 				// check for multiple choice radios		
 				for(i = 0; i < testMCArray.length; i++)
 				{
@@ -1122,6 +1126,7 @@ $modalId = 0;
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
 					pointValue:pointValue,
+                    classId:classId,
 					questionType:"Multiple Choice",
 					question:question,
 					"parameters[]":multipleChoiceArray,
@@ -1130,13 +1135,25 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. Multiple Choice</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">MULTIPLE CHOICE</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-			
+					
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+					
+
+					for (i = 0; i < multipleChoiceArray.length; i++)
+					{
+						if(multipleChoiceArray[i] == true)
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + multipleTextArray[i] + ' <img src="images/sign.png" /></div>');
+						}
+						else
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled /> ' + multipleTextArray[i] + '</div>');
+						}
+					}
 				});
 				
-
 				// Resets MC Values
 				for(MCCounter; MCCounter > 1; MCCounter--)
 				{
@@ -1144,6 +1161,13 @@ $modalId = 0;
 					$('#multipleText'+MCCounter).remove();
 					$('#remove_MC'+MCCounter).remove();
 				}
+					$('input[name="mc_answer"]').prop('checked', false);
+					$('#mc_answer0').val("");
+					$('#multipleText0').val("");	
+					$('#mc_answer1').val("");
+					$('#multipleText1').val("");
+					$('#mc_question').val("");
+					$('#mc_point_value').val("");
 					testMCArray = [0,1];
             });
 			
@@ -1182,6 +1206,7 @@ $modalId = 0;
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
 					pointValue:pointValue,
+                    classId:classId,
 					questionType:"All That Apply",
 					question:question,
 					"parameters[]":ataArray,
@@ -1190,9 +1215,21 @@ $modalId = 0;
 				},
 				function(data)
 				{
-                    $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. All That Apply</h4> <p class="list-group-item-text">' + question + '</p></a>'
+                    $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ALL THAT APPLY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+                    for (i = 0; i < ataArray.length; i++)
+					{
+						if(ataArray[i] == true)
+						{
+							$("#list_group"+data).append('<div><input type="checkbox" disabled checked="checked" /> ' + ataTextArray[i] + ' <img src="images/sign.png" /></div>');
+						}
+						else
+						{
+							$("#list_group"+data).append('<div ><input type="checkbox" disabled /> ' + ataTextArray[i] + '</div>');
+						}
+					}
 				});
 				// Resets ATA Values
 				for(ATACounter; ATACounter > 1; ATACounter--)
@@ -1201,6 +1238,11 @@ $modalId = 0;
 					$('#ata_answer'+ATACounter).remove();
 					$('#remove_ata'+ATACounter).remove();
 				}
+				$('input:checkbox').removeAttr('checked');
+				$('#ata_answer0').val("");
+				$('#ata_answer1').val("");
+				$('#ata_question').val("");
+				$('#ata_point_value').val("");
 				testATAArray = [0,1];
 			});
 			
@@ -1230,13 +1272,12 @@ $modalId = 0;
 					i++;		
 				});
 			
-				  
-				
 				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
 				{
 					
 					questionType:"True/False",
 					pointValue:pointValue,
+                    classId:classId,
 					question:question,
 					"parameters[]":trueFalseArray,
 					"textBoxes[]":answerText,
@@ -1245,12 +1286,31 @@ $modalId = 0;
 				},
 				function(data)
 				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. True/False</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">TRUE/FALSE</h4><br /> <p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				});
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
 				
+                    for (i = 0; i < trueFalseArray.length; i++)
+					{
+						if(trueFalseArray[i] == true)
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + answerText[i] + ' <img src="images/sign.png" /></div>');
+						}
+						else
+						{
+							$("#list_group"+data).append('<div><input type="radio" disabled /> ' + answerText[i] + '</div>');
+						}
+					}
+				});
+				$('#tf_question').val("");
+				$('#tf_question_point_value').val("");
+				$('input[name="optradio"]').prop('checked', false);
             });
+			$("#TFCancelBtn").click(function(){	
+				$('#tf_question').val("");
+				$('#tf_question_point_value').val("");
+				$('input[name="optradio"]').prop('checked', false);
+			});
 			
 			/***********************************************************/
 			/* Essay stuff                                             */
@@ -1266,20 +1326,30 @@ $modalId = 0;
 					pointValue:pointValue,
 					question:question,
 					answer:answer,
+                    classId:classId,
 					testId:testId,
 					questionType:"Essay"
 				},
 				function(data)
 				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">'+(++counter)+'. Essay</h4> <p class="list-group-item-text">' + question + '</p></a>'
+					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ESSAY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
                     );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-			
+                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+				
+                    $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
 				});	
+				$('#essay_answer').val("");
+				$('#essay_question').val("");
+				$('#essay_point_value').val("");
+			});
+			
+			$("#ECancelBtn").click(function(){	
+				$('#essay_answer').val("");
+				$('#essay_question').val("");
+				$('#essay_point_value').val("");
 			});
 		});
 	</script>
-
 </body>
 
 </html>

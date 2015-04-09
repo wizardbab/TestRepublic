@@ -34,7 +34,9 @@ require("constants.php");
 
 // 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
 
-$id = $_SESSION['username']; // Just a random variable gotten from the URL
+$id = isset($_POST['studentId']) ? $_POST['studentId'] : $_SESSION['username'];
+
+//$id = $_SESSION['username']; // Just a random variable gotten from the URL
 
 if($id == null)
     header('Location: login.html');

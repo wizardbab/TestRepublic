@@ -14,8 +14,7 @@
    <!-- Bootstrap Core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-   <!-- Custom CSS -->
-   <link href="css/signup2.css" rel="stylesheet">
+   
 
    <!-- Custom Fonts -->
    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,12 +29,31 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-	<!-- Select & Options Library -->
-	<link href="path/to/multiselect.css" media="screen" rel="stylesheet" type="text/css">
-
+	<!-- Multi Select -->
 	<link href="css/multi-select.css" media="screen" rel="stylesheet" type="text/css" />
 	<script src="js/jquery.multi-select.js" type="text/javascript"></script>
     <script src="js/application.js" type="text/javascript"></script>
+	
+	<!-- Custom CSS -->
+   <link href="css/signup2.css" rel="stylesheet">
+   
+   <script src="path/to/jquery.multi-select.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+
+   <!-- Menu Toggle Script -->
+   <script>
+   $(document).ready(function()
+	{
+		
+	
+	});
+	
+	function redirect()
+	{
+		window.location = "redirect.php";
+	}
+	</script>
 	
 </head>
 
@@ -74,12 +92,15 @@ $password  = (isset($_POST['password']) ? $_POST['password'] : "");
 $classes  = (isset($_POST['classes']) ? $_POST['classes'] : "");
 global $id;
 $success = false;
+
+
 ?>
-
-
       <form name="signUpForm" id="signUpForm" action="signUp2.php" onsubmit="return validate(this)" method="post">
          <div class="container-fluid">
             <div class="row">
+				<div class="back_section">
+					<button type="button" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+				</div>
 				<div class="sign_up_text_area">
 					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">
 					<span class="sign_up_text">&nbsp; Sign Up</span>
@@ -135,7 +156,7 @@ $success = false;
                   $courseCounter = 1;
                   $classCounter = 1; 
                   $sidebarArray = array();
-				  echo '<select multiple class="" id="aloha" name="classes[]">';
+				  echo '<select multiple class="yo" id="aloha" name="classes[]">';
                   while($classList->fetch())
                   {
                      echo '
@@ -153,14 +174,13 @@ $success = false;
 				 <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
 			</div>
 			   <?php 
-                        $success = 1;
+                        
                         // We have data; begin validation
                         if(is_array($classes))
                         {
                            // Does a preliminary check for email pattern
                            if(!preg_match('^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+^', $email))
                            {
-                             
                               echo "Invalid email ".$email;
                            }
                            // Valid email; validate password
@@ -175,7 +195,6 @@ $success = false;
                               else
                                  if(!preg_match('^.{8,20}^', $password))
                                  {
-                                   
                                     echo "Password needs to be between 8-16 characters";
                                  }
                                  
@@ -205,7 +224,7 @@ $success = false;
                                        $testCounter = 0;
                                        $testIdArray[] = null;
 
-                                       echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
+                                       //echo '<h1 margin-left: 50px;>' . $a . '</h1></br />';
                                        if($insertEnrollmentStatement = $database->prepare($insertEnrollmentQuery))
                                        {
                                           
@@ -253,10 +272,6 @@ $success = false;
                                              $insertTestStatement->close();
                                           }
                                        }
-                                       else
-                                       {
-                                         printf("It failed");
-                                       }
                                     }
 
                                     if ($insertStudentStatement = $database->prepare($insertStudentQuery))
@@ -268,69 +283,34 @@ $success = false;
                                     $insertStudentStatement->bind_param("sssss", $newId, $firstName, $lastName, $password, $email);
                                     $insertStudentStatement->execute();
                                     $insertStudentStatement->close();
+									$password = null;
 									
-                                 echo '<h1>' . $newId . '</h1>';
-								 $success = 1;
+                                // echo '<h1>' . $newId . '</h1>';
+								 $success = true;
                                  $testIdArray = null;
 								 
 								 $_SESSION['username'] = $newId;
-								 
-								
-								
-								// echo'<script> window.location="login.php"; </script> ';
-								
-								
-								// header('Location: studentMainPage.php');
-								
-								/*$result = preg_replace('#<div class="sign_up_box" id="sign_up_box">(.*?)</div>#', ' ', $incoming_data);*/
-								
-								/*echo "<script language=javascript>alert('SUP')</script>";*/
-								
-								/*echo '	<div class="sign_up_text_area_2">
-											<img src="images/logo4.png" alt="Our Logo" height="50" width="50">
-											<span class="sign_up_text_2">&nbsp; Sign Up</span>
-										</div>';
-								echo '<div class="congrats_text">Congratulations!</div>
-										<div><h4>You have successfully created an account.<h4></div>
-										<div class="name_section">'.ucfirst($firstName) . ' ' .ucfirst($lastName). ' ' .$id. '</div>';*/
-								
+								 echo '<script type="text/javascript">';
+								 echo 'redirect();';
+								 echo '</script>';
                               }
                            }			
                         }
                         else
                         // do nothing
                         {
-                           $success = 0;
+                           $success = false;
                         }
                         ?>
         </div>
       </form>
-
-	<script src="path/to/jquery.multi-select.js" type="text/javascript"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="js/bootstrap.js"></script>
-
-   <!-- Menu Toggle Script -->
+	
    <script>
    $("#menu-toggle").click(function(e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
    });
    </script>
-
-<!--
-	<script>
-		var class_counter = 10;
-		var array1[0,1,2,3,4,5,6,7,8,9];
-		var array2[];
-		
-		function testFunction(var classType, var idNum)
-		{
-		
-		
-		}
-	
-	</script>-->
 	
 </body>
 </html>

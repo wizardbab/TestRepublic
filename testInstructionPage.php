@@ -104,7 +104,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 							$topRightStatement->execute();
 							while($topRightStatement->fetch())
 							{
-								echo $first_name . " " . $last_name;
+								echo $first_name . " " . $last_name .", ".$id;
 							}
 							$topRightStatement->close();?><b class="caret"></b></a>
 						
@@ -170,6 +170,8 @@ $testNameStatement = $database->prepare($testNameQuery);
 					'<div class="row test_title">
 						'.$tname.'
 					</div>';
+				
+				$_SESSION['timeLimit'] = $timeLimit;
 			}
 			$testNameStatement->close();
 		?>
