@@ -1,4 +1,5 @@
 // form validation function //
+/*
 function validate(form)
 {
    var firstName = form.firstName.value;
@@ -46,7 +47,7 @@ function validate(form)
    
    return true;
 }
-
+*/
 // START OF MESSAGE SCRIPT //
 
 var MSGTIMER = 20;
@@ -55,7 +56,7 @@ var MSGOFFSET = 3;
 var MSGHIDE = 6;
 
 // build out the divs, set attributes and call the fade function //
-function inlineMsg(target,string,autohide)
+function inlineMsg(target, string, autohide)
 {
    var msg;
    var msgcontent;
@@ -77,7 +78,7 @@ function inlineMsg(target,string,autohide)
       msgcontent = document.getElementById('msgcontent');
    }
    msgcontent.innerHTML = string;
-   msg.style.display = 'block';
+   msg.style.display = 'inline';
    var msgheight = msg.offsetHeight;
    var targetdiv = document.getElementById(target);
    targetdiv.focus();

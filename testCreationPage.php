@@ -34,6 +34,7 @@
     <!-- Custom Validation -->
     <link href="css/validation_page.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/signUpValidation.js"></script>
+    <script type="text/javascript" src="js/Parsley.js/dist/parsley.js"></script>
 </head>
 <?php
 session_start();
@@ -381,335 +382,10 @@ $modalId = 0;
                      </div>
                   </div>
                </div>      
-                </div>
-<<<<<<< HEAD
-                
-                   
+            </div>
          </div>                
       </div>   
-<!-- Short Answer Modal -->
-               <div id="SAModal" class="modal fade">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal_header_color">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">Short Answer</h4>
-                        </div>
-                        <div class="modal-body">
-                           <form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
-                              <div class="form-group">
-                                 <div class="point_value_section">
-                                    <label for="short_answer_point_value" class="control-label">Point Value:&nbsp;</label>
-                                    <input type="number" name="short_answer_point_value" id="short_answer_point_value" />
-                                 </div>
-                                 <hr />
-                                 <div class="question_section">
-                                 </div>
-                                 <div class="form-group">
-                                    <label for="short_answer_question" class="control-label">Question:</label>
-                                    <input type="text" class="form-control" id="short_answer_question" />
-                                 </div>
-                                 <div class="form-group">
-                                    <label for="short_answer_answer" class="control-label">Answer:</label>
-                                    <textarea type="text" class="form-control" id="short_answer_answer" rows="8"></textarea>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                           <button type="submit" class="btn btn-primary" id="SABtn" name="create" value="create" >Create Question</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            <!-- Essay Modal -->
-               <div id="EssayModal" class="modal fade">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal_header_color">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">Essay</h4>
-                        </div>
-                        <div class="modal-body">
-                           <form role="form">
-                              <div class="form-group">
-                                 <div class="point_value_section">
-                                    <label for="essay_point_value" class="control-label">Point Value:&nbsp;</label>
-                                    <input type="number" id="essay_point_value">
-                                 </div>
-                              </div>
-                              <hr />
-                              <div class="form-group">
-                                 <label for="essay_question" class="control-label">Question:</label>
-                                 <input type="text" class="form-control" id="essay_question">
-                              </div>
-                              <div class="form-group">
-                                 <label for="essay_answer" class="control-label">Answer:</label>
-                                 <textarea type="text" class="form-control" id="essay_answer" rows="8"> </textarea>
-                              </div>
-                           </form>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                           <button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn" onclick="">Create Question</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-            <!-- T/F Modal-->
-               <div id="TFModal" class="modal fade">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal_header_color">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">True/False</h4>
-                        </div>
-                        <div class="modal-body">
-                           <form role="form">
-                              <div class="form-group">
-                                 <div class="point_value_section">
-                                    <label for="tf_question_point_value" class="control-label">Point Value:&nbsp;</label>
-                                    <input type="number" id="tf_question_point_value" />
-                                 </div>
-                                 <hr />
-                                 <div class="question_section">
-                                    <label for="tf_question" class="control-label">Question:</label>
-                                    <input type="text" class="form-control" id="tf_question" />
-                                 </div>
-                              </div>
-                              
-                              <div class="form-group">
-                                 <div class="radio">
-                                    <label><input type="radio" class="optradio" name="optradio" value="true" />True</label>
-                                 </div>
-                                 <div class="radio">
-                                    <label><input type="radio" class="optradio" name="optradio" value="false" />False</label>
-                                 </div>
-                              </div>
-                              
-                              <div class="modal-footer">
-                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Create Question</button>
-                              </div>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-            <!-- Multiple Choice Modal-->
-               <div id="MCModal" class="modal fade">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal_header_color">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">Multiple Choice</h4>
-                        </div>
-                        <div class="modal-body">
-                           <form role="form">
-                              <div class="form-group">
-                                 <div class="point_value_section">
-                                    <label for="mc_point_value" class="control-label">Point Value:&nbsp;</label>
-                                    <input type="number" id="mc_point_value" />
-                                 </div>
-                                 <hr />
-                                 <div class="question_section">
-                                    <label for="mc_question" class="control-label">Question:</label>
-                                    <input type="text" class="form-control" id="mc_question" />
-                                 </div>
-                              </div>
-                           <label class="control-label">Answer:</label>
-                           <div class="answers_section">
-                              <div class="form-group">
-                                 <div class="row choices">
-                                    <div class="col-md-1">
-                                       <input type="radio" name="mc_answer" id="mc_answer0" value="multipleRadio0" class="multipleRadio" />
-                                    </div>
-                                    <div class="col-md-10">
-                                       <input type="text" class="form-control multipleTextboxes" id="multipleText0" name="multipleText0" />
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="form-group">
-                                    <div class="row reduce_margin_top choices">
-                                       <div class="col-md-1" id="MC_answers">
-                                          <input type="radio" name="mc_answer" id="mc_answer1" value="multipleRadio1" class="multipleRadio" />
-                                       </div>
-                                       <div class="col-md-10" id="MC_text_boxes">
-                                          <input type="text" class="form-control multipleTextboxes" id="multipleText1" name="multipleText1"/>
-                                       </div>
-                                       <div class="col-md-1" id="MC_add_trash_btn">
-                                       </div>
-                                    </div>
-
-                              </div>
-                           </div>
-                           </form>
-                           <button type="button" class="btn btn-default" aria-hidden="true" id="add_MC">Add Item +</button>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal" id="MCCancelBtn">Cancel</button>
-                           <button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-            <!-- All that Apply Modal-->
-               <div id="ATAModal" class="modal fade">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal_header_color">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">All that Apply</h4>
-                        </div>
-                        <div class="modal-body" id="modal-body">
-                           <form role="form" id="ata_form" data-parsley-validate>
-                              <div class="form-group">
-                                 <div class="point_value_section">
-                                    <label for="ata_point_value" class="control-label">Point Value:&nbsp;</label>
-                                    <input type="number" id="ata_point_value" required />
-                                 </div>
-                              </div>
-                              <hr />
-                              <div class="form-group">
-                                 <label for="ata_question" class="control-label">Question:</label>
-                                 <input type="text" class="form-control" id="ata_question" required />
-                              </div>
-                              <label class="control-label">Answer:</label>
-                              <div class="answers_section">
-                                 <div class="form-group">
-                                    <div class="row choices">
-                                       <div class="col-md-1">
-                                          <input type="checkbox" name="ata_answer" id="ata_answer_cb0" class="ata_cb" data-parsley-mincheck="1" />
-                                       </div>
-                                       <div class="col-md-10">
-                                          <input type="text" id="ata_answer0" class="ata_tb form-control" />
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="form-group">
-                                    <div>
-                                       <div class="row reduce_margin_top choices">
-                                          <div class="col-md-1" id="ATA_cbs">
-                                             <input type="checkbox" name="ata_answer" id="ata_answer_cb1" class="ata_cb" />
-                                          </div>
-                                          <div class="col-md-10" id="ATA_answers">
-                                             <input type="text" id="ata_answer1" class="ata_tb form-control" />
-                                          </div>
-                                          <div class="col-md-1" id="ATA_add_trash_btn">
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </form>
-                           <button type="button" class="btn btn-default" aria-hidden="true" id="add_ATA">Add Item +</button>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal" id="ATACancelBtn">Cancel</button>
-                           <button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-            <!-- Matching Modal-->
-               <div id="MatchModal" class="modal fade">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal_header_color">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">Matching</h4>
-                        </div>
-                        <div class="modal-body">
-                           <form role="form">
-                              <div class="form-group">
-                                 <label for="m_heading" class="control-label">Section Heading:</label>
-                                 <input type="text" class="form-control" id="m_heading" />
-                              </div>
-                              <div class="form-group">
-                                 <div class="point_value_section">      
-                                    <label for="m_point_value" class="control-label">Point Value (ea. question):&nbsp;</label>
-                                    <input type="number" id="m_point_value" />
-                                 </div>
-                              </div>
-                              <hr />
-                              <div class="row reduce_margin_top">
-                                 <div class="col-md-9">
-                                    <div class="form-group">
-                                       <label class="control-label test">Question:</label>
-                                    </div>
-                                 </div>
-                                 <div class="col-md-2">
-                                    <div class="form-group">
-                                       <label class="control-label reduce_margin_top">Match:</label>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="reduce_margin_bottom">
-                              </div>
-                              <div class="row">
-                                 <div class="col-md-9" >
-                                    <div class="form-group" id="add_match_question">
-                                       <input type="text" class="m_question form-control" id="match_question_tb0" />
-                                    </div>
-                                 </div>
-                                 <div class="col-md-2" >
-                                    <div class="form-group" id="add_match_question_letter">
-                                       <input type="text" class="m_question_letter form-control" id="match_question_letter_tb0" />
-                                    </div>
-                                 </div>
-                                 <div class="col-md-1" id="add_match_question_trash_btn">
-                                 </div>
-                              </div>
-                              
-                              <button type="button" class="btn btn-default" aria-hidden="true" id="add_match_question_btn">Add Item +</button>
-                              
-                              <div class="row">
-                                 <div class="col-md-9">
-                                    <div class="form-group">
-                                       <label class="control-label">Answer:</label>
-                                    </div>
-                                 </div>
-                                 <div class="col-md-2">
-                                    <div class="form-group">
-                                       <label class="control-label">Letter:</label>
-                                    </div>
-                                 </div>
-   
-                              </div>
-                              <div class="reduce_margin_bottom">
-                              </div>
-                              <div class="row">
-                                 <div class="col-md-9"> 
-                                    <div class="form-group" id="add_match_answer">
-                                       <input type="text" class="m_answer form-control" id="match_answer_tb0" />
-                                    </div>
-                                 </div>
-                                 <div class="col-md-2">
-                                    <div class="form-group" id="add_match_answer_letter">
-                                       <input type="text" class="m_answer_letter form-control" id="match_answer_letter_tb0" />
-                                    </div>
-                                 </div>
-                                 <div class="col-md-1" id="add_match_answer_trash_btn">
-                                 </div>
-                              </div>
-                              </form>
-                           <button type="button" class="btn btn-default" aria-hidden="true" id="add_match_answer_btn">Add Item +</button>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal" id="MCancelBtn">Cancel</button>
-                           <button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn">Create Question</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>     
-
-=======
-			
+      
 				<!-- Short Answer Modal -->
 					<div id="SAModal" class="modal fade">
 						<div class="modal-dialog">
@@ -776,7 +452,7 @@ $modalId = 0;
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="ECancelBtn">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="EBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" id="EBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -815,7 +491,7 @@ $modalId = 0;
 										
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal" id="TFCancelBtn">Cancel</button>
-											<button type="button" class="btn btn-primary" data-dismiss="modal" id="TFBtn" onclick="">Create Question</button>
+											<button type="button" class="btn btn-primary" id="TFBtn" onclick="">Create Question</button>
 										</div>
 									</form>
 								</div>
@@ -875,7 +551,7 @@ $modalId = 0;
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCCancelBtn">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MCBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" id="MCBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -934,7 +610,7 @@ $modalId = 0;
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="ATACancelBtn">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="ATABtn" onclick="">Create Question</button>
+									<button type="button" class="btn btn-primary" id="ATABtn" onclick="">Create Question</button>
 								</div>
 							</div>
 						</div>
@@ -1025,13 +701,11 @@ $modalId = 0;
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="MCancelBtn">Cancel</button>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" id="MBtn">Create Question</button>
+									<button type="button" class="btn btn-primary" id="MBtn">Create Question</button>
 								</div>
 							</div>
 						</div>
-					</div>				
-			</div>    				
-		</div>
+					</div>
         
     <script>
     function removeQuestion(qno)
@@ -1306,272 +980,318 @@ $modalId = 0;
 			/* Short answer stuff                                      */
 			/***********************************************************/
 			$("#SABtn").click(function()
-			{
-				var pointValue = $("#short_answer_point_value").val();
-				var question = $("#short_answer_question").val();
-				var answer = $("#short_answer_answer").val();
-			
-				$.post("TestQuestionScripts/essayAndShortAnswer.php",
-				{
-					pointValue:pointValue,
-					question:question,
-                    classId:classId,
-					answer:answer,
-					testId:testId,
-					questionType:"Short Answer"
-				},
-				function(data)
-				{
-					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">SHORT ANSWER</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></div>'
-                    );
-                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				
-                    $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
-				});
-				$('#short_answer_question').val("");
-				$('#short_answer_answer').val("");
-				$('#short_answer_point_value').val("");
-				
-			});
-			$("#SACancelBtn").click(function()
-			{
-				$('#short_answer_question').val("");
-				$('#short_answer_answer').val("");
-				$('#short_answer_point_value').val("");
-				
-			});
+         {
+            var pointValue = $("#short_answer_point_value").val();
+            if(pointValue == "")
+            {
+               inlineMsg('short_answer_point_value', 'Required', 1);
+            }
+            else if(pointValue < 0)
+            {
+               inlineMsg('short_answer_point_value', 'Must be positive', 1);
+            }
+            else
+            {
+               $("#SAModal").modal("hide");
+               var question = $("#short_answer_question").val();
+               var answer = $("#short_answer_answer").val();
+            
+               $.post("TestQuestionScripts/essayAndShortAnswer.php",
+               {
+                  pointValue:pointValue,
+                  question:question,
+                  classId:classId,
+                  answer:answer,
+                  testId:testId,
+                  questionType:"Short Answer"
+               },
+               function(data)
+               {
+                  $("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">SHORT ANSWER</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></div>'
+                       );
+                       $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+               
+                       $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
+               });
+               $('#short_answer_question').val("");
+               $('#short_answer_answer').val("");
+               $('#short_answer_point_value').val("");
+            }
+         });
+         $("#SACancelBtn").click(function()
+         {
+            $('#short_answer_question').val("");
+            $('#short_answer_answer').val("");
+            $('#short_answer_point_value').val("");
+         });
 			/***********************************************************/
 			/* Matching stuff                                          */
 			/***********************************************************/
 			$("#MBtn").click(function()
 			{
 				var pointValue = $("#m_point_value").val();
-				var heading = $("#m_heading").val();
-				
-				var questionArray = [];
-				var questionLetterArray = [];
-				var answerArray = [];
-				var answerLetterArray = [];
-				
-				var i = 0;
-				// Loop and store questions
-				$('.m_question').each(function() {
-					questionArray[i] = $(this).val();
-					i++;									
-				});
-				
-				i = 0;
-				// Loop and store question letters
-				$('.m_question_letter').each(function() {
-					questionLetterArray[i] = $(this).val();
-					i++;					
-				});
-				
-				i = 0;
-				// Loop and store answers
-				$('.m_answer').each(function() {
-					answerArray[i] = $(this).val();
-					i++;					
-				});
-				
-				i = 0;
-				// Loop and store answer letters
-				$('.m_answer_letter').each(function() {
-					answerLetterArray[i] = $(this).val();
-					i++;	
-				});
-				
-				$.post("TestQuestionScripts/matching.php",
-				{
-					pointValue:pointValue,
-					questionType:"Matching",
-					"questions[]":questionArray,
-					"questionLetters[]":questionLetterArray,
-                    classId:classId,
-					"answers[]":answerArray,
-					"answerLetters[]":answerLetterArray,
-					testId:testId,
-					heading:heading
-				},
-				function(data)
-				{
+            if(pointValue == "")
+            {
+               inlineMsg('m_point_value', 'Required', 1);
+            }
+            else if(pointValue < 0)
+            {
+               inlineMsg('m_point_value', 'Must be positive', 1);
+            }
+            else
+            {
+               $("#MModal").modal("hide");
+               var heading = $("#m_heading").val();
+               
+               var questionArray = [];
+               var questionLetterArray = [];
+               var answerArray = [];
+               var answerLetterArray = [];
+               
+               var i = 0;
+               // Loop and store questions
+               $('.m_question').each(function() {
+                  questionArray[i] = $(this).val();
+                  i++;									
+               });
+               
+               i = 0;
+               // Loop and store question letters
+               $('.m_question_letter').each(function() {
+                  questionLetterArray[i] = $(this).val();
+                  i++;					
+               });
+               
+               i = 0;
+               // Loop and store answers
+               $('.m_answer').each(function() {
+                  answerArray[i] = $(this).val();
+                  i++;					
+               });
+               
+               i = 0;
+               // Loop and store answer letters
+               $('.m_answer_letter').each(function() {
+                  answerLetterArray[i] = $(this).val();
+                  i++;	
+               });
+               
+               $.post("TestQuestionScripts/matching.php",
+               {
+                  pointValue:pointValue,
+                  questionType:"Matching",
+                  "questions[]":questionArray,
+                  "questionLetters[]":questionLetterArray,
+                       classId:classId,
+                  "answers[]":answerArray,
+                  "answerLetters[]":answerLetterArray,
+                  testId:testId,
+                  heading:heading
+               },
+               function(data)
+               {
 
-					$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
-                    );
-                    $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				});
+                  $("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
+                       );
+                       $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+               });
 
-				for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
-				{
-					$('#match_question_tb'+mQuestionCounter).remove();
-					$('#match_question_letter_tb'+mQuestionCounter).remove();
-					$('#remove_match_question'+mQuestionCounter).remove();
-				}
-				for(mAnswerCounter; mAnswerCounter > 0; mAnswerCounter--)
-				{
-					$('#match_answer_tb'+mAnswerCounter).remove();
-					$('#match_answer_letter_tb'+mAnswerCounter).remove();
-					$('#remove_match_answer'+mAnswerCounter).remove();
-				}
-					matchingQuestionArray = [0];
-					matchingAnswerArray = [0];
-					$('#match_question_tb0').val("");
-					$('#match_question_letter_tb0').val("");
-					$('#match_answer_tb0').val("");
-					$('#match_answer_letter_tb0').val("");
-					$('#m_heading').val("");
-					$('#m_point_value').val("");
+               for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
+               {
+                  $('#match_question_tb'+mQuestionCounter).remove();
+                  $('#match_question_letter_tb'+mQuestionCounter).remove();
+                  $('#remove_match_question'+mQuestionCounter).remove();
+               }
+               for(mAnswerCounter; mAnswerCounter > 0; mAnswerCounter--)
+               {
+                  $('#match_answer_tb'+mAnswerCounter).remove();
+                  $('#match_answer_letter_tb'+mAnswerCounter).remove();
+                  $('#remove_match_answer'+mAnswerCounter).remove();
+               }
+               matchingQuestionArray = [0];
+               matchingAnswerArray = [0];
+               $('#match_question_tb0').val("");
+               $('#match_question_letter_tb0').val("");
+               $('#match_answer_tb0').val("");
+               $('#match_answer_letter_tb0').val("");
+               $('#m_heading').val("");
+               $('#m_point_value').val("");
+            }
 			});
 			/***********************************************************/
 			/* Multiple choice stuff                                   */
 			/***********************************************************/
-			$("#MCBtn").click(function(){
+			$("#MCBtn").click(function()
+         {
 				var pointValue = $("#mc_point_value").val();
-				var question = $("#mc_question").val();
-				var multipleChoiceArray = [];
-				var multipleTextArray = [];
-				// check for multiple choice radios		
-				for(i = 0; i < testMCArray.length; i++)
-				{
-					if ($('#mc_answer'+(testMCArray[i])).is(':checked'))
-					{
-						multipleChoiceArray[i] = 1;
-					}
-					else
-					{
-						multipleChoiceArray[i] = 0;	
-					}
-				}
-				
-				
-				// Get and store the possible answers from the multiple choice type 
-				for(i = 0; i < testMCArray.length; i++)
-				{
-					multipleTextArray[i] = document.getElementById("multipleText" + testMCArray[i]).value;
-				}
-				
-				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
-				{
-					pointValue:pointValue,
-                    classId:classId,
-					questionType:"Multiple Choice",
-					question:question,
-					"parameters[]":multipleChoiceArray,
-					"textBoxes[]":multipleTextArray,
-					testId:testId
-				},
-				function(data)
-				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">MULTIPLE CHOICE</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
-                    );
-					
-                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-					
+            if(pointValue == "")
+            {
+               inlineMsg('mc_point_value', 'Required', 1);
+            }
+            else if(pointValue < 0)
+            {
+               inlineMsg('mc_point_value', 'Must be positive', 1);
+            }
+            else
+            {
+               var question = $("#mc_question").val();
+               var multipleChoiceArray = [];
+               var multipleTextArray = [];
+               // check for multiple choice radios		
+               for(i = 0; i < testMCArray.length; i++)
+               {
+                  if ($('#mc_answer'+(testMCArray[i])).is(':checked'))
+                  {
+                     multipleChoiceArray[i] = 1;
+                  }
+                  else
+                  {
+                     multipleChoiceArray[i] = 0;	
+                  }
+               }
+               
+               
+               // Get and store the possible answers from the multiple choice type 
+               for(i = 0; i < testMCArray.length; i++)
+               {
+                  multipleTextArray[i] = document.getElementById("multipleText" + testMCArray[i]).value;
+               }
+               
+               $.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+               {
+                  pointValue:pointValue,
+                       classId:classId,
+                  questionType:"Multiple Choice",
+                  question:question,
+                  "parameters[]":multipleChoiceArray,
+                  "textBoxes[]":multipleTextArray,
+                  testId:testId
+               },
+               function(data)
+               {
+                  $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">MULTIPLE CHOICE</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
+                       );
+                  
+                       $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                  
 
-					for (i = 0; i < multipleChoiceArray.length; i++)
-					{
-						if(multipleChoiceArray[i] == true)
-						{
-							$("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + multipleTextArray[i] + ' <img src="images/sign.png" /></div>');
-						}
-						else
-						{
-							$("#list_group"+data).append('<div><input type="radio" disabled /> ' + multipleTextArray[i] + '</div>');
-						}
-					}
-				});
-				
-				// Resets MC Values
-				for(MCCounter; MCCounter > 1; MCCounter--)
-				{
-					$('#mc_answer'+MCCounter).remove();
-					$('#multipleText'+MCCounter).remove();
-					$('#remove_MC'+MCCounter).remove();
-				}
-					$('input[name="mc_answer"]').prop('checked', false);
-					$('#mc_answer0').val("");
-					$('#multipleText0').val("");	
-					$('#mc_answer1').val("");
-					$('#multipleText1').val("");
-					$('#mc_question').val("");
-					$('#mc_point_value').val("");
-					testMCArray = [0,1];
-            });
+                  for (i = 0; i < multipleChoiceArray.length; i++)
+                  {
+                     if(multipleChoiceArray[i] == true)
+                     {
+                        $("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + multipleTextArray[i] + ' <img src="images/sign.png" /></div>');
+                     }
+                     else
+                     {
+                        $("#list_group"+data).append('<div><input type="radio" disabled /> ' + multipleTextArray[i] + '</div>');
+                     }
+                  }
+               });
+               
+               // Resets MC Values
+               for(MCCounter; MCCounter > 1; MCCounter--)
+               {
+                  $('#mc_answer'+MCCounter).remove();
+                  $('#multipleText'+MCCounter).remove();
+                  $('#remove_MC'+MCCounter).remove();
+               }
+                  $('input[name="mc_answer"]').prop('checked', false);
+                  $('#mc_answer0').val("");
+                  $('#multipleText0').val("");	
+                  $('#mc_answer1').val("");
+                  $('#multipleText1').val("");
+                  $('#mc_question').val("");
+                  $('#mc_point_value').val("");
+                  testMCArray = [0,1];
+            }
+         });
          
          /***********************************************************/
          /* All that apply stuff                                    */
          /***********************************************************/
-         $("#ATABtn").click(function(){
+         $("#ATABtn").click(function()
+         {
             var pointValue = $("#ata_point_value").val();
-            var question = $("#ata_question").val();
-            var ataArray = [];
-            var ataTextArray = [];
-                var question_no = 0;
+            if(pointValue == "")
+            {
+               inlineMsg('ata_point_value', 'Required', 1);
+            }
+            else if(pointValue < 0)
+            {
+               inlineMsg('ata_point_value', 'Must be positive', 1);
+            }
+            else
+            {
+               var question = $("#ata_question").val();
+               var ataArray = [];
+               var ataTextArray = [];
+                   var question_no = 0;
 
-				//check for all that apply checkboxes
-				var i = 0;
-				$('.ata_cb').each(function() {
-					
-					// If true, assign
-					if($(this).is(':checked'))
-					{
-						ataArray[i] = 1;
-					  	
-					}
-					// Else false, assign
-					else
-					{
-						ataArray[i] = 0;				
-					}
-					i++;		
-				});
-				// Get and store the possible answers from the multiple choice type
-				for(i = 0; i < testATAArray.length; i++)
-				{
-					ataTextArray[i] = document.getElementById("ata_answer" + i).value;
-				}
-				
-				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
-				{
-					pointValue:pointValue,
-                    classId:classId,
-					questionType:"All That Apply",
-					question:question,
-					"parameters[]":ataArray,
-					"textBoxes[]":ataTextArray,
-					testId:testId
-				},
-				function(data)
-				{
-                    $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ALL THAT APPLY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
-                    );
-                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				
-                    for (i = 0; i < ataArray.length; i++)
-					{
-						if(ataArray[i] == true)
-						{
-							$("#list_group"+data).append('<div><input type="checkbox" disabled checked="checked" /> ' + ataTextArray[i] + ' <img src="images/sign.png" /></div>');
-						}
-						else
-						{
-							$("#list_group"+data).append('<div ><input type="checkbox" disabled /> ' + ataTextArray[i] + '</div>');
-						}
-					}
-				});
-				// Resets ATA Values
-				for(ATACounter; ATACounter > 1; ATACounter--)
-				{
-					$('#ata_answer_cb'+ATACounter).remove();
-					$('#ata_answer'+ATACounter).remove();
-					$('#remove_ata'+ATACounter).remove();
-				}
-				$('input:checkbox').removeAttr('checked');
-				$('#ata_answer0').val("");
-				$('#ata_answer1').val("");
-				$('#ata_question').val("");
-				$('#ata_point_value').val("");
-				testATAArray = [0,1];
+               //check for all that apply checkboxes
+               var i = 0;
+               $('.ata_cb').each(function() {
+                  
+                  // If true, assign
+                  if($(this).is(':checked'))
+                  {
+                     ataArray[i] = 1;
+                     
+                  }
+                  // Else false, assign
+                  else
+                  {
+                     ataArray[i] = 0;				
+                  }
+                  i++;		
+               });
+               // Get and store the possible answers from the multiple choice type
+               for(i = 0; i < testATAArray.length; i++)
+               {
+                  ataTextArray[i] = document.getElementById("ata_answer" + i).value;
+               }
+               
+               $.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+               {
+                  pointValue:pointValue,
+                       classId:classId,
+                  questionType:"All That Apply",
+                  question:question,
+                  "parameters[]":ataArray,
+                  "textBoxes[]":ataTextArray,
+                  testId:testId
+               },
+               function(data)
+               {
+                       $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ALL THAT APPLY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
+                       );
+                       $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+               
+                       for (i = 0; i < ataArray.length; i++)
+                  {
+                     if(ataArray[i] == true)
+                     {
+                        $("#list_group"+data).append('<div><input type="checkbox" disabled checked="checked" /> ' + ataTextArray[i] + ' <img src="images/sign.png" /></div>');
+                     }
+                     else
+                     {
+                        $("#list_group"+data).append('<div ><input type="checkbox" disabled /> ' + ataTextArray[i] + '</div>');
+                     }
+                  }
+               });
+               // Resets ATA Values
+               for(ATACounter; ATACounter > 1; ATACounter--)
+               {
+                  $('#ata_answer_cb'+ATACounter).remove();
+                  $('#ata_answer'+ATACounter).remove();
+                  $('#remove_ata'+ATACounter).remove();
+               }
+               $('input:checkbox').removeAttr('checked');
+               $('#ata_answer0').val("");
+               $('#ata_answer1').val("");
+               $('#ata_question').val("");
+               $('#ata_point_value').val("");
+               testATAArray = [0,1];
+            }
 			});
 			
 			
@@ -1580,97 +1300,118 @@ $modalId = 0;
 			/***********************************************************/
 			$("#TFBtn").click(function(){
 				var pointValue = $("#tf_question_point_value").val();
-				var question = $("#tf_question").val();
-				var trueFalseArray = [];
-				var answerText = ["true", "false"];
-				
-				//check for true/false radios 
-				var i = 0;
-				$('.optradio').each(function() {
-						 		 
-					if($(this).is(':checked'))
-					{
-						trueFalseArray[i] = 1;
-					 
-					}
-					else
-					{
-						trueFalseArray[i] = 0;				
-					}
-					i++;		
-				});
-			
-				$.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
-				{
-					
-					questionType:"True/False",
-					pointValue:pointValue,
-                    classId:classId,
-					question:question,
-					"parameters[]":trueFalseArray,
-					"textBoxes[]":answerText,
-					testId:testId
-					
-				},
-				function(data)
-				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">TRUE/FALSE</h4><br /> <p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
-                    );
-                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				
-                    for (i = 0; i < trueFalseArray.length; i++)
-					{
-						if(trueFalseArray[i] == true)
-						{
-							$("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + answerText[i] + ' <img src="images/sign.png" /></div>');
-						}
-						else
-						{
-							$("#list_group"+data).append('<div><input type="radio" disabled /> ' + answerText[i] + '</div>');
-						}
-					}
-				});
-				$('#tf_question').val("");
-				$('#tf_question_point_value').val("");
-				$('input[name="optradio"]').prop('checked', false);
-            });
-			$("#TFCancelBtn").click(function(){	
-				$('#tf_question').val("");
-				$('#tf_question_point_value').val("");
-				$('input[name="optradio"]').prop('checked', false);
+            if(pointValue == "")
+            {
+               inlineMsg('tf_question_point_value', 'Required', 1);
+            }
+            else if(pointValue < 0)
+            {
+               inlineMsg('tf_question_point_value', 'Must be positive', 1);
+            }
+            else
+            {
+               var question = $("#tf_question").val();
+               var trueFalseArray = [];
+               var answerText = ["true", "false"];
+               
+               //check for true/false radios 
+               var i = 0;
+               $('.optradio').each(function() {
+                            
+                  if($(this).is(':checked'))
+                  {
+                     trueFalseArray[i] = 1;
+                   
+                  }
+                  else
+                  {
+                     trueFalseArray[i] = 0;				
+                  }
+                  i++;		
+               });
+            
+               $.post("TestQuestionScripts/multipleChoiceTrueFalseAllThatApply.php",
+               {
+                  
+                  questionType:"True/False",
+                  pointValue:pointValue,
+                       classId:classId,
+                  question:question,
+                  "parameters[]":trueFalseArray,
+                  "textBoxes[]":answerText,
+                  testId:testId
+                  
+               },
+               function(data)
+               {
+                  $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">TRUE/FALSE</h4><br /> <p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
+                       );
+                       $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+               
+                       for (i = 0; i < trueFalseArray.length; i++)
+                  {
+                     if(trueFalseArray[i] == true)
+                     {
+                        $("#list_group"+data).append('<div><input type="radio" disabled checked="checked" /> ' + answerText[i] + ' <img src="images/sign.png" /></div>');
+                     }
+                     else
+                     {
+                        $("#list_group"+data).append('<div><input type="radio" disabled /> ' + answerText[i] + '</div>');
+                     }
+                  }
+               });
+               $('#tf_question').val("");
+               $('#tf_question_point_value').val("");
+               $('input[name="optradio"]').prop('checked', false);
+            }
+         });
+         $("#TFCancelBtn").click(function(){	
+            $('#tf_question').val("");
+            $('#tf_question_point_value').val("");
+            $('input[name="optradio"]').prop('checked', false);
 			});
 			
 			/***********************************************************/
 			/* Essay stuff                                             */
 			/***********************************************************/
-			$("#EBtn").click(function(){
-					
+			$("#EBtn").click(function()
+         {
 				var pointValue = $("#essay_point_value").val();
-				var question = $("#essay_question").val();
-				var answer = $("#essay_answer").val();
-				
-				$.post("TestQuestionScripts/essayAndShortAnswer.php",
-				{
-					pointValue:pointValue,
-					question:question,
-					answer:answer,
-                    classId:classId,
-					testId:testId,
-					questionType:"Essay"
-				},
-				function(data)
-				{
-					$("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ESSAY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
-                    );
-                    $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
-				
-                    $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
-				});	
-				$('#essay_answer').val("");
-				$('#essay_question').val("");
-				$('#essay_point_value').val("");
+            if(pointValue == "")
+            {
+               inlineMsg('essay_point_value', 'Required', 1);
+            }
+            else if(pointValue < 0)
+            {
+               inlineMsg('essay_point_value', 'Must be positive', 1);
+            }
+            else
+            {
+               var question = $("#essay_question").val();
+               var answer = $("#essay_answer").val();
+               
+               $.post("TestQuestionScripts/essayAndShortAnswer.php",
+               {
+                  pointValue:pointValue,
+                  question:question,
+                  answer:answer,
+                       classId:classId,
+                  testId:testId,
+                  questionType:"Essay"
+               },
+               function(data)
+               {
+                  $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <h4 class="list-group-item-heading">ESSAY</h4> <br /><p class="list-group-item-text">' + question + ' (' + pointValue + ')</p></a>'
+                       );
+                       $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+               
+                       $("#list_group"+data).append('<div><b>Answer</b>: ' + answer + '<img src="images/sign.png" /></div>');
+               });	
+               $('#essay_answer').val("");
+               $('#essay_question').val("");
+               $('#essay_point_value').val("");
+            }
 			});
-			
 			$("#ECancelBtn").click(function(){	
 				$('#essay_answer').val("");
 				$('#essay_question').val("");
