@@ -113,25 +113,25 @@ $success = false;
 			<label class="survey_style">
                 <div class="row">
                     <div class="col-md-4">First Name:</div>
-                    <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="" /></div>
+                    <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="" required /></div>
                 </div>
             </label><br />
             <label class="survey_style">
                 <div class="row">
                     <div class="col-md-4">Last Name:</div>
-                    <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="" /></div>
+                    <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="" required /></div>
                 </div>
             </label><br />
             <label class="survey_style">
                 <div class="row">
                     <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-                    <div class="col-md-8"><input type="text" name="email" id="email" /></div>
+                    <div class="col-md-8"><input type="email" name="email" id="email" required/></div>
                 </div>
             </label><br />
             <label class="survey_style">
                 <div class="row">
                     <div class="col-md-4">Password:</div>
-                    <div class="col-md-8"><input type="password" name="password" id="password" /></div>
+                    <div class="col-md-8"><input title="Must contain at least one uppercase, one lowercase, one number, and be a minimum of 8 characters." type="password" name="password" id="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
                 </div>
             </label>
 			
