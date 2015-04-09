@@ -78,7 +78,7 @@ function inlineMsg(target, string, autohide)
       msgcontent = document.getElementById('msgcontent');
    }
    msgcontent.innerHTML = string;
-   msg.style.display = 'inline';
+   msg.style.display = 'block';
    var msgheight = msg.offsetHeight;
    var targetdiv = document.getElementById(target);
    targetdiv.focus();
