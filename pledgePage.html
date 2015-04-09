@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Initial Creation by Victor Jereza *woot woot* -->
+	
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pledge Page</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	   <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	 
+	 <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+	<!-- Custom TestTaking JavaScript -->
+	<script src="js/testTaking.js"></script> 
+	
+	<!-- Custom CSS -->
+    <link href="css/pledgePage.css" rel="stylesheet">
+	
+</head>
+
+<body class="container-fluid">
+
+	<div id="wrapper2">
+	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+		   <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
+					<div id="logo-area">
+						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<span class="TestRepublic" id="backToClass">Test Republic</span>
+					</div>
+				</a>
+			</div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+					<!-- php goes here -->Jason Young<b class="caret"></b></a>
+						
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+	</div>
+   
+	<div class="row course_header">
+		<div class="course_number col-lg-12">
+			CS 306
+		</div>
+				
+		<div class="class_name">
+			Database II
+		</div>
+	</div>
+   
+	<div class="container-fluid main_section">
+	
+		<div class="row test_title">
+			Test 1 - Cursors Variable
+		</div>
+		
+		<div class="row test_pledge_section">
+			<span class="test_pledge_txt">Test Pledge</span>
+			<textarea class="form-control pledge_tb" name="specificInstruction" rows="8">By signing your name, you agree with the terms and conditions that you don't cheat bla bla bla...</textarea>
+		</div>
+	
+		<div class="row sign_name_txt">
+            Sign your name below:
+			<input type="text" class="form-control sign_name_tb" />
+		</div>
+	
+		<div class="row student_name">
+            Jason Young
+		</div>
+	
+		<div class="row increase_margin">
+            <button type="button" class="btn btn-primary btn-block">Submit</button>
+		</div>
+	
+	</div>
+   
+	
+
+	
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+	
+
+</body>
+
+</html>

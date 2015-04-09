@@ -32,9 +32,10 @@ session_start();
 // Include the constants used for the db connection
 require("constants.php");
 
-// 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
-
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
+
+if($id == null)
+    header('Location: login.html');
 
 // The database variable holds the connection so you can access it
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
@@ -47,6 +48,8 @@ if (mysqli_connect_errno())
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
 
+$mainClassQuery = "select class_id, class_description from class where class_id = ?";
+
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
@@ -57,105 +60,27 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_name, t_status, date_begin, date_end, date_taken from test
+$tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken, graded from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
-// Get the class id for certain user
-/*"select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";*/
+$_SESSION['classId'] = null;
 
+$_SESSION['testId'] = null;
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
 
 // The statement variable holds your query      
 $stmt = $database->prepare($query);
+$mainClassStatement = $database->prepare($mainClassQuery);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+global $class_id;
 
 ?>
-	<div id="wrapper2"
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
-																												// to display student's name in top right corner	
-																											   $topRightStatement->bind_param("s", $id);
-																												$topRightStatement->bind_result($first_name, $last_name);
-																												$topRightStatement->execute();
-																												while($topRightStatement->fetch())
-																												{
-																													echo $first_name . " " . $last_name;
-																												}
-																												$topRightStatement->close(); ?><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
+		<!-- Added by Victor -->
+	<?php require("Nav.php");?>
 	
     <div id="wrapper">
 
@@ -177,14 +102,38 @@ $warningstmt = $database->prepare($warningQuery);
 				$stmt->execute();
 				while($stmt->fetch())
 				{
+					
                // Modified by En Yang Pang
                // Gets the class id to display in the url correctly
-					echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+					echo '<li><a href=studentClassPage.php?classId='.str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
             </ul>
         </div>
+		  
+		  <?php
+		  // This is excellent program practice xD - By David Hughen
+		   $class_id = $_GET['classId'];
+			$classId = str_replace("%20", " ", $class_id);
+			$mainClassStatement->bind_param("s", $classId);
+			$mainClassStatement->bind_result($clid, $clde);
+			$mainClassStatement->execute();
+			while($mainClassStatement->fetch())
+			{
+				echo '<div class="course_header">
+	
+			<div class="course_number">'
+				. $clid .
+			'</div>
+			
+			<div class="class_name">'
+				. $clde . 
+			'</div>
+			</div>'; 
+			}
+			$mainClassStatement->close();
+		?>
 		
         <!-- /#sidebar-wrapper -->
 
@@ -193,26 +142,6 @@ $warningstmt = $database->prepare($warningQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12">
-                        <div class="warning_box">
-							<p class="warning_msg"><?php
-                                // Display warnings if a test has seven days or less to take
-                                $warningstmt->bind_param("s", $id);
-                                $warningstmt->bind_result($class_id, $days_left);
-                                $warningstmt->execute();
-                                while($warningstmt->fetch())
-                                {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
-                                }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
-                                $warningstmt->close();
-                            ?>
-                            </p>
-						</div>
-                    </div>
 					
 					<!-- our code starts here :) -->
 					<table class="class_table">
@@ -242,9 +171,10 @@ $warningstmt = $database->prepare($warningQuery);
 							
 							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
-                     $class = $_GET['class_id'];
-							$table->bind_param("ss", $id, $class);
-							$table->bind_result($test_list, $status, $date_begin, $date_end, $date_taken);
+                     $class = $_GET['classId'];
+							$classId = $class;
+							$table->bind_param("ss", $id, $classId);
+							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken, $graded);
 							$table->execute();
 							while($table->fetch())
 							{
@@ -253,15 +183,27 @@ $warningstmt = $database->prepare($warningQuery);
 									   <td>'.$date_begin.' - '.$date_end.'</td>';
 										if($date_taken != null)
 										{
-											echo '<td><button type="button" class="btn btn-primary">View Test</button></td>';
+                                            if($graded != 1)
+                                                echo '<td>Grading Pending</td>';
+                                            else
+                                                echo '<td><form action="testViewing.php" method="post">
+															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
+															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
+															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
+															<input type="hidden" value="'.$id.'" name="studentId" id="studentId"/>
+															<input type="submit" value="View Test" class="btn btn-primary"/></form></td>';
 										}
 										else if($currentTime >= $date_begin and $currentTime <= $date_end)
 										{
-											echo '<td><button type="button" class="btn btn-primary">Take Test</button></td>';
+											echo '<td><form action="testInstructionPage.php" method="post">
+															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
+															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
+															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
+															<input type="submit" value="Take Test" class="btn btn-primary"/></form></td>';
 										}
 										else
 										{
-											echo '<td><button type="button" class="btn btn-primary">Unavailable</button></td>';
+											echo '<td><button type="button" class="btn btn-danger" disabled>Unavailable</button></td>';
 										}
 										echo '</tr>';
 							}
@@ -270,8 +212,10 @@ $warningstmt = $database->prepare($warningQuery);
 							?>			
 					</table>
                 </div>
-
             </div>
+			
+			
+				
         </div>
         <!-- /#page-content-wrapper -->
 

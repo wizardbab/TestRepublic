@@ -11,6 +11,8 @@ body
 	/*background-image: url("../images/background.png");*/
 	background-image: url("../images/photo2.jpg");
 	color: black;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 
@@ -18,8 +20,13 @@ body
 
 .navbar-header
 {
-	background-color: black;
+	background-color: rgb(34,34,34);
 	width: 250px;
+}
+
+.navbar-header:hover
+{
+	background-color: black;
 }
 
 #logo-area
@@ -59,7 +66,7 @@ body
 
 /* This is the color of the text within the dropdowns */
 .top-nav>li>ul>li>a{
-    color: #999;
+    color: white;
 }
 
 .dropdown:hover>.dropdown-menu,
@@ -172,16 +179,23 @@ ul.alert-dropdown {
 
 #signUpDiv
 {
+	padding: 20px;
+	position: relative;
+	background: pink;
+	/*
+	
+	border: 3px solid black;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	*/
 	width: 100%;
-   position: absolute;
-   padding: 15px;
 	text-align: center;
 }
 
-#signUpDiv
+#welcome_text
 {
-	padding: 20px;
-	position: relative;
+	background-color: rgb(55,96,146);
+	padding: 10px;
 }
 
 #wrapper.toggled #signUpDiv {
@@ -199,7 +213,7 @@ ul.alert-dropdown {
 
 .sidebar-nav {
     position: absolute;
-    top: 60px;
+    top: 50px;
     width: 250px;
     margin: 0;
     padding: 0;
@@ -211,6 +225,8 @@ ul.alert-dropdown {
     text-indent: 15px;
     line-height: 25px;
 	font-size: 13pt;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
 }
 
 .sidebar-nav li a {
@@ -235,7 +251,7 @@ ul.alert-dropdown {
 	font-weight: bold;
     line-height: 40px;
 	background-color: rgb(55,96,146);
-	color: rgb(0,0,0);
+	color: white;
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -252,6 +268,8 @@ ul.alert-dropdown {
 #student-summary
 {
 	line-height: 50px;
+	font-size: 24px;
+	font-weight: bold;
 }
 
 @media(min-width:768px) 
@@ -286,7 +304,7 @@ ul.alert-dropdown {
 		
 	/*testing stuff */
 		
-	.col-lg-12
+	#warning_box1
 	{
 		background-color: pink;
 		height: 100px;
@@ -313,6 +331,7 @@ ul.alert-dropdown {
 		border-collapse: collapse;
 		width: 70%;
 		text-align: center;
+		margin: 0px auto;
 	}
 	
 	table.signUpTable
@@ -324,6 +343,7 @@ ul.alert-dropdown {
 		border-collapse: collapse;
 		width: 70%;
 		text-align: center;
+		background-color: pink;
 	}
 	
 	table.student_summary td, table.student_summary th
@@ -335,6 +355,7 @@ ul.alert-dropdown {
 	table.student_summary thead
 	{
 		background-color: rgb(149,179,215);
+		border-bottom: 2px solid black;
 	}
 	
 	table.student_summary th
@@ -381,6 +402,7 @@ ul.alert-dropdown {
 		border-collapse: collapse;
 		width: 70%;
 		text-align: center;
+		margin: 0px auto;
 	}
 	
 	table.teacher_summary td, table.teacher_summary th
@@ -393,6 +415,7 @@ ul.alert-dropdown {
 	table.teacher_summary thead
 	{
 		background-color: rgb(149,179,215);
+		border-bottom: 2px solid black;
 	}
 
 	table.teacher_summary col.classes
@@ -414,7 +437,7 @@ ul.alert-dropdown {
 	
 	.course_header
 	{
-		width: 85%;
+		width: 100%;
 		position: fixed;
 		padding: 8px;
 		
@@ -442,6 +465,7 @@ ul.alert-dropdown {
 		margin-top: 140px;
 		font-size: 18pt;
 		color: rgb(55,96,146);
+		font-weight: bold;
 	}
 	
 	.students_number
@@ -463,27 +487,30 @@ ul.alert-dropdown {
 	
 	.test_list_text
 	{
-		margin-top: 20px;
+		margin-top: 30px;
+		margin-bottom: 5px;
 		font-size: 18pt;
 		font-weight: bold;
-		color: rgb(55,96,146);
+		color: white;
+		background: rgb(55,96,146);
 	}
 	
 	table.test_list
 	{
 		position: relative;
-		top: 5px;
+		top: 10px;
 		font-size: 12pt;
 		border: 2px solid black;
 		border-collapse: collapse;
-		width: 35%;
+		width: 70%;
 		text-align: center;
+		margin: 0px auto;
 	}
 	
 	table.test_list td, table.test_list th
 	{
 		border: 1px solid black;
-		padding: 2px;
+		padding: 3px;
 		text-align: center;
 	}
 	
@@ -495,12 +522,22 @@ ul.alert-dropdown {
 	
 	table.test_list col.test_name
 	{
-		width: 40%;
+		width: 30%;
+	}
+	
+	table.test_list col.start_date
+	{
+		width: 20%;
+	}
+	
+	table.test_list col.end_date
+	{
+		width: 30%;
 	}
 	
 	table.test_list col.test_average
 	{
-		width: 30%;
+		width: 10%;
 	}
 	
 	table.test_list col.view_button_col
@@ -515,29 +552,37 @@ ul.alert-dropdown {
 	
 	.student_list_text
 	{
-		margin-top: 30px;
+		margin-top: 40px;
+		margin-bottom: 5px;
 		font-size: 18pt;
 		font-weight: bold;
-		color: rgb(55,96,146);
+		background-color: rgb(55,96,146);
+		color: white;
 	}
 	
 	table.student_list
 	{
 		position: relative;
-		top: 5px;
+		top: 10px;
 		font-size: 12pt;
 		border: 2px solid black;
 		border-collapse: collapse;
 		width: 70%;
 		text-align: center;
 		background: white;
+		margin: 0px auto;
 	}
 	
 	table.student_list td, table.test_list th
 	{
 		border: 1px solid black;
 		text-align: center;
-		padding: 2px;
+		padding: 3px;
+	}
+	
+	table.test_list th, table.student_list tr.student_list_header
+	{
+		border-bottom: 2px solid black;
 	}
 	
 	.student_list_header
@@ -561,5 +606,15 @@ ul.alert-dropdown {
 	.grade_test_button
 	{
 		background-color: rgb(149,179,215);
+	}
+	
+	.align-center
+	{
+		text-align: center;
+	}
+	
+	.table-hover tbody tr:hover td, .table-hover tbody tr:hover th 
+	{
+		background-color: rgba(55,96,146,0.4);
 	}
 }

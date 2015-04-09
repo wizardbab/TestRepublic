@@ -66,6 +66,17 @@
         </nav>
 	</div>	
 	
+	<div class="row course_header">
+		<div class="course_number col-lg-12">
+			CS 130-200000
+		</div>
+			
+		<div class="class_name">
+			Introduction to Computers
+		</div>
+	</div>
+		
+	
     <div id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
@@ -93,24 +104,58 @@
 						<label><input type="radio" name="optradio" disabled>Multiple Choice</label>
 					</div>
 				</li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">Matching</label>
+					</div>
+				</li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">Short Answer</label>
+					</div>
+				</li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">All that Apply</label>
+					</div>
+				</li>
+				<li>
+					<div class="radio">
+						<label><input type="radio" name="optradio">Summary</label>
+					</div>
+				</li>
             </ul>
         </div>
 		
         <!-- /#sidebar-wrapper -->
-
+		
+		<div class="row" id="test_name">
+			Test #1
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-12" id="question_header">
+				<span id="question_text">Question</span>
+				<a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>
+				<input type="text" name="question_number" id="question_number" value="1" />
+				<a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>
+			</div>
+		</div>
+		
+		
         <!-- Page Content -->
         <div id="page-content-wrapper">
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
 				<div class="row">
-					<div class="col-lg-12">
+					<div class="col-lg-12" id="question_type_text">
 						<!-- don't touch this -->
-					
+						Essay
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-12" id="QuestionBox">
-						<h1 id="question" onload="loadFirstQuestion()"> </h1>
+						<h3 id="question" onload="loadFirstQuestion()"> </h3>
 						<div class="form-group">
 						  <textarea class="form-control" rows="10" id="AnswerBox"></textarea>
 						</div>	

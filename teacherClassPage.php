@@ -21,8 +21,9 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
-<?php
+<body>
 
+<?php
 session_start();
 
 // Include the constants used for the db connection
@@ -62,8 +63,8 @@ join test using(test_id)
 where class_id = ?";
 
 // Query to populate the first table on the screen
-$firstTableQuery = "select test_name, avg(test_score) from test_list
-join test using(test_id)
+$firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id, date_begin, date_end from test_list
+right join test using(test_id)
 where class_id = ?
 group by(test_name)
 order by(test_id)";
@@ -72,7 +73,10 @@ order by(test_id)";
 $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?";
 
 // Title bar for student list
-$studentTitleQuery = "select test_name from test where class_id = ?";
+$studentTitleQuery = "select test_name from test
+join test_list using(test_id)
+where class_id = ?
+group by(test_id)";
 
 // Student names for student list
 $studentNamesQuery = "select first_name, last_name from student
@@ -80,15 +84,16 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select test_score, graded from test_list
-join test
-using(test_id)
-where student_id = ? and class_id = ?";
+$testScoreQuery = "select student_id, sum(points_earned)/sum(question_value)*100, graded, test_id, test_name, date_taken from test_list
+join test using(test_id)
+join question using(test_id, student_id)
+where student_id = ? and class_id = ?
+group by(test_id)";
 
 // Average score for student list
-$averageQuery = "select avg(test_score) from test_list
+$averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
 join test using(test_id)
-where student_id = ? and class_id = ?";
+where student_id = ? and class_id = ? and date_taken is not null";
 
 // List of students for student list
 $studentQuery = "select student_id from enrollment
@@ -109,101 +114,16 @@ $studentStatement = $database->prepare($studentQuery);
 
 ?>
 
-<body>
-	<div id="wrapper2"
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-           <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li> 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php // Added by David Hughen
-																												// to display student's name in top right corner
 
-																								if ($topRightStatement = $database->prepare($topRightQuery)) 
-																															{
-																																$topRightStatement->bind_param("s", $id);
-																									
-																															}
-																															else {
-																																printf("Errormessage: %s\n", $database->error);
-																															}							
-																												$topRightStatement->bind_result($first_name, $last_name);
-																												$topRightStatement->execute();
-																												while($topRightStatement->fetch())
-																												{
-																													echo $first_name . " " . $last_name;
-																												}
-																												$topRightStatement->close();?><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
+			<!-- Added by Victor -->
+	<?php require("Nav.php");?>
 	
     <div id="wrapper">
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-					 <li>
+				<li>
                     <a href="teacherMainPage.php" id="student-summary">Main Page</a>
                 </li>
                 <li class="sidebar-brand">
@@ -218,14 +138,15 @@ $studentStatement = $database->prepare($studentQuery);
 				while($queryStatement->fetch())
 				{
 					
-					echo '<li><a href=teacherClassPage.php?classId=' . $cid = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
+					echo '<li><a href=teacherClassPage.php?classId=' . $cid = str_replace(" ", "%20", $clid) . '><b>' . $clid . '</b><div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$queryStatement->close();
 				?>
 			
             </ul>
         </div>
-		<?php
+		
+        <?php
 			$mainClassStatement->bind_param("s", $classId);
 			$mainClassStatement->bind_result($clid, $clde);
 			$mainClassStatement->execute();
@@ -244,17 +165,22 @@ $studentStatement = $database->prepare($studentQuery);
 			}
 			$mainClassStatement->close();
 		?>
-        
 		
 		
         <!-- Page Content -->
         <div id="page-content-wrapper">
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
+				<div class="row">
+				
+				</div>
+			</div>
+			
+			<div class="container-fluid align-center">
                 <div class="row">
 				
 					<div class="students_num_text">
-						No of Students:
+						Number of Students:
 						<span class="students_number"><?php 
 						$studentCountStatement->bind_param("s", $classId);
 						$studentCountStatement->bind_result($studentCount);
@@ -266,16 +192,22 @@ $studentStatement = $database->prepare($studentQuery);
 						$studentCountStatement->close();
 						?></span>
 					</div>
-					
-					<button type="button" class="create_test_button" onclick="location.href='testCreationPage.php'">Create Test</button>
-					
+					<form action="testCreationPage.php" method="post">
+                        <input type="hidden" class="create_test_button" value="" name="testId" id="testId"/>
+                        <input type="submit" class="create_test_button" id="createTestButton" value="Create Test"/>
+                    </form>
+				</div>
+				<div class="row">
 					<div class="test_list_text">
 						Test List
 					</div>
-					
+				</div>
+				<div class="row">
 					<table class="test_list table-hover">
 						<colgroup>
 							<col class="test_name" />
+							<col class="start_date" />
+							<col class="ending_date" />
 							<col class="test_average" />
 							<col class="view_button_col" />
 						</colgroup>
@@ -283,6 +215,8 @@ $studentStatement = $database->prepare($studentQuery);
 						<thead>
 						<tr>
 							<th>Test Name</th>
+							<th>Start Date</th>
+							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
 						</tr>
@@ -292,30 +226,37 @@ $studentStatement = $database->prepare($studentQuery);
 						<?php
 							$firstTableStatement = $database->prepare($firstTableQuery);
 							$firstTableStatement->bind_param("s", $classId);
-							$firstTableStatement->bind_result($tname, $tavg);
+							$firstTableStatement->bind_result($tname, $tavg, $tid, $sid, $dateBegin, $dateEnd);
 							$firstTableStatement->execute();
 							// We should be getting two tests here
 							while($firstTableStatement->fetch())
 							{                                  
                                 $tavg = number_format($tavg, 2);
-                                if($tavg == 0)
+                                if($sid == null)
+                                    $tavg = 'Test not published';
+                                else if($tavg == 0)
                                     $tavg = 'No Tests Taken';
                                 else
                                     $tavg = (float)$tavg.'%';
-								echo '<tr><td>' . $tname . '</td><td>' .$tavg. '</td><td><button type="button" class="view_test_button"></button></td></tr>';
+								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
+                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></form></td>
+																				</td></tr>';
 							}
 							$firstTableStatement->close();
-                            if($tname == null)
-                                    echo'<tr><td colspan="3">No tests created</td></tr>';
+                            if($tid == null)
+                                    echo'<tr><td colspan="5">No tests created</td></tr>';
 						?>
 						</tbody>
 						
 					</table>
-					
+				</div>
+				<div class="row">
 					<div class="student_list_text">
 						Student List
 					</div>
-					
+				</div>
+				<div class="row">
 					<table class="student_list table-hover">
 					<tr class="student_list_header">
 					<td>First Name</td>
@@ -376,22 +317,39 @@ $studentStatement = $database->prepare($studentQuery);
 								
 									$testScoreStatement = $database->prepare($testScoreQuery);
 									$testScoreStatement->bind_param("ss", $studentArray[$i], $classId);
-									$testScoreStatement->bind_result($testScore, $graded);
+									$testScoreStatement->bind_result($studentId, $testScore, $graded, $testId, $testName, $dateTaken);
 									$testScoreStatement->execute();
 									while($testScoreStatement->fetch())
 									{
                                         // Determines whether test is graded or not
-                                        // This will become a button link to grade the test
-                                        if($graded == 0)
-                                            $graded = '(grade)';
-                                        else
-                                            $graded = '(view)';
-                                        number_format($testScore, 2);
-                                        if($testScore != null)
-                                            echo '<td>' . (float)$testScore.'% ' . $graded.'</td>';
-                                        else
+                                        if(is_null($graded))
+                                        {
                                             echo '<td>Not Taken</td>';
-									}
+                                        }
+                                        else if($graded == 1)
+                                        {
+                                            $state = '<form action="teacherTestView.php" method="post">
+                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
+                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
+                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
+                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
+                                            <input type="submit" value="View" class="btn btn-primary btn-block"/>
+                                            </form>';
+                                            $testScore = number_format($testScore, 2);
+                                            echo '<td>' . (float)$testScore.'% ' . $state.'</td>';
+                                        }
+                                        else
+                                        {
+                                            $state = '<form action="testGradingPage.php" method="post">
+                                            <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
+                                            <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
+                                            <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
+                                            <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
+                                            <input type="submit" value="Grade" class="btn btn-primary btn-block"/>
+                                            </form>';
+                                            echo '<td>' . $state.'</td>';
+                                        }
+                                    }
 									
 									$testScoreStatement->close();
 									

@@ -64,12 +64,11 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 
 
 
-$tableQuery = "select class_id, count(student_id), date_taken
-from test_list
-join test using(test_id) 
-right join class using(class_id, teacher_id)
-where teacher_id = ? and (graded != 1 or student_id is null)
-group by(class_id)";
+$tableQuery = "select class_id, count(graded), date_taken from class
+left join test using(class_id, teacher_id)
+left join test_list using(test_id)
+where teacher_id = ? and (graded != 1 or graded is null)
+group by class_id";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
@@ -86,85 +85,8 @@ $warningstmt = $database->prepare($warningQuery);
 $table = $database->prepare($tableQuery);
 
 ?>
-	<div id="wrapper2"
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
-																												// to display student's name in top right corner	
-																											    $topRightStatement->bind_param("s", $id);
-																												$topRightStatement->bind_result($first_name, $last_name);
-																												$topRightStatement->execute();
-																												while($topRightStatement->fetch())
-																												{
-																													echo $first_name . " " . $last_name;
-																												}
-																												$topRightStatement->close(); ?><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
+	<!-- Added by Victor, replaces the nav bar -->
+	<?php require("Nav.php");?>
 	
     <div id="wrapper">
 
@@ -187,7 +109,7 @@ $table = $database->prepare($tableQuery);
 				$classId = str_replace(" ", "%20", $clid);
 				while($stmt->fetch())
 				{	
-					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' . $clid . '<div class=subject-name>' . $clde . '</div></a></li>';
+					echo '<li><a href=teacherClassPage.php?classId=' . $class_id = str_replace(" ", "%20", $clid) . '>' .'<b>'. $clid .'</b>'. '<div class=subject-name>' . $clde . '</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -214,7 +136,6 @@ $table = $database->prepare($tableQuery);
 						<tr>
 							<th>Classes</th>
 							<th>Recent Updates</th>
-							<th>Updated</th>
 						</tr>
 						</thead>
 						
@@ -227,8 +148,7 @@ $table = $database->prepare($tableQuery);
 							while($table->fetch())
 							{	
 								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'teacherClassPage.php?classId='.$clid.'\'">'.$clid.'</button></td>
-									  <td>'.$update.' test(s) to grade</td>
-									  <td>'.$date.'</td></tr>';
+									  <td>'.$update.' test(s) to grade</td></tr>';
 							}
 							$table->close(); 
 							?>			

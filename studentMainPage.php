@@ -19,7 +19,7 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+	
 </head>
 
 <body>
@@ -34,7 +34,9 @@ require("constants.php");
 
 // 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
 
-$id = $_SESSION['username']; // Just a random variable gotten from the URL
+$id = isset($_POST['studentId']) ? $_POST['studentId'] : $_SESSION['username'];
+
+//$id = $_SESSION['username']; // Just a random variable gotten from the URL
 
 if($id == null)
     header('Location: login.html');
@@ -48,6 +50,9 @@ if (mysqli_connect_errno())
 }
 
 $_SESSION['username'] = $id;
+
+if($id == null)
+    header('Location: login.html');
 
 // Class id and description query
 $query = "select class_id, class_description from enrollment join class using (class_id) where student_id = ?";
@@ -77,85 +82,9 @@ $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
 
 ?>
-	<div id="wrapper2"
-	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
-					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
-					</div>
-				</a>
-			</div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php  // Added by David Hughen
-																												// to display student's name in top right corner	
-																											    $topRightStatement->bind_param("s", $id);
-																												$topRightStatement->bind_result($first_name, $last_name);
-																												$topRightStatement->execute();
-																												while($topRightStatement->fetch())
-																												{
-																													echo $first_name . " " . $last_name;
-																												}
-																												$topRightStatement->close(); ?><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 
-            <!-- /.navbar-collapse -->
-        </nav>
-	</div>	
+	<!-- Added by Victor -->
+	<?php require("Nav.php");?>
 	
     <div id="wrapper">
 
@@ -178,7 +107,7 @@ $warningstmt = $database->prepare($warningQuery);
 
 				while($stmt->fetch())
 				{
-               echo '<li><a href=studentClassPage.php?class_id='.$class_id = str_replace(" ", "%20", $clid).'>'.$clid.'<div class=subject-name>'.$clde.'</div></a></li>';
+               echo '<li><a href=studentClassPage.php?classId='.$class_id = str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -193,7 +122,7 @@ $warningstmt = $database->prepare($warningQuery);
             <div class="container-fluid">
                 <div class="row">
 					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="warning_box1">
                         <div class="warning_box">
 							<p class="warning_msg"> 
                                 <?php
@@ -240,7 +169,7 @@ $warningstmt = $database->prepare($warningQuery);
 							$table->execute();
 							while($table->fetch())
 							{	
-								echo '<tr><td><button type="button" class="course_button">'.$clid.'</button></td>
+								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?classId='.str_replace(" ", "%20", $clid).'\'">'.$clid.'</button></td>
 									  <td>'.$update.'</td>
 									  <td>'.$date.'</td></tr>';
 							}
