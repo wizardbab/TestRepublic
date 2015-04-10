@@ -67,6 +67,8 @@
 
 	echo $newQuestionNumber;
 	
+    if(count($idArray) == 0)
+        array_push($idArray, 0);
 	// assign a new question id
     for($k = 0; $k < count($idArray); $k++)
     {
@@ -108,9 +110,5 @@
                 $newAnswerId++;
             }
         }
-    }
-    if(count($idArray) == 0)
-    {
-        
     }
 ?>

@@ -33,6 +33,8 @@ session_start();
 require("constants.php");
 
 // 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
+@$sid = $_POST['studentId'];
+
 
 $id = isset($_POST['studentId']) ? $_POST['studentId'] : $_SESSION['username'];
 
