@@ -178,7 +178,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 		
 		<div class="row test_instruction_section">
 			<span class="test_instruction_txt">Test Instructions</span>
-			<textarea class="form-control instruction_tb" name="specificInstruction" rows="8"> <?php echo $instruction; ?> </textarea>
+			<textarea class="form-control instruction_tb" disabled name="specificInstruction" rows="8"> <?php echo $instruction; ?> </textarea>
 		</div>
 	
 		<div class="row time_limit">
