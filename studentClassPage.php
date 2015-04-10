@@ -51,7 +51,7 @@ $query = "select class_id, class_description from enrollment join class using (c
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
 
 // Student first and last name to display on top right of screen
-$topRightQuery = "select first_name, last_name from student where student_id = ?";
+$topRightQuery = "select student_id, first_name, last_name from student where student_id = ?";
 
 // Display any tests that will expire within 7 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
