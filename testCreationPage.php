@@ -1134,6 +1134,7 @@ $modalId = 0;
             }
             else
             {
+               $("#MCModal").modal("hide");
                var question = $("#mc_question").val();
                var multipleChoiceArray = [];
                var multipleTextArray = [];
@@ -1222,6 +1223,7 @@ $modalId = 0;
             }
             else
             {
+               $("#ATAModal").modal("hide");
                var question = $("#ata_question").val();
                var ataArray = [];
                var ataTextArray = [];
@@ -1310,6 +1312,7 @@ $modalId = 0;
             }
             else
             {
+               $("#TFModal").modal("hide");
                var question = $("#tf_question").val();
                var trueFalseArray = [];
                var answerText = ["true", "false"];
@@ -1387,6 +1390,7 @@ $modalId = 0;
             }
             else
             {
+               $("#EssayModal").modal("hide");
                var question = $("#essay_question").val();
                var answer = $("#essay_answer").val();
                
