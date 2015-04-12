@@ -14,6 +14,40 @@
     <link href="css/login.css" rel="stylesheet">
    <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	 
+	   <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+	 <script>
+	 function GetUrlValue(VarSearch)
+	 {
+	 
+		 var SearchString = window.location.search.substring(1);
+		 var VariableArray = SearchString.split('&');
+		 
+		 for(var i = 0; i < VariableArray.length; i++)
+		 {
+			  var KeyValuePair = VariableArray[i].split('=');
+			  
+			  if(KeyValuePair[0] == VarSearch)
+			  {
+					return KeyValuePair[1].replace(/%20/g, ' ');
+			  }
+		 }
+	}
+	
+	$(document).ready(function(){
+		if(GetUrlValue('errorMessage') == undefined)
+			document.getElementById("test").innerHTML = " ";
+		else
+			document.getElementById("test").innerHTML = GetUrlValue('errorMessage');
+	});
+	
+
+</script>
 	
 </head> 
 <body> 
@@ -77,9 +111,12 @@
 </div>	
 
 <div class="centralBox">
+	
 	<img class="centralLogo" src="images/newlogo.png" alt="Our Logo"/>
+	<h1 align="center">Test Republic</h1>
 	<h1 align="center">Take your online tests here!</h1>
 </div>
+<div id="test"></div>
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">
@@ -112,11 +149,7 @@
 		</div>
 	</div>
 </div>
-	    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+	  
 	
 	    <!-- Script to Activate the Carousel -->
     <script>

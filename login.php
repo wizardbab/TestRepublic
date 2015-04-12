@@ -93,7 +93,7 @@ else if($admin1 != null)
 }
 else
 {
-	 header('Location: login.html');
+	 header('Location: login.html?errorMessage=Invalid username and password!');
 }
 
 // Close the database connection

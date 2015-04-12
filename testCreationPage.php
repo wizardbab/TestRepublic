@@ -742,8 +742,8 @@ $modalId = 0;
       var testPledge;
       var newTestId = '<?php echo $newTestId; ?>';
       var maxPoints;
-        var classId = '<?php echo $clid; ?>';
-        var teacherId = '<?php echo $id; ?>';
+      var classId = '<?php echo $clid; ?>';
+      var teacherId = '<?php echo $id; ?>';
       
       $("#saveTestBtn").click(function()
       {
@@ -1091,9 +1091,14 @@ $modalId = 0;
                function(data)
                {
 
-                  $("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
+                  /*$("#testList").append('<div class="list-group-item" id="list_group'+data+'"> <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></div>'
                        );
-                       $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                       $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>'); */
+							  for(var i = 0; i < questionArray.length; i++)
+							  {
+									 $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item" data-toggle="modal" > <h4 class="list-group-item-heading">'+(++counter)+'. Matching</h4> <p class="list-group-item-text">'+ heading + '</p></a>');
+									 $("#testList").append('<button type="button" class="btn btn-default btn-md trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+							  }
                });
 
                for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
