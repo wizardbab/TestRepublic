@@ -708,7 +708,7 @@ $_SESSION['testId'] = $testId;
     <script>
     $(document).ready(function()
 	{
-        $("#Submit").click(function()
+        $("#submit").click(function()
         {
             var testId = '<?php echo $testId; ?>';
             var studentId = '<?php echo $studentId; ?>';

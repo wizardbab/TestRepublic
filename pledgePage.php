@@ -149,7 +149,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 		
 		<div class="row test_pledge_section">
 			<span class="test_pledge_txt">Test Pledge</span>
-			<textarea class="form-control pledge_tb" name="specificInstruction" rows="8"><?php echo $pledge; ?></textarea>
+			<textarea class="form-control pledge_tb" disabled name="specificInstruction" rows="8"><?php echo $pledge; ?></textarea>
 		</div>
 	
 		<div class="row sign_name_txt">

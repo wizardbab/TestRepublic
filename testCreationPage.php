@@ -785,16 +785,50 @@ $modalId = 0;
         var classId = '<?php echo $clid; ?>';
         
         $("#createTestBtn").click(function()
-      {
-         alert("Test published!");
-         $.post("TestButtonScripts/createButton.php",
-         {
-                newTestId:newTestId,
-                classId:classId
-         },
+		{
+            var testName;
+            var dateBegin;
+            var dateEnd;
+            var timeLimit;
+            var specificInstruction;
+            var testPledge;
+            var newTestId = '<?php echo $newTestId; ?>';
+            var maxPoints;
+            var classId = '<?php echo $clid; ?>';
+            var teacherId = '<?php echo $id; ?>';
+        
+            testName = $("#testName").val();
+			dateBegin = $("#dateBegin").val();
+			dateEnd = $("#dateEnd").val();
+			timeLimit = $("#timeLimit").val();
+			specificInstruction = $("#specificInstruction").val();
+			testPledge = $("#testPledge").val();
+			maxPoints = $("#maxPoints").val();
+			
+			$.post("TestButtonScripts/saveButton.php",
+			{
+				testName:testName,
+				dateBegin:dateBegin,
+				dateEnd:dateEnd,
+				timeLimit:timeLimit,
+				specificInstruction:specificInstruction,
+				testPledge:testPledge,
+				newTestId:newTestId,
+				maxPoints:maxPoints,
+            classId:classId,
+            teacherId:teacherId
+			},
+		function(data)
+		{
+		});
+			alert("Test published!");
+        $.post("TestButtonScripts/createButton.php",
+        {
+            newTestId:newTestId,
+            classId:classId
+        },
         function(data)
         {
-    
         });
         });
    });
@@ -1139,6 +1173,7 @@ $modalId = 0;
             }
             else
             {
+               $("#MCModal").modal("hide");
                var question = $("#mc_question").val();
                var multipleChoiceArray = [];
                var multipleTextArray = [];
@@ -1227,6 +1262,7 @@ $modalId = 0;
             }
             else
             {
+               $("#ATAModal").modal("hide");
                var question = $("#ata_question").val();
                var ataArray = [];
                var ataTextArray = [];
@@ -1315,6 +1351,7 @@ $modalId = 0;
             }
             else
             {
+               $("#TFModal").modal("hide");
                var question = $("#tf_question").val();
                var trueFalseArray = [];
                var answerText = ["true", "false"];
@@ -1392,6 +1429,7 @@ $modalId = 0;
             }
             else
             {
+               $("#EssayModal").modal("hide");
                var question = $("#essay_question").val();
                var answer = $("#essay_answer").val();
                
