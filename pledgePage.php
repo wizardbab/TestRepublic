@@ -225,15 +225,12 @@ $testNameStatement = $database->prepare($testNameQuery);
 		
 		 if (confirm("You didn't enter your name - proceed with a score of zero?") == true)
 		 {
-			x = "You pressed OK!";
 			// Here we assign a zero to the grade
 		 } 
 		 else
 		 {
-        x = "You pressed Cancel!";
 		  // Here we stay on the page
        }
-		 alert(x); // Get rid of this when done
 	}
 	
 	$(document).ready(function()

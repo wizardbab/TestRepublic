@@ -46,7 +46,7 @@
 	<script>
 		function Redirect()
 		{
-			window.location = "login.html";
+			window.location = "studentMainPage.php";
 		}
 	</script>
 	

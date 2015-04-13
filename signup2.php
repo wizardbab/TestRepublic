@@ -379,7 +379,7 @@ $success = false;
                                     $questionArray[] = null;
                                 }
                                 echo '<script type="text/javascript">';
-								 //echo 'redirect();';
+								 echo 'redirect();';
 								 echo '</script>';
                               }
                            }			
