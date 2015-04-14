@@ -749,7 +749,7 @@ $_SESSION['testId'] = $testId;
                     pointsEarnedArray.push($("#MPoints"+'<?php echo $matchingArray[$i+7]; ?>').val());
                     //alert($("#MPoints"+'<?php echo $matchingArray[$i+7]; ?>').val());
             <?php } ?>
-            alert(questionIdArray);
+            
             $.post("TestButtonScripts/gradeButton.php",
             {
                 "pointsEarnedArray[]":pointsEarnedArray,
@@ -759,7 +759,7 @@ $_SESSION['testId'] = $testId;
             },
             function(data)
             {
-                alert(data);
+                
             });
         });
     });

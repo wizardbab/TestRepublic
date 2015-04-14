@@ -60,7 +60,7 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_id, test_name, t_status, date_begin, date_end, date_taken, graded from test
+$tableQuery = "select test_id, test_name, test_score, date_begin, date_end, date_taken, graded from test
 join test_list using(test_id)
 where student_id = ? and class_id = ?";
 $_SESSION['classId'] = null;
@@ -157,7 +157,7 @@ global $class_id;
 						<tr>
 							
 							<th>List of Tests</th>
-							<th>Status</th>
+							<th>Grade</th>
 							<th>Date Frame</th>
 							<th>Option</th>
 						</tr>
@@ -178,13 +178,26 @@ global $class_id;
 							$table->execute();
 							while($table->fetch())
 							{
-								echo '<tr><td>'.$test_list.'</td>
-									   <td>'.$status.'</td>
-									   <td>'.$date_begin.' - '.$date_end.'</td>';
+								echo '<tr><td>'.$test_list.'</td>';
+                                if($date_taken != null)
+								{
+                                    if($graded != 1)
+                                        echo '<td>Grade Pending</td>';
+                                    else
+                                    {
+                                        $status = number_format($status, 2);
+                                        echo'<td>'.(float)$status.'%</td>';
+                                    }
+                                }
+                                else
+                                    echo '<td>Not Taken</td>';
+                                       
+                                $date
+								echo'<td>'.$date_begin.' - '.$date_end.'</td>';
 										if($date_taken != null)
 										{
                                             if($graded != 1)
-                                                echo '<td>Grading Pending</td>';
+                                                echo '<td>Grade Pending</td>';
                                             else
                                                 echo '<td><form action="testViewing.php" method="post">
 															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
