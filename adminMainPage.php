@@ -3,23 +3,27 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="">
+   <meta name="author" content="">
 
-    <title>Test Republic - Admin</title>
+   <title>Test Republic - Admin</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+   <!-- Bootstrap Core CSS -->
+   <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
+   <!-- Custom CSS -->
+   <link href="css/simple-sidebar.css" rel="stylesheet">
 	
-	   <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+	<!-- Custom Fonts -->
+   <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+   <!-- Custom Validation -->
+   <link href="css/validation.css" rel="stylesheet" type="text/css">
+   <script type="text/javascript" src="js/validation.js"></script>
+   
 </head>
 <body>
 
@@ -301,7 +305,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 							</div>
 							<div class="modal-footer bottom_modal">
 								<button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
-								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="createTeacherButton" name="create" value="create" >Create Teacher</button>
+								<button type="submit" class="btn btn-primary " id="createTeacherButton" name="create" value="create" >Create Teacher</button>
 							</div>
 						</div>
 					</div>
@@ -333,7 +337,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 							</div>
 							<div class="modal-footer bottom_modal">
 								<button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
-								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="createClassButton" name="create" value="create" >Create Class</button>
+								<button type="submit" class="btn btn-primary " id="createClassButton" name="create" value="create" >Create Class</button>
 							</div>
 						</div>
 					</div>
@@ -361,7 +365,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 							</div>
 							<div class="modal-footer bottom_modal">
 								<button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
-								<button type="submit" class="btn btn-primary " data-dismiss="modal" id="updateClassButton" name="create" value="create" >Create Class</button>
+								<button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Create Class</button>
 							</div>
 						</div>
 					</div>
@@ -406,59 +410,96 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 			var lastName = $("#lastNameText").val();
 			var email = $("#emailText").val();
 			var password = $("#passwordText").val();
-			$.post("AdminScripts/addTeacherScript.php",
+         var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+         var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+         
+         if(firstName == "")
+         {
+            inlineMsg('firstNameText', 'This field cannot be empty', 3);
+         }
+         else if(lastName == "")
+         {
+            inlineMsg('lastNameText', 'This field cannot be empty', 3);
+         }
+         else if(email == "")
+         {
+            inlineMsg('emailText', 'This field cannot be empty', 3);
+         }
+         else if(!email.match(emailRegex))
+         {
+            inlineMsg('emailText', 'This email is invalid', 3);
+         }
+         else if(password == "")
+         {
+            inlineMsg('passwordText', 'This field cannot be empty', 3);
+         }
+         else if(!password.match(passwordRegex))
+         {
+            inlineMsg('passwordText', 'A password must contain at least one uppercase, one lowercase, one number, and be a minimum of eight characters long', 4);
+         }
+         else
+         {
+            $("#TModal").modal("hide");
+            $.post("AdminScripts/addTeacherScript.php",
 				{
 					firstName:firstName,
 					lastName:lastName,
 					email:email,
 					password:password
 				},
-				function(data)
-				{
-					alert(data);
-					
-				}); 
+            function()
+            {
+               alert("You have successfully added a new teacher!");
+               
+            });
+         }
 		}); 
 		
 		$("#createClassButton").click(function()
 		{
 			var teacherArray = [];
-			 <?php for($i = 0; $i < count($teacherArray); $i++){ ?>
-                    teacherArray.push('<?php echo $teacherArray[$i];?>');
-                <?php } ?>
+			<?php for($i = 0; $i < count($teacherArray); $i++){ ?>
+         teacherArray.push('<?php echo $teacherArray[$i];?>');
+         <?php } ?>
 				
 			var classId = $("#classIdText").val();
 			var classDescription = $("#classDescriptionText").val();
 			var teacherId = $("#teacherIdText").val();
 			
-			
-			
-			if(inArray(teacherArray, teacherId))
-			{
-				$.post("AdminScripts/addClassScript.php",
-				{
-					classId:classId,
-					classDescription:classDescription,
-					teacherId:teacherId
-				},
-				function(data)
-				{
-					alert(data);
-					
-				});
-			
-			}
-			else
-				alert("teacher not valid");
-				
+			if(classId == "")
+         {
+            inlineMsg('classIdText', 'This field cannot be empty', 2);
+         }
+         else if(classDescription == "")
+         {
+            inlineMsg('classDescriptionText', 'This field cannot be empty', 2);
+         }
+         else if(teacherId == "")
+         {
+            inlineMsg('teacherIdText', 'This field cannot be empty', 2);
+         }
+         else
+         {
+            $("#CModal").modal("hide");
+            $.post("AdminScripts/addClassScript.php",
+            {
+               classId:classId,
+               classDescription:classDescription,
+               teacherId:teacherId
+            },
+            function()
+            {
+               alert("You have successfully created a new class");
+            });
+         }
 		}); 
 		
 		$("#updateClassButton").click(function()
 		{
 			var teacherArray = [];
 			var classArray = [];
-			var classId = $("#classIdUpdateText").val();
-			var teacherId = $("#teacherIdUpdateText").val();
+			var classUpdateId = $("#classIdUpdateText").val();
+			var teacherUpdateId = $("#teacherIdUpdateText").val();
 			
 			 <?php for($i = 0; $i < count($teacherArray); $i++){ ?>
                     teacherArray.push('<?php echo $teacherArray[$i];?>');
@@ -468,22 +509,28 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                     classArray.push('<?php echo $classArray[$i];?>');
                 <?php } ?>
 				
-			if(inArray(teacherArray, teacherId) && inArray(classArray, classId))
+			if(classUpdateId == "")
+         {
+            inlineMsg('classIdUpdateText', 'This field cannot be empty', 2);
+         }
+         else if(teacherUpdateId == "")
+         {
+            inlineMsg('teacherIdUpdateText', 'This field cannot be empty', 2);
+         }
+         else
 			{
+            $("#UpdateModal").modal("hide");
 				$.post("AdminScripts/updateClassScript.php",
 				{
 					classId:classId,
 					teacherId:teacherId
 				},
-				function(data)
+				function()
 				{
-					alert(data);
+					alert("You have successfully updated the class");
 					
 				});
 			}
-			else
-				alert("invalid teacher or class");
-		
 		});
 	
 	});
