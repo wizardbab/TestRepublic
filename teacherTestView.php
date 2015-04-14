@@ -340,19 +340,26 @@ $_SESSION['testId'] = $testId;
 							{
 								
 								echo '<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
-                            </h4>
-                        </div>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+	                                <div class="panel-heading" id="panel-color">
+	                            	<h4 class="panel-title"></span>  Essay</h4>
+	                            	</div>
+                            	</a>
 							  <div id="collapseSix" class="panel-collapse collapse">
 									<div class="panel-body">';
 									
+							
 									for($i = 0; $i < count($essayArray); $i+=7)
 									{
-										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4>Points Earned<input type=text value="'.$essayArray[$i+6].'" class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
+
+										echo'<h4><p class="question_num make_inline">'.$essayArray[$i].'.</p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
+										<h4></h4>
 											<div class="essay_answers">
-												<textarea class="form-control" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6">'.$essayArray[$i+5].'</textarea></div>';
+												<textarea class="form-control essay_textarea" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="5">'.$essayArray[$i+5].'</textarea>
+												<div class="answer_text">Answer:</div>
+												<textarea class="form-control essay_textarea" rows="4">Put teacher answer here</textarea>
+											</div>
+												<div class="points_earned_section_essay"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$essayArray[$i+6].'" class="essay_points_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/></div><br />';
                                         $essayCounter++;
 									}
 								echo'		
@@ -360,17 +367,20 @@ $_SESSION['testId'] = $testId;
 							  </div>
 							      </div>';
 							}
+							
                             
 							// True/False stuff
 							if(count($trueFalseArray) > 0)
 							{
                                 $oldQuestion = 0;
 								echo'<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												True/False
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseFour" class="panel-collapse collapse">';
 									for($i = 0; $i < count($trueFalseArray); $i+=8)
 									{
@@ -426,18 +436,21 @@ $_SESSION['testId'] = $testId;
                                 $oldQuestion = 0;
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
-										</h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+										<div class="panel-heading" id="panel-color">
+											<h4 class="panel-title">
+												Multiple Choice
+											</h4>
+										</div>
+									</a>
 									<div id="collapseOne" class="panel-collapse collapse">';
 									for($i = 0; $i < count($multipleChoiceArray); $i+=8)
 									{	
                                         if($oldQuestion != $multipleChoiceArray[$i+4])
                                         {
-                                            echo'	<div class="panel-body" >
-												<h4>'.$multipleChoiceArray[$i].'<span class="mc_questions">'.$multipleChoiceArray[$i+3].'</span></h4><h4>Point Value: '.$multipleChoiceArray[$i+2].'</h4>
+                                           echo'	<div class="panel-body" >
+
+												<h4><p class="question_num make_inline">'.$multipleChoiceArray[$i].'.</p>'.'<p class="mc_questions make_inline">'.$multipleChoiceArray[$i+3].' ('.$multipleChoiceArray[$i+2].')'.'</p></h4>
 													<div class="mc_answers" >';
                                                     $oldQuestion = $multipleChoiceArray[$i+4];
 													$multipleChoiceStatement->bind_param("s", $multipleChoiceArray[$i+4]);
@@ -449,13 +462,28 @@ $_SESSION['testId'] = $testId;
 														echo '<div class="mc_choice" >
 															<input type="radio" disabled="disabled" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" '.$checked.'/>
 															<span class="mc_answer_lbl">'.$atext.'</span>';
-                                                            if($correct == 1)
-                                                            {
-                                                                echo "   --   Correct Answer";
-                                                            }
+
+                                                        if($stuSelection == 1)
+                                                        {
+                                                            if($correct == $stuSelection)
+															{
+                                                                $pointsEarned = $multipleChoiceArray[$i+2];
+																echo " <img src='images/sign.png' />";
+															}
+                                                            else
+															{
+                                                                $pointsEarned = 0;
+																echo " <img src='images/cross.jpg' />";
+															}
+                                                        }
+                                                        if($correct == 1 and $stuSelection != 1)
+                                                        {
+                                                        	echo " <img src='images/sign.png' />";
+                                                        }    
+
                                                         echo '</div>';
 													}	
-											echo'	</div>Points Earned<input type=text value="'.$multipleChoiceArray[$i+7].'" class="matching_answer_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/>
+											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$multipleChoiceArray[$i+5].'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
 											</div>';
                                             $multipleChoiceCounter++;
                                         }
@@ -472,11 +500,13 @@ $_SESSION['testId'] = $testId;
 							{
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												Matching
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseTwo" class="panel-collapse collapse">
 										 <div class="panel-body container">';
                                         $matchingHeadStatement->bind_param("s", $testId);
@@ -538,11 +568,13 @@ $_SESSION['testId'] = $testId;
 							if(count($shortAnswerArray) > 0)
 							{
 								echo'<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Short Answer</a>
-                            </h4>
-                        </div>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+	                        <div class="panel-heading" id="panel-color">
+	                            <h4 class="panel-title">
+	                                Short Answer
+	                            </h4>
+	                        </div>
+	                    </a>
                         <div id="collapseFive" class="panel-collapse collapse">';
 								for($i = 0; $i < count($shortAnswerArray); $i+=7)
 								{

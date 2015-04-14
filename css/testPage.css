@@ -22,10 +22,16 @@ body
 	width: 250px;
 }
 
+.navbar-header:hover
+{
+	background-color: black;
+}
+
 #logo-area
 {
 	display: inline-block;
 	margin-top: -11px;
+	width: 230px;
 }
 
 .TestRepublic
