@@ -13,7 +13,7 @@
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic">Test Republic</span>
 					</div>
 				</a>
@@ -36,7 +36,7 @@
 											$topRightStatement->execute();
 											while($topRightStatement->fetch())
 											{
-												echo $first_name . " " . $last_name . ", ". $id;
+												echo $first_name . " " . $last_name . ", ". $id." ";
 											}
 											$topRightStatement->close();?><b class="caret"></b></a>
 						

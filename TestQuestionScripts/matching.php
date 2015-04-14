@@ -98,8 +98,6 @@
         }
         $answerIdStatement->close();
         
-        echo $testId;
-        
         // Insert into question table after question is created
         if(is_array($questions))
         {

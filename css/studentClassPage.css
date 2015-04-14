@@ -26,6 +26,7 @@ body
 {
 	display: inline-block;
 	margin-top: -11px;
+	width: 230px;
 }
 
 .TestRepublic
@@ -185,11 +186,17 @@ ul.alert-dropdown {
 }
 
 .sidebar-nav li {
-    text-indent: 15px;
+    /*text-indent: 15px;*/
+    padding-left: 15px;
     line-height: 25px;
 	font-size: 13pt;
 	border-bottom: 1px solid black;
 	border-right: 1px solid black;
+}
+
+.sidebar-nav li:hover
+{
+	background: rgba(55,96,146,0.4);
 }
 
 .sidebar-nav li a {
@@ -215,6 +222,11 @@ ul.alert-dropdown {
     line-height: 40px;
 	background-color: rgb(55,96,146);
 	color: white;
+}
+
+.sidebar-nav > .sidebar-brand:hover
+{
+	background: rgb(55,96,146);
 }
 
 .sidebar-nav > .sidebar-brand a {

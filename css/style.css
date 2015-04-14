@@ -1,8 +1,10 @@
 body	{	background-image: url("background.png");
-			font-family: 'Trebuchet MS', Arial;
+			font-family: Arial;
 		}
 
 /* top nav */
+
+
 #wrapper2{
     padding-left: 0;
 }
@@ -108,7 +110,7 @@ ul.alert-dropdown {
 							
 							height: 30px;
 							width: 300px;
-							font-family: 'Trebuchet MS', Arial;
+							font-family: Arial;
 							padding-left: 10px;
 							font-size: 14pt;
 						}	
@@ -122,5 +124,5 @@ ul.alert-dropdown {
 					-webkit-border-radius: 10px;
 					-moz-border-radius: 10px;
 					border-radius: 10px;
-					font-family: 'Trebuchet MS', Arial;
+					font-family: Arial;
 				}

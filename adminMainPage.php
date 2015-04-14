@@ -83,7 +83,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic">Test Republic</span>
 					</div>
 				</a>

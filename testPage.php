@@ -596,7 +596,16 @@ $_SESSION['testId'] = $testId;
 				
    </div>
    <!-- /. Container -->
-   
+   	<script>
+	$(document).ready(function()
+	{
+		function submitTest()
+		{
+			 
+			
+		}
+	});
+	</script>
 	
 
     
@@ -605,7 +614,7 @@ $_SESSION['testId'] = $testId;
 	{
         $("#Submit").click(function()
         {
-            var counter;
+			  var counter;
             var essayArray = [];
                 <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
                     essayArray.push('<?php echo $essayArray[$i+4];?>');
@@ -726,6 +735,8 @@ $_SESSION['testId'] = $testId;
             {
             });
             window.location = "pledgePage.php";
+			   
+           
 		});
     });
 	
@@ -772,7 +783,128 @@ $_SESSION['testId'] = $testId;
 		//var t = d.toLocaleTimeString();
 		if(hours == 0 && minutes == 0 && seconds == 0)
 		{
-			//alert("time's up");
+			alert("time's up");
+			var counter;
+            var essayArray = [];
+                <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
+                    essayArray.push('<?php echo $essayArray[$i+4];?>');
+                <?php } ?>
+            var shortAnswerArray = [];
+                <?php for($i = 0; $i < count($shortAnswerArray); $i+=5){ ?>
+                    shortAnswerArray.push('<?php echo $shortAnswerArray[$i+4];?>');
+                <?php } ?>
+            var multipleChoiceArray = [];
+                <?php for($i = 0; $i < count($multipleChoiceArray); $i+=6){ ?>
+                    multipleChoiceArray.push('<?php echo $multipleChoiceArray[$i+5];?>');
+                <?php } ?>
+            var trueFalseArray = [];
+                <?php for($i = 0; $i < count($trueFalseArray); $i+=6){ ?>
+                    trueFalseArray.push('<?php echo $trueFalseArray[$i+5];?>');
+                <?php } ?>
+            var ataArray = [];
+                <?php for($i = 0; $i < count($ataArray); $i+=6){ ?>
+                    ataArray.push('<?php echo $ataArray[$i+5];?>');
+                <?php } ?>
+            var matchingArray = [];
+                <?php for($i = 0; $i < count($matchingArray); $i+=9){ ?>
+                    matchingArray.push('<?php echo $matchingArray[$i+8];?>');
+                <?php } ?>
+            var essayAnswerArray = [];
+            var shortAnswerAnswerArray = [];
+            var multipleChoiceAnswerArray = [];
+            var trueFalseAnswerArray = [];
+            var ataAnswerArray = [];
+            var matchingAnswerArray = [];
+			var i = 0;
+            var id = '<?php echo $id; ?>';
+            var testId = '<?php echo $testId; ?>';
+            //alert("clicked submit");
+            
+            for(counter = 0; counter < essayArray.length; counter++)
+            {
+                essayAnswerArray[counter] = $("#EssayQuestion"+essayArray[counter]).val();
+            }
+            
+            for(counter = 0; counter < shortAnswerArray.length; counter++)
+            {
+                shortAnswerAnswerArray[counter] = $("#ShortAnswer"+shortAnswerArray[counter]).val();
+            }
+		
+				$.post("TestAnswerScripts/essayAndShortAnswer.php",
+				{
+					"essayIds[]":essayArray,
+					"essayChoices[]":essayAnswerArray,
+					"shortAnswerIds[]":shortAnswerArray,
+					"shortAnswerChoices[]":shortAnswerAnswerArray
+				},
+				function(data)
+				{
+					
+				});
+				
+            for(counter = 0; counter < multipleChoiceArray.length; counter++)
+            {
+                if ($('#mc_answer'+multipleChoiceArray[counter]).is(':checked'))
+                {
+                    multipleChoiceAnswerArray[counter] = 1;
+                }
+                else
+                {
+                    multipleChoiceAnswerArray[counter] = 0;	
+                }
+            }
+            for(counter = 0; counter < trueFalseArray.length; counter++)
+            {
+                if ($('#tf_answer'+trueFalseArray[counter]).is(':checked'))
+                {
+                    trueFalseAnswerArray[counter] = 1;
+                }
+                else
+                {
+                    trueFalseAnswerArray[counter] = 0;	
+                }
+            }
+            for(counter = 0; counter < ataArray.length; counter++)
+            {
+                if ($('#ata_answer_cb'+ataArray[counter]).is(':checked'))
+                {
+                    ataAnswerArray[counter] = 1;
+                }
+                else
+                {
+                    ataAnswerArray[counter] = 0;	
+                }
+            }
+            for(counter = 0; counter < matchingArray.length; counter++)
+            {
+                matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
+            }
+            
+                $.post("TestAnswerScripts/mcmatatf.php",
+				{
+					"multipleChoiceArray[]":multipleChoiceArray,
+                    "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
+                    "trueFalseArray[]":trueFalseArray,
+                    "trueFalseAnswerArray[]":trueFalseAnswerArray,
+                    "ataArray[]":ataArray,
+                    "ataAnswerArray[]":ataAnswerArray,
+                    "matchingArray[]":matchingArray,
+                    "matchingAnswerArray[]":matchingAnswerArray
+				},
+				function(data)
+				{
+
+				});
+                
+            $.post("TestAnswerScripts/submit.php",
+            {
+                id:id,
+                testId:testId
+            },
+            function(data)
+            {
+            });
+            window.location = "pledgePage.php";
 		}
 		else
 		{
@@ -801,7 +933,7 @@ $_SESSION['testId'] = $testId;
 				}
 			}
 		}
-		document.getElementById("test").innerHTML = pad2(hours) + ":" +  pad2(minutes) + ":" + pad2(seconds);
+		document.getElementById("test").innerHTML = hours.toFixed(2) + ":" +  minutes.toFixed(2) + ":" + seconds.toFixed(2);
 	}
 	 
 	 </script>
