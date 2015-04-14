@@ -1117,7 +1117,7 @@ $modalId = 0;
             }
             else
             {
-               $("#MModal").modal("hide");
+               $("#MatchModal").modal("hide");
                var heading = $("#m_heading").val();
                
                var questionArray = [];
