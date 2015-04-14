@@ -19,6 +19,4 @@
     $publishTestStatement->bind_param("ss", $newTestId, $classId);
 	$publishTestStatement->execute();
 	$publishTestStatement->close();
-
-
 ?>

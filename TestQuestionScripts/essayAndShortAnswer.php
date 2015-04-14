@@ -54,6 +54,8 @@
 	}
 	$studentIdStatement->close();
     
+    if(count($idArray) == 0)
+        array_push($idArray, 0);
     for($i = 0; $i < count($idArray); $i++)
     {
         // assign a new question id
