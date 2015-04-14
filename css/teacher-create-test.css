@@ -26,13 +26,14 @@ body
 
 .navbar-header:hover
 {
-	background: rgb(55,96,146);
+	background: black;
 }
 
 #logo-area
 {
 	display: inline-block;
 	margin-top: -11px;
+	width: 230px;
 }
 
 .TestRepublic
@@ -292,8 +293,8 @@ ul.alert-dropdown {
 	
 	#test_information
 	{
-		/*background: rgba(149,179,215,0.6);*/
-		background: rgba(104,185,232, 0.6);
+		background: rgba(149,179,215,0.6);
+		/*background: rgba(104,185,232, 0.6);*/
 		padding-top: 3px;
 		padding-bottom: 3px;
 	}
@@ -307,7 +308,7 @@ ul.alert-dropdown {
 	
 	.blocklabel
 	{
-		font-size: 12pt;
+		font-size: 14pt;
 		display: block;
 		position: relative;
 		margin: 10px 0px;
@@ -315,10 +316,14 @@ ul.alert-dropdown {
 	
 	.blocklabel input
 	{
+		font-size: 12pt;
 		position: absolute;		
-		left: 100px;
-		width: 9em;
+		left: 130px;
+		width: 10em;
 		height: 2em;
+		font-weight: normal;
+		padding: 3px;
+		padding-left: 6px;
 	}
 	
 	.date_lbl
@@ -338,29 +343,45 @@ ul.alert-dropdown {
 	.time_lbl
 	{
 		font-size: 12pt;
+		display: block;
+		position: relative;
+		margin: 10px 0px;
+
 	}
 	
 	.time_lbl input
 	{
+		position: absolute;		
+		left: 100px;
 		width: 6em;
 		height: 2em;
+		padding: 3px;
+		padding-left: 6px;
 	}
 	
 	.time_limit_lbl
 	{
-		font-size: 12pt;
+		font-size: 14pt;
+		display: block;
+		position: relative;
+		margin: 10px 0px;
 	}
 	
 	.time_limit_lbl input
 	{
-		margin-left: 10px;
-		width: 5em;
+		font-size: 12pt;
+		font-weight: normal;
+		position: absolute;		
+		left: 130px;
+		width: 4em;
 		height: 2em;
+		padding: 3px;
+		padding-left: 6px;
 	}
 	
 	.instruction_lbl, .pledge_lbl
 	{
-		font-size: 12pt;
+		font-size: 14pt;
 		margin-top: 6px;
 	}
 	
@@ -375,12 +396,26 @@ ul.alert-dropdown {
 		font-weight: bold;
 		margin-bottom: 8px;
 	}
+
+	.minutes
+	{
+		position: absolute;
+		left: 200px;
+	}
 	
+	#specificInstruction, #testPledge
+	{
+		color: black;
+		font-size: 12pt;
+
+	}
+
 	/* added by Vic */
 	textarea
 	{
 		resize:none;
-			
+		color: black;
+		font-size: 12pt;
 	}
 	
 	#upperButtons, #createTestBtn
@@ -498,7 +533,7 @@ ul.alert-dropdown {
 	.q_trash_button
 	{
 		position: absolute;
-		top: 20px;
+		top: 60px;
 		right: 20px;
 	}
 	
@@ -517,8 +552,7 @@ ul.alert-dropdown {
 	.list-group-item
 	{
 		text-align: left;
-		padding: 20px;
-		padding-left: 50px;
+		/*padding: 20px;*/
 	}
 
 	.list_heading
@@ -538,6 +572,31 @@ ul.alert-dropdown {
 	{
 		width: 30px;
 		height: 30px;
+	}
+
+	.group-item-heading
+	{
+		background: rgb(55,96,146);
+		padding: 3px;
+		padding-left: 5px;
+		color: white;
+		font-size: 16pt;
+		font-weight: bold;
+	}
+
+	.list-group-item-text
+	{
+		padding-left: 20px;
+		color: black;
+		font-size: 14pt;
+		margin-bottom: 5px;
+		width: 93%;
+	}
+
+	.input_section
+	{
+		padding-left: 20px;
+		color: black;
 	}
 	
 }

@@ -43,14 +43,22 @@
 	echo $dataArray["testPledge"];
 	echo $dataArray["maxPoints"];
 	
-	if(!is_null($dateBegin))
-		@$dateBegin = date("Y-m-d", strtotime($dateBegin));
-	
-	if(!is_null($dateEnd))
-		@$dateEnd = date("Y-m-d", strtotime($dateEnd));
+    $newDateBegin = null;
+    $newDateEnd = null;
+    
+    $d_date = str_replace("-", "/", $_POST['dateBegin']);
+	if($d_date= date("Y-m-d",strtotime($d_date)))
+    {
+		$newDateBegin = date("Y-m-d", strtotime($d_date));
+    }
+	$d_date = str_replace("-", "/", $_POST['dateEnd']);
+	if($d_date= date("Y-m-d",strtotime($d_date)))
+    {
+		$newDateEnd = date("Y-m-d", strtotime($d_date));
+    }
 	
 	$saveStatement = $database->prepare($saveQuery);
-	$saveStatement->bind_param("ssssssssss", $dateBegin, $dateEnd, $timeLimit, $maxPoints, $testName, $testPledge, $specificInstruction, $classId, $teacherId, $newTestId);
+	$saveStatement->bind_param("ssssssssss", $newDateBegin, $newDateEnd, $timeLimit, $maxPoints, $testName, $testPledge, $specificInstruction, $classId, $teacherId, $newTestId);
 	$saveStatement->execute();
 	$saveStatement->close();
 	

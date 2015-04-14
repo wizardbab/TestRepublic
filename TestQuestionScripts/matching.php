@@ -72,6 +72,7 @@
 	}
 	$headingStatement->close();
 	
+    array_push($idArray, 0);
     for($j = 0; $j < count($idArray); $j++)
     {
         $newQuestionNumber = $firstQuestionNumber;
@@ -96,8 +97,6 @@
             $newAnswerId = $qid + 1;
         }
         $answerIdStatement->close();
-        
-        echo $testId;
         
         // Insert into question table after question is created
         if(is_array($questions))

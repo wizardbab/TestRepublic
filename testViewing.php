@@ -102,7 +102,57 @@ $_SESSION['testId'] = $testId;
 <body class="container-fluid">
 
 
-<?php require("Nav.php"); ?>
+<?php// require("Nav.php"); ?>
+
+<div id="wrapper2">
+	 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+		   <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+					 
+				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
+               <div id="logo-area">
+                  <img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+                  <span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
+               </div>
+            </a>
+			</div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+					<?php // Added by David Hughen
+						  // to display student's name in top right corner
+
+							if ($topRightStatement = $database->prepare($topRightQuery)) 
+														{
+															$topRightStatement->bind_param("s", $id);
+														}
+														else {
+															printf("Errormessage: %s\n", $database->error);
+														}							
+											$topRightStatement->bind_result($first_name, $last_name);
+											$topRightStatement->execute();
+											while($topRightStatement->fetch())
+											{
+												echo $first_name . " " . $last_name . ", ". $id;
+											}
+											$topRightStatement->close();?><b class="caret"></b></a>
+						
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+	</div>	
 	
 <?php
 	
@@ -388,9 +438,20 @@ $_SESSION['testId'] = $testId;
 														echo '<div class="mc_choice" >
 															<input type="radio" disabled="disabled" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" '.$checked.'/>
 															<span class="mc_answer_lbl">'.$atext.'</span>';
-                                                            if($correct == 1)
+                                                            if($stuSelection == 1)
                                                             {
-                                                                echo "   --   Correct Answer";
+                                                                if($correct == $stuSelection)
+                                                                {
+                                                                    echo " <img src='images/sign.png' />";
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo " <img src='images/cross.jpg' />";
+                                                                }
+                                                            }
+                                                            if($correct == 1 and $stuSelection != 1)
+                                                            {
+                                                                echo " <img src='images/sign.png' />";
                                                             }
                                                         echo '</div>';
 													}	
@@ -450,7 +511,17 @@ $_SESSION['testId'] = $testId;
                                                     <div class="matching_div">'
                                                     .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
                                                         <input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
-                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Correct -- '. $matchingArray[$j+10];
+                                                    if($matchingArray[$j+10] == $matchingArray[$j+9])
+                                                    {
+                                                        $pointsEarned = $matchingArray[$j+2];
+                                                        echo '<img src="images/sign.png" />';
+                                                    }
+                                                    else
+                                                    {
+                                                        $pointsEarned = 0;
+                                                        echo '<img src="images/cross.jpg" />';
+                                                        echo '&nbsp;'.$matchingArray[$j+10].'';
+                                                    }
                                                     echo'Points Earned<input type=text disabled value="'.$matchingArray[$j+11].'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
                                                 echo'</div>';
                                                 
@@ -531,9 +602,20 @@ $_SESSION['testId'] = $testId;
                                                             <div class="ata_choice">
                                                                 <input type="checkbox" disabled="disabled" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" '.$checked.'/>
                                                                 <span class="ata_answer_lbl">'.$atext.'</span>';
-                                                            if($correct == 1)
+                                                            if($stuSelection == 1)
                                                             {
-                                                                echo "   --   Correct Answer";
+                                                                if($correct == $stuSelection)
+                                                                {
+                                                                    echo " <img src='images/sign.png' />";
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo " <img src='images/cross.jpg' />";
+                                                                }
+                                                            }
+                                                            if($correct == 1 and $stuSelection != 1)
+                                                            {
+                                                                echo " <img src='images/sign.png' />";
                                                             }
                                                             echo '</div>';
                                                         }
@@ -568,8 +650,21 @@ $_SESSION['testId'] = $testId;
     });
     </script>
     <script>
+	   $(document).ready(function()
+		{
+				
+			$("#backToClass").click(function()
+			{
+				window.location = "studentClassPage.php?classId=" + '<?php echo $classId; ?>';
+			});
+			
+		});
+		</script>
+		<script>
     $(document).ready(function()
 	{
+	
+			
         $("#Submit").click(function()
         {
             var testId = '<?php echo $testId; ?>';
