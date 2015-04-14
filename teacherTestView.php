@@ -106,7 +106,7 @@ $_SESSION['testId'] = $testId;
 	
 <?php
 	
-				/*$queryStatement->bind_param("s", $classId);
+				$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
 				$queryStatement->execute();
 				while($queryStatement->fetch())
@@ -116,11 +116,11 @@ $_SESSION['testId'] = $testId;
 								<div class="course_number col-lg-12">
 									'.$clid.'
 								</div><div class="class_name">
-									'.$clde.' ' .$testName.'
+									'.$clde.'
 								</div>
 							</div>';
 				}
-				$queryStatement->close(); */
+				$queryStatement->close(); 
 				//$questionArray = array(array("number" => 0, "type" => 0, "value" => 0, "text" => 0, "heading" => 0, "id" => 0, "letter" => 0));
 			
 				$questionArray = array();
@@ -237,7 +237,7 @@ $_SESSION['testId'] = $testId;
 						$headerStatement->execute();
 						while($headerStatement->fetch())
 						{
-							echo $clid . '<small>' . $tname . '</small>';
+							echo $tname;
 							
 						}
 						$headerStatement->close();
@@ -317,7 +317,7 @@ $_SESSION['testId'] = $testId;
 								echo'<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False</a>
 										 </h4>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse">';
@@ -327,7 +327,7 @@ $_SESSION['testId'] = $testId;
                                         {
                                         $oldQuestion = $trueFalseArray[$i];
                                             echo'<div class="panel-body">
-                                                  <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
+                                                  <h4><p class="question_num make_inline">'.$trueFalseArray[$i].'.</p>'.'<p class="tf_questions make_inline">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</p></h4>
                                                     <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
 													$trueFalseStatement->bind_result($answer_id, $answer_text, $stuSelection, $correct);
@@ -338,18 +338,28 @@ $_SESSION['testId'] = $testId;
                                                         echo'<div class="tf_choice">
                                                             <input type="radio" disabled="disabled" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" ' .$checked . ' value="multipleRadio1" class="multipleRadio">
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span>';
-                                                        if($correct == 1)
+                                                        if($stuSelection == 1)
                                                         {
-                                                            echo "   --   Correct Answer";
                                                             if($correct == $stuSelection)
+															{
                                                                 $pointsEarned = $trueFalseArray[$i+2];
+																echo " <img src='images/sign.png' />";
+															}
                                                             else
+															{
                                                                 $pointsEarned = 0;
+																echo " <img src='images/cross.jpg' />";
+															}
+                                                        }
+                                                        if($correct == 1 and $stuSelection != 1)
+                                                        {
+                                                        	echo " <img src='images/sign.png' />";
                                                         }
                                                         echo'</div>';
                                                         
                                                     }
-                                                   echo' </div>Points Earned<input type=text value="'.$trueFalseArray[$i+7].'" class="matching_answer_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/>
+                                                   echo' </div>';
+                                                   echo'<div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$trueFalseArray[$i+7].'" class="matching_answer_tb" id="TFPoints'.$trueFalseArray[$i+4].'" name="TFPoints"/></div>
                                             </div>';
                                             $trueFalseCounter++;
                                         }

@@ -99,10 +99,10 @@ $success = false;
          <div class="container-fluid">
             <div class="row">
 				<div class="back_section">
-					<button type="button" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button>
+					<a href="#" id="back_btn" onclick="window.location.href='login.html'"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back to Log in</a>
 				</div>
 				<div class="sign_up_text_area">
-					<img src="images/logo4.png" alt="Our Logo" height="60" width="60">
+					<img src="images/newlogo.png" alt="Our Logo" height="60" width="60">
 					<span class="sign_up_text">&nbsp; Sign Up</span>
 				</div>
 			</div>
@@ -171,7 +171,7 @@ $success = false;
 
 			
 			<div class="row">
-				 <input class="btn btn-primary" type="submit" value="Create Account" id="create_acc_btn" />
+				 <button class="btn btn-primary" type="submit" id="create_acc_btn"><span class="glyphicon glyphicon-user"></span> &nbsp;Create Account</button>
 			</div>
 			   <?php 
                         

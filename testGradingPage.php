@@ -294,7 +294,7 @@ $_SESSION['testId'] = $testId;
                         
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
 	                                <div class="panel-heading" id="panel-color">
-	                            	<h4 class="panel-title"><span class="glyphicon glyphicon-pencil"></span>  ESSAY</h4>
+	                            	<h4 class="panel-title"></span>  Essay</h4>
 	                            	</div>
                             	</a>
                         
@@ -328,7 +328,7 @@ $_SESSION['testId'] = $testId;
 									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
 										<div class="panel-heading" id="panel-color">
 											 <h4 class="panel-title">
-												  <span class="glyphicon glyphicon-ok"></span> TRUE/FALSE
+												True/False
 											 </h4>
 										</div>
 									</a>
@@ -390,7 +390,7 @@ $_SESSION['testId'] = $testId;
 									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
 										<div class="panel-heading" id="panel-color">
 											<h4 class="panel-title">
-												<span class="glyphicon glyphicon-record"></span> MULTIPLE CHOICE
+												Multiple Choice
 											</h4>
 										</div>
 									</a>
@@ -454,7 +454,7 @@ $_SESSION['testId'] = $testId;
 									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
 										<div class="panel-heading" id="panel-color">
 											 <h4 class="panel-title">
-												  <span class="glyphicon glyphicon-th-large"></span> MATCHING
+												Matching
 											 </h4>
 										</div>
 									</a>
@@ -542,7 +542,7 @@ $_SESSION['testId'] = $testId;
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
 	                        <div class="panel-heading" id="panel-color">
 	                            <h4 class="panel-title">
-	                                <span class="glyphicon glyphicon-minus"></span> SHORT ANSWER
+	                                Short Answer
 	                            </h4>
 	                        </div>
 	                    </a>
@@ -577,7 +577,7 @@ $_SESSION['testId'] = $testId;
 									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
 										<div class="panel-heading" id="panel-color">
 											 <h4 class="panel-title">
-												  <span class="glyphicon glyphicon-check"></span> ALL THAT APPLY
+												All That Apply
 											 </h4>
 										</div>
 									</a>

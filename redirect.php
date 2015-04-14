@@ -30,11 +30,18 @@
 	
 	// TIMER CODE SHOULD GO HERE SOMEWHERE
 ?>
-<body> 
-<div class="centralBox">
-	<img class="centralLogo" src="images/newlogo.png" alt="Our Logo"/>
-		<h1 align="center">Login with this id: <?php echo $id; ?> and your password</h1>
-		<button type="button" class="btn btn-primary" onclick="Redirect()">Back to Login Page</button>
+<body class="redirect_body"> 
+<div class="redirect_logo_section">
+	<img class="redirect_logo" src="images/newlogo.png" alt="Our Logo"/>
+	<div class="test_republic_text">TEST REPUBLIC</div>
+</div>
+<div class="text_section">
+	<div class="congrats_text">Congratulations!</div>
+	<div class="text2">You just created a student account.</div>
+	<div class="text3">Your ID: <div class="text4"><?php echo $id; ?></div></div>
+	<div class="text5">Use this ID and password to log in next time.</div>
+	<div class="text5"><a href="#" onclick="Redirect()" id="link">Click here to go to your main page</a></div>
+	<!--<div class="button1"><button type="button" class="btn btn-primary" onclick="Redirect()">Back to Login Page</button></div>-->
 </div>
 
 
