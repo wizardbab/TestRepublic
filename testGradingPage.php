@@ -799,7 +799,7 @@ $_SESSION['testId'] = $testId;
 				
 			$("#backToClass").click(function()
 			{
-				window.location = "studentClassPage.php?classId=" + '<?php echo $classId; ?>';
+				window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
 			});
 			
 		});
