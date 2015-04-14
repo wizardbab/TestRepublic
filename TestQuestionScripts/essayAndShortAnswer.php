@@ -44,6 +44,7 @@
     $questionNumberStatement->close();
 	
     $idArray = array();
+    array_push($idArray, 0);
 	$studentIdStatement = $database->prepare($studentIdQuery);
     $studentIdStatement->bind_param("s", $classId);
 	$studentIdStatement->bind_result($sid);
@@ -54,8 +55,6 @@
 	}
 	$studentIdStatement->close();
     
-    if(count($idArray) == 0)
-        array_push($idArray, 0);
     for($i = 0; $i < count($idArray); $i++)
     {
         // assign a new question id

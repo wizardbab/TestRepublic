@@ -25,6 +25,6 @@
     
     $cheatStatement = $database->prepare($cheatQuery);
     $cheatStatement->bind_param("s", $newTestId);
-	$cheatStatement->execute();
-	$cheatStatement->close();
+    $cheatStatement->execute();
+    $cheatStatement->close();
 ?>
