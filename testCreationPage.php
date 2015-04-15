@@ -32,8 +32,8 @@
     <script src="js/bootstrap.min.js"></script>
     
     <!-- Custom Validation -->
-    <link href="css/validation_page.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="js/signUpValidation.js"></script>
+    <link href="css/validation.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/validation.js"></script>
     <script type="text/javascript" src="js/Parsley.js/dist/parsley.js"></script>
 </head>
 <?php
@@ -1066,11 +1066,11 @@ $modalId = 0;
             var pointValue = $("#short_answer_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('short_answer_point_value', 'Required', 1);
+               inlineMsg('short_answer_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('short_answer_point_value', 'Must be positive', 1);
+               inlineMsg('short_answer_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1114,11 +1114,11 @@ $modalId = 0;
 				var pointValue = $("#m_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('m_point_value', 'Required', 1);
+               inlineMsg('m_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('m_point_value', 'Must be positive', 1);
+               inlineMsg('m_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1211,11 +1211,11 @@ $modalId = 0;
 				var pointValue = $("#mc_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('mc_point_value', 'Required', 1);
+               inlineMsg('mc_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('mc_point_value', 'Must be positive', 1);
+               inlineMsg('mc_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1300,11 +1300,11 @@ $modalId = 0;
             var pointValue = $("#ata_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('ata_point_value', 'Required', 1);
+               inlineMsg('ata_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('ata_point_value', 'Must be positive', 1);
+               inlineMsg('ata_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1389,11 +1389,11 @@ $modalId = 0;
 				var pointValue = $("#tf_question_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('tf_question_point_value', 'Required', 1);
+               inlineMsg('tf_question_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('tf_question_point_value', 'Must be positive', 1);
+               inlineMsg('tf_question_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1467,11 +1467,11 @@ $modalId = 0;
 				var pointValue = $("#essay_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('essay_point_value', 'Required', 1);
+               inlineMsg('essay_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('essay_point_value', 'Must be positive', 1);
+               inlineMsg('essay_point_value', 'Field must be positive', 2);
             }
             else
             {
