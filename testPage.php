@@ -77,8 +77,7 @@ $ataQuery = "select answer_text, answer_id from answer where question_id = ?";
 $matchingQuery = "SELECT question_letter, answer_text, answer_id
 from answer
 join question using(question_id)
-where heading_id = ? and student_id = ?
-order by(question_letter)";
+where heading_id = ? and student_id = ?";
 
 $matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ? and student_id = ?";
 
@@ -346,7 +345,7 @@ $_SESSION['testId'] = $testId;
 								echo '<div class="panel panel-default">
                         <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay</a>
                             </h4>
                         </div>
 							  <div id="collapseSix" class="panel-collapse collapse">
@@ -372,7 +371,7 @@ $_SESSION['testId'] = $testId;
 								echo'<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False</a>
 										 </h4>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse">';
@@ -413,7 +412,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
+											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice</a>
 										</h4>
 									</div>
 									<div id="collapseOne" class="panel-collapse collapse">';
@@ -455,7 +454,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching</a>
 										 </h4>
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse">
@@ -547,7 +546,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply</a>
 										 </h4>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse">';
