@@ -225,8 +225,13 @@ $modalId = 0;
                   
                   if(!is_null($bEndDate))
                      $endDate = date("m-d-Y", strtotime($bEndDate));
-                  
+                  //$timeArray = explode(":", $bTimeLimit);
+                  //$timeLimit = $timeArray[1];
+                  //$d = floor($bTimeLimit/86400);
+                  //$h = floor(($bTimeLimit-$d*86400)/3600);
+                  //$timeLimit = floor(($bTimeLimit-($d*86400+$h*3600))/60) + $h * 60;
                   $timeLimit = $bTimeLimit;
+                  
                   $specificInstructions = $bSpecificInstructions;
                   $testPledge = $bTestPledge;
                   $maxPoints = $bMaxPoints;
@@ -254,7 +259,7 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="50" /> <span class="minutes"> minutes</span>
+                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="50" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
                      <label class="time_limit_lbl">Max Points:

@@ -42,19 +42,21 @@
 	echo $dataArray["specificInstruction"];
 	echo $dataArray["testPledge"];
 	echo $dataArray["maxPoints"];
+    
+    //$timeLimit = intval($timeLimit * 100);
 	
     $newDateBegin = null;
     $newDateEnd = null;
     
     $d_date = str_replace("-", "/", $_POST['dateBegin']);
-	if($d_date= date("Y-m-d",strtotime($d_date)))
+	if($d_date = strtotime($d_date))
     {
-		$newDateBegin = date("Y-m-d", strtotime($d_date));
+		$newDateBegin = date("Y/m/d", strtotime($d_date));
     }
 	$d_date = str_replace("-", "/", $_POST['dateEnd']);
-	if($d_date= date("Y-m-d",strtotime($d_date)))
+	if($d_date= strtotime($d_date))
     {
-		$newDateEnd = date("Y-m-d", strtotime($d_date));
+		$newDateEnd = date("Y/m/d", strtotime($d_date));
     }
 	
 	$saveStatement = $database->prepare($saveQuery);
