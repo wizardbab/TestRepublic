@@ -49,14 +49,14 @@
     $newDateEnd = null;
     
     $d_date = str_replace("-", "/", $_POST['dateBegin']);
-	if($d_date = strtotime($d_date))
+	if(strtotime($d_date))
     {
-		$newDateBegin = date("Y/m/d", strtotime($d_date));
+		$newDateBegin = date("Y-m-d", strtotime($d_date));
     }
 	$d_date = str_replace("-", "/", $_POST['dateEnd']);
-	if($d_date= strtotime($d_date))
+	if(strtotime($d_date))
     {
-		$newDateEnd = date("Y/m/d", strtotime($d_date));
+		$newDateEnd = date("Y-m-d", strtotime($d_date));
     }
 	
 	$saveStatement = $database->prepare($saveQuery);
