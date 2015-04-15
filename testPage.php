@@ -768,11 +768,6 @@ $_SESSION['testId'] = $testId;
 
 	function pad2(number)
 	{
-	
-		if(number > "00")
-			return number;
-		
-		
      return (number < 10 ? '0' : '') + number;
    
    }
@@ -933,7 +928,7 @@ $_SESSION['testId'] = $testId;
 				}
 			}
 		}
-		document.getElementById("test").innerHTML = hours.toFixed(2) + ":" +  minutes.toFixed(2) + ":" + seconds.toFixed(2);
+		document.getElementById("test").innerHTML = pad2(hours) + ":" +  pad2(minutes) + ":" + pad2(seconds);
 	}
 	 
 	 </script>
