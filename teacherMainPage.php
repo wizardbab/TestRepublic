@@ -8,9 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic - Main Page</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -20,13 +19,10 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>    
-	
 
 </head>
 
-<body>   
+<body>
 
 <?php
 // Php connections added by David Hughen 2/11/15

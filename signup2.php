@@ -8,9 +8,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="description" content="">
    <meta name="author" content="">
-   <link rel="shortcut icon" href="images/newlogo.ico">
 
-   <title>Sign Up!</title>
+   <title>Test Republic</title>
 
    <!-- Bootstrap Core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +46,7 @@
    $(document).ready(function()
 	{
 		
+	
 	});
 	
 	function redirect()

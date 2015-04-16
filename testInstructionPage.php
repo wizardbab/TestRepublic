@@ -196,7 +196,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 				<input type="hidden" value="<?php echo $classId; ?>" name="classId" id="classId"/>
 				<input type="hidden" value="<?php echo $testId; ?>" name="testId" id="testId"/>
 				<input type="hidden" value="<?php echo $testName; ?>" name="testName" id="testName"/>
-				<input type="submit" value="Start" class="btn btn-primary btn-block"/>
+				<input type="submit" id="startTest" value="Start" class="btn btn-primary btn-block"/>
 			</form>
           
 		</div>
@@ -224,7 +224,24 @@ $testNameStatement = $database->prepare($testNameQuery);
 	 $("#backToClass").click(function()
 		{
             window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
-        });
+      });
+		
+	  $("#startTest").click(function()
+		{
+			var testId = '<?php echo $testId; ?>';
+			
+			$.post("TestButtonScripts/startTest.php",
+			{
+				 testId:testId
+			},
+			function(data)
+			{
+					
+			});
+			alert(testId);
+      });
+		
+		
 	 </script>
 	
 

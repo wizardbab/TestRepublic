@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Republic</title>
 
@@ -34,6 +33,7 @@
 	
 <?php
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");
@@ -68,8 +68,7 @@ $query = "select class_id, class_description from class where class_id = ?";
 $summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id, answer_id
 								 from question
                                  join answer using(question_id)
-								 where test_id = ? and student_id = ?
-								 order by heading_id";
+								 where test_id = ? and student_id = ?";
 								 
 $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 
@@ -85,8 +84,10 @@ $matchingHeadQuery = "select distinct heading_id, heading from question where he
 
 $trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
 
+$selectStartTime = "select start_time from test where test_id = ?";
 
-								 
+
+$selectStartStatement = $database->prepare($selectStartTime); 
 $matchingHeadStatement = $database->prepare($matchingHeadQuery);
 $queryStatement = $database->prepare($query);
 $headerStatement = $database->prepare($headerQuery);
@@ -103,7 +104,47 @@ $trueFalseStatement = $database->prepare($trueFalseQuery);
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
+$selectStartStatement->bind_param("s", $testId);
+$selectStartStatement->bind_result($ctime);
+$selectStartStatement->execute();
+while($selectStartStatement->fetch())
+{
+	
+}
+$selectStartStatement->close();
 
+
+
+	$secs = strtotime($timeLimit)-strtotime("00:00:00");
+	$endTime = date("H:i:s",strtotime($ctime)+$secs);
+
+	$currentTime = date('H:i:s', time());
+
+	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
+
+	$timeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+
+	sscanf($endTime, "%d:%d:%d", $hours, $minutes, $seconds);
+
+	$endTimeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+
+	$timeLeft = $endTimeSeconds - $timeSeconds;
+
+
+    // extract hours
+    $hours = floor($timeLeft / (60 * 60));
+ 
+    // extract minutes
+    $divisor_for_minutes = $timeLeft % (60 * 60);
+    $minutes = floor($divisor_for_minutes / 60);
+ 
+    // extract the remaining seconds
+    $divisor_for_seconds = $divisor_for_minutes % 60;
+    $timeLeft = ceil($divisor_for_seconds);
+	 
+	 $timeArray[] = $hours;
+	 $timeArray[] = $minutes;
+	 $timeArray[] = $timeLeft;
 ?>
 	
 </head>
@@ -329,14 +370,14 @@ $_SESSION['testId'] = $testId;
                     
                     <?php
 						  // Set the hours, minutes, and seconds into their own array
-						  $timeArray = explode(":", $timeLimit);
-						$counter = 1;
-                        $essayCounter = 0;
-                        $trueFalseCounter = 0;
-                        $multipleChoiceCounter = 0;
-                        $matchingCounter = 0;
-                        $shortAnswerCounter = 0;
-                        $allThatApplyCounter = 0;
+							
+							$counter = 1;
+							$essayCounter = 0;
+							$trueFalseCounter = 0;
+							$multipleChoiceCounter = 0;
+							$matchingCounter = 0;
+							$shortAnswerCounter = 0;
+							$allThatApplyCounter = 0;
 						   /***************************************************************************************************/
 							/* Test each question type's array for data; if there's data we add that tab to our page           */
 							/***************************************************************************************************/
@@ -711,7 +752,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-                $.post("TestAnswerScripts/mcmatatf.php",
+            $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
