@@ -75,7 +75,7 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 // Title bar for student list
 $studentTitleQuery = "select test_name from test
 join test_list using(test_id)
-where class_id = ?
+where class_id = ? and student_id > 0
 group by(test_id)";
 
 // Student names for student list
@@ -232,8 +232,10 @@ $studentStatement = $database->prepare($studentQuery);
 							{                                  
                                 $t1 = strtotime($dateBegin);
                                 $t2 = time();
-                                $dateBegin = date("m/d/Y", strtotime($dateBegin));
-                                $dateEnd = date("m/d/Y", strtotime($dateEnd));
+                                if(strtotime($dateBegin))
+                                    $dateBegin = date("m/d/Y", strtotime($dateBegin));
+                                if(strtotime($dateEnd))
+                                    $dateEnd = date("m/d/Y", strtotime($dateEnd));
                                 $tavg = number_format($tavg, 2);
                                 if($sid == null)
                                     $tavg = 'Test not published';
@@ -243,7 +245,7 @@ $studentStatement = $database->prepare($studentQuery);
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
-                                                                                if($t1 > $t2)
+                                                                                if($t1 > $t2 or $sid == null or $dateBegin == null)
                                                                                 {
                                                                                 echo '<input type="submit" value="Edit Test" class="view_test_button"/></form></td>
 																				</td></tr>';

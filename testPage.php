@@ -818,7 +818,6 @@ $_SESSION['testId'] = $testId;
 			var i = 0;
             var id = '<?php echo $id; ?>';
             var testId = '<?php echo $testId; ?>';
-            //alert("clicked submit");
             
             for(counter = 0; counter < essayArray.length; counter++)
             {

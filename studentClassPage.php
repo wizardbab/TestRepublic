@@ -191,8 +191,7 @@ global $class_id;
                                 }
                                 else
                                     echo '<td>Not Taken</td>';
-                                       
-                                $date
+                                     
 								echo'<td>'.$date_begin.' - '.$date_end.'</td>';
 										if($date_taken != null)
 										{
@@ -224,6 +223,10 @@ global $class_id;
 							
 							?>			
 					</table>
+                    <div>
+                        Grade:
+                        
+                    </div>
                 </div>
             </div>
 			

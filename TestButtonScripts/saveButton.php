@@ -1,5 +1,5 @@
 <?php
-   // Authors: David Hughen - Jake Stevens
+    // Authors: David Hughen - Jake Stevens
 	// Date Created: 3/13/15
 	// Last Modified: 3/13/15 - 3/16/15
 	// This php script handles the db stuff for saving tests
@@ -26,24 +26,6 @@
 	@$maxPoints = $_POST['maxPoints'];
     @$classId = $_POST['classId'];
     @$teacherId = $_POST['teacherId'];
-	
-	$dataArray = ["testName" => $testName,
-					  "dateBegin" => $dateBegin, 
-					  "dateBegin" => $dateEnd, 
-					  "timeLimit" => $timeLimit, 
-					  "specificInstruction" => $specificInstruction, 
-					  "testPledge" => $testPledge, 
-					  "maxPoints" => $maxPoints];
-					  
-	echo $dataArray["testName"];
-	echo $dataArray["dateBegin"];
-	echo $dataArray["dateBegin"];
-	echo $dataArray["timeLimit"];
-	echo $dataArray["specificInstruction"];
-	echo $dataArray["testPledge"];
-	echo $dataArray["maxPoints"];
-    
-    //$timeLimit = intval($timeLimit * 100);
 	
     $newDateBegin = null;
     $newDateEnd = null;

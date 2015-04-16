@@ -63,10 +63,10 @@ $query = "select class_id, class_description from enrollment join class using (c
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";
+$tableQuery = "select class_id, count(*) from test_list
+join test using(test_id)
+where student_id = ? and date_taken is null and datediff(date_begin, sysdate()) < 0 and datediff(date_end, sysdate()) > 0
+group by class_id";
 
 // Display any tests that will expire within 7 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
@@ -109,7 +109,7 @@ $warningstmt = $database->prepare($warningQuery);
 
 				while($stmt->fetch())
 				{
-               echo '<li><a href=studentClassPage.php?classId='.$class_id = str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
+                    echo '<li><a href=studentClassPage.php?classId='.$class_id = str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -157,8 +157,7 @@ $warningstmt = $database->prepare($warningQuery);
 						<thead>
 						<tr>
 							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
+							<th>Assignments to take</th>
 						</tr>
 						</thead>
 						
@@ -167,13 +166,12 @@ $warningstmt = $database->prepare($warningQuery);
 							// Code added by David Hughen to display class id, update, and date
 							// inside the table in the middle of the page
 							$table->bind_param("s", $id);
-							$table->bind_result($clid, $update, $date);
+							$table->bind_result($clid, $count);
 							$table->execute();
 							while($table->fetch())
 							{	
 								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?classId='.str_replace(" ", "%20", $clid).'\'">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
-									  <td>'.$date.'</td></tr>';
+									  <td>You have '.$count.' test(s) to take</td></tr>';
 							}
 							$table->close(); 
 							?>	
