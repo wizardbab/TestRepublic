@@ -238,7 +238,6 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Matching")
 					{
-                        echo '<br /><br /><br />';
 						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid);
 					}
 					
@@ -330,7 +329,7 @@ $_SESSION['testId'] = $testId;
                     <?php
 						  // Set the hours, minutes, and seconds into their own array
 						  $timeArray = explode(":", $timeLimit);
-						 
+						$counter = 1;
                         $essayCounter = 0;
                         $trueFalseCounter = 0;
                         $multipleChoiceCounter = 0;
@@ -355,10 +354,10 @@ $_SESSION['testId'] = $testId;
 									
 									for($i = 0; $i < count($essayArray); $i+=5)
 									{
-										echo'<h4>'.$essayArray[$i].'<span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
+										echo'<h4>'.$counter.'. <span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
 												<textarea class="form-control" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6"> </textarea></div>';
-                                        $essayCounter++;
+                                        $counter++;
 									}
 								echo'		
 									</div>
@@ -383,7 +382,7 @@ $_SESSION['testId'] = $testId;
                                         {
                                         $oldQuestion = $trueFalseArray[$i];
                                             echo'<div class="panel-body">
-                                                  <h4>'.$trueFalseArray[$i].'<span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
+                                                  <h4>'.$counter.'. <span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
                                                     <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
 													$trueFalseStatement->bind_result($answer_id, $answer_text);
@@ -397,6 +396,7 @@ $_SESSION['testId'] = $testId;
                                                     }
                                                    echo' </div>
                                             </div>';
+                                            $counter++;
                                             $trueFalseCounter++;
                                         }
 									}
@@ -422,7 +422,7 @@ $_SESSION['testId'] = $testId;
                                         if($oldQuestion != $multipleChoiceArray[$i+4])
                                         {
                                             echo'	<div class="panel-body" >
-												<h4>'.$multipleChoiceArray[$i].'<span class="mc_questions">'.$multipleChoiceArray[$i+3].'</span></h4><h4>Point Value: '.$multipleChoiceArray[$i+2].'</h4>
+												<h4>'.$counter.'. <span class="mc_questions">'.$multipleChoiceArray[$i+3].'</span></h4><h4>Point Value: '.$multipleChoiceArray[$i+2].'</h4>
 													<div class="mc_answers" >';
                                                     $oldQuestion = $multipleChoiceArray[$i+4];
 													$multipleChoiceStatement->bind_param("s", $multipleChoiceArray[$i+4]);
@@ -437,6 +437,7 @@ $_SESSION['testId'] = $testId;
 													}	
 											echo'	</div>
 											</div>';
+                                            $counter++;
                                             $multipleChoiceCounter++;
                                         }
 									}
@@ -486,7 +487,7 @@ $_SESSION['testId'] = $testId;
                                             {	
                                             echo'	<div class="col-md-6">
                                                     <div class="matching_div">'
-                                                    .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
+                                                    .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
                                                         <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
                                                     </div>
                                                 </div>';
@@ -494,11 +495,11 @@ $_SESSION['testId'] = $testId;
                                                 
                                                 echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
-                                                            '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
+                                                            '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
                                                         </div>
                                                         <br />';
                                                         
-                                                $matchingCounter++;	
+                                                $counter++;	
                                                 $j+=9;
                                             echo'</div>';
                                             }
@@ -525,12 +526,12 @@ $_SESSION['testId'] = $testId;
 								for($i = 0; $i < count($shortAnswerArray); $i+=5)
 								{
 									echo'<div class="panel-body">
-										<h4>'.$shortAnswerArray[$i].'<span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
+										<h4>'.$counter.'. <span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
 										<div class="sa_answers">
 											<input type="text" class="m_answer_letter form-control" id="ShortAnswer'.$shortAnswerArray[$i+4].'" />
 										</div>
 									</div>';
-                                    $shortAnswerCounter++;
+                                    $counter++;
 								}
 									
 								echo'
@@ -559,7 +560,7 @@ $_SESSION['testId'] = $testId;
                                             $ataStatement->bind_result($atext, $aid);
                                             $ataStatement->execute();
                                              echo'<div class="panel-body">
-                                                  <h4>'.$ataArray[$i].'<span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
+                                                  <h4>'.$counter.'.     <span class="ata_questions">'.$ataArray[$i+3].'</span></h4><h4>Point Value: '.$ataArray[$i+2].'</h4>
                                                   <div class="ata_answers">';
                                                         while($ataStatement->fetch())
                                                         {
@@ -573,6 +574,7 @@ $_SESSION['testId'] = $testId;
                                             echo'</div>';
                                             echo'</div>';
                                         }
+                                        $counter++;
 									}
 									$ataStatement->close();
 									

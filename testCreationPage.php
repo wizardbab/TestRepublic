@@ -32,8 +32,8 @@
     <script src="js/bootstrap.min.js"></script>
     
     <!-- Custom Validation -->
-    <link href="css/validation_page.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="js/signUpValidation.js"></script>
+    <link href="css/validation.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/validation.js"></script>
     <script type="text/javascript" src="js/Parsley.js/dist/parsley.js"></script>
 </head>
 <?php
@@ -43,10 +43,12 @@ require("constants.php");
 // Gets the class id appended to url from teacherMainPage.php
 $id = $_SESSION['username']; // Just a random variable gotten from the URL
 $classId = $_SESSION['classId'];
-$sessionTestId = $_SESSION['testId'];
-global $newTestId;
 if(!is_null($_POST['testId']))
    @$sessionTestId = $_POST['testId'];
+if($_SESSION['testId'] != null)
+    $sessionTestId = $_SESSION['testId'];
+global $newTestId;
+
     
 if($id == null)
     header('Location: login.html');
@@ -88,6 +90,13 @@ $timeLimit = (isset($_POST['timeLimit']) ? $_POST['timeLimit'] : "");
 $specificInstructions = (isset($_POST['specificInstructions']) ? $_POST['specificInstructions'] : "");
 $testPledge = (isset($_POST['testPledge']) ? $_POST['testPledge'] : "");
 $maxPoints = (isset($_POST['maxPoints']) ? $_POST['maxPoints'] : "");
+
+/*if($d_date= date("m-d-Y",strtotime($_POST['startDate'])))
+    $startDate = date("m-d-Y", strtotime($d_date));
+
+if($d_date= date("m-d-Y",strtotime($_POST['endDate'])))
+    $endDate = date("m-d-Y", strtotime($d_date));
+*/
 /*global $testName;
 global $startDate;
 global $endDate;
@@ -212,10 +221,10 @@ $modalId = 0;
                   $testName = $bTestName;
    
                   if(!is_null($bStartDate))
-                     $startDate = $bStartDate;
+                     $startDate = date("m-d-Y", strtotime($bStartDate));
                   
                   if(!is_null($bEndDate))
-                     $endDate = $bEndDate;
+                     $endDate = date("m-d-Y", strtotime($bEndDate));
                   
                   $timeLimit = $bTimeLimit;
                   $specificInstructions = $bSpecificInstructions;
@@ -1055,11 +1064,11 @@ $modalId = 0;
             var pointValue = $("#short_answer_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('short_answer_point_value', 'Required', 1);
+               inlineMsg('short_answer_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('short_answer_point_value', 'Must be positive', 1);
+               inlineMsg('short_answer_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1103,15 +1112,15 @@ $modalId = 0;
 				var pointValue = $("#m_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('m_point_value', 'Required', 1);
+               inlineMsg('m_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('m_point_value', 'Must be positive', 1);
+               inlineMsg('m_point_value', 'Field must be positive', 2);
             }
             else
             {
-               $("#MModal").modal("hide");
+               $("#MatchModal").modal("hide");
                var heading = $("#m_heading").val();
                
                var questionArray = [];
@@ -1200,11 +1209,11 @@ $modalId = 0;
 				var pointValue = $("#mc_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('mc_point_value', 'Required', 1);
+               inlineMsg('mc_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('mc_point_value', 'Must be positive', 1);
+               inlineMsg('mc_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1289,11 +1298,11 @@ $modalId = 0;
             var pointValue = $("#ata_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('ata_point_value', 'Required', 1);
+               inlineMsg('ata_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('ata_point_value', 'Must be positive', 1);
+               inlineMsg('ata_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1378,11 +1387,11 @@ $modalId = 0;
 				var pointValue = $("#tf_question_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('tf_question_point_value', 'Required', 1);
+               inlineMsg('tf_question_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('tf_question_point_value', 'Must be positive', 1);
+               inlineMsg('tf_question_point_value', 'Field must be positive', 2);
             }
             else
             {
@@ -1456,11 +1465,11 @@ $modalId = 0;
 				var pointValue = $("#essay_point_value").val();
             if(pointValue == "")
             {
-               inlineMsg('essay_point_value', 'Required', 1);
+               inlineMsg('essay_point_value', 'Field cannot be empty', 2);
             }
-            else if(pointValue < 0)
+            else if(pointValue < 1)
             {
-               inlineMsg('essay_point_value', 'Must be positive', 1);
+               inlineMsg('essay_point_value', 'Field must be positive', 2);
             }
             else
             {

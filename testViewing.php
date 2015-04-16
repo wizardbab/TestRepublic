@@ -438,9 +438,20 @@ $_SESSION['testId'] = $testId;
 														echo '<div class="mc_choice" >
 															<input type="radio" disabled="disabled" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" '.$checked.'/>
 															<span class="mc_answer_lbl">'.$atext.'</span>';
-                                                            if($correct == 1)
+                                                            if($stuSelection == 1)
                                                             {
-                                                                echo "   --   Correct Answer";
+                                                                if($correct == $stuSelection)
+                                                                {
+                                                                    echo " <img src='images/sign.png' />";
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo " <img src='images/cross.jpg' />";
+                                                                }
+                                                            }
+                                                            if($correct == 1 and $stuSelection != 1)
+                                                            {
+                                                                echo " <img src='images/sign.png' />";
                                                             }
                                                         echo '</div>';
 													}	
@@ -500,7 +511,17 @@ $_SESSION['testId'] = $testId;
                                                     <div class="matching_div">'
                                                     .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
                                                         <input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
-                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Correct -- '. $matchingArray[$j+10];
+                                                    if($matchingArray[$j+10] == $matchingArray[$j+9])
+                                                    {
+                                                        $pointsEarned = $matchingArray[$j+2];
+                                                        echo '<img src="images/sign.png" />';
+                                                    }
+                                                    else
+                                                    {
+                                                        $pointsEarned = 0;
+                                                        echo '<img src="images/cross.jpg" />';
+                                                        echo '&nbsp;'.$matchingArray[$j+10].'';
+                                                    }
                                                     echo'Points Earned<input type=text disabled value="'.$matchingArray[$j+11].'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
                                                 echo'</div>';
                                                 
@@ -637,6 +658,7 @@ $_SESSION['testId'] = $testId;
                                                                 <input type="checkbox" disabled="disabled" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" '.$checked.'/>
                                                                 <span class="ata_answer_lbl">'.$atext.'</span>';
                                                             if($stuSelection == 1)
+<<<<<<< HEAD
                                                         	{
 	                                                            if($correct == $stuSelection)
 																{
@@ -656,6 +678,22 @@ $_SESSION['testId'] = $testId;
 	                                                            $pointsEarnedCounter += 1;
 	                                                        }
                                                             $pointsPossibleCounter += 1;
+=======
+                                                            {
+                                                                if($correct == $stuSelection)
+                                                                {
+                                                                    echo " <img src='images/sign.png' />";
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo " <img src='images/cross.jpg' />";
+                                                                }
+                                                            }
+                                                            if($correct == 1 and $stuSelection != 1)
+                                                            {
+                                                                echo " <img src='images/sign.png' />";
+                                                            }
+>>>>>>> 2345d04f45bfbf53bc01380b59b49b7ee0e11ece
                                                             echo '</div>';
                                                         }
                                             echo'</div>';

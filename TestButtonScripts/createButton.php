@@ -11,6 +11,9 @@
     
     $publishTestQuery = "insert into test_list(student_id, test_id)
         select student_id, ? from enrollment where class_id = ?";
+        
+    $cheatQuery = "insert into test_list(student_id, test_id)
+        values(0, ?)";
 
     @$newTestId = $_POST['newTestId'];
     @$classId = $_POST['classId'];
@@ -19,4 +22,9 @@
     $publishTestStatement->bind_param("ss", $newTestId, $classId);
 	$publishTestStatement->execute();
 	$publishTestStatement->close();
+    
+    $cheatStatement = $database->prepare($cheatQuery);
+    $cheatStatement->bind_param("s", $newTestId);
+    $cheatStatement->execute();
+    $cheatStatement->close();
 ?>

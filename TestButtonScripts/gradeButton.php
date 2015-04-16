@@ -31,6 +31,11 @@
     {
         $updateQuestionStatement->bind_param("ss", $pointsEarnedArray[$i], $questionIdArray[$i]);
         $updateQuestionStatement->execute();
+        echo ' ';
+        echo $pointsEarnedArray[$i];
+        echo ' ';
+        echo $questionIdArray[$i];
+        
     }
     $updateQuestionStatement->close();
     
@@ -42,8 +47,10 @@
     
     $sum = 0;
     foreach($pointsEarnedArray as $k)
+    {
         $sum += $k;
-        $sum = $sum / $sumPoints * $maxPoints;
+    }
+    $sum = $sum / $sumPoints * $maxPoints;
     $pointsEarnedStatement->bind_param("sss", $sum, $testId, $studentId);
     $pointsEarnedStatement->execute();
     $pointsEarnedStatement->close();

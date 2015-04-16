@@ -111,7 +111,6 @@ $studentTitleStatement = $database->prepare($studentTitleQuery);
 $studentNamesStatement = $database->prepare($studentNamesQuery);
 $studentStatement = $database->prepare($studentQuery);
 
-
 ?>
 
 
@@ -231,6 +230,8 @@ $studentStatement = $database->prepare($studentQuery);
 							// We should be getting two tests here
 							while($firstTableStatement->fetch())
 							{                                  
+                                $t1 = strtotime($dateBegin);
+                                $t2 = strtotime(time());
                                 $tavg = number_format($tavg, 2);
                                 if($sid == null)
                                     $tavg = 'Test not published';
@@ -239,9 +240,17 @@ $studentStatement = $database->prepare($studentQuery);
                                 else
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
-                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>
-                                                                                <input type="submit" value="Edit Test" class="view_test_button"/></form></td>
+                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
+                                                                                if($t1 < $t2)
+                                                                                {
+                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></form></td>
 																				</td></tr>';
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></form></td>
+																				</td></tr>';
+                                                                                }
 							}
 							$firstTableStatement->close();
                             if($tid == null)
@@ -328,15 +337,15 @@ $studentStatement = $database->prepare($studentQuery);
                                         }
                                         else if($graded == 1)
                                         {
+                                            $testScore = number_format($testScore, 2);
                                             $state = '<form action="teacherTestView.php" method="post">
                                             <input type="hidden" value="'.$classId.'" name="classId" id="classId"/>
                                             <input type="hidden" value="'.$testId.'" name="testId" id="testId"/>
                                             <input type="hidden" value="'.$testName.'" name="testName" id="testName"/>
                                             <input type="hidden" value="'.$studentId.'" name="studentId" id="studentId"/>
-                                            <input type="submit" value="View" class="btn btn-primary btn-block"/>
-                                            </form>';
-                                            $testScore = number_format($testScore, 2);
-                                            echo '<td>' . (float)$testScore.'% ' . $state.'</td>';
+                                            <input type="submit" value="View '. (float)$testScore.'% ' .'" class="btn btn-primary btn-block"/>'.
+                                            '</form>';
+                                            echo '<td>' . $state . '</td>';
                                         }
                                         else
                                         {

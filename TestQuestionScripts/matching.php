@@ -72,8 +72,7 @@
 	}
 	$headingStatement->close();
 	
-    if(count($idArray) == 0)
-        array_push($idArray, 0);
+    array_push($idArray, 0);
     for($j = 0; $j < count($idArray); $j++)
     {
         $newQuestionNumber = $firstQuestionNumber;

@@ -302,7 +302,7 @@ $success = false;
                                 from answer
                                 join question using(question_id)
                                 join test using(test_id)
-                                where student_id = ?";
+                                where student_id = ? and test_id = ?";
                                 
                                 $insertQuestionQuery = "insert into question(student_id, question_id, heading, heading_id, question_letter, question_no, question_text, question_type, question_value, test_id)
                                                         values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -310,7 +310,8 @@ $success = false;
                                                       values(?, ?, ?, ?)";
                                 $maxQuestionQuery = "select max(question_id) from question";
                                 $maxAnswerQuery = "select max(answer_id) from answer";
-                                $questionArray = [];
+                                $questionArray = array();
+                                $testIdArray = array();
                                 
                                 for($i = 0; $i < count($classes); $i++)
                                 {
@@ -318,7 +319,10 @@ $success = false;
                                     $testIdStatement->bind_param("s", $classes[$i]);
                                     $testIdStatement->bind_result($testId, $stuId);
                                     $testIdStatement->execute();
-                                    $testIdStatement->fetch();
+                                    while($testIdStatement->fetch())
+                                    {
+                                        $testIdArray[] = $testId;
+                                    }
                                     $testIdStatement->close();
                                     
                                     $maxQuestionStatement = $database->prepare($maxQuestionQuery);
@@ -334,49 +338,52 @@ $success = false;
                                     $newAId = $newAId + 1;
                                     $maxAnswerStatement->close();
 
-                                    $selectQuestionStatement = $database->prepare($selectQuestionQuery);
-                                    $selectQuestionStatement->bind_param("s", $stuId);
-                                    $selectQuestionStatement->bind_result($heading, $heading_id, $question_letter, $question_no, $question_text, $question_type, $question_value, $test_id, $answer_id, $answer_text, $correct);
-                                    $selectQuestionStatement->execute();
-                                    while($selectQuestionStatement->fetch())
+                                    for($a = 0; $a < count($testIdArray); $a++)
                                     {
-                                        $questionArray[] = $newQId;
-                                        $questionArray[] = $heading;
-                                        $questionArray[] = $heading_id;
-                                        $questionArray[] = $question_letter;
-                                        $questionArray[] = $question_no;
-                                        $questionArray[] = $question_text;
-                                        $questionArray[] = $question_type;
-                                        $questionArray[] = $question_value;
-                                        $questionArray[] = $test_id;
-                                        $questionArray[] = $newAId;
-                                        $questionArray[] = $answer_text;
-                                        $questionArray[] = $correct;
-                                        $newAId++;
-                                    }
-                                    $selectQuestionStatement->close();
-                                    
-                                    $oldQno = -1;
-                                    $oldTest = -1;
-                                    for($k = 0; $k < count($questionArray); $k += 12)
-                                    {
-                                        if($oldQno != $questionArray[$k+4] or $oldTest != $questionArray[$k+8])
+                                        $selectQuestionStatement = $database->prepare($selectQuestionQuery);
+                                        $selectQuestionStatement->bind_param("ss", $stuId, $testIdArray[$a]);
+                                        $selectQuestionStatement->bind_result($heading, $heading_id, $question_letter, $question_no, $question_text, $question_type, $question_value, $test_id, $answer_id, $answer_text, $correct);
+                                        $selectQuestionStatement->execute();
+                                        while($selectQuestionStatement->fetch())
                                         {
-                                            $newQId++;
-                                            $insertQuestionStatement = $database->prepare($insertQuestionQuery);
-                                            $insertQuestionStatement->bind_param("ssssssssss", $newId, $newQId, $questionArray[$k+1], $questionArray[$k+2], $questionArray[$k+3], $questionArray[$k+4], $questionArray[$k+5], $questionArray[$k+6], $questionArray[$k+7], $questionArray[$k+8]);
-                                            $insertQuestionStatement->execute();
-                                            $insertQuestionStatement->close();
-                                            
+                                            $questionArray[] = $newQId;
+                                            $questionArray[] = $heading;
+                                            $questionArray[] = $heading_id;
+                                            $questionArray[] = $question_letter;
+                                            $questionArray[] = $question_no;
+                                            $questionArray[] = $question_text;
+                                            $questionArray[] = $question_type;
+                                            $questionArray[] = $question_value;
+                                            $questionArray[] = $test_id;
+                                            $questionArray[] = $newAId;
+                                            $questionArray[] = $answer_text;
+                                            $questionArray[] = $correct;
+                                            $newAId++;
                                         }
-                                        $insertAnswerStatement = $database->prepare($insertAnswerQuery);
-                                        $insertAnswerStatement->bind_param("ssss", $questionArray[$k+9], $newQId, $questionArray[$k+10], $questionArray[$k+11]);
-                                        $insertAnswerStatement->execute();
-                                        $insertAnswerStatement->close();
-                                        $oldQno = $questionArray[$k+4];
-                                        $oldTest = $questionArray[$k+8];
+                                        $selectQuestionStatement->close();
+                                        
+                                        $oldQno = -1;
+                                        $oldTest = -1;
+                                        for($k = 0; $k < count($questionArray); $k += 12)
+                                        {
+                                            if($oldQno != $questionArray[$k+4] or $oldTest != $questionArray[$k+8])
+                                            {
+                                                $newQId++;
+                                                $insertQuestionStatement = $database->prepare($insertQuestionQuery);
+                                                $insertQuestionStatement->bind_param("ssssssssss", $newId, $newQId, $questionArray[$k+1], $questionArray[$k+2], $questionArray[$k+3], $questionArray[$k+4], $questionArray[$k+5], $questionArray[$k+6], $questionArray[$k+7], $questionArray[$k+8]);
+                                                $insertQuestionStatement->execute();
+                                                $insertQuestionStatement->close();
+                                            }
+                                            $insertAnswerStatement = $database->prepare($insertAnswerQuery);
+                                            $insertAnswerStatement->bind_param("ssss", $questionArray[$k+9], $newQId, $questionArray[$k+10], $questionArray[$k+11]);
+                                            $insertAnswerStatement->execute();
+                                            $insertAnswerStatement->close();
+                                            $oldQno = $questionArray[$k+4];
+                                            $oldTest = $questionArray[$k+8];
+                                        }
+                                        $questionArray = array();
                                     }
-                                    $questionArray[] = null;
+                                    $testIdArray = array();
                                 }
                                 echo '<script type="text/javascript">';
 								 echo 'redirect();';
