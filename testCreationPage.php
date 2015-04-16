@@ -191,17 +191,12 @@ $modalId = 0;
                $testIdStatement->bind_result($tid, $saved, $questionId);
                $testIdStatement->execute();
                $testIdStatement->fetch();
-                    // Create a session variable with the test id
-                    if($saved == 0 and is_null($questionId))
-                    {
-                        $newTestId = $tid;
-                        $_SESSION['testId'] = $newTestId;
-                    }
-                    else
-                    {
-                        $newTestId = $tid + 1;
-                        $_SESSION['testId'] = $newTestId;
-                    }
+				// Create a session variable with the test id
+                  
+                    
+				$newTestId = $tid + 1;
+				$_SESSION['testId'] = $newTestId;
+                   
                $testIdStatement->close();
             }
             else
