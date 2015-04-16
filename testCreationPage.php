@@ -10,8 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic</title>
+    <title>Test Creation</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -259,7 +260,7 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="50" /> <span class="minutes"> hh:mm:ss</span>
+                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
                      <label class="time_limit_lbl">Max Points:
@@ -795,6 +796,7 @@ $modalId = 0;
       
       $("#saveTestBtn").click(function()
       {
+		//alert(newTestId);
          testName = $("#testName").val();
          dateBegin = $("#dateBegin").val();
          dateEnd = $("#dateEnd").val();
@@ -802,8 +804,8 @@ $modalId = 0;
          specificInstruction = $("#specificInstruction").val();
          testPledge = $("#testPledge").val();
          maxPoints = $("#maxPoints").val();
-         alert("Test Saved");
          
+         //alert("before post");
          $.post("TestButtonScripts/saveButton.php",
          {
             testName:testName,
@@ -819,7 +821,7 @@ $modalId = 0;
          },
       function(data)
       {
-         
+         alert("Test Saved");
       });
          
       });

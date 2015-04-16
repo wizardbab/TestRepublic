@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic</title>
+    <title>Test Republic - Class Page</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,41 +20,6 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	 
-	  <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-	 
-	 function deleteTest(testId)
-	 {
-		 $.post("TestButtonScripts/deleteTest.php",
-				{
-					 testId:testId
-				},
-				function(data)
-				{
-					
-				});
-	  
-	 }
-		  
-	 
-	 $(document).ready(function()
-	{
-      
-		  
-	});
-	
-	</script>
 
 </head>
 <body>
@@ -253,7 +219,6 @@ $studentStatement = $database->prepare($studentQuery);
 							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
-							<th>Delete Test</th>
 						</tr>
 						</thead>
 						
@@ -279,17 +244,16 @@ $studentStatement = $database->prepare($studentQuery);
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
-                                                                                if($t1 > $t2 or $dateBegin == null)
+                                                                                if($t1 > $t2)
                                                                                 {
-                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></td></form>
-																				</td>';
+                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></form></td>
+																				</td></tr>';
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></td></form>
-																				</td>';
+                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></form></td>
+																				</td></tr>';
                                                                                 }
-																										  echo '<td><input type="submit" value="Delete Test" class="view_test_button" onclick="deleteTest('.$tid.')" id="deleteTestButton" /></td></tr>';
 							}
 							$firstTableStatement->close();
                             if($tid == null)
@@ -434,9 +398,18 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-   
-	 
-	 
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
     </script>
 
 </body>

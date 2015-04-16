@@ -4,9 +4,10 @@
     <meta name="author" content="Mongolian Horde" /> 
  	<link href="style.css" rel="stylesheet" type="text/css" />
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+   <link rel="shortcut icon" href="images/newlogo.ico">
 
 
- <title>Test Republic</title> 
+ <title>Test Republic - Log in</title> 
 	
 	<!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -43,8 +44,12 @@
 		if(GetUrlValue('errorMessage') == undefined)
 			document.getElementById("test").innerHTML = " ";
 		else
+		{
 			document.getElementById("test").innerHTML = GetUrlValue('errorMessage');
+			var SearchString = window.location.search.substring(1);	
+		}
 	});
+	
 	
 
 </script>
@@ -65,12 +70,7 @@
             <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
             <li class="dropdown">
-                <a href="about.html" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-graduation-cap"></i> About us <b class="caret"></b></a>
-                <ul class="dropdown-menu about-dropdown">
-                    <li>
-                        <a href="about.html" style="color:#999" >View all</a>
-                    </li>
-                </ul>
+                <a href="about.html" class="dropdown-toggle" type="button"><i class="fa fa-graduation-cap"></i> About us</a>
             </li>
 			<li class="dropdown">
 				<a href="signUp2.php" class="dropdown-toggle" type="button" onclick="window.location.href='signUp2.php'" data-toggle="dropdown"><i class="fa fa-user"></i> Sign up</a>
@@ -92,13 +92,16 @@
 </div>	
 
 <div class="centralBox">
-	
 	<img class="centralLogo" src="images/newlogo.png" alt="Our Logo"/>
     <div class="test_republic_text">TEST REPUBLIC</div>
 	<div class="subheading">Take your online tests here!</div>
+</div>
+<div id="test">
+
+
+
 
 </div>
-<div id="test"></div>
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">

@@ -5,11 +5,12 @@
 <head> 
     <meta name="author" content="Mongolian Horde" /> 
 	<meta http-equiv="Refresh" content="2.25; URL=login.html">
- 	<link href="style.css" rel="stylesheet" type="text/css" /> 
+ 	<link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="images/newlogo.ico">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 
 
- <title>Thanks for using Test Republic!</title> 
+ <title>Logging Out..</title> 
 	
 	<!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
