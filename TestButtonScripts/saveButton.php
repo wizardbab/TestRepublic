@@ -27,13 +27,13 @@
     @$classId = $_POST['classId'];
     @$teacherId = $_POST['teacherId'];
 	
-	$dataArray = ["testName" => $testName,
+	$dataArray = array("testName" => $testName,
 					  "dateBegin" => $dateBegin, 
 					  "dateBegin" => $dateEnd, 
 					  "timeLimit" => $timeLimit, 
 					  "specificInstruction" => $specificInstruction, 
 					  "testPledge" => $testPledge, 
-					  "maxPoints" => $maxPoints];
+					  "maxPoints" => $maxPoints);
 					  
 	echo $dataArray["testName"];
 	echo $dataArray["dateBegin"];
