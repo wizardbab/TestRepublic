@@ -36,13 +36,14 @@
 	 function deleteTest(testId)
 	 {
 		 $.post("TestButtonScripts/deleteTest.php",
-				{
-					 testId:testId
-				},
-				function(data)
-				{
-					
-				});
+		{
+			 testId:testId
+		},
+		function(data)
+		{
+			
+		});
+		location.reload();
 	  
 	 }
 		  
@@ -126,9 +127,9 @@ where student_id = ? and class_id = ?
 group by(test_id)";
 
 // Average score for student list
-$averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
+$averageQuery = "select sum(test_score) / sum(max_points) * 100 from test_list
 join test using(test_id)
-where student_id = ? and class_id = ? and date_taken is not null";
+where student_id = ? and class_id = ? and date_taken is not null and test_score is not null";
 
 // List of students for student list
 $studentQuery = "select student_id from enrollment
@@ -278,22 +279,22 @@ $studentStatement = $database->prepare($studentQuery);
                                 else
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
-                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
-                                                                                if($t1 > $t2 or $dateBegin == null)
-                                                                                {
-                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></td></form>
-																				</td>';
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></td></form>
-																				</td>';
-                                                                                }
-																										  echo '<td><input type="submit" value="Delete Test" class="view_test_button" onclick="deleteTest('.$tid.')" id="deleteTestButton" /></td></tr>';
+									  <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
+									  if($t1 > $t2 or $dateBegin == null)
+									  {
+									  echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></td></form>
+			</td>';
+									  }
+									  else
+									  {
+											echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></td></form>
+			</td>';
+									  }
+									  echo '<td><input type="submit" value="Delete Test" class="btn btn-primary btn-block" onclick="deleteTest('.$tid.')" id="deleteTestButton" /></td></tr>';
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="5">No tests created</td></tr>';
+                                    echo'<tr><td colspan="6">No tests created</td></tr>';
 						?>
 						</tbody>
 						
