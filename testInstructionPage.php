@@ -231,7 +231,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 			var testId = '<?php echo $testId; ?>';
 			var studentId = '<?php echo $id; ?>';
 			
-			$.post("TestButtonScripts/startTest.php",
+			$.post("TestButtonScripts/startButton.php",
 			{
 				 testId:testId,
 				 studentId:studentId

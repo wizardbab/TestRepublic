@@ -35,32 +35,17 @@
 	 
 	 function deleteTest(testId)
 	 {
-		var good = false;
-		
-		 $.post("TestButtonScripts/deleteTest.php",
+		alert("in delete");
+		$.post("TestButtonScripts/deleteTest.php",
 		{
 			testId:testId
 		},
 		function(data)
 		{
-			good = true;
-			if(good)
-			{
-				location.reload();
-			}
-		});
-
-			 testId:testId
-		},
-		function(data)
-		{
 			
 		});
-		location.reload();
-	  
-	 }
+	}
 		  
-	 
 	 $(document).ready(function()
 	{
       
@@ -297,14 +282,17 @@ $studentStatement = $database->prepare($studentQuery);
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
                                                                                 if($t1 > $t2 or $sid == null or $dateBegin == null)
                                                                                 {
-                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></form></td>
-																				</td></tr>';
+                                                                                echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></form></td>
+																				</td>';
+																				echo'<td><input type="submit" value="Delete Test" onclick="deleteTest('.$tid.')" id="deleteTest" class="btn btn-primary btn-block" /></td></tr>';
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></form></td>
-																				</td></tr>';
+                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></form></td>';
+																				echo'<td><input type="submit"  disabled="disabled" value="Delete Test" class="btn btn-primary btn-block" /></td></tr>';
                                                                                 }
+																				
+																				
 							}
 							$firstTableStatement->close();
                             if($tid == null)

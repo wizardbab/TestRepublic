@@ -813,7 +813,7 @@ echo '<br /><br /><br />';
 	{
 	
 	 
-    setInterval(function(){ myTimer() }, 965)
+    setInterval(function(){ myTimer() }, 960)
 	}
 
 	function pad2(number)
@@ -828,7 +828,7 @@ echo '<br /><br /><br />';
 		//var t = d.toLocaleTimeString();
 		if(hours == 0 && minutes == 0 && seconds == 0)
 		{
-			alert("time's up");
+			
 			var counter;
             var essayArray = [];
                 <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
@@ -973,7 +973,7 @@ echo '<br /><br /><br />';
 				{
 					hours--;
 
-					minutes = 60;
+					minutes = 59;
 				}
 			}
 		}

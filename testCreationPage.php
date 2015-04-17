@@ -172,7 +172,6 @@ $modalId = 0;
                         <div class="course_number">'
                             . $clid .
                         '</div>
-                        
                         <div class="class_name">'
                             . $clde . 
                         '</div>
@@ -180,6 +179,7 @@ $modalId = 0;
                         }
                         $mainClassStatement->close();
                         ?>
+						<button type="button" class="btn btn-danger" id="DeleteTest"> Delete Test</button>
                </div>
             </div>
          <?php
@@ -253,7 +253,7 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="50" /> <span class="minutes"> hh:mm:ss</span>
+                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
                      <label class="time_limit_lbl">Max Points:
@@ -762,7 +762,7 @@ $modalId = 0;
         function(data)
       {
         
-      });
+      }); 
     }
     </script>
     <!-- Menu Toggle Script -->
@@ -779,11 +779,11 @@ $modalId = 0;
       var testName;
       var dateBegin;
       var dateEnd;
-      var timeLimit;
+      var timeLimit = "";
       var specificInstruction;
       var testPledge;
       var newTestId = '<?php echo $newTestId; ?>';
-      var maxPoints;
+      var maxPoints = "";
       var classId = '<?php echo $clid; ?>';
       var teacherId = '<?php echo $id; ?>';
       
@@ -800,44 +800,26 @@ $modalId = 0;
          $.post("TestButtonScripts/saveButton.php",
          {
             testName:testName,
-            dateBegin:dateBegin,
-            dateEnd:dateEnd,
-            timeLimit:timeLimit,
-            specificInstruction:specificInstruction,
-            testPledge:testPledge,
-            newTestId:newTestId,
-            maxPoints:maxPoints,
-            classId:classId,
-            teacherId:teacherId
+			dateBegin:dateBegin,
+			dateEnd:dateEnd,
+			timeLimit:timeLimit,
+			specificInstruction:specificInstruction,
+			testPledge:testPledge,
+			newTestId:newTestId,
+			maxPoints:maxPoints,
+			classId:classId,
+			teacherId:teacherId
          },
-      function(data)
-      {
-         alert("Test Saved");
-      });
+		  function(data)
+		  {
+			 alert("Test Saved");
+		  });
          
       });
-   });
-   </script>
-   
-    <script>
-    $(document).ready(function()
-   {
-        var newTestId = '<?php echo $newTestId; ?>';
-        var classId = '<?php echo $clid; ?>';
+	  
         
         $("#createTestBtn").click(function()
 		{
-            var testName;
-            var dateBegin;
-            var dateEnd;
-            var timeLimit;
-            var specificInstruction;
-            var testPledge;
-            var newTestId = '<?php echo $newTestId; ?>';
-            var maxPoints;
-            var classId = '<?php echo $clid; ?>';
-            var teacherId = '<?php echo $id; ?>';
-        
             testName = $("#testName").val();
 			dateBegin = $("#dateBegin").val();
 			dateEnd = $("#dateEnd").val();
@@ -856,22 +838,36 @@ $modalId = 0;
 				testPledge:testPledge,
 				newTestId:newTestId,
 				maxPoints:maxPoints,
-            classId:classId,
-            teacherId:teacherId
+				classId:classId,
+				teacherId:teacherId
 			},
+			function(data)
+			{
+			});
+			
+			$.post("TestButtonScripts/createButton.php",
+			{
+				newTestId:newTestId,
+				classId:classId
+			},
+			function(data)
+			{
+				alert("Test published!");
+			});
+        });
+		
+	 $("#DeleteTest").click(function()
+	 {
+		$.post("TestButtonScripts/deleteTest.php",
+		{
+			testId:testId
+		},
 		function(data)
 		{
+			alert("Deleted test, Redirecting to Main page (or some sort of message here :P");
+			window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
 		});
-			alert("Test published!");
-        $.post("TestButtonScripts/createButton.php",
-        {
-            newTestId:newTestId,
-            classId:classId
-        },
-        function(data)
-        {
-        });
-        });
+	 });
    });
     </script>
     

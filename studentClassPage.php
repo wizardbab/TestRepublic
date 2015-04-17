@@ -54,7 +54,7 @@ $averageQuery = "select sum(points_earned) / sum(question_value) * 100
 from question
 join test using(test_id)
 join test_list using(test_id, student_id)
-where student_id = ? and class_id = ? and date_taken is not null";
+where student_id = ? and class_id = ? and graded = 1";
 
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";

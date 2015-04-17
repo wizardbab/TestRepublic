@@ -19,11 +19,17 @@
 	@$testName = $_POST['testName'];
 	@$dateBegin = $_POST['dateBegin'];
 	@$dateEnd = $_POST['dateEnd'];
-	@$timeLimit = $_POST['timeLimit'];
+	if($_POST['timeLimit'] != null)
+		@$timeLimit = $_POST['timeLimit'];
+	else
+		$timeLimit = null;
 	@$specificInstruction = $_POST['specificInstruction'];
 	@$testPledge = $_POST['testPledge'];
 	@$newTestId = $_POST['newTestId'];
-	@$maxPoints = $_POST['maxPoints'];
+	if($_POST['maxPoints'] != null)
+		@$maxPoints = $_POST['maxPoints'];
+	else
+		$maxPoints = null;
     @$classId = $_POST['classId'];
     @$teacherId = $_POST['teacherId'];
 	
