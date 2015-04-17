@@ -63,7 +63,7 @@ $query = "select class_id, class_description from class where class_id = ?";
 
 $summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id, answer_id
 								 from question
-                                 join answer using(question_id)
+                                 left join answer using(question_id)
 								 where test_id = ? and student_id = ?";
 								 
 $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
@@ -544,14 +544,17 @@ echo '<br /><br /><br />';
                                                         $j+=9;
                                                     }
                                                 }
-                                                if($matchingAnswer[$i+3] == $headingIdArray[$k])
+                                                if($i < count($matchingAnswer))
                                                 {
-                                                echo'<div class="col-md-6">';
-                                                        echo'<div class="matching_div">
-                                                            '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
-                                                        </div>
-                                                        <br />';
-                                                }        
+                                                    if($matchingAnswer[$i+3] == $headingIdArray[$k])
+                                                    {
+                                                    echo'<div class="col-md-6">';
+                                                            echo'<div class="matching_div">
+                                                                '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
+                                                            </div>
+                                                            <br />';
+                                                    }
+                                                }
                                             echo'</div>';
                                             }
                                             $matchingAnswer = null;
