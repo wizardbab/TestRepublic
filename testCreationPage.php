@@ -796,7 +796,6 @@ $modalId = 0;
          specificInstruction = $("#specificInstruction").val();
          testPledge = $("#testPledge").val();
          maxPoints = $("#maxPoints").val();
-         alert("Test Saved");
          
          $.post("TestButtonScripts/saveButton.php",
          {
@@ -813,7 +812,7 @@ $modalId = 0;
          },
       function(data)
       {
-         
+         alert("Test Saved");
       });
          
       });

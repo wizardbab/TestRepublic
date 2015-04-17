@@ -230,7 +230,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 		 else
 		 {
 		  // Here we stay on the page
-       }
+         }
 	}
 	
 	$(document).ready(function()

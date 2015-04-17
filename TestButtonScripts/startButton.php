@@ -14,7 +14,10 @@
 	@$testId = $_POST['testId'];
 	@$studentId = $_POST['studentId'];
 	
-	$timeStampQuery = "update test_list set start_time = curtime() where test_id = ? and student_id = ?";
+	$timeStampQuery = "update test_list
+set start_time = curtime(),
+	date_taken = curdate()
+where test_id = ? and student_id = ?";
 	
 	$timeStampStatement = $database->prepare($timeStampQuery);
 	
