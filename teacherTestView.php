@@ -554,8 +554,8 @@ $_SESSION['testId'] = $testId;
                                                             <br />';
                                                             
                                                     $matchingCounter++;
+                                                    echo '</div>';
                                                 }
-                                                echo '</div>';
                                                 
                                             }
                                             $matchingAnswer = null;

@@ -62,11 +62,12 @@ $query = "select class_id, class_description from enrollment join class using (c
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
+$classQuery = "select class_id from enrollment where student_id = ?";
+
 // Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, count(test_id) - count(date_taken) from test_list
+$tableQuery = "select count(test_id) - count(date_taken) from test_list
 join test using(test_id)
-where student_id = ? and datediff(date_begin, sysdate()) < 0 and datediff(date_end, sysdate()) > 0
-group by class_id";
+where student_id = ? and class_id = ? and datediff(date_begin, sysdate()) <= 0 and datediff(date_end, sysdate()) >= 0";
 
 // Display any tests that will expire within 3 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
@@ -82,6 +83,7 @@ $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+$classStatement = $database->prepare($classQuery);
 
 ?>
 
@@ -157,7 +159,7 @@ $warningstmt = $database->prepare($warningQuery);
 						<thead>
 						<tr>
 							<th>Classes</th>
-							<th>Assignments to take</th>
+							<th>Tests to Take</th>
 						</tr>
 						</thead>
 						
@@ -165,16 +167,28 @@ $warningstmt = $database->prepare($warningQuery);
 						<?php 
 							// Code added by David Hughen to display class id, update, and date
 							// inside the table in the middle of the page
-							$table->bind_param("s", $id);
-							$table->bind_result($clid, $count);
-							$table->execute();
-							while($table->fetch())
-							{	
-								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?classId='.str_replace(" ", "%20", $clid).'\'">'.$clid.'</button></td>
-									  <td>You have '.$count.' test(s) to take</td></tr>';
+							$classStatement->bind_param("s", $id);
+							$classStatement->bind_result($clid);
+							$classStatement->execute();
+							while($classStatement->fetch())
+							{
+                                $tableArray[] = $clid;
 							}
-							$table->close(); 
-							?>	
+							$classStatement->close();
+                            
+                            for($i = 0; $i < count($tableArray); $i++)
+                            {
+                                $table->bind_param("ss", $id, $tableArray[$i]);
+                                $table->bind_result($count);
+                                $table->execute();
+                                while($table->fetch())
+                                {
+                                    echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?classId='.str_replace(" ", "%20", $tableArray[$i]).'\'">'.$tableArray[$i].'</button></td>
+                                          <td>You have '.$count.' test(s) to take</td></tr>';
+                                }
+                            }
+                            $table->close();
+							?>
 							</tbody>
 					</table>
                 </div>

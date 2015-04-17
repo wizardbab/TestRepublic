@@ -536,12 +536,12 @@ $_SESSION['testId'] = $testId;
                                                     echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
                                                             '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
-                                                        </div>
-                                                        <br />';
+                                                        </div>';
                                                         
                                                     $matchingCounter++;
+                                                    echo'</div>';
                                                 }
-                                                echo'</div>';
+                                                
                                             }
                                             $matchingAnswer = null;
                                         }       
