@@ -32,8 +32,8 @@
 		question_type, question_value, question_text, question_letter, question_no, heading_id, heading)
 		values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text, correct)
-		values(?, ?, ?, ?)";
+	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text, correct, a_heading_id)
+		values(?, ?, ?, ?, ?)";
 		
 	$questionNumberQuery = "select max(question_no) from question where test_id = ?";
     
@@ -121,22 +121,29 @@
             for($i = 0; $i < count($answers); $i++)
             {
                 $k = 0;
-                while($answerLetters[$i] != $questionLetters[$k])
+                while($answerLetters[$i] != $questionLetters[$k] and $k < count($questionLetters))
                 {
                     $k++;
                 }
-                $getQuestionStatement = $database->prepare($getQuestionQuery);
-                $getQuestionStatement->bind_param("ss", $newHeadingId, $questionLetters[$k]);
-                $getQuestionStatement->bind_result($qid);
-                $getQuestionStatement->execute();
-                while($getQuestionStatement->fetch())
+                if($k >= count($questionLetters))
                 {
-                    $newQid = $qid;
+                    $newQid = 0;
                 }
-                $getQuestionStatement->close();
-                    
+                else
+                {
+                    $getQuestionStatement = $database->prepare($getQuestionQuery);
+                    $getQuestionStatement->bind_param("ss", $newHeadingId, $questionLetters[$k]);
+                    $getQuestionStatement->bind_result($qid);
+                    $getQuestionStatement->execute();
+                    while($getQuestionStatement->fetch())
+                    {
+                        $newQid = $qid;
+                    }
+                    $getQuestionStatement->close();
+                }
+                
                 $insertAnswerStatement = $database->prepare($insertAnswerQuery);
-                $insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQid, $answers[$i], $answerLetters[$i]);
+                $insertAnswerStatement->bind_param("sssss", $newAnswerId, $newQid, $answers[$i], $answerLetters[$i], $newHeadingId);
                 $insertAnswerStatement->execute();
                 $insertAnswerStatement->close();
                 

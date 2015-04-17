@@ -63,12 +63,12 @@ $query = "select class_id, class_description from enrollment join class using (c
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, count(*) from test_list
+$tableQuery = "select class_id, count(test_id) - count(date_taken) from test_list
 join test using(test_id)
-where student_id = ? and date_taken is null and datediff(date_begin, sysdate()) < 0 and datediff(date_end, sysdate()) > 0
+where student_id = ? and datediff(date_begin, sysdate()) < 0 and datediff(date_end, sysdate()) > 0
 group by class_id";
 
-// Display any tests that will expire within 7 days
+// Display any tests that will expire within 3 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)

@@ -74,11 +74,10 @@ $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 $multipleChoiceQuery = "select answer_text, answer_id from answer where question_id = ?";
 $ataQuery = "select answer_text, answer_id from answer where question_id = ?";
 
-$matchingQuery = "SELECT question_letter, answer_text, answer_id
+$matchingQuery = "SELECT correct, answer_text, answer_id, a_heading_id
 from answer
-join question using(question_id)
-where heading_id = ? and student_id = ?
-order by(question_letter)";
+where a_heading_id = ?
+group by(correct)";
 
 $matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ? and student_id = ?";
 
@@ -346,7 +345,7 @@ $_SESSION['testId'] = $testId;
 								echo '<div class="panel panel-default">
                         <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay</a>
                             </h4>
                         </div>
 							  <div id="collapseSix" class="panel-collapse collapse">
@@ -372,7 +371,7 @@ $_SESSION['testId'] = $testId;
 								echo'<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False</a>
 										 </h4>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse">';
@@ -413,7 +412,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
+											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice</a>
 										</h4>
 									</div>
 									<div id="collapseOne" class="panel-collapse collapse">';
@@ -455,7 +454,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching</a>
 										 </h4>
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse">
@@ -474,33 +473,41 @@ $_SESSION['testId'] = $testId;
                                         for($k = 0; $k < count($headingArray); $k++)
                                         {
                                             echo'<h4>'.$headingArray[$k].'</h4>';
-                                            $matchingStatement->bind_param("ss", $headingIdArray[$k], $id);
-                                            $matchingStatement->bind_result($qletter, $atext, $aid);
+                                            $matchingStatement->bind_param("s", $headingIdArray[$k]);
+                                            $matchingStatement->bind_result($qletter, $atext, $aid, $newHeadingId);
                                             $matchingStatement->execute();
                                             while($matchingStatement->fetch())
                                             {
                                                 $matchingAnswer[] = $qletter;
                                                 $matchingAnswer[] = $atext;
                                                 $matchingAnswer[] = $aid;
+                                                $matchingAnswer[] = $newHeadingId;
                                             }
-                                            for($i = 0; $i < count($matchingAnswer); $i+=3)
-                                            {	
-                                            echo'	<div class="col-md-6">
-                                                    <div class="matching_div">'
-                                                    .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                        <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
-                                                    </div>
-                                                </div>';
-                                                
-                                                
+                                            //$oldMId = -1;
+                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            {
+                                                if($j < count($matchingArray))
+                                                {
+                                                    if($headingIdArray[$k] == $matchingArray[$j+5])
+                                                    {
+                                                        echo'	<div class="col-md-6">
+                                                            <div class="matching_div">'
+                                                            .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
+                                                                <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
+                                                            </div>
+                                                        </div>';
+                                                        $counter++;
+                                                        $j+=9;
+                                                    }
+                                                }
+                                                if($matchingAnswer[$i+3] == $headingIdArray[$k])
+                                                {
                                                 echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
                                                             '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
                                                         </div>
                                                         <br />';
-                                                        
-                                                $counter++;	
-                                                $j+=9;
+                                                }        
                                             echo'</div>';
                                             }
                                             $matchingAnswer = null;
@@ -547,7 +554,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply</a>
 										 </h4>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse">';
@@ -768,11 +775,6 @@ $_SESSION['testId'] = $testId;
 
 	function pad2(number)
 	{
-	
-		if(number > "00")
-			return number;
-		
-		
      return (number < 10 ? '0' : '') + number;
    
    }
@@ -932,7 +934,7 @@ $_SESSION['testId'] = $testId;
 				}
 			}
 		}
-		document.getElementById("test").innerHTML = hours.toFixed(2) + ":" +  minutes.toFixed(2) + ":" + seconds.toFixed(2);
+		document.getElementById("test").innerHTML = pad2(hours) + ":" +  pad2(minutes) + ":" + pad2(seconds);
 	}
 	 
 	 </script>
