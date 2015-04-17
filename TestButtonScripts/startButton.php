@@ -12,12 +12,13 @@
 	@$database->select_db(DATABASENAME);
 	
 	@$testId = $_POST['testId'];
+	@$studentId = $_POST['studentId'];
 	
-	$timeStampQuery = "update test set start_time = curtime() where test_id = ?";
+	$timeStampQuery = "update test_list set start_time = curtime() where test_id = ? and student_id = ?";
 	
 	$timeStampStatement = $database->prepare($timeStampQuery);
 	
-	$timeStampStatement->bind_param("s", $testId);
+	$timeStampStatement->bind_param("ss", $testId, $studentId);
 	$timeStampStatement->execute();
 	$timeStampStatement->close();
 	

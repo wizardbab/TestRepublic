@@ -27,24 +27,6 @@
     @$classId = $_POST['classId'];
     @$teacherId = $_POST['teacherId'];
 	
-	$dataArray = ["testName" => $testName,
-					  "dateBegin" => $dateBegin, 
-					  "dateBegin" => $dateEnd, 
-					  "timeLimit" => $timeLimit, 
-					  "specificInstruction" => $specificInstruction, 
-					  "testPledge" => $testPledge, 
-					  "maxPoints" => $maxPoints];
-					  
-	echo $dataArray["testName"];
-	echo $dataArray["dateBegin"];
-	echo $dataArray["dateBegin"];
-	echo $dataArray["timeLimit"];
-	echo $dataArray["specificInstruction"];
-	echo $dataArray["testPledge"];
-	echo $dataArray["maxPoints"];
-    
-    //$timeLimit = intval($timeLimit * 100);
-	
     $newDateBegin = null;
     $newDateEnd = null;
     

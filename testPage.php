@@ -53,10 +53,6 @@ $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 	 // session variable_exists, use that
 	 $timeLimit = $_SESSION['timeLimit'];
 
-		
-		
-
- 
 
 
 // Student first and last name to display on top right of screen
@@ -84,7 +80,7 @@ $matchingHeadQuery = "select distinct heading_id, heading from question where he
 
 $trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
 
-$selectStartTime = "select start_time from test where test_id = ?";
+$selectStartTime = "select start_time from test_list where test_id = ? and student_id = ?";
 
 
 $selectStartStatement = $database->prepare($selectStartTime); 
@@ -104,7 +100,7 @@ $trueFalseStatement = $database->prepare($trueFalseQuery);
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
-$selectStartStatement->bind_param("s", $testId);
+$selectStartStatement->bind_param("ss", $testId, $id);
 $selectStartStatement->bind_result($ctime);
 $selectStartStatement->execute();
 while($selectStartStatement->fetch())
@@ -114,11 +110,16 @@ while($selectStartStatement->fetch())
 $selectStartStatement->close();
 
 
-
+echo '<br /><br /><br />';
 	$secs = strtotime($timeLimit)-strtotime("00:00:00");
+	echo '<h1>secondslimit: '.$secs . '</h1>';
+	echo '<h1>time limit: '.$timeLimit . '</h1>';
+	echo '<h1>start time: '.$ctime . '</h1>';
 	$endTime = date("H:i:s",strtotime($ctime)+$secs);
+	echo '<h1>end time: '.$endTime . '</h1>';
 
 	$currentTime = date('H:i:s', time());
+	echo '<h1>current time: '.$currentTime. '</h1>';
 
 	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
 
@@ -432,8 +433,8 @@ $selectStartStatement->close();
 													while($trueFalseStatement->fetch())
 													{
                                                         echo'<div class="tf_choice">
-                                                            <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
-                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>
+                                                            <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
+                                                            <span class="mc_answer_lbl">'.$answer_text.'</span></label>
                                                             </div>';
                                                     }
                                                    echo' </div>

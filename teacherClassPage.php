@@ -35,14 +35,22 @@
 	 
 	 function deleteTest(testId)
 	 {
+		var good = false;
+		
 		 $.post("TestButtonScripts/deleteTest.php",
-				{
-					 testId:testId
-				},
-				function(data)
-				{
-					
-				});
+		{
+			testId:testId
+		},
+		function(data)
+		{
+			good = true;
+			if(good)
+			{
+				location.reload();
+			}
+		});
+		
+		
 	  
 	 }
 		  
@@ -293,7 +301,7 @@ $studentStatement = $database->prepare($studentQuery);
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="5">No tests created</td></tr>';
+                                    echo'<tr><td colspan="6">No tests created</td></tr>';
 						?>
 						</tbody>
 						

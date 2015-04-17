@@ -229,10 +229,12 @@ $testNameStatement = $database->prepare($testNameQuery);
 	  $("#startTest").click(function()
 		{
 			var testId = '<?php echo $testId; ?>';
+			var studentId = '<?php echo $id; ?>';
 			
 			$.post("TestButtonScripts/startTest.php",
 			{
-				 testId:testId
+				 testId:testId,
+				 studentId:studentId
 			},
 			function(data)
 			{
