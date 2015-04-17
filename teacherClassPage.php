@@ -19,6 +19,42 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	 
+	  <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+	 
+	 function deleteTest(testId)
+	 {
+		 $.post("TestButtonScripts/deleteTest.php",
+		{
+			 testId:testId
+		},
+		function(data)
+		{
+			
+		});
+		location.reload();
+	  
+	 }
+		  
+	 
+	 $(document).ready(function()
+	{
+      
+		  
+	});
+	
+	</script>
 
 </head>
 <body>
@@ -91,9 +127,9 @@ where student_id = ? and class_id = ?
 group by(test_id)";
 
 // Average score for student list
-$averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
+$averageQuery = "select sum(test_score) / sum(max_points) * 100 from test_list
 join test using(test_id)
-where student_id = ? and class_id = ? and date_taken is not null";
+where student_id = ? and class_id = ? and date_taken is not null and test_score is not null";
 
 // List of students for student list
 $studentQuery = "select student_id from enrollment
@@ -218,6 +254,7 @@ $studentStatement = $database->prepare($studentQuery);
 							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
+							<th>Delete Test</th>
 						</tr>
 						</thead>
 						
@@ -258,7 +295,7 @@ $studentStatement = $database->prepare($studentQuery);
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="5">No tests created</td></tr>';
+                                    echo'<tr><td colspan="6">No tests created</td></tr>';
 						?>
 						</tbody>
 						
@@ -399,18 +436,9 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+   
+	 
+	 
     </script>
 
 </body>

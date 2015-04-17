@@ -33,6 +33,7 @@
 	
 <?php
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");
@@ -83,8 +84,10 @@ $matchingHeadQuery = "select distinct heading_id, heading from question where he
 
 $trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
 
+$selectStartTime = "select start_time from test_list where test_id = ? and student_id = ?";
 
-								 
+
+$selectStartStatement = $database->prepare($selectStartTime); 
 $matchingHeadStatement = $database->prepare($matchingHeadQuery);
 $queryStatement = $database->prepare($query);
 $headerStatement = $database->prepare($headerQuery);
@@ -101,7 +104,47 @@ $trueFalseStatement = $database->prepare($trueFalseQuery);
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
+$selectStartStatement->bind_param("ss", $testId, $id);
+$selectStartStatement->bind_result($ctime);
+$selectStartStatement->execute();
+while($selectStartStatement->fetch())
+{
+	
+}
+$selectStartStatement->close();
 
+
+
+	$secs = strtotime($timeLimit)-strtotime("00:00:00");
+	$endTime = date("H:i:s",strtotime($ctime)+$secs);
+
+	$currentTime = date('H:i:s', time());
+
+	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
+
+	$timeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+
+	sscanf($endTime, "%d:%d:%d", $hours, $minutes, $seconds);
+
+	$endTimeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+
+	$timeLeft = $endTimeSeconds - $timeSeconds;
+
+
+    // extract hours
+    $hours = floor($timeLeft / (60 * 60));
+ 
+    // extract minutes
+    $divisor_for_minutes = $timeLeft % (60 * 60);
+    $minutes = floor($divisor_for_minutes / 60);
+ 
+    // extract the remaining seconds
+    $divisor_for_seconds = $divisor_for_minutes % 60;
+    $timeLeft = ceil($divisor_for_seconds);
+	 
+	 $timeArray[] = $hours;
+	 $timeArray[] = $minutes;
+	 $timeArray[] = $timeLeft;
 ?>
 	
 </head>
@@ -144,7 +187,7 @@ $_SESSION['testId'] = $testId;
 								$topRightStatement->execute();
 								while($topRightStatement->fetch())
 								{
-									echo $first_name . " " . $last_name;
+									echo $first_name . " " . $last_name . " " . $id;
 								}
 								$topRightStatement->close();?><b class="caret"></b></a>
 						
@@ -327,14 +370,14 @@ $_SESSION['testId'] = $testId;
                     
                     <?php
 						  // Set the hours, minutes, and seconds into their own array
-						  $timeArray = explode(":", $timeLimit);
-						$counter = 1;
-                        $essayCounter = 0;
-                        $trueFalseCounter = 0;
-                        $multipleChoiceCounter = 0;
-                        $matchingCounter = 0;
-                        $shortAnswerCounter = 0;
-                        $allThatApplyCounter = 0;
+							
+							$counter = 1;
+							$essayCounter = 0;
+							$trueFalseCounter = 0;
+							$multipleChoiceCounter = 0;
+							$matchingCounter = 0;
+							$shortAnswerCounter = 0;
+							$allThatApplyCounter = 0;
 						   /***************************************************************************************************/
 							/* Test each question type's array for data; if there's data we add that tab to our page           */
 							/***************************************************************************************************/
@@ -389,8 +432,8 @@ $_SESSION['testId'] = $testId;
 													while($trueFalseStatement->fetch())
 													{
                                                         echo'<div class="tf_choice">
-                                                            <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
-                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>
+                                                            <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
+                                                            <span class="mc_answer_lbl">'.$answer_text.'</span></label>
                                                             </div>';
                                                     }
                                                    echo' </div>
@@ -430,8 +473,8 @@ $_SESSION['testId'] = $testId;
 													while($multipleChoiceStatement->fetch())
 													{
 														echo '<div class="mc_choice" >
-															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
-															<span class="mc_answer_lbl">'.$atext.'</span>
+															<label><input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
+															<span class="mc_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
 													}	
 											echo'	</div>
@@ -573,8 +616,8 @@ $_SESSION['testId'] = $testId;
                                                         {
                                                         echo'
                                                             <div class="ata_choice">
-                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
-                                                                <span class="ata_answer_lbl">'.$atext.'</span>
+                                                                <label><input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
+                                                                <span class="ata_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
                                                         }
                                             
@@ -655,7 +698,6 @@ $_SESSION['testId'] = $testId;
 			var i = 0;
             var id = '<?php echo $id; ?>';
             var testId = '<?php echo $testId; ?>';
-            alert("clicked submit");
             
             for(counter = 0; counter < essayArray.length; counter++)
             {
@@ -717,7 +759,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-                $.post("TestAnswerScripts/mcmatatf.php",
+            $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
@@ -770,7 +812,7 @@ $_SESSION['testId'] = $testId;
 	{
 	
 	 
-    setInterval(function(){ myTimer() }, 1000)
+    setInterval(function(){ myTimer() }, 965)
 	}
 
 	function pad2(number)
