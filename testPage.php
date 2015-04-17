@@ -33,6 +33,7 @@
 	
 <?php
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");
@@ -77,15 +78,16 @@ $ataQuery = "select answer_text, answer_id from answer where question_id = ?";
 $matchingQuery = "SELECT question_letter, answer_text, answer_id
 from answer
 join question using(question_id)
-where heading_id = ? and student_id = ?
-order by(question_letter)";
+where heading_id = ? and student_id = ?";
 
 $matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ? and student_id = ?";
 
 $trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
 
+$selectStartTime = "select start_time from test where test_id = ?";
 
-								 
+
+$selectStartStatement = $database->prepare($selectStartTime); 
 $matchingHeadStatement = $database->prepare($matchingHeadQuery);
 $queryStatement = $database->prepare($query);
 $headerStatement = $database->prepare($headerQuery);
@@ -102,7 +104,47 @@ $trueFalseStatement = $database->prepare($trueFalseQuery);
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
+$selectStartStatement->bind_param("s", $testId);
+$selectStartStatement->bind_result($ctime);
+$selectStartStatement->execute();
+while($selectStartStatement->fetch())
+{
+	
+}
+$selectStartStatement->close();
 
+
+
+	$secs = strtotime($timeLimit)-strtotime("00:00:00");
+	$endTime = date("H:i:s",strtotime($ctime)+$secs);
+
+	$currentTime = date('H:i:s', time());
+
+	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
+
+	$timeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+
+	sscanf($endTime, "%d:%d:%d", $hours, $minutes, $seconds);
+
+	$endTimeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+
+	$timeLeft = $endTimeSeconds - $timeSeconds;
+
+
+    // extract hours
+    $hours = floor($timeLeft / (60 * 60));
+ 
+    // extract minutes
+    $divisor_for_minutes = $timeLeft % (60 * 60);
+    $minutes = floor($divisor_for_minutes / 60);
+ 
+    // extract the remaining seconds
+    $divisor_for_seconds = $divisor_for_minutes % 60;
+    $timeLeft = ceil($divisor_for_seconds);
+	 
+	 $timeArray[] = $hours;
+	 $timeArray[] = $minutes;
+	 $timeArray[] = $timeLeft;
 ?>
 	
 </head>
@@ -328,14 +370,14 @@ $_SESSION['testId'] = $testId;
                     
                     <?php
 						  // Set the hours, minutes, and seconds into their own array
-						  $timeArray = explode(":", $timeLimit);
-						$counter = 1;
-                        $essayCounter = 0;
-                        $trueFalseCounter = 0;
-                        $multipleChoiceCounter = 0;
-                        $matchingCounter = 0;
-                        $shortAnswerCounter = 0;
-                        $allThatApplyCounter = 0;
+							
+							$counter = 1;
+							$essayCounter = 0;
+							$trueFalseCounter = 0;
+							$multipleChoiceCounter = 0;
+							$matchingCounter = 0;
+							$shortAnswerCounter = 0;
+							$allThatApplyCounter = 0;
 						   /***************************************************************************************************/
 							/* Test each question type's array for data; if there's data we add that tab to our page           */
 							/***************************************************************************************************/
@@ -346,7 +388,7 @@ $_SESSION['testId'] = $testId;
 								echo '<div class="panel panel-default">
                         <div class="panel-heading" id="panel-color">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay Questions</a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay</a>
                             </h4>
                         </div>
 							  <div id="collapseSix" class="panel-collapse collapse">
@@ -372,7 +414,7 @@ $_SESSION['testId'] = $testId;
 								echo'<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False</a>
 										 </h4>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse">';
@@ -413,7 +455,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice Questions</a>
+											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice</a>
 										</h4>
 									</div>
 									<div id="collapseOne" class="panel-collapse collapse">';
@@ -455,7 +497,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching</a>
 										 </h4>
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse">
@@ -547,7 +589,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply</a>
 										 </h4>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse">';
@@ -710,7 +752,7 @@ $_SESSION['testId'] = $testId;
                 matchingAnswerArray[counter] = $("#matching"+matchingArray[counter]).val();
             }
             
-                $.post("TestAnswerScripts/mcmatatf.php",
+            $.post("TestAnswerScripts/mcmatatf.php",
 				{
 					"multipleChoiceArray[]":multipleChoiceArray,
                     "multipleChoiceAnswerArray[]":multipleChoiceAnswerArray,
@@ -768,11 +810,6 @@ $_SESSION['testId'] = $testId;
 
 	function pad2(number)
 	{
-	
-		if(number > "00")
-			return number;
-		
-		
      return (number < 10 ? '0' : '') + number;
    
    }
@@ -933,7 +970,7 @@ $_SESSION['testId'] = $testId;
 				}
 			}
 		}
-		document.getElementById("test").innerHTML = hours.toFixed(2) + ":" +  minutes.toFixed(2) + ":" + seconds.toFixed(2);
+		document.getElementById("test").innerHTML = pad2(hours) + ":" +  pad2(minutes) + ":" + pad2(seconds);
 	}
 	 
 	 </script>

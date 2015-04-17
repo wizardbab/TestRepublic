@@ -460,7 +460,6 @@ $_SESSION['testId'] = $testId;
 														echo '<div class="mc_choice" >
 															<input type="radio" disabled="disabled" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" '.$checked.'/>
 															<span class="mc_answer_lbl">'.$atext.'</span>';
-<<<<<<< HEAD
 
                                                         if($stuSelection == 1)
                                                         {
@@ -480,23 +479,6 @@ $_SESSION['testId'] = $testId;
                                                         	echo " <img src='images/sign.png' />";
                                                         }    
 
-=======
-                                                            if($stuSelection == 1)
-                                                            {
-                                                                if($correct == $stuSelection)
-                                                                {
-                                                                    echo " <img src='images/sign.png' />";
-                                                                }
-                                                                else
-                                                                {
-                                                                    echo " <img src='images/cross.jpg' />";
-                                                                }
-                                                            }
-                                                            if($correct == 1 and $stuSelection != 1)
-                                                            {
-                                                                echo " <img src='images/sign.png' />";
-                                                            }
->>>>>>> 2345d04f45bfbf53bc01380b59b49b7ee0e11ece
                                                         echo '</div>';
 													}	
 											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$multipleChoiceArray[$i+5].'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
@@ -637,7 +619,7 @@ $_SESSION['testId'] = $testId;
 								<div class="panel panel-default">
 									<div class="panel-heading" id="panel-color">
 										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply Questions</a>
+											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply</a>
 										 </h4>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse">';
@@ -695,7 +677,7 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block" id="Submit">Save</button>
+			<button type="button" class="btn btn-success btn-block submit_btn" id="Submit">Save</button>
 		</div>
 				
    </div>

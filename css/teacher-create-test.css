@@ -373,7 +373,7 @@ ul.alert-dropdown {
 		font-weight: normal;
 		position: absolute;		
 		left: 130px;
-		width: 4em;
+		width: 10em;
 		height: 2em;
 		padding: 3px;
 		padding-left: 6px;
@@ -408,7 +408,7 @@ ul.alert-dropdown {
 	.minutes
 	{
 		position: absolute;
-		left: 200px;
+		left: 297px;
 	}
 	
 	#specificInstruction, #testPledge

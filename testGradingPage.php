@@ -692,7 +692,7 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block" id="submit"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
+			<button type="button" class="btn btn-success btn-block submit_btn"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
 		</div>
 				
    </div>
