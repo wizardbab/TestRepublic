@@ -254,7 +254,6 @@ $studentStatement = $database->prepare($studentQuery);
 							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
-							<th>Delete Test</th>
 						</tr>
 						</thead>
 						
@@ -436,9 +435,18 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-   
-	 
-	 
+   <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
     </script>
 
 </body>
