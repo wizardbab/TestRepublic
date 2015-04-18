@@ -90,11 +90,11 @@
         
         // assign a new answer id
         $answerIdStatement = $database->prepare($answerIdQuery);
-        $answerIdStatement->bind_result($qid);
+        $answerIdStatement->bind_result($aid);
         $answerIdStatement->execute();
         while($answerIdStatement->fetch())
         {
-            $newAnswerId = $qid + 1;
+            $newAnswerId = $aid + 1;
         }
         $answerIdStatement->close();
         
@@ -133,11 +133,11 @@
                 {
                     $getQuestionStatement = $database->prepare($getQuestionQuery);
                     $getQuestionStatement->bind_param("ss", $newHeadingId, $questionLetters[$k]);
-                    $getQuestionStatement->bind_result($qid);
+                    $getQuestionStatement->bind_result($nqid);
                     $getQuestionStatement->execute();
                     while($getQuestionStatement->fetch())
                     {
-                        $newQid = $qid;
+                        $newQid = $nqid;
                     }
                     $getQuestionStatement->close();
                 }
@@ -146,7 +146,6 @@
                 $insertAnswerStatement->bind_param("sssss", $newAnswerId, $newQid, $answers[$i], $answerLetters[$i], $newHeadingId);
                 $insertAnswerStatement->execute();
                 $insertAnswerStatement->close();
-                
                 
                 $newAnswerId++;
             }

@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Republic</title>
 
@@ -35,19 +36,17 @@
 	 
 	 function deleteTest(testId)
 	 {
-		 $.post("TestButtonScripts/deleteTest.php",
+		alert("in delete");
+		$.post("TestButtonScripts/deleteTest.php",
 		{
-			 testId:testId
+			testId:testId
 		},
 		function(data)
 		{
 			
 		});
-		location.reload();
-	  
-	 }
+	}
 		  
-	 
 	 $(document).ready(function()
 	{
       
@@ -283,18 +282,21 @@ $studentStatement = $database->prepare($studentQuery);
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
                                                                                 if($t1 > $t2 or $sid == null or $dateBegin == null)
                                                                                 {
-                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></form></td>
-																				</td></tr>';
+                                                                                echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></form></td>
+																				</td>';
+																				echo'</tr>';
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></form></td>
-																				</td></tr>';
+                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></form></td>';
+																				echo'</tr>';
                                                                                 }
+																				
+																				
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="6">No tests created</td></tr>';
+                                    echo'<tr><td colspan="5">No tests created</td></tr>';
 						?>
 						</tbody>
 						
@@ -435,7 +437,7 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-   <!-- jQuery -->
+    <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->

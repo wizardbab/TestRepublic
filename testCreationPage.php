@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Republic</title>
 
@@ -35,6 +36,10 @@
     <link href="css/validation.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/validation.js"></script>
     <script type="text/javascript" src="js/Parsley.js/dist/parsley.js"></script>
+	
+		<!-- custom Alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 </head>
 <?php
 session_start();
@@ -172,7 +177,6 @@ $modalId = 0;
                         <div class="course_number">'
                             . $clid .
                         '</div>
-                        
                         <div class="class_name">'
                             . $clde . 
                         '</div>
@@ -191,16 +195,10 @@ $modalId = 0;
                $testIdStatement->execute();
                $testIdStatement->fetch();
                     // Create a session variable with the test id
-                    if($saved == 0 and is_null($questionId))
-                    {
-                        $newTestId = $tid;
-                        $_SESSION['testId'] = $newTestId;
-                    }
-                    else
-                    {
+                  
                         $newTestId = $tid + 1;
                         $_SESSION['testId'] = $newTestId;
-                    }
+                   
                $testIdStatement->close();
             }
             else
@@ -259,10 +257,10 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="hh:mm:ss" /> <span class="minutes"> hh:mm:ss</span>
+                        <input type="text" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
-                     <label class="time_limit_lbl">Max Points:
+                     <label class="time_limit_lbl">Test Weight:
                         <input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" placeholder="100" /> <span class="minutes"> points</span>
                      </label>
                      
@@ -276,7 +274,7 @@ $modalId = 0;
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+								<button type="button" class="btn btn-danger btn-block" id="DeleteTest"><span class="glyphicon glyphicon-remove"></span> Delete Test</button>
 							</div>
 							
 							<div class="col-md-6">	
@@ -771,7 +769,7 @@ $modalId = 0;
         function(data)
       {
         
-      });
+      }); 
     }
     </script>
     <!-- Menu Toggle Script -->
@@ -788,11 +786,11 @@ $modalId = 0;
       var testName;
       var dateBegin;
       var dateEnd;
-      var timeLimit;
+      var timeLimit = "";
       var specificInstruction;
       var testPledge;
       var newTestId = '<?php echo $newTestId; ?>';
-      var maxPoints;
+      var maxPoints = "";
       var classId = '<?php echo $clid; ?>';
       var teacherId = '<?php echo $id; ?>';
       
@@ -809,44 +807,26 @@ $modalId = 0;
          $.post("TestButtonScripts/saveButton.php",
          {
             testName:testName,
-            dateBegin:dateBegin,
-            dateEnd:dateEnd,
-            timeLimit:timeLimit,
-            specificInstruction:specificInstruction,
-            testPledge:testPledge,
-            newTestId:newTestId,
-            maxPoints:maxPoints,
-            classId:classId,
-            teacherId:teacherId
+			dateBegin:dateBegin,
+			dateEnd:dateEnd,
+			timeLimit:timeLimit,
+			specificInstruction:specificInstruction,
+			testPledge:testPledge,
+			newTestId:newTestId,
+			maxPoints:maxPoints,
+			classId:classId,
+			teacherId:teacherId
          },
-      function(data)
-      {
-         alert("Test Saved");
-      });
+		  function(data)
+		  {
+			swal("Success","Test Saved!", "success");
+		  });
          
       });
-   });
-   </script>
-   
-    <script>
-    $(document).ready(function()
-   {
-        var newTestId = '<?php echo $newTestId; ?>';
-        var classId = '<?php echo $clid; ?>';
+	  
         
         $("#createTestBtn").click(function()
 		{
-            var testName;
-            var dateBegin;
-            var dateEnd;
-            var timeLimit;
-            var specificInstruction;
-            var testPledge;
-            var newTestId = '<?php echo $newTestId; ?>';
-            var maxPoints;
-            var classId = '<?php echo $clid; ?>';
-            var teacherId = '<?php echo $id; ?>';
-        
             testName = $("#testName").val();
 			dateBegin = $("#dateBegin").val();
 			dateEnd = $("#dateEnd").val();
@@ -865,32 +845,43 @@ $modalId = 0;
 				testPledge:testPledge,
 				newTestId:newTestId,
 				maxPoints:maxPoints,
-            classId:classId,
-            teacherId:teacherId
+				classId:classId,
+				teacherId:teacherId
 			},
+			function(data)
+			{
+
+			});
+			
+			$.post("TestButtonScripts/createButton.php",
+			{
+				newTestId:newTestId,
+				classId:classId
+			},
+			function(data)
+			{
+				swal("Success","Test published!", "success");
+			});
+        });
+
+	 $("#DeleteTest").click(function()
+	 {
+		$.post("TestButtonScripts/deleteTest.php",
+		{
+			testId:testId
+		},
 		function(data)
 		{
+			swal("Success","Deleted the test", "success");
+			window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
 		});
-			alert("Test published!");
-        $.post("TestButtonScripts/createButton.php",
-        {
-            newTestId:newTestId,
-            classId:classId
-        },
-        function(data)
-        {
-        });
-        });
+	 });
    });
     </script>
     
     <script>
     $(document).ready(function()
    {
-        $("#cancelTestBtn").click(function()
-      {
-            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
-        });
       $("#backToClass").click(function()
       {
             window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
@@ -1114,6 +1105,7 @@ $modalId = 0;
 			$("#MBtn").click(function()
 			{
 				var pointValue = $("#m_point_value").val();
+				
             if(pointValue == "")
             {
                inlineMsg('m_point_value', 'Field cannot be empty', 2);
@@ -1150,16 +1142,15 @@ $modalId = 0;
                // Loop and store answers
                $('.m_answer').each(function() {
                   answerArray[i] = $(this).val();
-                  i++;					
+                  i++;
                });
                
                i = 0;
                // Loop and store answer letters
                $('.m_answer_letter').each(function() {
                   answerLetterArray[i] = $(this).val();
-                  i++;	
+                  i++;
                });
-               
                $.post("TestQuestionScripts/matching.php",
                {
                   pointValue:pointValue,
@@ -1178,10 +1169,10 @@ $modalId = 0;
                		while(k < questionArray.length)
                		{
                   		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text">' + questionArray[k] + ' (' + pointValue +') </p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
-               			$("#list_group"+data[k]).append('<div class="input_section"><b>Answer</b>: ' + answerArray[k] + ' <img src="images/sign.png" />&nbsp;</div>');
 						k++;
                		}
                });
+			  // alert("clicked matching");
 
                for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
                {

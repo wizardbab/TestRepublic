@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic</title>
+    <title>Test Republic - Teacher</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -130,7 +131,6 @@ $table = $database->prepare($tableQuery);
 						<colgroup>
 							<col class="classes" />
 							<col class="recent_updates" />
-							<col class="date" />
 						</colgroup>
 						
 						<thead>
@@ -152,7 +152,8 @@ $table = $database->prepare($tableQuery);
 									  <td>'.$update.' test(s) to grade</td></tr>';
 							}
 							$table->close(); 
-							?>			
+							?>
+						</tbody>
 					</table>
                 </div>
 

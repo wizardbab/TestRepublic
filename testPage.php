@@ -53,10 +53,6 @@ $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 	 // session variable_exists, use that
 	 $timeLimit = $_SESSION['timeLimit'];
 
-		
-		
-
- 
 
 
 // Student first and last name to display on top right of screen
@@ -114,11 +110,16 @@ while($selectStartStatement->fetch())
 $selectStartStatement->close();
 
 
-
+echo '<br /><br /><br />';
 	$secs = strtotime($timeLimit)-strtotime("00:00:00");
+	echo '<h1>secondslimit: '.$secs . '</h1>';
+	echo '<h1>time limit: '.$timeLimit . '</h1>';
+	echo '<h1>start time: '.$ctime . '</h1>';
 	$endTime = date("H:i:s",strtotime($ctime)+$secs);
+	echo '<h1>end time: '.$endTime . '</h1>';
 
 	$currentTime = date('H:i:s', time());
+	echo '<h1>current time: '.$currentTime. '</h1>';
 
 	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
 
@@ -332,7 +333,6 @@ $selectStartStatement->close();
 						while($headerStatement->fetch())
 						{
 							echo $tname;
-							
 						}
 						$headerStatement->close();
 						  ?>
@@ -448,6 +448,7 @@ $selectStartStatement->close();
 													{
                                                         /*echo'<div class="tf_choice">
                                                             <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
+
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span></label>
                                                             </div>';*/
 															
@@ -497,7 +498,7 @@ $selectStartStatement->close();
 													while($multipleChoiceStatement->fetch())
 													{
 														echo '<div class="mc_choice" >
-															<label><input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
+															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" /><label for="mc_answer'.$mcAnswerId.'">
 															<span class="mc_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
 													}	
@@ -676,7 +677,7 @@ $selectStartStatement->close();
                                                         {
                                                         echo'
                                                             <div class="ata_choice">
-                                                                <label><input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
+                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" /><label for="ata_answer_cb'.$aid.'">
                                                                 <span class="ata_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
                                                         }
@@ -806,7 +807,7 @@ $selectStartStatement->close();
 				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
-                if ($('#mc_answer'+multipleChoiceArray[counter]).is(':checked'))
+                if ($('#mc_answer'+multipleChoiceArray[counter]).is('input:checked'))
                 {
                     multipleChoiceAnswerArray[counter] = 1;
                 }
@@ -817,7 +818,7 @@ $selectStartStatement->close();
             }
             for(counter = 0; counter < trueFalseArray.length; counter++)
             {
-                if ($('#tf_answer'+trueFalseArray[counter]).is(':checked'))
+                if ($('#tf_answer'+trueFalseArray[counter]).is('input:checked'))
                 {
                     trueFalseAnswerArray[counter] = 1;
                 }
@@ -828,7 +829,7 @@ $selectStartStatement->close();
             }
             for(counter = 0; counter < ataArray.length; counter++)
             {
-                if ($('#ata_answer_cb'+ataArray[counter]).is(':checked'))
+                if ($('#ata_answer_cb'+ataArray[counter]).is('input:checked'))
                 {
                     ataAnswerArray[counter] = 1;
                 }
@@ -895,7 +896,7 @@ $selectStartStatement->close();
 	{
 	
 	 
-    setInterval(function(){ myTimer() }, 965)
+    setInterval(function(){ myTimer() }, 960)
 	}
 
 	function pad2(number)
@@ -910,7 +911,7 @@ $selectStartStatement->close();
 		//var t = d.toLocaleTimeString();
 		if(hours == 0 && minutes == 0 && seconds == 0)
 		{
-			alert("time's up");
+			
 			var counter;
             var essayArray = [];
                 <?php for($i = 0; $i < count($essayArray); $i+=5){ ?>
@@ -1055,7 +1056,7 @@ $selectStartStatement->close();
 				{
 					hours--;
 
-					minutes = 60;
+					minutes = 59;
 				}
 			}
 		}

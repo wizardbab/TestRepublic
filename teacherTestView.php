@@ -30,6 +30,10 @@
 	<!-- Custom CSS -->
     <link href="css/TestPage.css" rel="stylesheet">
 	
+	<!-- custom alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+	
 	
 <?php
 session_start();
@@ -533,8 +537,9 @@ $_SESSION['testId'] = $testId;
                                                 $matchingAnswer[] = $newHeadingId;
                                             }
                                             
-                                            echo '<div class="m_question_section make_inline2">';
-											for($j; $j < count($matchingArray);)
+
+											echo '<div class="m_question_section make_inline2">';
+                                            for($j; $j < count($matchingArray);)
                                             {
 												if($headingIdArray[$k] == $matchingArray[$j+5])
 												{
@@ -578,7 +583,6 @@ $_SESSION['testId'] = $testId;
 													$matchingCounter++;
 													echo '</div>';
 												}
-												
                                             }
 											echo '</div>';
 											
@@ -587,7 +591,6 @@ $_SESSION['testId'] = $testId;
                                         }
 
 
-										
                                         $matchingStatement->close();
 								echo'
 									</div></div>
@@ -715,6 +718,7 @@ $_SESSION['testId'] = $testId;
 		</div>
 				
    </div>
+   </div>
    <!-- /. Container -->
 	
     <!-- Menu Toggle Script -->
@@ -734,7 +738,7 @@ $_SESSION['testId'] = $testId;
 			
         $("#Submit").click(function()
         {
-            alert("New grade saved");
+			swal("Success","New grade saved!", "success");
             var testId = '<?php echo $testId; ?>';
             var studentId = '<?php echo $studentId; ?>';
             var oldId = 0;
@@ -814,7 +818,7 @@ $_SESSION['testId'] = $testId;
             },
             function(data)
             {
-                
+                window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
             });
         });
     });
