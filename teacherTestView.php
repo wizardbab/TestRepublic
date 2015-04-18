@@ -235,7 +235,7 @@ $_SESSION['testId'] = $testId;
                /***************************************************************************************************/
 					else if($qtype == "Matching")
 					{
-						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $qletter, $qid, $aid, $studentSelection, $correct, $pointsEarned);
+						array_push($matchingArray, $qno, $qtype, $qvalue, $qtext, $heading, $hid, $correct, $qid, $aid, $studentAnswer, $qletter, $pointsEarned);
 						
 					}
 					
