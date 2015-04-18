@@ -64,11 +64,10 @@ $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 $multipleChoiceQuery = "select answer_text, answer_id, student_selection, correct from answer where question_id = ?";
 $ataQuery = "select answer_text, answer_id, student_selection, correct from answer where question_id = ?";
 
-$matchingQuery = "SELECT question_letter, answer_text, question_id, student_selection
+$matchingQuery = "SELECT correct, answer_text, question_id, student_selection, a_heading_id
 from answer
-join question using(question_id)
-where heading_id = ? and student_id = ?
-order by(question_letter)";
+where a_heading_id = ?
+group by(correct)";
 
 $matchingCorrectQuery = "SELECT correct
 from answer
@@ -494,8 +493,8 @@ $_SESSION['testId'] = $testId;
                                         {
                                             echo'<h4>'.$headingArray[$k].'</h4>';
                                             
-                                            $matchingStatement->bind_param("ss", $headingIdArray[$k], $studentId);
-                                            $matchingStatement->bind_result($qletter, $atext, $questionId, $stuSelection);
+                                            $matchingStatement->bind_param("s", $headingIdArray[$k]);
+                                            $matchingStatement->bind_result($qletter, $atext, $questionId, $stuSelection, $newHeadingId);
                                             $matchingStatement->execute();
                                             while($matchingStatement->fetch())
                                             {
@@ -503,42 +502,52 @@ $_SESSION['testId'] = $testId;
                                                 $matchingAnswer[] = $atext;
                                                 $matchingAnswer[] = $questionId;
                                                 $matchingAnswer[] = $stuSelection;
+                                                $matchingAnswer[] = $newHeadingId;
                                             }
-                                            /*
-                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+
+                                            /* 
+                                            for($i = 0; $i < count($matchingAnswer); $i+=5)
                                             {	
-                                            echo'	<div class="col-md-6">
-                                                    <div class="matching_div">'
-                                                    .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                        <input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
-                                                    if($matchingArray[$j+10] == $matchingArray[$j+9])
+                                                if($j < count($matchingArray))
+                                                {
+                                                    if($headingIdArray[$k] == $matchingArray[$j+5])
                                                     {
-                                                        $pointsEarned = $matchingArray[$j+2];
-                                                        echo '<img src="images/sign.png" />';
+                                                        echo'	<div class="col-md-6">
+                                                        <div class="matching_div">'
+                                                        .$matchingArray[$j].'<span class="matching_questions">'.$matchingArray[$j+3].'</span>
+                                                            <input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
+                                                        if($matchingArray[$j+10] == $matchingArray[$j+9])
+                                                        {
+                                                            $pointsEarned = $matchingArray[$j+2];
+                                                            echo '<img src="images/sign.png" />';
+                                                        }
+                                                        else
+                                                        {
+                                                            $pointsEarned = 0;
+                                                            echo '<img src="images/cross.jpg" />';
+                                                            echo '&nbsp;'.$matchingArray[$j+10].'';
+                                                        }
+                                                        echo'Points Earned<input type=text disabled value="'.$matchingArray[$j+11].'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
+                                                        echo'</div>';
+                                                        $j+=12;
                                                     }
-                                                    else
-                                                    {
-                                                        $pointsEarned = 0;
-                                                        echo '<img src="images/cross.jpg" />';
-                                                        echo '&nbsp;'.$matchingArray[$j+10].'';
-                                                    }
-                                                    echo'Points Earned<input type=text disabled value="'.$matchingArray[$j+11].'" class="matching_answer_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div>';
-                                                echo'</div>';
-                                                
-                                                echo'<div class="col-md-6">';
+                                                }
+                                                if($matchingAnswer[$i+4] == $headingIdArray[$k])
+                                                {
+                                                    echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
                                                             '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
-                                                        </div>
-                                                        <br />';
+                                                        </div>';
                                                         
-                                                $matchingCounter++;	
-                                                $j+=12;
-                                            echo'</div>';
+                                                    $matchingCounter++;
+                                                    echo'</div>';
+                                                }
+                                                
                                             }
 											*/
 											
 											echo '<div class="m_question_section make_inline2">';
-                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            for($i = 0; $i < count($matchingAnswer); $i+=5)
                                             {	
                                             echo'	<div class="">
                                             		<div class="question123">
@@ -564,7 +573,7 @@ $_SESSION['testId'] = $testId;
                                             echo '</div>';
 
                                             echo '<div class="m_answer_section make_inline2">';
-                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            for($i = 0; $i < count($matchingAnswer); $i+=5)
                                             {    
                                                 echo'<div class="testcrap">';
                                                         echo'<div class="matching_div">
@@ -658,27 +667,6 @@ $_SESSION['testId'] = $testId;
                                                                 <input type="checkbox" disabled="disabled" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" '.$checked.'/>
                                                                 <span class="ata_answer_lbl">'.$atext.'</span>';
                                                             if($stuSelection == 1)
-<<<<<<< HEAD
-                                                        	{
-	                                                            if($correct == $stuSelection)
-																{
-																	echo " <img src='images/sign.png' />";
-																}
-	                                                            else
-																{
-																	echo " <img src='images/cross.jpg' />";
-																}
-                                                        	}
-	                                                        if($correct == 1 and $stuSelection != 1)
-	                                                        {
-	                                                        	echo " <img src='images/sign.png' />";
-	                                                        }
-	                                                        if($correct == $stuSelection)
-	                                                        {
-	                                                            $pointsEarnedCounter += 1;
-	                                                        }
-                                                            $pointsPossibleCounter += 1;
-=======
                                                             {
                                                                 if($correct == $stuSelection)
                                                                 {
@@ -693,7 +681,6 @@ $_SESSION['testId'] = $testId;
                                                             {
                                                                 echo " <img src='images/sign.png' />";
                                                             }
->>>>>>> 2345d04f45bfbf53bc01380b59b49b7ee0e11ece
                                                             echo '</div>';
                                                         }
                                             echo'</div>';

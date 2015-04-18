@@ -75,16 +75,16 @@ $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
 $multipleChoiceQuery = "select answer_text, answer_id from answer where question_id = ?";
 $ataQuery = "select answer_text, answer_id from answer where question_id = ?";
 
-$matchingQuery = "SELECT question_letter, answer_text, answer_id
+$matchingQuery = "SELECT correct, answer_text, answer_id, a_heading_id
 from answer
-join question using(question_id)
-where heading_id = ? and student_id = ?";
+where a_heading_id = ?
+group by(correct)";
 
 $matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ? and student_id = ?";
 
 $trueFalseQuery = "select answer_id, answer_text from answer where question_id = ?";
 
-$selectStartTime = "select start_time from test where test_id = ?";
+$selectStartTime = "select start_time from test_list where test_id = ? and student_id = ?";
 
 
 $selectStartStatement = $database->prepare($selectStartTime); 
@@ -104,7 +104,7 @@ $trueFalseStatement = $database->prepare($trueFalseQuery);
 $_SESSION['classId'] = $classId;
 $_SESSION['testId'] = $testId;
 
-$selectStartStatement->bind_param("s", $testId);
+$selectStartStatement->bind_param("ss", $testId, $id);
 $selectStartStatement->bind_result($ctime);
 $selectStartStatement->execute();
 while($selectStartStatement->fetch())
@@ -187,7 +187,7 @@ $selectStartStatement->close();
 								$topRightStatement->execute();
 								while($topRightStatement->fetch())
 								{
-									echo $first_name . " " . $last_name;
+									echo $first_name . " " . $last_name . " " . $id;
 								}
 								$topRightStatement->close();?><b class="caret"></b></a>
 						
@@ -432,8 +432,8 @@ $selectStartStatement->close();
 													while($trueFalseStatement->fetch())
 													{
                                                         echo'<div class="tf_choice">
-                                                            <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
-                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>
+                                                            <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
+                                                            <span class="mc_answer_lbl">'.$answer_text.'</span></label>
                                                             </div>';
                                                     }
                                                    echo' </div>
@@ -473,8 +473,8 @@ $selectStartStatement->close();
 													while($multipleChoiceStatement->fetch())
 													{
 														echo '<div class="mc_choice" >
-															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
-															<span class="mc_answer_lbl">'.$atext.'</span>
+															<label><input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
+															<span class="mc_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
 													}	
 											echo'	</div>
@@ -516,33 +516,41 @@ $selectStartStatement->close();
                                         for($k = 0; $k < count($headingArray); $k++)
                                         {
                                             echo'<h4>'.$headingArray[$k].'</h4>';
-                                            $matchingStatement->bind_param("ss", $headingIdArray[$k], $id);
-                                            $matchingStatement->bind_result($qletter, $atext, $aid);
+                                            $matchingStatement->bind_param("s", $headingIdArray[$k]);
+                                            $matchingStatement->bind_result($qletter, $atext, $aid, $newHeadingId);
                                             $matchingStatement->execute();
                                             while($matchingStatement->fetch())
                                             {
                                                 $matchingAnswer[] = $qletter;
                                                 $matchingAnswer[] = $atext;
                                                 $matchingAnswer[] = $aid;
+                                                $matchingAnswer[] = $newHeadingId;
                                             }
-                                            for($i = 0; $i < count($matchingAnswer); $i+=3)
-                                            {	
-                                            echo'	<div class="col-md-6">
-                                                    <div class="matching_div">'
-                                                    .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                        <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
-                                                    </div>
-                                                </div>';
-                                                
-                                                
+                                            //$oldMId = -1;
+                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            {
+                                                if($j < count($matchingArray))
+                                                {
+                                                    if($headingIdArray[$k] == $matchingArray[$j+5])
+                                                    {
+                                                        echo'	<div class="col-md-6">
+                                                            <div class="matching_div">'
+                                                            .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
+                                                                <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
+                                                            </div>
+                                                        </div>';
+                                                        $counter++;
+                                                        $j+=9;
+                                                    }
+                                                }
+                                                if($matchingAnswer[$i+3] == $headingIdArray[$k])
+                                                {
                                                 echo'<div class="col-md-6">';
                                                         echo'<div class="matching_div">
                                                             '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
                                                         </div>
                                                         <br />';
-                                                        
-                                                $counter++;	
-                                                $j+=9;
+                                                }        
                                             echo'</div>';
                                             }
                                             $matchingAnswer = null;
@@ -608,8 +616,8 @@ $selectStartStatement->close();
                                                         {
                                                         echo'
                                                             <div class="ata_choice">
-                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
-                                                                <span class="ata_answer_lbl">'.$atext.'</span>
+                                                                <label><input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
+                                                                <span class="ata_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
                                                         }
                                             
@@ -690,7 +698,6 @@ $selectStartStatement->close();
 			var i = 0;
             var id = '<?php echo $id; ?>';
             var testId = '<?php echo $testId; ?>';
-            alert("clicked submit");
             
             for(counter = 0; counter < essayArray.length; counter++)
             {
@@ -805,7 +812,7 @@ $selectStartStatement->close();
 	{
 	
 	 
-    setInterval(function(){ myTimer() }, 1000)
+    setInterval(function(){ myTimer() }, 965)
 	}
 
 	function pad2(number)
@@ -855,7 +862,6 @@ $selectStartStatement->close();
 			var i = 0;
             var id = '<?php echo $id; ?>';
             var testId = '<?php echo $testId; ?>';
-            //alert("clicked submit");
             
             for(counter = 0; counter < essayArray.length; counter++)
             {
