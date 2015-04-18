@@ -112,14 +112,9 @@ $selectStartStatement->close();
 
 echo '<br /><br /><br />';
 	$secs = strtotime($timeLimit)-strtotime("00:00:00");
-	echo '<h1>secondslimit: '.$secs . '</h1>';
-	echo '<h1>time limit: '.$timeLimit . '</h1>';
-	echo '<h1>start time: '.$ctime . '</h1>';
 	$endTime = date("H:i:s",strtotime($ctime)+$secs);
-	echo '<h1>end time: '.$endTime . '</h1>';
 
 	$currentTime = date('H:i:s', time());
-	echo '<h1>current time: '.$currentTime. '</h1>';
 
 	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
 
