@@ -11,7 +11,7 @@
     $updateQuestionQuery1 = "update answer set student_selection = ? where answer_id = ?";
     $updateQuestionQuery2 = "update answer set student_selection = ? where answer_id = ?";
     $updateQuestionQuery3 = "update answer set student_selection = ? where answer_id = ?";
-    $updateQuestionQuery4 = "update answer set student_selection = ? where answer_id = ?";
+    $updateQuestionQuery4 = "update question set student_answer = ? where question_id = ?";
     
     @$multipleChoiceArray = $_POST['multipleChoiceArray'];
     @$multipleChoiceAnswerArray = $_POST['multipleChoiceAnswerArray'];
