@@ -56,7 +56,7 @@ $query = "select class_id, class_description from class where class_id = ?";
 
 $summaryQuery = "select question_no, question_type, question_value, question_text, heading, heading_id, question_letter, question_id, answer_id, student_answer, student_selection, correct, points_earned
 								 from question
-                                 join answer using(question_id)
+                                 left join answer using(question_id)
 								 where test_id = ? and student_id = ?";
 								 
 $headerQuery = "SELECT class_id, test_name from test where test_id = ?";
@@ -532,15 +532,18 @@ $_SESSION['testId'] = $testId;
                                                         $j+=12;
                                                     }
                                                 }
-                                                if($matchingAnswer[$i+4] == $headingIdArray[$k])
+                                                if($i < count($matchingAnswer))
                                                 {
-                                                    echo'<div class="col-md-6">';
-                                                        echo'<div class="matching_div">
-                                                            '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
-                                                        </div>';
-                                                        
-                                                    $matchingCounter++;
-                                                    echo'</div>';
+                                                    if($matchingAnswer[$i+4] == $headingIdArray[$k])
+                                                    {
+                                                        echo'<div class="col-md-6">';
+                                                            echo'<div class="matching_div">
+                                                                '.$matchingAnswer[$i].'.<span class="matching_questions">'.$matchingAnswer[$i+1].'</span>
+                                                            </div>';
+                                                            
+                                                        $matchingCounter++;
+                                                        echo'</div>';
+                                                    }
                                                 }
                                                 
                                             }
