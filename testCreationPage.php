@@ -259,7 +259,7 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="50" /> <span class="minutes"> hh:mm:ss</span>
+                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="hh:mm:ss" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
                      <label class="time_limit_lbl">Max Points:

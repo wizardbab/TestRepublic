@@ -164,7 +164,7 @@ $selectStartStatement->close();
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic">Test Republic</span>
 					</div>
 				</a>
@@ -201,7 +201,7 @@ $selectStartStatement->close();
 <?php
 
 	
-				/*$queryStatement->bind_param("s", $classId);
+				$queryStatement->bind_param("s", $classId);
 				$queryStatement->bind_result($clid, $clde);
 				$queryStatement->execute();
 				while($queryStatement->fetch())
@@ -211,11 +211,11 @@ $selectStartStatement->close();
 								<div class="course_number col-lg-12">
 									'.$clid.'
 								</div><div class="class_name">
-									'.$clde.' ' .$testName.'
+									'.$clde.'
 								</div>
 							</div>';
 				}
-				$queryStatement->close(); */
+				$queryStatement->close();
 				//$questionArray = array(array("number" => 0, "type" => 0, "value" => 0, "text" => 0, "heading" => 0, "id" => 0, "letter" => 0));
 			
 				$questionArray = array();
@@ -331,7 +331,7 @@ $selectStartStatement->close();
 						$headerStatement->execute();
 						while($headerStatement->fetch())
 						{
-							echo $clid . '<small>' . $tname . '</small>';
+							echo $tname;
 							
 						}
 						$headerStatement->close();
@@ -386,20 +386,32 @@ $selectStartStatement->close();
 							{
 								
 								echo '<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Essay</a>
-                            </h4>
-                        </div>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+	                                <div class="panel-heading" id="panel-color">
+	                            	<h4 class="panel-title"></span>  Essay</h4>
+	                            	</div>
+                            	</a>
 							  <div id="collapseSix" class="panel-collapse collapse">
 									<div class="panel-body">';
 									
-									for($i = 0; $i < count($essayArray); $i+=5)
+									/*for($i = 0; $i < count($essayArray); $i+=5)
 									{
 										echo'<h4>'.$counter.'. <span class="essay_questions">'.$essayArray[$i+3].'</span></h4><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
 												<textarea class="form-control" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6"> </textarea></div>';
                                         $counter++;
+									}*/
+									
+									for($i = 0; $i < count($essayArray); $i+=5)
+									{
+
+										echo'<h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
+										<h4></h4>
+											<div class="essay_answers">
+												<textarea class="form-control essay_textarea" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="5"></textarea>
+											</div>';
+												
+                                        $essayCounter++;
 									}
 								echo'		
 									</div>
@@ -412,11 +424,13 @@ $selectStartStatement->close();
 							{
                                 $oldQuestion = 0;
 								echo'<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">True/False</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												True/False
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseFour" class="panel-collapse collapse">';
 									for($i = 0; $i < count($trueFalseArray); $i+=6)
 									{
@@ -424,17 +438,24 @@ $selectStartStatement->close();
                                         {
                                         $oldQuestion = $trueFalseArray[$i];
                                             echo'<div class="panel-body">
-                                                  <h4>'.$counter.'. <span class="tf_questions">'.$trueFalseArray[$i+3].'</span></h4><h4>Point Value: '.$trueFalseArray[$i+2].'</h4>
-                                                    <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';
+													<h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="tf_questions make_inline">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</p></h4>
+                                                    <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';	
+													
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
 													$trueFalseStatement->bind_result($answer_id, $answer_text);
 													$trueFalseStatement->execute();
 													while($trueFalseStatement->fetch())
 													{
-                                                        echo'<div class="tf_choice">
+                                                        /*echo'<div class="tf_choice">
                                                             <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span></label>
-                                                            </div>';
+                                                            </div>';*/
+															
+                                                        echo'<div class="tf_choice">
+                                                            <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
+                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>';
+
+                                                        echo'</div>';
                                                     }
                                                    echo' </div>
                                             </div>';
@@ -453,19 +474,22 @@ $selectStartStatement->close();
                                 $oldQuestion = 0;
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										<h4 class="panel-title">
-											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Multiple Choice</a>
-										</h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+										<div class="panel-heading" id="panel-color">
+											<h4 class="panel-title">
+												Multiple Choice
+											</h4>
+										</div>
+									</a>
 									<div id="collapseOne" class="panel-collapse collapse">';
 									for($i = 0; $i < count($multipleChoiceArray); $i+=6)
 									{	
                                         if($oldQuestion != $multipleChoiceArray[$i+4])
                                         {
                                             echo'	<div class="panel-body" >
-												<h4>'.$counter.'. <span class="mc_questions">'.$multipleChoiceArray[$i+3].'</span></h4><h4>Point Value: '.$multipleChoiceArray[$i+2].'</h4>
+													<h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="mc_questions make_inline">'.$multipleChoiceArray[$i+3].' ('.$multipleChoiceArray[$i+2].')'.'</p></h4>
 													<div class="mc_answers" >';
+													
                                                     $oldQuestion = $multipleChoiceArray[$i+4];
 													$multipleChoiceStatement->bind_param("s", $multipleChoiceArray[$i+4]);
 													$multipleChoiceStatement->bind_result($atext, $mcAnswerId);
@@ -495,11 +519,13 @@ $selectStartStatement->close();
 							{
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Matching</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												Matching
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseTwo" class="panel-collapse collapse">
 										 <div class="panel-body container">';
                                         $matchingHeadStatement->bind_param("ss", $testId, $id);
@@ -527,35 +553,53 @@ $selectStartStatement->close();
                                                 $matchingAnswer[] = $newHeadingId;
                                             }
                                             //$oldMId = -1;
-                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            
+											
+											//
+											echo '<div class="m_question_section make_inline2">';
+											for($j; $j < count($matchingArray);)
                                             {
-                                                if($j < count($matchingArray))
-                                                {
-                                                    if($headingIdArray[$k] == $matchingArray[$j+5])
-                                                    {
-                                                        echo'	<div class="col-md-6">
-                                                            <div class="matching_div">'
-                                                            .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                                <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>
-                                                            </div>
-                                                        </div>';
-                                                        $counter++;
-                                                        $j+=9;
-                                                    }
-                                                }
-                                                if($i < count($matchingAnswer))
-                                                {
-                                                    if($matchingAnswer[$i+3] == $headingIdArray[$k])
-                                                    {
-                                                    echo'<div class="col-md-6">';
-                                                            echo'<div class="matching_div">
-                                                                '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
-                                                            </div>
-                                                            <br />';
-                                                    }
-                                                }
-                                            echo'</div>';
+												if($headingIdArray[$k] == $matchingArray[$j+5])
+												{
+													echo'	<div class="">
+														<div class="question123">
+														<p class="question_num make_inline">'
+														.$counter.'.</p>'.'<p class="match_questions make_inline">'.$matchingArray[$j+3].'
+															<input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>';
+														
+														
+														
+														echo'</div></p>';
+													echo'</div>';
+													$counter++;
+													$j+=9;
+												}
+											}
+											echo '</div>';
+											
+											echo '<div class="m_answer_section make_inline2">';
+											for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            {
+												if($matchingAnswer[$i+3] == $headingIdArray[$k])
+												{
+												 
+													echo'<div class="testcrap">';
+															echo'<div class="matching_div">
+																<p class="question_num make_inline">'.$matchingAnswer[$i].'.</p><p class="match_questions make_inline"><span class="matching_questions">'.$matchingAnswer[$i+1].'</span></p>
+															</div>
+															<br />';
+															
+													$matchingCounter++;
+													echo '</div>';
+												}
+												
                                             }
+											echo '</div>';
+											
+											
+											
+											
+											
                                             $matchingAnswer = null;
                                         }       
                                         $matchingStatement->close();
@@ -570,20 +614,31 @@ $selectStartStatement->close();
 							if(count($shortAnswerArray))
 							{
 								echo'<div class="panel panel-default">
-                        <div class="panel-heading" id="panel-color">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Short Answer</a>
-                            </h4>
-                        </div>
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+	                        <div class="panel-heading" id="panel-color">
+	                            <h4 class="panel-title">
+	                                Short Answer
+	                            </h4>
+	                        </div>
+	                    </a>
                         <div id="collapseFive" class="panel-collapse collapse">';
 								for($i = 0; $i < count($shortAnswerArray); $i+=5)
 								{
-									echo'<div class="panel-body">
+									/*echo'<div class="panel-body">
 										<h4>'.$counter.'. <span class="sa_questions"></span>'.$shortAnswerArray[$i+3].'</h4><h4>Point Value: '.$shortAnswerArray[$i+2].'</h4>
 										<div class="sa_answers">
 											<input type="text" class="m_answer_letter form-control" id="ShortAnswer'.$shortAnswerArray[$i+4].'" />
 										</div>
 									</div>';
+                                    $counter++;*/
+									
+									echo'<div class="panel-body">
+										<h4><p class="question_num make_inline">'.$counter.'.'.'<p class="sa_questions make_inline">'.$shortAnswerArray[$i+3].' ('.$shortAnswerArray[$i+2].')'.'</p></h4>
+                                        </div>
+										<div class="sa_answers">
+											<input type="text" class="form-control sa_answers_tb" id="ShortAnswer'.$shortAnswerArray[$i+4].'" />
+							
+										</div>';
                                     $counter++;
 								}
 									
@@ -598,13 +653,15 @@ $selectStartStatement->close();
                                 $oldQuestion = 0;
 								echo'
 								<div class="panel panel-default">
-									<div class="panel-heading" id="panel-color">
-										 <h4 class="panel-title">
-											  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">All That Apply</a>
-										 </h4>
-									</div>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+										<div class="panel-heading" id="panel-color">
+											 <h4 class="panel-title">
+												All That Apply
+											 </h4>
+										</div>
+									</a>
 									<div id="collapseThree" class="panel-collapse collapse">';
-									for($i = 0; $i < count($ataArray); $i+=6)
+									/*for($i = 0; $i < count($ataArray); $i+=6)
 									{
                                         if($oldQuestion != $ataArray[$i+4])
                                         {
@@ -628,6 +685,29 @@ $selectStartStatement->close();
                                             echo'</div>';
                                         }
                                         $counter++;
+									}*/
+									
+									for($i = 0; $i < count($ataArray); $i+=6)
+									{
+                                        if($oldQuestion != $ataArray[$i+4])
+                                        {
+                                            $oldQuestion = $ataArray[$i+4];
+                                            $ataStatement->bind_param("s", $ataArray[$i+4]);
+                                            $ataStatement->bind_result($atext, $aid);
+                                            $ataStatement->execute();
+                                             echo'<div class="panel-body">
+                                                  <h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="ata_questions make_inline">'.$ataArray[$i+3].' ('.$ataArray[$i+2].')</p></h4>
+                                                  <div class="ata_answers">';
+                                                        while($ataStatement->fetch())
+                                                        {
+                                                        echo'
+                                                            <div class="ata_choice">
+                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb"/>
+                                                                <span class="ata_answer_lbl">'.$atext.'</span>';
+                                                            echo '</div>';
+                                                        }
+                                            echo'</div>';
+                                        }
 									}
 									$ataStatement->close();
 									
@@ -644,7 +724,7 @@ $selectStartStatement->close();
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block" id="Submit">Submit</button>
+			<button type="button" class="btn btn-success btn-block submit_btn" id="Submit">Submit</button>
 		</div>
 				
    </div>
