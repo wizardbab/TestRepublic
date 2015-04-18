@@ -32,7 +32,7 @@
 		$maxPoints = null;
     @$classId = $_POST['classId'];
     @$teacherId = $_POST['teacherId'];
-	
+
     $newDateBegin = null;
     $newDateEnd = null;
     
@@ -51,5 +51,13 @@
 	$saveStatement->bind_param("ssssssssss", $newDateBegin, $newDateEnd, $timeLimit, $maxPoints, $testName, $testPledge, $specificInstruction, $classId, $teacherId, $newTestId);
 	$saveStatement->execute();
 	$saveStatement->close();
+	
+	/*$tl = filter_var($timeLimit), FILTER_SANITIZE_STRING);
+	$ti = filter_var($newTestId), FILTER_SANITIZE_STRING);
+	
+		$query = "update test set time_limit = ".$tl." where test_id = ".$ti."";
+   mysql_query($query);
+	*/
+	
 	
 ?>

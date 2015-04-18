@@ -333,7 +333,6 @@ echo '<br /><br /><br />';
 						while($headerStatement->fetch())
 						{
 							echo $clid . '<small>' . $tname . '</small>';
-							
 						}
 						$headerStatement->close();
 						  ?>
@@ -528,33 +527,28 @@ echo '<br /><br /><br />';
                                                 $matchingAnswer[] = $newHeadingId;
                                             }
                                             //$oldMId = -1;
-                                            for($i = 0; $i < count($matchingAnswer); $i+=4)
+                                            for($j; $j < count($matchingArray);)
+												if($headingIdArray[$k] == $matchingArray[$j+5])
+												{
+													echo'	<div class="col-md-6">
+														<div class="matching_div">'
+														.$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
+															<input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>
+														</div>
+													</div>';
+													$counter++;
+													$j+=9;
+												}
+											for($i = 0; $i < count($matchingAnswer); $i+=4)
                                             {
-                                                if($j < count($matchingArray))
-                                                {
-                                                    if($headingIdArray[$k] == $matchingArray[$j+5])
-                                                    {
-                                                        echo'	<div class="col-md-6">
-                                                            <div class="matching_div">'
-                                                            .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                                <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>
-                                                            </div>
-                                                        </div>';
-                                                        $counter++;
-                                                        $j+=9;
-                                                    }
-                                                }
-                                                if($i < count($matchingAnswer))
-                                                {
-                                                    if($matchingAnswer[$i+3] == $headingIdArray[$k])
-                                                    {
-                                                    echo'<div class="col-md-6">';
-                                                            echo'<div class="matching_div">
-                                                                '.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
-                                                            </div>
-                                                            <br />';
-                                                    }
-                                                }
+												if($matchingAnswer[$i+3] == $headingIdArray[$k])
+												{
+												echo'<div class="col-md-6">';
+														echo'<div class="matching_div">
+															'.$matchingAnswer[$i].'.<span class="matching_questions"> '.$matchingAnswer[$i+1].'</span>
+														</div>
+														<br />';
+												}
                                             echo'</div>';
                                             }
                                             $matchingAnswer = null;

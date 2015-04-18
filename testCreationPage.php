@@ -36,6 +36,10 @@
     <link href="css/validation.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/validation.js"></script>
     <script type="text/javascript" src="js/Parsley.js/dist/parsley.js"></script>
+	
+		<!-- custom Alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 </head>
 <?php
 session_start();
@@ -256,7 +260,7 @@ $modalId = 0;
                         <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
-                     <label class="time_limit_lbl">Max Points:
+                     <label class="time_limit_lbl">Test Weight:
                         <input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" placeholder="100" /> <span class="minutes"> points</span>
                      </label>
                      
@@ -812,7 +816,7 @@ $modalId = 0;
          },
 		  function(data)
 		  {
-			 alert("Test Saved");
+			swal("Success","Test Saved!", "success");
 		  });
          
       });
@@ -852,7 +856,7 @@ $modalId = 0;
 			},
 			function(data)
 			{
-				alert("Test published!");
+				swal("Success","Test published!", "success");
 			});
         });
 
@@ -864,7 +868,7 @@ $modalId = 0;
 		},
 		function(data)
 		{
-			alert("Deleted test, Redirecting to Main page (or some sort of message here :P");
+			swal("Success","Deleted the test", "success");
 			window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
 		});
 	 });
@@ -1134,14 +1138,14 @@ $modalId = 0;
                // Loop and store answers
                $('.m_answer').each(function() {
                   answerArray[i] = $(this).val();
-                  i++;					
+                  i++;
                });
                
                i = 0;
                // Loop and store answer letters
                $('.m_answer_letter').each(function() {
                   answerLetterArray[i] = $(this).val();
-                  i++;	
+                  i++;
                });
                $.post("TestQuestionScripts/matching.php",
                {
@@ -1164,6 +1168,7 @@ $modalId = 0;
 						k++;
                		}
                });
+			  // alert("clicked matching");
 
                for(mQuestionCounter; mQuestionCounter > 0; mQuestionCounter--)
                {
