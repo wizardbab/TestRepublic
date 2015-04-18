@@ -179,7 +179,6 @@ $modalId = 0;
                         }
                         $mainClassStatement->close();
                         ?>
-						<button type="button" class="btn btn-danger" id="DeleteTest"> Delete Test</button>
                </div>
             </div>
          <?php
@@ -270,7 +269,7 @@ $modalId = 0;
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
-								<button type="button" class="btn btn-danger btn-block" id="cancelTestBtn"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+								<button type="button" class="btn btn-danger btn-block" id="DeleteTest"><span class="glyphicon glyphicon-remove"></span> Delete Test</button>
 							</div>
 							
 							<div class="col-md-6">	
@@ -855,7 +854,7 @@ $modalId = 0;
 				alert("Test published!");
 			});
         });
-		
+
 	 $("#DeleteTest").click(function()
 	 {
 		$.post("TestButtonScripts/deleteTest.php",
@@ -874,10 +873,6 @@ $modalId = 0;
     <script>
     $(document).ready(function()
    {
-        $("#cancelTestBtn").click(function()
-      {
-            window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
-        });
       $("#backToClass").click(function()
       {
             window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
@@ -1101,6 +1096,7 @@ $modalId = 0;
 			$("#MBtn").click(function()
 			{
 				var pointValue = $("#m_point_value").val();
+				
             if(pointValue == "")
             {
                inlineMsg('m_point_value', 'Field cannot be empty', 2);
@@ -1146,7 +1142,6 @@ $modalId = 0;
                   answerLetterArray[i] = $(this).val();
                   i++;	
                });
-               
                $.post("TestQuestionScripts/matching.php",
                {
                   pointValue:pointValue,
@@ -1166,7 +1161,6 @@ $modalId = 0;
                		{
                   		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text">' + questionArray[k] + ' (' + pointValue +')'+answerArray[k]+'</p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
                			k++;
-               			
                		}
                });
 

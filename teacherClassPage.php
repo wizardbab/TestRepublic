@@ -252,7 +252,6 @@ $studentStatement = $database->prepare($studentQuery);
 							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
-							<th>Delete Test</th>
 						</tr>
 						</thead>
 						
@@ -284,19 +283,19 @@ $studentStatement = $database->prepare($studentQuery);
                                                                                 {
                                                                                 echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></form></td>
 																				</td>';
-																				echo'<td><input type="submit" value="Delete Test" onclick="deleteTest('.$tid.')" id="deleteTest" class="btn btn-primary btn-block" /></td></tr>';
+																				echo'</tr>';
                                                                                 }
                                                                                 else
                                                                                 {
                                                                                     echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></form></td>';
-																				echo'<td><input type="submit"  disabled="disabled" value="Delete Test" class="btn btn-primary btn-block" /></td></tr>';
+																				echo'</tr>';
                                                                                 }
 																				
 																				
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="6">No tests created</td></tr>';
+                                    echo'<tr><td colspan="5">No tests created</td></tr>';
 						?>
 						</tbody>
 						
@@ -437,9 +436,18 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-   
-	 
-	 
+       <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
     </script>
 
 </body>
