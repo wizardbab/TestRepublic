@@ -658,21 +658,16 @@ $_SESSION['testId'] = $testId;
                                                             <div class="ata_choice">
                                                                 <input type="checkbox" disabled="disabled" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" '.$checked.'/>
                                                                 <span class="ata_answer_lbl">'.$atext.'</span>';
-                                                            if($stuSelection == 1)
-                                                        	{
-	                                                            if($correct == $stuSelection)
-																{
-																	echo " <img src='images/sign.png' />";
-																}
-	                                                            else
-																{
-																	echo " <img src='images/cross.jpg' />";
-																}
-                                                        	}
-	                                                        if($correct == 1 and $stuSelection != 1)
-	                                                        {
-	                                                        	echo " <img src='images/sign.png' />";
-	                                                        }
+                                                            
+                                                            if($correct == $stuSelection)
+                                                            {
+                                                                echo " <img src='images/sign.png' />";
+                                                            }
+                                                            else
+                                                            {
+                                                                echo " <img src='images/cross.jpg' />";
+                                                            }
+                                                        	
 	                                                        if($correct == $stuSelection)
 	                                                        {
 	                                                            $pointsEarnedCounter += 1;
