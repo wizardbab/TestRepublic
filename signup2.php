@@ -8,6 +8,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="description" content="">
    <meta name="author" content="">
+   <link rel="shortcut icon" href="images/newlogo.ico">
 
    <title>Test Republic</title>
 
@@ -300,7 +301,7 @@ $success = false;
 
                                 $selectQuestionQuery = "select heading, heading_id, question_letter, question_no, question_text, question_type, question_value, test_id, answer_id, answer_text, correct
                                 from answer
-                                join question using(question_id)
+                                right join question using(question_id)
                                 join test using(test_id)
                                 where student_id = ? and test_id = ?";
                                 
