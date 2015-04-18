@@ -536,7 +536,7 @@ $selectStartStatement->close();
                                                         echo'	<div class="col-md-6">
                                                             <div class="matching_div">'
                                                             .$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
-                                                                <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+8].'"/>
+                                                                <input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>
                                                             </div>
                                                         </div>';
                                                         $counter++;
@@ -690,7 +690,7 @@ $selectStartStatement->close();
                 <?php } ?>
             var matchingArray = [];
                 <?php for($i = 0; $i < count($matchingArray); $i+=9){ ?>
-                    matchingArray.push('<?php echo $matchingArray[$i+8];?>');
+                    matchingArray.push('<?php echo $matchingArray[$i+7];?>');
                 <?php } ?>
             var essayAnswerArray = [];
             var shortAnswerAnswerArray = [];
@@ -854,7 +854,7 @@ $selectStartStatement->close();
                 <?php } ?>
             var matchingArray = [];
                 <?php for($i = 0; $i < count($matchingArray); $i+=9){ ?>
-                    matchingArray.push('<?php echo $matchingArray[$i+8];?>');
+                    matchingArray.push('<?php echo $matchingArray[$i+7];?>');
                 <?php } ?>
             var essayAnswerArray = [];
             var shortAnswerAnswerArray = [];
