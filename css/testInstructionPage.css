@@ -334,5 +334,7 @@ ul.alert-dropdown {
 
 .start_btn
 {
-	margin-top: 50px;
+	margin-top: 30px;
+	font-size: 18pt;
+	font-weight: bold;
 }

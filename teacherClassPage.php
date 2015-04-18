@@ -437,7 +437,7 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-       <!-- jQuery -->
+    <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->

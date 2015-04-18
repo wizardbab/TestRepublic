@@ -519,6 +519,7 @@ ul.alert-dropdown {
 		width: 60%;
 		text-align: center;
 		margin: 0px auto;
+		background: white;
 	}
 	
 	table.test_list td, table.test_list th

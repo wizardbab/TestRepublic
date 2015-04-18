@@ -160,13 +160,13 @@ global $class_id;
                         $averageStatement->execute();
                         while($averageStatement->fetch())
                         {
-                            echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
+                            //echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
                             if($count == null)
-                                echo 'Grade: No assignments graded';
+                                echo '<div class="header1"><span class="header2">Grade:</span> No assignments graded</div>';
                             else
                             {
                                 $count = number_format($count, 2);
-                                echo 'Class Grade: ' . (float)$count . '%';
+                                echo '<div class="header1"><span class="header2">Class Grade:</span> ' . (float)$count . '%</div>';
                             }
                         }
                         $averageStatement->close();

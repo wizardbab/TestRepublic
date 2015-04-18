@@ -502,6 +502,7 @@ $_SESSION['testId'] = $testId;
                             $headingCounter = 4;
 							if(count($matchingArray) > 0)
 							{
+								
 								echo'
 								<div class="panel panel-default">
 									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
@@ -540,6 +541,58 @@ $_SESSION['testId'] = $testId;
                                                 $matchingAnswer[] = $newHeadingId;
                                             }
                                             
+											// what i have
+											echo '<div class="m_question_section make_inline2">';
+											for($j; $j < count($matchingArray);)
+                                            {
+												if($headingIdArray[$k] == $matchingArray[$j+5])
+												{
+													echo'	<div class="">
+														<div class="question123">
+														<p class="question_num make_inline">'
+														.$matchingArray[$j].'.</p>'.'<p class="match_questions make_inline">'.$matchingArray[$j+3].'
+															<input type="text" disabled class="matching_answer_tb" value="'.$matchingArray[$j+9].'" id="matching'.$matchingArray[$j+8].'"/>';
+														if($matchingArray[$j+10] == $matchingArray[$j+9])
+														{
+															$pointsEarned = $matchingArray[$j+2];
+															echo '<img src="images/sign.png" />';
+														}
+														else
+														{
+															$pointsEarned = 0;
+															echo '<img src="images/cross.jpg" />';
+															echo '&nbsp;'.$matchingArray[$j+10].'';
+														}
+														
+														
+														echo'<div class="points_earned_section add_margin_top"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$pointsEarned.'" class="match_points_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div></div></p>';
+													echo'</div>';
+													$j+=12;
+												}
+											}
+											echo '</div>';
+											
+											echo '<div class="m_answer_section make_inline2">';
+											for($i = 0; $i < count($matchingAnswer); $i+=5)
+                                            {
+												if($matchingAnswer[$i+4] == $headingIdArray[$k])
+												{
+												 
+													echo'<div class="testcrap">';
+															echo'<div class="matching_div">
+																<p class="question_num make_inline">'.$matchingAnswer[$i].'.</p><p class="match_questions make_inline"><span class="matching_questions">'.$matchingAnswer[$i+1].'</span></p>
+															</div>
+															<br />';
+															
+													$matchingCounter++;
+													echo '</div>';
+												}
+												
+                                            }
+											echo '</div>';
+											// end
+											
+											/*
                                             echo '<div class="m_question_section make_inline2">';
                                             for($j; $j < count($matchingArray);)
                                             {
@@ -585,6 +638,7 @@ $_SESSION['testId'] = $testId;
 												}
                                                 echo '</div>';
                                             }
+											*/
                                             $matchingAnswer = null;
                                         }       
                                         $matchingStatement->close();
@@ -698,7 +752,7 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block" id="submit"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
+			<button type="button" class="btn btn-success btn-block submit_btn"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
 		</div>
 				
    </div>

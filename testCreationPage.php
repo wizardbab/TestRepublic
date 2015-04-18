@@ -267,10 +267,10 @@ $modalId = 0;
                      <label class="instruction_lbl">Specific Instructions:</label>
                      <br />
 
-							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="6"><?php echo $specificInstructions; ?></textarea>
+							<textarea class="form-control" id="specificInstruction" name="specificInstruction" rows="4"><?php echo $specificInstructions; ?></textarea>
 
                      <label class="pledge_lbl">Test Pledge:</label>
-							<textarea class="form-control" id="testPledge" name="testPledge" rows="6"><?php echo $testPledge; ?></textarea>
+							<textarea class="form-control" id="testPledge" name="testPledge" rows="4"><?php echo $testPledge; ?></textarea>
 						</form>
 						<div class="row" id="upperButtons">
 							<div class="col-md-6">
@@ -316,7 +316,7 @@ $modalId = 0;
                      </button>
                   </div>
                   
-                  <div class="container-fluid">
+                  <div class="container-fluid" id="scroll_section">
                      <div class="list-group" id ="testList">
                                 
 
@@ -399,8 +399,9 @@ $modalId = 0;
                                             else if($qtype == "Matching")
                                             {
                                             	echo'</a>';
-                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'.$qtype.'</div> <p class="list-group-item-text">' . $qtext . ' (' . $qvalue .')'.$atext.'</p>
-                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'.$qtype.'</div> <p class="list-group-item-text">' . $qtext . ' (' . $qvalue .')</p>
+                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>
+														<div class="input_section"><b>Answer</b>: ' . $atext . ' <img src="images/sign.png" />&nbsp;</div>';
                                                 // Echo Matching modal with info inside
                                             }
                                             else if($qtype == "Short Answer")
@@ -408,14 +409,16 @@ $modalId = 0;
                                                 // Echo Short Answer Modal with info inside
                                                 echo'</a>';
 												echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'.$qtype.'</div> <p class="list-group-item-text">' . $qtext . ' (' . $qvalue .')</p>
-                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>
+														<div class="input_section"><b>Answer</b>: ' . $atext . '<img src="images/sign.png" />&nbsp;</div>';
                                             }
                                             else
                                             {
                                                 // Echo Essay modal with info inside
                                                 echo'</a>';
 												echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'.$qtype.'</div> <p class="list-group-item-text">' . $qtext . ' (' . $qvalue .')</p>
-                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
+                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>
+														<div class="input_section"><b>Answer</b>: ' . $atext . '<img src="images/sign.png" />&nbsp;</div>';
                                                 
                                             }
                                         $oldId = $qid;
@@ -1165,7 +1168,7 @@ $modalId = 0;
                		var k = 0;
                		while(k < questionArray.length)
                		{
-						$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text">' + questionArray[k] + ' (' + pointValue +')'+answerArray[k]+'</p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
+                  		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text">' + questionArray[k] + ' (' + pointValue +') </p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
 						k++;
                		}
                });

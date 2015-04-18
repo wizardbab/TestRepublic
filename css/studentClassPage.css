@@ -325,7 +325,7 @@ ul.alert-dropdown {
 	table.class_table
 	{
 		position: relative;
-		top: 170px;
+		top: 40px;
 		font-size: 14pt;
 		border: 2px solid black;
 		border-collapse: collapse;
@@ -376,5 +376,15 @@ ul.alert-dropdown {
 		background-color: rgb(55,96,146);
 	}
 	
-
+	.header1
+	{
+		margin-top: 150px;
+		font-size: 20pt;
+	}
+	
+	.header2
+	{
+		font-weight: bold;
+		color: rgb(55,96,146);
+	}
 }

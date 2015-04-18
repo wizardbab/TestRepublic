@@ -83,7 +83,7 @@ $testNameStatement = $database->prepare($testNameQuery);
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
 					</div> 
 				</a>
@@ -197,7 +197,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 				<input type="hidden" value="<?php echo $classId; ?>" name="classId" id="classId"/>
 				<input type="hidden" value="<?php echo $testId; ?>" name="testId" id="testId"/>
 				<input type="hidden" value="<?php echo $testName; ?>" name="testName" id="testName"/>
-				<input type="submit" id="startTest" value="Start" class="btn btn-primary btn-block"/>
+				<input type="submit" id="startTest" value="Start" class="btn btn-primary btn-block start_btn"/>
 			</form>
           
 		</div>

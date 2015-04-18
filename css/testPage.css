@@ -22,10 +22,16 @@ body
 	width: 250px;
 }
 
+.navbar-header:hover
+{
+	background-color: black;
+}
+
 #logo-area
 {
 	display: inline-block;
 	margin-top: -11px;
+	width: 230px;
 }
 
 .TestRepublic
@@ -482,7 +488,7 @@ ul.alert-dropdown {
 
 		.tf_points_tb, .essay_points_tb, .mc_points_tb, .sa_points_tb, .match_points_tb
 		{
-			width: 50px;
+			width: 53px;
 			height:34px;
 			padding:4px 12px;
 			font-size:14px;
@@ -575,7 +581,7 @@ ul.alert-dropdown {
 			margin-bottom: 10px;
 		}
 
-		#submit
+		.submit_btn
 		{
 			margin-top: 20px;
 			margin-bottom: 30px;
@@ -611,4 +617,6 @@ ul.alert-dropdown {
 		{
 			margin-bottom: 15px;
 		}
+		
+		
 		

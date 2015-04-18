@@ -368,7 +368,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                   </div>
                   <div class="modal-footer bottom_modal">
                      <button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
-                     <button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Create Class</button>
+                     <button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Update Class</button>
                   </div>
                </div>
             </div>
