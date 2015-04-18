@@ -670,6 +670,7 @@ $_SESSION['testId'] = $testId;
 		</div>
 				
    </div>
+   </div>
    <!-- /. Container -->
 	
     <!-- Menu Toggle Script -->

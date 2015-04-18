@@ -165,7 +165,7 @@ echo '<br /><br /><br />';
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic">Test Republic</span>
 					</div>
 				</a>
@@ -432,7 +432,7 @@ echo '<br /><br /><br />';
 													while($trueFalseStatement->fetch())
 													{
                                                         echo'<div class="tf_choice">
-                                                            <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
+                                                           <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio" /><label for="tf_answer'.$answer_id.'">
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span></label>
                                                             </div>';
                                                     }
@@ -473,7 +473,7 @@ echo '<br /><br /><br />';
 													while($multipleChoiceStatement->fetch())
 													{
 														echo '<div class="mc_choice" >
-															<label><input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
+															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" /><label for="mc_answer'.$mcAnswerId.'">
 															<span class="mc_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
 													}	
@@ -533,7 +533,7 @@ echo '<br /><br /><br />';
 													echo'	<div class="col-md-6">
 														<div class="matching_div">'
 														.$counter.'. <span class="matching_questions">'.$matchingArray[$j+3].'</span>
-															<input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>
+															<input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'" />
 														</div>
 													</div>';
 													$counter++;
@@ -614,7 +614,7 @@ echo '<br /><br /><br />';
                                                         {
                                                         echo'
                                                             <div class="ata_choice">
-                                                                <label><input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
+                                                                <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" /><label for="ata_answer_cb'.$aid.'">
                                                                 <span class="ata_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
                                                         }
@@ -721,7 +721,7 @@ echo '<br /><br /><br />';
 				
             for(counter = 0; counter < multipleChoiceArray.length; counter++)
             {
-                if ($('#mc_answer'+multipleChoiceArray[counter]).is(':checked'))
+                if ($('#mc_answer'+multipleChoiceArray[counter]).is('input:checked'))
                 {
                     multipleChoiceAnswerArray[counter] = 1;
                 }
@@ -732,7 +732,7 @@ echo '<br /><br /><br />';
             }
             for(counter = 0; counter < trueFalseArray.length; counter++)
             {
-                if ($('#tf_answer'+trueFalseArray[counter]).is(':checked'))
+                if ($('#tf_answer'+trueFalseArray[counter]).is('input:checked'))
                 {
                     trueFalseAnswerArray[counter] = 1;
                 }
@@ -743,7 +743,7 @@ echo '<br /><br /><br />';
             }
             for(counter = 0; counter < ataArray.length; counter++)
             {
-                if ($('#ata_answer_cb'+ataArray[counter]).is(':checked'))
+                if ($('#ata_answer_cb'+ataArray[counter]).is('input:checked'))
                 {
                     ataAnswerArray[counter] = 1;
                 }

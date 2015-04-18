@@ -245,8 +245,6 @@ $testNameStatement = $database->prepare($testNameQuery);
 			var testId = '<?php echo $testId; ?>';
 			if (isConfirm) 
 			{
-				alert (testId);
-				alert (studentId);
 				$.post("TestButtonScripts/pledgeButton.php",
                {
                   studentId:studentId,

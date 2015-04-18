@@ -257,7 +257,7 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="number" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
+                        <input type="text" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
                      </label>
                     
                      <label class="time_limit_lbl">Test Weight:
@@ -847,6 +847,7 @@ $modalId = 0;
 			},
 			function(data)
 			{
+
 			});
 			
 			$.post("TestButtonScripts/createButton.php",

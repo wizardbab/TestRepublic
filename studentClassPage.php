@@ -218,8 +218,8 @@ global $class_id;
                                 }
                                 else
                                     echo '<td>Not Taken</td>';
-
-								echo'<td>'.$date_begin.' - '.$date_end.'</td>';
+						
+								echo'<td>'.date("m/d/Y", strtotime($date_begin)).' - '.date("m/d/Y", strtotime($date_end)).'</td>';
 										if($date_taken != null)
 										{
                                             if($graded != 1)
