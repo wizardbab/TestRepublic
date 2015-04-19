@@ -94,19 +94,19 @@ $testNameStatement = $database->prepare($testNameQuery);
 						  // to display student's name in top right corner
 
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
-							{
-								$topRightStatement->bind_param("s", $id);
-							}
-							else {
-								printf("Errormessage: %s\n", $database->error);
-							}							
-								$topRightStatement->bind_result($first_name, $last_name);
-								$topRightStatement->execute();
-								while($topRightStatement->fetch())
-								{
-									echo $first_name . " " . $last_name;
-								}
-								$topRightStatement->close();?><b class="caret"></b></a>
+									{
+										$topRightStatement->bind_param("s", $id);
+									}
+									else {
+										printf("Errormessage: %s\n", $database->error);
+									}							
+						$topRightStatement->bind_result($first_name, $last_name);
+						$topRightStatement->execute();
+						while($topRightStatement->fetch())
+						{
+							echo $first_name . " " . $last_name . ", ". $id." ";
+						}
+						$topRightStatement->close();?><b class="caret"></b></a>
 						
                 </li>
             </ul>

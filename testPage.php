@@ -112,14 +112,9 @@ $selectStartStatement->close();
 
 echo '<br /><br /><br />';
 	$secs = strtotime($timeLimit)-strtotime("00:00:00");
-	echo '<h1>secondslimit: '.$secs . '</h1>';
-	echo '<h1>time limit: '.$timeLimit . '</h1>';
-	echo '<h1>start time: '.$ctime . '</h1>';
 	$endTime = date("H:i:s",strtotime($ctime)+$secs);
-	echo '<h1>end time: '.$endTime . '</h1>';
 
 	$currentTime = date('H:i:s', time());
-	echo '<h1>current time: '.$currentTime. '</h1>';
 
 	sscanf($currentTime, "%d:%d:%d", $hours, $minutes, $seconds);
 
@@ -884,6 +879,12 @@ echo '<br /><br /><br />';
     </script>
 	 
 	 <script>
+	 
+	 function changePage()
+	 {
+		window.location = "pledgePage.php";
+	 }
+	 
 	
 	 var timeLimit = '<?php echo $timeLimit; ?>';
 	 
@@ -891,12 +892,10 @@ echo '<br /><br /><br />';
 	 var minutes = '<?php echo $timeArray[1]; ?>';
 	 var seconds = '<?php echo $timeArray[2]; ?>';
 	 
-	 
+	 var myVar;
 	function myFunction()
 	{
-	
-	 
-    setInterval(function(){ myTimer() }, 960)
+       myVar = setInterval(function(){ myTimer() }, 960);
 	}
 
 	function pad2(number)
@@ -911,6 +910,7 @@ echo '<br /><br /><br />';
 		//var t = d.toLocaleTimeString();
 		if(hours == 0 && minutes == 0 && seconds == 0)
 		{
+			clearInterval(myVar);
 			
 			var counter;
             var essayArray = [];
@@ -1031,7 +1031,8 @@ echo '<br /><br /><br />';
             function(data)
             {
             });
-            window.location = "pledgePage.php";
+            window.location="pledgePage.php";
+				
 		}
 		else
 		{

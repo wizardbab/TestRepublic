@@ -349,8 +349,8 @@ $_SESSION['testId'] = $testId;
 									
 									for($i = 0; $i < count($essayArray); $i+=7)
 									{
-<<<<<<< HEAD
-										echo'<h4><p class="question_num make_inline">'.$essayArray[$i].'.</p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
+
+									/*	echo'<h4><p class="question_num make_inline">'.$essayArray[$i].'.</p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
 										<h4></h4>
 											<div class="essay_answers">
 												<textarea class="form-control essay_textarea" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="5">'.$essayArray[$i+5].'</textarea>
@@ -358,13 +358,12 @@ $_SESSION['testId'] = $testId;
 												<textarea class="form-control essay_textarea" disabled rows="4">Put teacher answer here</textarea>
 											</div>
 												<div class="points_earned_section_essay"><span class="points_earned_txt">Points Earned</span><input type=text disabled value="'.$essayArray[$i+6].'" class="essay_points_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/></div><br />';
-                                        $essayCounter++;
-=======
-										echo'<h4>'.$counter.'. <span class="essay_questions">'.$essayArray[$i+3].'</span></h4>Points Earned<input type=text disabled value="'.$essayArray[$i+6].'" class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
+                                        $essayCounter++;*/
+
+									echo'<h4>'.$counter.'. <span class="essay_questions">'.$essayArray[$i+3].'</span></h4>Points Earned<input type=text disabled value="'.$essayArray[$i+6].'" class="matching_answer_tb" id="EssayPoints'.$essayArray[$i+4].'" name="EssayPoints"/><h4>Point Value: '.$essayArray[$i+2].'</h4>
 											<div class="essay_answers">
 												<textarea class="form-control" disabled id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="6">'.$essayArray[$i+5].'</textarea></div>';
                                         $counter++;
->>>>>>> 58a9159fb43929ee825c79b73781af28d16e5f48
 									}
 								echo'		
 									</div>
@@ -483,7 +482,7 @@ $_SESSION['testId'] = $testId;
 
                                                         echo '</div>';
 													}	
-											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input disabled type=text value="'.$multipleChoiceArray[$i+5].'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
+											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input disabled type=text value="'.$multipleChoiceArray[$i+7].'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
 											</div>';
                                             $counter++;
                                         }

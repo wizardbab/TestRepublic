@@ -67,9 +67,8 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_id, test_name, sum(points_earned)/sum(question_value)*100, date_begin, date_end, date_taken, graded from test
+$tableQuery = "select test_id, test_name, test_score/max_points*100, date_begin, date_end, date_taken, graded from test
 join test_list using(test_id)
-join question using(test_id, student_id)
 where student_id = ? and class_id = ?
 group by(test_id)";
 $_SESSION['classId'] = null;
