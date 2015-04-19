@@ -399,9 +399,8 @@ $modalId = 0;
                                             else if($qtype == "Matching")
                                             {
                                             	echo'</a>';
-                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'.$qtype.'</div> <p class="list-group-item-text">' . $qtext . ' (' . $qvalue .')</p>
-                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>
-														<div class="input_section"><b>Answer</b>: ' . $atext . ' <img src="images/sign.png" />&nbsp;</div>';
+                                                echo '<a href="#" id="list_group'.$qno.'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'.$qtype.'</div> <p class="list-group-item-text add_margin_top1">' . $qtext . ' (' . $qvalue .')</p>
+                                                		<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'.$qno.'" onclick="removeQuestion('.$qno.')"><span class="glyphicon glyphicon-trash"></span></button>';
                                                 // Echo Matching modal with info inside
                                             }
                                             else if($qtype == "Short Answer")
@@ -1168,7 +1167,7 @@ $modalId = 0;
                		var k = 0;
                		while(k < questionArray.length)
                		{
-                  		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text">' + questionArray[k] + ' (' + pointValue +') </p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
+                  		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text add_margin_top1">' + questionArray[k] + ' (' + pointValue +') </p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
 						k++;
                		}
                });
