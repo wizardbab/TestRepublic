@@ -484,7 +484,7 @@ $_SESSION['testId'] = $testId;
 
                                                         echo '</div>';
 													}	
-											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$multipleChoiceArray[$i+5].'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
+											echo'	</div><div class="points_earned_section"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$multipleChoiceArray[$i+7].'" class="mc_points_tb" id="MCPoints'.$multipleChoiceArray[$i+4].'" name="MCPoints"/></div>
 											</div>';
                                             $multipleChoiceCounter++;
                                         }
@@ -631,7 +631,7 @@ $_SESSION['testId'] = $testId;
 											<div class="answer_text">Answer:</div>
 											<input type="text" class="form-control sa_teacher_answers_tb" value="" />
 										</div>
-										<div class="points_earned_section"><span class="points_earned_txt">Points Earned<input type=text value="'.$shortAnswerArray[$i+6].'" class="sa_points_tb" id="SAPoints'.$shortAnswerArray[$i+6].'" name="shortAnswerPoints"/></div><br />';
+										<div class="points_earned_section"><span class="points_earned_txt">Points Earned<input type=text value="'.$shortAnswerArray[$i+6].'" class="sa_points_tb" id="SAPoints'.$shortAnswerArray[$i+4].'" name="shortAnswerPoints"/></div><br />';
                                     $shortAnswerCounter++;
 								}
 									
@@ -746,52 +746,51 @@ $_SESSION['testId'] = $testId;
             var pointsEarnedArray = [];
             <?php for($i = 0; $i < count($essayArray); $i+=7){ ?>
             if(oldId != '<?php echo $essayArray[$i+4]; ?>')
-            //alert("essayArray");
                 questionIdArray.push('<?php echo $essayArray[$i+4];?>');
             oldId = '<?php echo $essayArray[$i+4]; ?>';
             <?php } ?>
             <?php for($i = 0; $i < count($shortAnswerArray); $i+=7){ ?>
             if(oldId != '<?php echo $shortAnswerArray[$i+4]; ?>')
-            //alert("shortAnswerArray");
                 questionIdArray.push('<?php echo $shortAnswerArray[$i+4];?>');
             oldId = '<?php echo $shortAnswerArray[$i+4]; ?>';
             <?php } ?>
             <?php for($i = 0; $i < count($multipleChoiceArray); $i+=8){ ?>
             if(oldId != '<?php echo $multipleChoiceArray[$i+4]; ?>')
-            //alert("multipleChoiceArray");
+			{
                 questionIdArray.push('<?php echo $multipleChoiceArray[$i+4];?>');
+				alert('<?php echo $multipleChoiceArray[$i+4]; ?>');
+			}
             oldId = '<?php echo $multipleChoiceArray[$i+4]; ?>';
             <?php } ?>
             <?php for($i = 0; $i < count($trueFalseArray); $i+=8){ ?>
             if(oldId != '<?php echo $trueFalseArray[$i+4]; ?>')
-            //alert("trueFalseArray");
                 questionIdArray.push('<?php echo $trueFalseArray[$i+4];?>');
             oldId = '<?php echo $trueFalseArray[$i+4]; ?>';
             <?php } ?>
             <?php for($i = 0; $i < count($ataArray); $i+=8){ ?>
             if(oldId != '<?php echo $ataArray[$i+4]; ?>')
-            //alert("ataArray");
                 questionIdArray.push('<?php echo $ataArray[$i+4];?>');
             oldId = '<?php echo $ataArray[$i+4]; ?>';
             <?php } ?>
             <?php for($i = 0; $i < count($matchingArray); $i+=12){ ?>
             if(oldId != '<?php echo $matchingArray[$i+7]; ?>')
-            //alert(<?php echo $matchingArray[$i+7] ?>);
                 questionIdArray.push('<?php echo $matchingArray[$i+7];?>');
             oldId = '<?php echo $matchingArray[$i+7]; ?>';
             <?php } ?>
-            
+            oldId = 0;
             <?php for($i = 0; $i < count($essayArray); $i+=7){ ?>
                     pointsEarnedArray.push($("#EssayPoints"+'<?php echo $essayArray[$i+4]; ?>').val());
             <?php } ?>
             <?php for($i = 0; $i < count($shortAnswerArray); $i+=7){ ?>
-                
                     pointsEarnedArray.push($("#SAPoints"+'<?php echo $shortAnswerArray[$i+4]; ?>').val());
             <?php } ?>
             <?php for($i = 0; $i < count($multipleChoiceArray); $i+=8){ ?>
                 if(oldId != '<?php echo $multipleChoiceArray[$i+4]; ?>')
+				{
                     pointsEarnedArray.push($("#MCPoints"+'<?php echo $multipleChoiceArray[$i+4]; ?>').val());
-                oldId = '<?php echo $multipleChoiceArray[$i+4]; ?>';
+					alert($("#MCPoints"+'<?php echo $multipleChoiceArray[$i+4]; ?>').val());
+				}
+				oldId = '<?php echo $multipleChoiceArray[$i+4]; ?>';
             <?php } ?>
             oldId = 0;
             <?php for($i = 0; $i < count($trueFalseArray); $i+=8){ ?>
@@ -818,6 +817,7 @@ $_SESSION['testId'] = $testId;
             },
             function(data)
             {
+				alert(data);
                 window.location = "teacherClassPage.php?classId=" + '<?php echo $classId; ?>';
             });
         });

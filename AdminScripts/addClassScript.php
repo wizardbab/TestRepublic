@@ -12,6 +12,8 @@ $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 $insertClass = "insert into class(class_id, teacher_id, class_description)
 					values(?, ?, ?)";
 					
+$select = "select first_name, last_name from teacher where teacher_id = ?";
+					
 @$classId = $_POST['classId'];
 @$teacherId = $_POST['teacherId'];
 @$classDescription = $_POST['classDescription'];
@@ -23,7 +25,15 @@ $insertClass = "insert into class(class_id, teacher_id, class_description)
 	$insertTeacherStatement->execute();
 	$insertTeacherStatement->close();
 	
+	$selectStatement = $database->prepare($select);
+	$selectStatement->bind_param("s", $teacherId);
+	$selectStatement->bind_result($fname, $lname);
+	$selectStatement->execute();
+	while($selectStatement->fetch())
+	{
+		
+	}
+	$selectStatement->close();
+	echo $fname . " " . $lname;
 	
-
-
 ?>

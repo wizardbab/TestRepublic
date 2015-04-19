@@ -323,6 +323,11 @@ ul.alert-dropdown {
 		background-color: pink;
 		height: 100px;
 	}
+    #warning_box2
+        {
+        background-color: rgba(0,255,0,.65);
+		height: 100px;
+    }
 	
 	.warning_msg
 	{

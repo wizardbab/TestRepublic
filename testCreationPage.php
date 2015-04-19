@@ -257,11 +257,11 @@ $modalId = 0;
                      </label>
                      
                      <label class="time_limit_lbl">Time Limit:
-                        <input type="text" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="00:00:00" /> <span class="minutes"> hh:mm:ss</span>
+                        <input type="text" id="timeLimit" name="timeLimit" value="<?php echo $timeLimit; ?>" placeholder="hh:mm:ss" /> <span class="minutes"></span>
                      </label>
                     
                      <label class="time_limit_lbl">Test Weight:
-                        <input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" placeholder="100" /> <span class="minutes"> points</span>
+                        <input type="number" id="maxPoints" name="maxPoints" value="<?php echo $maxPoints; ?>" placeholder="100" /> <span class="minutes"></span>
                      </label>
                      
                      <label class="instruction_lbl">Specific Instructions:</label>
@@ -1250,8 +1250,7 @@ $modalId = 0;
                {
                   $("#testList").append('<a href="#" id="list_group'+data+'" class="list-group-item"> <div class="group-item-heading">Multiple Choice</div> <br /><p class="list-group-item-text">' + question + ' (' + pointValue +')</p></a>'
                        );
-                  
-                       $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
+                  $("#list_group"+data).append('<button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+data+'" onclick="removeQuestion('+data+')"><span class="glyphicon glyphicon-trash"></span></button>');
                   
 
                   for (i = 0; i < multipleChoiceArray.length; i++)

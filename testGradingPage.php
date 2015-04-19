@@ -567,7 +567,7 @@ $_SESSION['testId'] = $testId;
 														
 														echo'<div class="points_earned_section add_margin_top"><span class="points_earned_txt">Points Earned</span><input type=text value="'.$pointsEarned.'" class="match_points_tb" id="MPoints'.$matchingArray[$j+7].'" name="TFPoints"/></div></div></p>';
 													echo'</div>';
-													$j+=12;
+													$j+=11;
 												}
 											}
 											echo '</div>';
@@ -642,7 +642,7 @@ $_SESSION['testId'] = $testId;
                                             $matchingAnswer = null;
                                         }       
                                         $matchingStatement->close();
-								echo'</div>
+								echo'
 									</div>
 						</div>  </div>';
                                 $headingCounter += 11;
@@ -752,9 +752,8 @@ $_SESSION['testId'] = $testId;
         </div>
         <!-- /.row -->
 		<div class="row">
-			<button type="button" class="btn btn-success btn-block submit_btn"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
+			<button type="button" class="btn btn-success btn-block submit_btn" id="submit"><span class="glyphicon glyphicon-export"></span> Submit Grade</button>
 		</div>
-				
    </div>
    <!-- /. Container -->
 	
@@ -812,7 +811,7 @@ $_SESSION['testId'] = $testId;
                 questionIdArray.push('<?php echo $matchingArray[$i+7];?>');
             oldId = '<?php echo $matchingArray[$i+7]; ?>';
             <?php } ?>
-            
+            oldId = 0;
             <?php for($i = 0; $i < count($essayArray); $i+=7){ ?>
                     pointsEarnedArray.push($("#EssayPoints"+'<?php echo $essayArray[$i+4]; ?>').val());
             <?php } ?>

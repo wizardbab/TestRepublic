@@ -74,7 +74,7 @@ where student_id = ? and class_id = ? and datediff(date_begin, sysdate()) <= 0 a
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
+where student_id = ? and datediff(date_end, sysdate()) <= 7 and datediff(date_end, sysdate()) >= 0";
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
@@ -126,27 +126,51 @@ $classStatement = $database->prepare($classQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12" id="warning_box1">
-                        <div class="warning_box">
-							<p class="warning_msg"> 
+					<h2 class="warning_sign_msg"> Notifications: </h2>
+                     
                                 <?php
                                 // Display warnings if a test has seven days or less to take
+                                $classArray = array();
                                 $warningstmt->bind_param("s", $id);
                                 $warningstmt->bind_result($class_id, $days_left);
                                 $warningstmt->execute();
                                 while($warningstmt->fetch())
                                 {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
+                                    $classArray[] = $class_id;
+                                    $classArray[] = $days_left;
+                                    
                                 }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
+                                if(count($classArray) == 0)
+                                {
+                                    echo'<div class="col-md-12" id="warning_box2">
+                                        <div class="warning_box">
+                                            <p class="warning_msg">';
+                                    echo 'No notifications';
+                                    echo'</p>
+                                        </div>
+                                    </div>';
+                                }
+                                else
+                                {
+                                    echo'<div class="col-md-12" id="warning_box1">
+                                        <div class="warning_box">
+                                            <p class="warning_msg">';
+                                    for($i = 0; $i < count($classArray); $i += 2)
+                                    {
+                                        if($classArray[$i+1] == 0)
+                                            echo $classArray[$i] . ' test expires today.';
+                                        else
+                                            echo $classArray[$i] . ' test will expire in ' . $classArray[$i+1] . ' day(s).';
+                                        
+                                        echo '<br />';
+                                    }
+                                    echo'</p>
+                                        </div>
+                                    </div>';
+                                }
                                 $warningstmt->close();
                             ?>
-                                </p>
-						</div>
-                    </div>
+                                
 					
 					<!-- our code starts here :) -->
 					<table class="student_summary">

@@ -100,7 +100,7 @@ where class_id = ?";
 // Query to populate the first table on the screen
 $firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id, date_begin, date_end from test_list
 right join test using(test_id)
-where class_id = ?
+where class_id = ? and graded = 1
 group by(test_name)
 order by(test_id)";
 
@@ -119,16 +119,15 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select student_id, sum(points_earned)/sum(question_value)*100, graded, test_id, test_name, date_taken from test_list
+$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
 join test using(test_id)
-join question using(test_id, student_id)
 where student_id = ? and class_id = ?
 group by(test_id)";
 
 // Average score for student list
 $averageQuery = "select sum(test_score) / sum(max_points) * 100 from test_list
 join test using(test_id)
-where student_id = ? and class_id = ? and date_taken is not null and test_score is not null";
+where student_id = ? and class_id = ? and graded = 1";
 
 // List of students for student list
 $studentQuery = "select student_id from enrollment
@@ -310,8 +309,7 @@ $studentStatement = $database->prepare($studentQuery);
 				<div class="row">
 					<table class="student_list table-hover">
 					<tr class="student_list_header">
-					<td>First Name</td>
-					<td>Last Name</td>
+					<td>Name</td>
 					<?php
 						
 						// Get the test name on top of second table
@@ -362,7 +360,7 @@ $studentStatement = $database->prepare($studentQuery);
 								echo '<tr>';
 							while($studentNamesStatement->fetch())
 							{
-								echo '<td>'.$firstName . '</td><td>' . $lastName . '</td>';
+								echo '<td>'.$firstName . ' ' . $lastName . '</td>';
 							}
 							$studentNamesStatement->close();
 								
@@ -376,6 +374,10 @@ $studentStatement = $database->prepare($studentQuery);
                                         if(is_null($graded))
                                         {
                                             echo '<td>Not Taken</td>';
+                                        }
+                                        else if($graded == 2)
+                                        {
+                                            echo '<td>In Progress</td>';
                                         }
                                         else if($graded == 1)
                                         {
@@ -414,7 +416,7 @@ $studentStatement = $database->prepare($studentQuery);
                                 if($averageScore != 0)
                                     echo '<td>' . (float)$averageScore.'%'. '</td>';
                                 else
-                                    echo '<td>No Tests Taken</td>';
+                                    echo '<td>No Tests Graded</td>';
 							}
 							$averageStatement->close();
 					
