@@ -8,6 +8,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="description" content="">
    <meta name="author" content="">
+   <link rel="shortcut icon" href="images/newlogo.ico">
 
    <title>Test Republic - Admin</title>
 
@@ -23,6 +24,10 @@
    <!-- Custom Validation -->
    <link href="css/validation.css" rel="stylesheet" type="text/css">
    <script type="text/javascript" src="js/validation.js"></script>
+   
+	<!-- custom Alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 
 </head>
 <body>
@@ -363,7 +368,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                   </div>
                   <div class="modal-footer bottom_modal">
                      <button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
-                     <button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Create Class</button>
+                     <button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Update Class</button>
                   </div>
                </div>
             </div>
@@ -404,13 +409,13 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 
       $("#createTeacherButton").click(function()
       {
+
          var firstName = $("#firstNameText").val();
          var lastName = $("#lastNameText").val();
          var email = $("#emailText").val();
          var password = $("#passwordText").val();
          var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
          var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
          if(firstName == "")
          {
             inlineMsg('firstNameText', 'This field cannot be empty', 3);
@@ -447,8 +452,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             },
             function()
             {
-               alert("You have successfully added a new teacher!");
-               
+				swal("Success","New teacher added!", "success");
             });
          }
       }); 
@@ -487,7 +491,8 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             },
             function()
             {
-               alert("You have successfully created a new class");
+				swal("Success","New class added!", "success");
+
             });
          }
       }); 
@@ -525,8 +530,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             },
             function()
             {
-               alert("You have successfully updated the class");
-               
+				swal("Success","class updated!", "success");
             });
          }
       });

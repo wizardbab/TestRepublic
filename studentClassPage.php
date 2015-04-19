@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Republic</title>
 
@@ -54,7 +55,7 @@ $averageQuery = "select sum(points_earned) / sum(question_value) * 100
 from question
 join test using(test_id)
 join test_list using(test_id, student_id)
-where student_id = ? and class_id = ? and date_taken is not null";
+where student_id = ? and class_id = ? and graded = 1";
 
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
@@ -159,13 +160,13 @@ global $class_id;
                         $averageStatement->execute();
                         while($averageStatement->fetch())
                         {
-                            echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
+                            //echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
                             if($count == null)
-                                echo 'Grade: No assignments graded';
+                                echo '<div class="header1"><span class="header2">Grade:</span> No assignments graded</div>';
                             else
                             {
                                 $count = number_format($count, 2);
-                                echo 'Class Grade: ' . (float)$count . '%';
+                                echo '<div class="header1"><span class="header2">Class Grade:</span> ' . (float)$count . '%</div>';
                             }
                         }
                         $averageStatement->close();
@@ -217,8 +218,8 @@ global $class_id;
                                 }
                                 else
                                     echo '<td>Not Taken</td>';
-
-								echo'<td>'.$date_begin.' - '.$date_end.'</td>';
+						
+								echo'<td>'.date("m/d/Y", strtotime($date_begin)).' - '.date("m/d/Y", strtotime($date_end)).'</td>';
 										if($date_taken != null)
 										{
                                             if($graded != 1)

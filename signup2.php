@@ -8,8 +8,9 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="description" content="">
    <meta name="author" content="">
+   <link rel="shortcut icon" href="images/newlogo.ico">
 
-   <title>Test Republic</title>
+   <title>Test Republic - Sign Up</title>
 
    <!-- Bootstrap Core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -186,21 +187,7 @@ $success = false;
                            // Valid email; validate password
                            else
                            {
-                              // Does a preliminary check for required password pattern
-                              if(!preg_match('^[[:alpha:]]+[[:digit:]]+^', $password))
-                              {
-                                 
-                                 echo "Need more variety: ";
-                              }
-                              else
-                                 if(!preg_match('^.{8,20}^', $password))
-                                 {
-                                    echo "Password needs to be between 8-16 characters";
-                                 }
-                                 
                                  // Valid email and password so we insert into db
-                                 else
-                                 {
                                     // Assign an id
                                     if ($idStatement = $database->prepare($newStudentIdQuery)) 
                                     {
@@ -388,7 +375,6 @@ $success = false;
                                 echo '<script type="text/javascript">';
 								 echo 'redirect();';
 								 echo '</script>';
-                              }
                            }			
                         }
                         else

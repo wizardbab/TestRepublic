@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Instruction</title>
 
@@ -82,7 +83,7 @@ $testNameStatement = $database->prepare($testNameQuery);
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
 					</div> 
 				</a>
@@ -196,7 +197,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 				<input type="hidden" value="<?php echo $classId; ?>" name="classId" id="classId"/>
 				<input type="hidden" value="<?php echo $testId; ?>" name="testId" id="testId"/>
 				<input type="hidden" value="<?php echo $testName; ?>" name="testName" id="testName"/>
-				<input type="submit" id="startTest" value="Start" class="btn btn-primary btn-block"/>
+				<input type="submit" id="startTest" value="Start" class="btn btn-primary btn-block start_btn"/>
 			</form>
           
 		</div>
@@ -231,7 +232,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 			var testId = '<?php echo $testId; ?>';
 			var studentId = '<?php echo $id; ?>';
 			
-			$.post("TestButtonScripts/startTest.php",
+			$.post("TestButtonScripts/startButton.php",
 			{
 				 testId:testId,
 				 studentId:studentId
