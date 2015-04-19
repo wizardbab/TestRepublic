@@ -147,7 +147,6 @@
                 $insertAnswerStatement->execute();
                 $insertAnswerStatement->close();
                 
-                
                 $newAnswerId++;
             }
         }
