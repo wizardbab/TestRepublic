@@ -879,6 +879,12 @@ echo '<br /><br /><br />';
     </script>
 	 
 	 <script>
+	 
+	 function changePage()
+	 {
+		window.location = "pledgePage.php";
+	 }
+	 
 	
 	 var timeLimit = '<?php echo $timeLimit; ?>';
 	 
@@ -886,12 +892,10 @@ echo '<br /><br /><br />';
 	 var minutes = '<?php echo $timeArray[1]; ?>';
 	 var seconds = '<?php echo $timeArray[2]; ?>';
 	 
-	 
+	 var myVar;
 	function myFunction()
 	{
-	
-	 
-    setInterval(function(){ myTimer() }, 960)
+       myVar = setInterval(function(){ myTimer() }, 960);
 	}
 
 	function pad2(number)
@@ -906,6 +910,7 @@ echo '<br /><br /><br />';
 		//var t = d.toLocaleTimeString();
 		if(hours == 0 && minutes == 0 && seconds == 0)
 		{
+			clearInterval(myVar);
 			
 			var counter;
             var essayArray = [];
@@ -1026,7 +1031,8 @@ echo '<br /><br /><br />';
             function(data)
             {
             });
-            window.location = "pledgePage.php";
+            window.location="pledgePage.php";
+				
 		}
 		else
 		{
