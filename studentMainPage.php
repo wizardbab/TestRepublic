@@ -74,7 +74,8 @@ where student_id = ? and class_id = ? and datediff(date_begin, sysdate()) <= 0 a
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) <= 7 and datediff(date_end, sysdate()) >= 0";
+join test_list using(student_id, test_id)
+where student_id = ? and datediff(date_end, sysdate()) <= 7 and datediff(date_end, sysdate()) >= 0 and date_taken is null";
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
