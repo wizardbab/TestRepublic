@@ -36,7 +36,6 @@
 	 
 	 function deleteTest(testId)
 	 {
-		alert("in delete");
 		$.post("TestButtonScripts/deleteTest.php",
 		{
 			testId:testId
@@ -100,7 +99,7 @@ where class_id = ?";
 // Query to populate the first table on the screen
 $firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id, date_begin, date_end from test_list
 right join test using(test_id)
-where class_id = ? and graded = 1
+where class_id = ?
 group by(test_name)
 order by(test_id)";
 
@@ -278,6 +277,7 @@ $studentStatement = $database->prepare($studentQuery);
                                 else
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
                                                                                 if($t1 > $t2 or $sid == null or $dateBegin == null)
                                                                                 {
@@ -291,11 +291,10 @@ $studentStatement = $database->prepare($studentQuery);
 																				echo'</tr>';
                                                                                 }
 																				
-																				
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="5">No tests created</td></tr>';
+                                    echo'<tr><td colspan="6">No tests created</td></tr>';
 						?>
 						</tbody>
 						

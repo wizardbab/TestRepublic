@@ -511,6 +511,10 @@ function ClearNewTeacher()
          {
             inlineMsg('teacherIdText', 'This field cannot be empty', 2);
          }
+			else if(!inArray(teacherArray, teacherId))
+			{
+				inlineMsg('teacherIdText', 'Teacher does not exist.', 2);
+			}
          else
          {
             $("#CModal").modal("hide");
@@ -550,10 +554,18 @@ function ClearNewTeacher()
          {
             inlineMsg('classIdUpdateText', 'This field cannot be empty', 2);
          }
+			else if(!inArray(classArray, classUpdateId))
+			{
+				inlineMsg('classIdUpdateText', 'Class does not exist.', 2);
+			}
          else if(teacherUpdateId == "")
          {
             inlineMsg('teacherIdUpdateText', 'This field cannot be empty', 2);
          }
+			else if(!inArray(teacherArray, teacherUpdateId))
+			{
+				inlineMsg('teacherIdUpdateText', 'Teacher does not exist.', 2);
+			}
          else
          {
             $("#UpdateModal").modal("hide");

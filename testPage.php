@@ -331,6 +331,7 @@ echo '<br /><br /><br />';
 						}
 						$headerStatement->close();
 						  ?>
+						  <div id="test"></div>
                 </h1>
             </div>
         </div>
@@ -340,7 +341,7 @@ echo '<br /><br /><br />';
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-group" id="accordion">
-					 <div id="test"></div>
+					 
                     
 					<!-- Multiple Choice /.panel -->
 					

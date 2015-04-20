@@ -19,7 +19,6 @@ set start_time = curtime(),
 	date_taken = curdate(),
 	graded = 2
 where test_id = ? and student_id = ?";
-
 	
 	$timeStampStatement = $database->prepare($timeStampQuery);
 	

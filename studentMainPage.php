@@ -154,7 +154,7 @@ $classStatement = $database->prepare($classQuery);
                                 }
                                 else
                                 {
-                                    echo'<div class="col-md-12" id="warning_box1">
+                                    echo'<div style="overflow-y:auto;overflow-x:hidden" class="col-md-12" id="warning_box1">
                                         <div class="warning_box">
                                             <p class="warning_msg">';
                                     for($i = 0; $i < count($classArray); $i += 2)
