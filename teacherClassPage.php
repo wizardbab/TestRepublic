@@ -411,9 +411,11 @@ $studentStatement = $database->prepare($studentQuery);
 							$averageStatement->execute();	
 							while($averageStatement->fetch())
 							{
-                                $averageScore = number_format($averageScore, 2);
-                                if($averageScore != 0)
+                                if($averageScore != null)
+                                {
+                                    $averageScore = number_format($averageScore, 2);
                                     echo '<td>' . (float)$averageScore.'%'. '</td>';
+                                }
                                 else
                                     echo '<td>No Tests Graded</td>';
 							}

@@ -29,6 +29,7 @@
 // Php connections added by David Hughen 2/11/15
 // After Andrea Setiawan made modification to the student's html file
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");

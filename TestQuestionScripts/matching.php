@@ -26,7 +26,7 @@
 	
 	$answerIdQuery = "select max(answer_id) from answer";
 	
-	$getQuestionQuery = "select question_id from question where heading_id = ? && question_letter = ?";
+	$getQuestionQuery = "select question_id from question where heading_id = ? and question_letter = ?";
 	
 	$insertQuestionQuery = "insert into question(question_id, student_id, test_id,
 		question_type, question_value, question_text, question_letter, question_no, heading_id, heading)
@@ -121,7 +121,7 @@
             for($i = 0; $i < count($answers); $i++)
             {
                 $k = 0;
-                while($answerLetters[$i] != $questionLetters[$k] and $k < count($questionLetters))
+                while($k < count($questionLetters) and $answerLetters[$i] != $questionLetters[$k])
                 {
                     $k++;
                 }
