@@ -17,9 +17,8 @@
 	$timeStampQuery = "update test_list
 set start_time = curtime(),
 	date_taken = curdate(),
-	graded = 0
+	graded = 2
 where test_id = ? and student_id = ?";
-
 	
 	$timeStampStatement = $database->prepare($timeStampQuery);
 	

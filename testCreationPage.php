@@ -1164,13 +1164,11 @@ $modalId = 0;
                },
                function(data)
                {
-					alert("hi");
                		var k = 0;
                		while(k < questionArray.length)
                		{
                   		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text add_margin_top1">' + questionArray[k] + ' (' + pointValue +') </p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
 						k++;
-						alert("hi again");
                		}
                });
 			  // alert("clicked matching");

@@ -29,6 +29,7 @@
 // Php connections added by David Hughen 2/11/15
 // After Andrea Setiawan made modification to the student's html file
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");
@@ -51,10 +52,9 @@ $query = "select class_id, class_description from enrollment join class using (c
 
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
 
-$averageQuery = "select sum(points_earned) / sum(question_value) * 100
-from question
+$averageQuery = "select sum(test_score) / sum(max_points) * 100
+from test_list
 join test using(test_id)
-join test_list using(test_id, student_id)
 where student_id = ? and class_id = ? and graded = 1";
 
 // Student first and last name to display on top right of screen
