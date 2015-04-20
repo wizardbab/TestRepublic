@@ -21,7 +21,7 @@ set start_time = curtime(),
 where test_id = ? and student_id = ?";
 =======
 	date_taken = curdate(),
-	graded = 0
+	graded = 2
 where test_id = ? and student_id = ?";
 
 >>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c

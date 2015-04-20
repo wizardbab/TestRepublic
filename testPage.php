@@ -406,7 +406,7 @@ echo '<br /><br /><br />';
 									for($i = 0; $i < count($essayArray); $i+=5)
 									{
 
-										echo'<h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
+										echo'<h4><p class="question_num make_inline">'.$counter.'. </p>'.'<p class="essay_questions make_inline">'.$essayArray[$i+3].' ('.$essayArray[$i+2].')'.'</p></h4>
 										<h4></h4>
 											<div class="essay_answers">
 												<textarea class="form-control essay_textarea" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="5"></textarea>
@@ -439,7 +439,7 @@ echo '<br /><br /><br />';
                                         {
                                         $oldQuestion = $trueFalseArray[$i];
                                             echo'<div class="panel-body">
-													<h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="tf_questions make_inline">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</p></h4>
+													<h4><p class="question_num make_inline">'.$counter.'. </p>'.'<p class="tf_questions make_inline">'.$trueFalseArray[$i+3].' ('.$trueFalseArray[$i+2].')'.'</p></h4>
                                                     <div class="tf_answers" id="trueFalse'.$trueFalseCounter.'">';	
 													
                                                     $trueFalseStatement->bind_param("s", $trueFalseArray[$i+4]);
@@ -495,7 +495,7 @@ echo '<br /><br /><br />';
                                         if($oldQuestion != $multipleChoiceArray[$i+4])
                                         {
                                             echo'	<div class="panel-body" >
-													<h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="mc_questions make_inline">'.$multipleChoiceArray[$i+3].' ('.$multipleChoiceArray[$i+2].')'.'</p></h4>
+													<h4><p class="question_num make_inline">'.$counter.'. </p>'.'<p class="mc_questions make_inline">'.$multipleChoiceArray[$i+3].' ('.$multipleChoiceArray[$i+2].')'.'</p></h4>
 													<div class="mc_answers" >';
 													
                                                     $oldQuestion = $multipleChoiceArray[$i+4];
@@ -576,7 +576,7 @@ echo '<br /><br /><br />';
 													echo'	<div class="">
 														<div class="question123">
 														<p class="question_num make_inline">'
-														.$counter.'.</p>'.'<p class="match_questions make_inline">'.$matchingArray[$j+3].'
+														.$counter.'. </p>'.'<p class="match_questions make_inline">'.$matchingArray[$j+3].'
 															<input type="text" class="matching_answer_tb" id="matching'.$matchingArray[$j+7].'"/>';
 														
 														
@@ -645,7 +645,7 @@ echo '<br /><br /><br />';
                                     $counter++;*/
 									
 									echo'<div class="panel-body">
-										<h4><p class="question_num make_inline">'.$counter.'.'.'<p class="sa_questions make_inline">'.$shortAnswerArray[$i+3].' ('.$shortAnswerArray[$i+2].')'.'</p></h4>
+										<h4><p class="question_num make_inline">'.$counter.'. '.'<p class="sa_questions make_inline">'.$shortAnswerArray[$i+3].' ('.$shortAnswerArray[$i+2].')'.'</p></h4>
                                         </div>
 										<div class="sa_answers">
 											<input type="text" class="form-control sa_answers_tb" id="ShortAnswer'.$shortAnswerArray[$i+4].'" />
@@ -712,7 +712,7 @@ echo '<br /><br /><br />';
                                             $ataStatement->bind_result($atext, $aid);
                                             $ataStatement->execute();
                                              echo'<div class="panel-body">
-                                                  <h4><p class="question_num make_inline">'.$counter.'.</p>'.'<p class="ata_questions make_inline">'.$ataArray[$i+3].' ('.$ataArray[$i+2].')</p></h4>
+                                                  <h4><p class="question_num make_inline">'.$counter.'. </p>'.'<p class="ata_questions make_inline">'.$ataArray[$i+3].' ('.$ataArray[$i+2].')</p></h4>
                                                   <div class="ata_answers">';
                                                         while($ataStatement->fetch())
                                                         {
