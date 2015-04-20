@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Pledge Page</title>
 
@@ -29,6 +30,10 @@
 	
 	<!-- Custom CSS -->
     <link href="css/pledgePage.css" rel="stylesheet">
+	
+	<!-- custom alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 	
 </head>
 <?php
@@ -76,7 +81,7 @@ $testNameStatement = $database->prepare($testNameQuery);
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic">Test Republic</span>
 					</div>
 				</a>
@@ -89,19 +94,19 @@ $testNameStatement = $database->prepare($testNameQuery);
 						  // to display student's name in top right corner
 
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
-							{
-								$topRightStatement->bind_param("s", $id);
-							}
-							else {
-								printf("Errormessage: %s\n", $database->error);
-							}							
-								$topRightStatement->bind_result($first_name, $last_name);
-								$topRightStatement->execute();
-								while($topRightStatement->fetch())
-								{
-									echo $first_name . " " . $last_name;
-								}
-								$topRightStatement->close();?><b class="caret"></b></a>
+									{
+										$topRightStatement->bind_param("s", $id);
+									}
+									else {
+										printf("Errormessage: %s\n", $database->error);
+									}							
+						$topRightStatement->bind_result($first_name, $last_name);
+						$topRightStatement->execute();
+						while($topRightStatement->fetch())
+						{
+							echo $first_name . " " . $last_name . ", ". $id." ";
+						}
+						$topRightStatement->close();?><b class="caret"></b></a>
 						
                 </li>
             </ul>
@@ -222,15 +227,43 @@ $testNameStatement = $database->prepare($testNameQuery);
 	function proceedFunction()
 	{
 		var x;
-		
-		 if (confirm("You didn't enter your name - proceed with a score of zero?") == true)
-		 {
-			// Here we assign a zero to the grade
-		 } 
-		 else
-		 {
-		  // Here we stay on the page
-       }
+		 
+		 swal({
+			title: "You didn't enter your name",
+			text: "proceed with a score of zero?",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, I don't care..",
+			cancelButtonText: "No, I'll sign it!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		}, 
+		function (isConfirm) 
+		{
+			var studentId = '<?php echo $id; ?>';
+			var testId = '<?php echo $testId; ?>';
+			if (isConfirm) 
+			{
+				$.post("TestButtonScripts/pledgeButton.php",
+               {
+                  studentId:studentId,
+                  testId:testId
+               },
+               function(data)
+               {
+					swal("OK", "You have earned a 0", "warning");
+					window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+				});
+			
+			} 
+			else 
+			{
+				swal("Cancelled", "Please re-enter your signature!", "error");
+			}
+		});
+		 
+		 
 	}
 	
 	$(document).ready(function()
@@ -245,12 +278,11 @@ $testNameStatement = $database->prepare($testNameQuery);
 			}	
 			else if($("#nameBox").val() != '<?php echo $first_name . " " . $last_name; ?>')
 			{
-				alert("Enter your name properly.");
-				
+				swal("Error!","Please re-enter your digital signature", "error");
 			}
 			else
 			{
-				//alert("good!");
+				swal("Success","<?php echo $tname;?> Submitted!", "success");
 				window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
 			}
 		});

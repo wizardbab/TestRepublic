@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Republic</title>
 
@@ -50,6 +51,12 @@ $query = "select class_id, class_description from enrollment join class using (c
 
 $mainClassQuery = "select class_id, class_description from class where class_id = ?";
 
+$averageQuery = "select sum(points_earned) / sum(question_value) * 100
+from question
+join test using(test_id)
+join test_list using(test_id, student_id)
+where student_id = ? and class_id = ? and graded = 1";
+
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
@@ -60,9 +67,8 @@ join test using(class_id)
 where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
 
 // Class, etc, to display on studentMainPage
-$tableQuery = "select test_id, test_name, sum(points_earned)/sum(question_value)*100, date_begin, date_end, date_taken, graded from test
+$tableQuery = "select test_id, test_name, test_score/max_points*100, date_begin, date_end, date_taken, graded from test
 join test_list using(test_id)
-join question using(test_id, student_id)
 where student_id = ? and class_id = ?
 group by(test_id)";
 $_SESSION['classId'] = null;
@@ -78,6 +84,7 @@ $mainClassStatement = $database->prepare($mainClassQuery);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+$averageStatement = $database->prepare($averageQuery);
 global $class_id;
 
 ?>
@@ -146,6 +153,23 @@ global $class_id;
                 <div class="row">
 					
 					<!-- our code starts here :) -->
+                    <?php
+                        $averageStatement->bind_param("ss", $id, $clid);
+                        $averageStatement->bind_result($count);
+                        $averageStatement->execute();
+                        while($averageStatement->fetch())
+                        {
+                            //echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
+                            if($count == null)
+                                echo '<div class="header1"><span class="header2">Grade:</span> No assignments graded</div>';
+                            else
+                            {
+                                $count = number_format($count, 2);
+                                echo '<div class="header1"><span class="header2">Class Grade:</span> ' . (float)$count . '%</div>';
+                            }
+                        }
+                        $averageStatement->close();
+                    ?>
 					<table class="class_table">
 					
 						<colgroup>
@@ -173,7 +197,7 @@ global $class_id;
 							
 							// Code modified by En Yang Pang to display test list, status, and date frame
 							// inside the table in the middle of the page
-                     $class = $_GET['classId'];
+                            $class = $_GET['classId'];
 							$classId = $class;
 							$table->bind_param("ss", $id, $classId);
 							$table->bind_result($test_id, $test_list, $status, $date_begin, $date_end, $date_taken, $graded);
@@ -193,9 +217,8 @@ global $class_id;
                                 }
                                 else
                                     echo '<td>Not Taken</td>';
-                                       
-                              //  $date
-								echo'<td>'.$date_begin.' - '.$date_end.'</td>';
+						
+								echo'<td>'.date("m/d/Y", strtotime($date_begin)).' - '.date("m/d/Y", strtotime($date_end)).'</td>';
 										if($date_taken != null)
 										{
                                             if($graded != 1)

@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/teamLogo.ico">
 
-    <title>About Mongolian Horde</title>
+    <title>Mongolian Horde</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,25 +20,6 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	
-	
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script>
-      function initialize() {
-        var mapCanvas = document.getElementById('map2');
-        var mapOptions = {
-          center: new google.maps.LatLng(30.474659, -87.233189),
-          zoom: 16,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(mapCanvas, mapOptions)
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-	
-	
-	
-	
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -63,6 +45,9 @@
                     </li>
                     <li>
                         <a class="page-scroll" href="#about">About Us</a>
+                    </li>
+					<li>
+                        <a class="page-scroll" href="#us">Us</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#david">David</a>
@@ -130,6 +115,16 @@
         </div>
     </section>
 	
+	<!-- About our team pic -->
+    <section id="us" class="container content-section text-center">
+        <div class="row">
+            <div class="col-md-12">
+				<img class="picture" title="logo" src="images/team4.jpg" alt="Our Team" />
+				<h2> Our proud horde! </h2>
+            </div>
+        </div>
+    </section>
+	
 	<!-- David's Section -->
     <section id="david" class="container content-section">
         <div class="row">
@@ -150,7 +145,7 @@
 				</ul>
             </div>
 			<div class="col-md-1"> 
-			    <img class="picture" title="David Hughen" src="images/David.jpg" alt="David Hughen" width="180" height="200">
+			    <img class="picture" title="David Hughen" src="images/David3.jpg" alt="David Hughen">
 			</div>
         </div>
     </section>
@@ -178,7 +173,7 @@
 				</ul>
             </div>
 			<div class="col-md-1"> 
-			    <img class="picture" title="Jake Stevens" src="images/Jake.jpg" alt="Jake Stevens" width="180" height="200">
+			    <img class="picture" title="Jake Stevens" src="images/Jake3.jpg" alt="Jake Stevens" >
 			</div>
         </div>
     </section>
@@ -201,7 +196,7 @@
 				</ul>
             </div>
 			<div class="col-md-1"> 
-			    <img class="picture" title="Andrea Setiawan" src="images/Andrea.jpg" alt="Andrea Setiawan" width="180" height="200">
+			    <img class="picture" title="Andrea Setiawan" src="images/Andrea3.jpg" alt="Andrea Setiawan">
 			</div>
         </div>
     </section>
@@ -225,7 +220,7 @@
 				</ul>
             </div>
 			<div class="col-md-1"> 
-			    <img class="picture" title="Cody Carr" src="images/Cody.jpg" alt="Cody Carr" width="180" height="200">
+			    <img class="picture" title="Cody Carr" src="images/Cody4.jpg" alt="Cody Carr">
 			</div>
         </div>
     </section>
@@ -250,7 +245,7 @@
 				</ul>
             </div>
 			<div class="col-md-1"> 
-			    <img class="picture" title="Victor Jereza" src="images/Victor.jpg" alt="Victor Jereza" width="180" height="200">
+			    <img class="picture" title="Victor Jereza" src="images/Victor4.jpg" alt="Victor Jereza">
 			</div>
     </section>
 	
@@ -270,13 +265,10 @@
 				</ul>
             </div>
 			<div class="col-md-1"> 
-			    <img class="picture" title="En Yang" src="images/EnYang.jpg" alt="En Yang" width="180" height="200">
+			    <img class="picture" title="En Yang" src="images/EnYang4.jpg" alt="En Yang">
 			</div>
         </div>
     </section>
-	
-    <!-- Map Section -->
-    <div id="map2"></div>
 
     <!-- Footer -->
     <footer>
@@ -294,12 +286,8 @@
     <!-- Plugin JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
 
-    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
-
     <!-- Custom Theme JavaScript -->
     <script src="js/grayscale.js"></script>
-
 </body>
 
 </html>

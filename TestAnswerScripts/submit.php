@@ -18,4 +18,7 @@
     $submitStatement->bind_param("sss", date('Y-m-d'), $id, $testId);
 	$submitStatement->execute();
 	$submitStatement->close();
+	
+	//header('Location: pledgePage.php');
+	
 ?>

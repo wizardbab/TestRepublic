@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Republic</title>
 
@@ -35,19 +36,29 @@
 	 
 	 function deleteTest(testId)
 	 {
+<<<<<<< HEAD
 		 $.post("TestButtonScripts/deleteTest.php",
 		{
 			 testId:testId
+=======
+		alert("in delete");
+		$.post("TestButtonScripts/deleteTest.php",
+		{
+			testId:testId
+>>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 		},
 		function(data)
 		{
 			
 		});
+<<<<<<< HEAD
 		location.reload();
 	  
 	 }
+=======
+	}
+>>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 		  
-	 
 	 $(document).ready(function()
 	{
       
@@ -111,7 +122,7 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 // Title bar for student list
 $studentTitleQuery = "select test_name from test
 join test_list using(test_id)
-where class_id = ?
+where class_id = ? and student_id > 0
 group by(test_id)";
 
 // Student names for student list
@@ -120,9 +131,8 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select student_id, sum(points_earned)/sum(question_value)*100, graded, test_id, test_name, date_taken from test_list
+$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
 join test using(test_id)
-join question using(test_id, student_id)
 where student_id = ? and class_id = ?
 group by(test_id)";
 
@@ -254,7 +264,6 @@ $studentStatement = $database->prepare($studentQuery);
 							<th>End Date</th>
 							<th>Average</th>
 							<th>View Test</th>
-							<th>Delete Test</th>
 						</tr>
 						</thead>
 						
@@ -269,8 +278,10 @@ $studentStatement = $database->prepare($studentQuery);
 							{                                  
                                 $t1 = strtotime($dateBegin);
                                 $t2 = time();
-                                $dateBegin = date("m/d/Y", strtotime($dateBegin));
-                                $dateEnd = date("m/d/Y", strtotime($dateEnd));
+                                if(strtotime($dateBegin))
+                                    $dateBegin = date("m/d/Y", strtotime($dateBegin));
+                                if(strtotime($dateEnd))
+                                    $dateEnd = date("m/d/Y", strtotime($dateEnd));
                                 $tavg = number_format($tavg, 2);
                                 if($sid == null)
                                     $tavg = 'Test not published';
@@ -279,6 +290,7 @@ $studentStatement = $database->prepare($studentQuery);
                                 else
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+<<<<<<< HEAD
 									  <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
 									  if($t1 > $t2 or $dateBegin == null)
 									  {
@@ -291,6 +303,22 @@ $studentStatement = $database->prepare($studentQuery);
 			</td>';
 									  }
 									  echo '<td><input type="submit" value="Delete Test" class="btn btn-primary btn-block" onclick="deleteTest('.$tid.')" id="deleteTestButton" /></td></tr>';
+=======
+                                                                                <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
+                                                                                if($t1 > $t2 or $sid == null or $dateBegin == null)
+                                                                                {
+                                                                                echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></form></td>
+																				</td>';
+																				echo'</tr>';
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></form></td>';
+																				echo'</tr>';
+                                                                                }
+																				
+																				
+>>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 							}
 							$firstTableStatement->close();
                             if($tid == null)
@@ -435,9 +463,18 @@ $studentStatement = $database->prepare($studentQuery);
     </div>
     <!-- /#wrapper -->
 
-   
-	 
-	 
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
     </script>
 
 </body>

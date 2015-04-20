@@ -8,6 +8,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="description" content="">
    <meta name="author" content="">
+   <link rel="shortcut icon" href="images/newlogo.ico">
 
    <title>Test Republic - Admin</title>
 
@@ -23,6 +24,16 @@
    <!-- Custom Validation -->
    <link href="css/validation.css" rel="stylesheet" type="text/css">
    <script type="text/javascript" src="js/validation.js"></script>
+   
+	<!-- custom Alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+	
+   <!-- jQuery -->
+   <script src="js/jquery.js"></script>
+
+   <!-- Bootstrap Core JavaScript -->
+   <script src="js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -74,6 +85,30 @@ $teacherListStatement = $database->prepare($teacherListQuery);
 $selectTeacherStatement = $database->prepare($selectTeacherQuery);
 $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 ?>
+
+<!-- Clearing functions -->
+<script>
+function ClearClassUpdate()
+{
+   $('#classIdUpdateText').val("");
+   $('#teacherIdUpdateText').val("");
+}
+function ClearNewClass()
+{
+   $('#classIdText').val("");
+   $('#classDescriptionText').val("");
+   $('#teacherIdText').val("");
+}
+
+function ClearNewTeacher()
+{
+   $('#firstNameText').val("");
+   $('#lastNameText').val("");
+   $('#emailText').val("");
+   $('#passwordText').val("");
+}
+</script>
+
 
 <div id="wrapper2">
    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -190,7 +225,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                               </tr>
                            </thead>
 
-                           <tbody>
+                           <tbody id="teacherTableBody">
                            <?php
                               $teacherListStatement->bind_result($tid, $fname, $lname, $password, $email);
                               $teacherListStatement->execute();
@@ -227,7 +262,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                            </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="ClassTableBody">
                         <?php
                            $mainTableStatement->bind_result($clid, $clde, $tid, $fname, $lname);
                            $mainTableStatement->execute();
@@ -270,7 +305,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             <div class="modal-dialog">
                <div class="modal-content">
                   <div class="modal-header modal_header_color">
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="ClearNewTeacher()">×</button>
                      <h4 class="modal-title"><img src="images/add_user.png" class="admin_icon" /> New Teacher</h4>
                   </div>
                   <div class="modal-body">
@@ -302,7 +337,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                      </form>
                   </div>
                   <div class="modal-footer bottom_modal">
-                     <button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
+                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ClearNewTeacher()"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
                      <button type="submit" class="btn btn-primary " id="createTeacherButton" name="create" value="create" >Create Teacher</button>
                   </div>
                </div>
@@ -314,7 +349,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             <div class="modal-dialog">
                <div class="modal-content">
                   <div class="modal-header modal_header_color">
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="ClearNewClass()">×</button>
                      <h4 class="modal-title"><img src="images/add.png" class="admin_icon" /> New Class</h4>
                   </div>
                   <div class="modal-body add_class_modal">
@@ -334,7 +369,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                      </form>
                   </div>
                   <div class="modal-footer bottom_modal">
-                     <button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
+                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ClearNewClass()"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
                      <button type="submit" class="btn btn-primary " id="createClassButton" name="create" value="create" >Create Class</button>
                   </div>
                </div>
@@ -346,7 +381,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             <div class="modal-dialog">
                <div class="modal-content">
                   <div class="modal-header modal_header_color">
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="ClearClassUpdate()">×</button>
                      <h4 class="modal-title"><img src="images/update.png" class="admin_icon" /> Update Class</h4>
                   </div>
                   <div class="modal-body class_update_modal">
@@ -362,8 +397,8 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                      </form>
                   </div>
                   <div class="modal-footer bottom_modal">
-                     <button type="button" class="btn btn-default" data-dismiss="modal"><img src="images/cancel.png" class="cancel_icon" /> Cancel</button>
-                     <button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Create Class</button>
+                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ClearClassUpdate()"><img src="images/cancel.png" class="cancel_icon"  /> Cancel</button>
+                     <button type="submit" class="btn btn-primary " id="updateClassButton" name="create" value="create" >Update Class</button>
                   </div>
                </div>
             </div>
@@ -374,11 +409,7 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
    </div>
    <!-- /#wrapper -->
 
-   <!-- jQuery -->
-   <script src="js/jquery.js"></script>
 
-   <!-- Bootstrap Core JavaScript -->
-   <script src="js/bootstrap.min.js"></script>
 
    <!-- Menu Toggle Script -->
    <script>
@@ -387,6 +418,8 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
       $("#wrapper").toggleClass("toggled");
    });
    </script>
+   
+
 
    <script>
    $(document).ready(function()
@@ -404,13 +437,13 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
 
       $("#createTeacherButton").click(function()
       {
+
          var firstName = $("#firstNameText").val();
          var lastName = $("#lastNameText").val();
          var email = $("#emailText").val();
          var password = $("#passwordText").val();
          var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
          var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
          if(firstName == "")
          {
             inlineMsg('firstNameText', 'This field cannot be empty', 3);
@@ -447,8 +480,10 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             },
             function()
             {
-               alert("You have successfully added a new teacher!");
-               
+				<?php $teacherArray[] = $teacherId; ?>
+				ClearNewTeacher();
+				$("#teacherTableBody").append('<tr><td>'+<?php echo $teacherId++; ?>+'</td><td>'+firstName+'</td><td>'+lastName+'</td><td>'+password+'</td><td>'+email+'</td></tr>');
+				swal("Success","New teacher added!", "success");
             });
          }
       }); 
@@ -485,9 +520,13 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
                classDescription:classDescription,
                teacherId:teacherId
             },
-            function()
+            function(data)
             {
-               alert("You have successfully created a new class");
+				var res = data.split(" ");
+				alert(data);
+				ClearNewClass();
+				$("#ClassTableBody").append('<tr><td>'+classId+'</td><td>'+classDescription+'</td><td>'+teacherId+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td></tr>');
+				swal("Success","New class added!", "success");
             });
          }
       }); 
@@ -520,13 +559,12 @@ $maxTeacherStatement = $database->prepare($maxTeacherQuery);
             $("#UpdateModal").modal("hide");
             $.post("AdminScripts/updateClassScript.php",
             {
-               classId:classId,
-               teacherId:teacherId
+               classId:classUpdateId,
+               teacherId:teacherUpdateId
             },
             function()
             {
-               alert("You have successfully updated the class");
-               
+				swal("Success","class updated!", "success");
             });
          }
       });

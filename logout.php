@@ -7,6 +7,7 @@
 	<meta http-equiv="Refresh" content="2.25; URL=login.html">
  	<link href="style.css" rel="stylesheet" type="text/css" /> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
 
  <title>Thanks for using Test Republic!</title> 
@@ -14,7 +15,7 @@
 	<!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="css/login.css" rel="stylesheet">
+    <link href="css/logout.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -23,10 +24,15 @@
 <body> 
 <div class="centralBox">
 	<img class="centralLogo" src="images/newlogo.png" alt="Our Logo"/>
-	<h1 align="center">Thank you for using Test Republic!</h1>
-	<div class="progress">
+	<div class="test_republic_text">TEST REPUBLIC</div>
+	
+	<br /><br />
+		<h1 align="center" class="thx_text">Thank you for using Test Republic!</h1>
+	
+	
+<div class="progress">
 		<div class="progress-bar progress-bar-striped active" role="progressbar"
-			aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%" > Redirecting to Login Page..
+			aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%; height:50px" > Redirecting to Login Page..
 		</div>
 	</div>
 </div>
