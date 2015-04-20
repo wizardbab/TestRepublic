@@ -73,14 +73,8 @@ $ataQuery = "select answer_text, answer_id from answer where question_id = ?";
 
 $matchingQuery = "SELECT correct, answer_text, answer_id, a_heading_id
 from answer
-<<<<<<< HEAD
-join question using(question_id)
-where heading_id = ? and student_id = ?
-order by(question_letter)";
-=======
 where a_heading_id = ?
 group by(correct)";
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 
 $matchingHeadQuery = "select distinct heading_id, heading from question where heading_id is not null and test_id = ? and student_id = ?";
 
@@ -337,6 +331,7 @@ echo '<br /><br /><br />';
 						}
 						$headerStatement->close();
 						  ?>
+						  <div id="test"></div>
                 </h1>
             </div>
         </div>
@@ -346,7 +341,7 @@ echo '<br /><br /><br />';
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-group" id="accordion">
-					 <div id="test"></div>
+					 
                     
 					<!-- Multiple Choice /.panel -->
 					
@@ -454,16 +449,10 @@ echo '<br /><br /><br />';
                                                             </div>';*/
 															
                                                         echo'<div class="tf_choice">
-<<<<<<< HEAD
-                                                            <label><input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
-                                                            <span class="mc_answer_lbl">'.$answer_text.'</span></label>
-                                                            </div>';
-=======
                                                             <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
                                                             <span class="mc_answer_lbl">'.$answer_text.'</span>';
 
                                                         echo'</div>';
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
                                                     }
                                                    echo' </div>
                                             </div>';
@@ -505,11 +494,7 @@ echo '<br /><br /><br />';
 													while($multipleChoiceStatement->fetch())
 													{
 														echo '<div class="mc_choice" >
-<<<<<<< HEAD
-															<label><input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" />
-=======
 															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" /><label for="mc_answer'.$mcAnswerId.'">
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 															<span class="mc_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
 													}	
@@ -688,11 +673,7 @@ echo '<br /><br /><br />';
                                                         {
                                                         echo'
                                                             <div class="ata_choice">
-<<<<<<< HEAD
-                                                                <label><input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" />
-=======
                                                                 <input type="checkbox" name="ata_answer1" id="ata_answer_cb'.$aid.'" class="ata_cb" /><label for="ata_answer_cb'.$aid.'">
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
                                                                 <span class="ata_answer_lbl">'.$atext.'</span></label>
                                                             </div>';
                                                         }
@@ -915,13 +896,7 @@ echo '<br /><br /><br />';
 	 var myVar;
 	function myFunction()
 	{
-<<<<<<< HEAD
-	
-	 
-    setInterval(function(){ myTimer() }, 965)
-=======
        myVar = setInterval(function(){ myTimer() }, 960);
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 	}
 
 	function pad2(number)

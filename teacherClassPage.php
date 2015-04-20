@@ -36,28 +36,15 @@
 	 
 	 function deleteTest(testId)
 	 {
-<<<<<<< HEAD
-		 $.post("TestButtonScripts/deleteTest.php",
-		{
-			 testId:testId
-=======
-		alert("in delete");
 		$.post("TestButtonScripts/deleteTest.php",
 		{
 			testId:testId
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 		},
 		function(data)
 		{
 			
 		});
-<<<<<<< HEAD
-		location.reload();
-	  
-	 }
-=======
 	}
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 		  
 	 $(document).ready(function()
 	{
@@ -112,7 +99,7 @@ where class_id = ?";
 // Query to populate the first table on the screen
 $firstTableQuery = "select test_name, avg(test_score/max_points*100), test_id, student_id, date_begin, date_end from test_list
 right join test using(test_id)
-where class_id = ? and graded = 1
+where class_id = ?
 group by(test_name)
 order by(test_id)";
 
@@ -290,20 +277,7 @@ $studentStatement = $database->prepare($studentQuery);
                                 else
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
-<<<<<<< HEAD
-									  <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
-									  if($t1 > $t2 or $dateBegin == null)
-									  {
-									  echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></td></form>
-			</td>';
-									  }
-									  else
-									  {
-											echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></td></form>
-			</td>';
-									  }
-									  echo '<td><input type="submit" value="Delete Test" class="btn btn-primary btn-block" onclick="deleteTest('.$tid.')" id="deleteTestButton" /></td></tr>';
-=======
+
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
                                                                                 if($t1 > $t2 or $sid == null or $dateBegin == null)
                                                                                 {
@@ -317,8 +291,6 @@ $studentStatement = $database->prepare($studentQuery);
 																				echo'</tr>';
                                                                                 }
 																				
-																				
->>>>>>> 2d6a349e80822136be5085173d23bd5393ab589c
 							}
 							$firstTableStatement->close();
                             if($tid == null)
