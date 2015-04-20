@@ -29,6 +29,7 @@
 // Php connections added by David Hughen 2/11/15
 // After Andrea Setiawan made modification to the student's html file
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");
@@ -74,7 +75,8 @@ where student_id = ? and class_id = ? and datediff(date_begin, sysdate()) <= 0 a
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) <= 7 and datediff(date_end, sysdate()) >= 0";
+join test_list using(test_id, student_id)
+where student_id = ? and datediff(date_end, sysdate()) <= 7 and datediff(date_end, sysdate()) >= 0 and date_taken is null";
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
