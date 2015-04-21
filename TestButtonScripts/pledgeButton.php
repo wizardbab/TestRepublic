@@ -15,8 +15,7 @@
 	@$testId = $_POST["testId"];
 	
 	$pledgeQuery = "update test_list
-					set test_score = 0, 
-						graded = 1 
+					set graded = 0 
 					where student_id = ? and test_id = ?";
 	
 	$pledgeStatement = $database->prepare($pledgeQuery);

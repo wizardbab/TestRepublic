@@ -63,6 +63,7 @@ $mainClassQuery = "select class_id, class_description from class where class_id 
 // Display the test name at the top of the page
 $testNameQuery = "select test_name, pledge from test where test_id = ?";
 
+$pledgeSignedQuery = "update test_list set graded = 0 where test_id = ? and student_id = ?";
 
 $topRightStatement = $database->prepare($topRightQuery);
 $mainClassStatement = $database->prepare($mainClassQuery);
@@ -241,34 +242,22 @@ $testNameStatement = $database->prepare($testNameQuery);
 		}, 
 		function (isConfirm) 
 		{
-			var studentId = '<?php echo $id; ?>';
-			var testId = '<?php echo $testId; ?>';
 			if (isConfirm) 
 			{
-				$.post("TestButtonScripts/pledgeButton.php",
-               {
-                  studentId:studentId,
-                  testId:testId
-               },
-               function(data)
-               {
-					swal("OK", "You have earned a zero.", "warning");
-					window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
-				});
-			
+                swal("OK", "You have earned a 0", "warning");
+                window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
 			} 
 			else 
 			{
 				swal("Cancelled", "Please re-enter your signature.", "error");
 			}
 		});
-		 
-		 
 	}
 	
 	$(document).ready(function()
 	{
-		
+		var studentId = '<?php echo $id; ?>';
+        var testId = '<?php echo $testId; ?>';
 		
 		$("#submitPledge").click(function()
 		{
@@ -282,8 +271,21 @@ $testNameStatement = $database->prepare($testNameQuery);
 			}
 			else
 			{
+<<<<<<< HEAD
 				swal("Success","<?php echo $tname;?> Test has been submitted.", "success");
 				window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+=======
+                $.post("TestButtonScripts/pledgeButton.php",
+                {
+                    studentId:studentId,
+                    testId:testId
+                },
+                function(data)
+                {
+                    swal("Success","<?php echo $tname;?> Submitted!", "success");
+                    window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+                });
+>>>>>>> 21e5d9dca03dc88264fbf597b01052ddd4afef45
 			}
 		});
 	});
