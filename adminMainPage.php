@@ -123,7 +123,7 @@ function ClearNewTeacher()
          <a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
             <div id="logo-area">
                <img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
-               <span class="TestRepublic">Test Republic</span>
+               <span class="TestRepublic">TEST REPUBLIC</span>
             </div>
          </a>
       </div>
@@ -163,7 +163,7 @@ function ClearNewTeacher()
          </li>
          <li>
             <button type="button" class="btn btn-default btn-sm admin_button" data-toggle="modal" data-target="#TModal" data-title="MultipleChoice">
-               <img src="images/add_user.png" class="admin_icon" /> Add Teacher
+               <img src="images/add_user.png" class="admin_icon" /> Add a Teacher
             </button>
          </li>
          <li>

@@ -82,7 +82,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
 						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
+						<span class="TestRepublic">TEST REPUBLIC</span>
 					</div>
 				</a>
 			</div>
@@ -183,7 +183,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 		</div>
 	
 		<div class="row increase_margin">
-            <button type="button" id="submitPledge" class="btn btn-primary btn-block">Submit</button>
+            <button type="button" id="submitPledge" class="btn btn-primary btn-block submit_btn">Submit</button>
 		</div>
 	
 	</div>
@@ -230,12 +230,12 @@ $testNameStatement = $database->prepare($testNameQuery);
 		 
 		 swal({
 			title: "You didn't enter your name",
-			text: "proceed with a score of zero?",
+			text: "Proceed with a score of zero?",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Yes, I don't care..",
-			cancelButtonText: "No, I'll sign it!",
+			confirmButtonText: "Yes",
+			cancelButtonText: "No, I'll sign it",
 			closeOnConfirm: false,
 			closeOnCancel: false
 		}, 
@@ -252,14 +252,14 @@ $testNameStatement = $database->prepare($testNameQuery);
                },
                function(data)
                {
-					swal("OK", "You have earned a 0", "warning");
+					swal("OK", "You have earned a zero.", "warning");
 					window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
 				});
 			
 			} 
 			else 
 			{
-				swal("Cancelled", "Please re-enter your signature!", "error");
+				swal("Cancelled", "Please re-enter your signature.", "error");
 			}
 		});
 		 
@@ -282,7 +282,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 			}
 			else
 			{
-				swal("Success","<?php echo $tname;?> Submitted!", "success");
+				swal("Success","<?php echo $tname;?> Test has been submitted.", "success");
 				window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
 			}
 		});

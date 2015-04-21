@@ -14,7 +14,7 @@
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
 						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
+						<span class="TestRepublic">TEST REPUBLIC</span>
 					</div>
 				</a>
 			</div>

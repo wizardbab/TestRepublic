@@ -28,7 +28,7 @@
 	<script src="js/testTaking.js"></script> 
 	
 	<!-- Custom CSS -->
-    <link href="css/TestPage.css" rel="stylesheet">
+    <link href="css/testView.css" rel="stylesheet">
 	
 	<!-- custom alerts -->
 	<script src="dist/sweetalert.min.js"></script>
