@@ -527,7 +527,7 @@ function ClearNewTeacher()
             function(data)
             {
 				var res = data.split(" ");
-				alert(data);
+				//alert(data);
 				ClearNewClass();
 				$("#ClassTableBody").append('<tr><td>'+classId+'</td><td>'+classDescription+'</td><td>'+teacherId+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td></tr>');
 				swal("Success","New class added!", "success");

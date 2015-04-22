@@ -231,7 +231,6 @@ $testNameStatement = $database->prepare($testNameQuery);
 			{
 					
 			});
-			alert(testId);
       });
 		
 		

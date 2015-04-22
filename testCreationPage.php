@@ -803,6 +803,7 @@ $modalId = 0;
          testPledge = $("#testPledge").val();
          maxPoints = $("#maxPoints").val();
          
+
          $.post("TestButtonScripts/saveButton.php",
          {
             testName:testName,
@@ -820,7 +821,6 @@ $modalId = 0;
 		  {
 			swal("Success","Test Saved!", "success");
 		  });
-         
       });
 	  
         
@@ -834,6 +834,16 @@ $modalId = 0;
 			testPledge = $("#testPledge").val();
 			maxPoints = $("#maxPoints").val();
 			
+		if(maxPoints == "")
+		{
+		   inlineMsg('maxPoints', 'Field cannot be empty', 2);
+		}
+		else if(maxPoints < 1)
+		{
+		   inlineMsg('maxPoints', 'Field must be positive', 2);
+		}
+		else
+		{
 			$.post("TestButtonScripts/saveButton.php",
 			{
 				testName:testName,
@@ -861,6 +871,7 @@ $modalId = 0;
 			{
 				swal("Success","Test published!", "success");
 			});
+		 }
         });
 
 	 $("#DeleteTest").click(function()
@@ -1164,13 +1175,13 @@ $modalId = 0;
                },
                function(data)
                {
-					alert(questionArray);
+					//alert(questionArray);
                		var k = 0;
                		while(k < questionArray.length)
                		{
                   		$("#testList").append('<a href="#" id="list_group'+data[k]+'" class="list-group-item" data-toggle="modal"> <div class="group-item-heading">'+"Matching"+'</div> <p class="list-group-item-text add_margin_top1">' + questionArray[k] + ' (' + pointValue +') </p><button type="button" class="btn btn-default btn-md q_trash_button" aria-hidden="true" id="remove_Question'+questionArray[k]+'" onclick="removeQuestion('+data[k]+')"><span class="glyphicon glyphicon-trash"></span></button></a>');
 						k++;
-						alert("Sup");
+						//alert("Sup");
                		}
                });
 			  // alert("clicked matching");

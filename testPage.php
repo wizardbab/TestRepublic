@@ -110,7 +110,6 @@ while($selectStartStatement->fetch())
 $selectStartStatement->close();
 
 
-echo '<br /><br /><br />';
 	$secs = strtotime($timeLimit)-strtotime("00:00:00");
 	$endTime = date("H:i:s",strtotime($ctime)+$secs);
 
@@ -125,7 +124,6 @@ echo '<br /><br /><br />';
 	$endTimeSeconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
 
 	$timeLeft = $endTimeSeconds - $timeSeconds;
-
 
     // extract hours
     $hours = floor($timeLeft / (60 * 60));
@@ -190,7 +188,7 @@ echo '<br /><br /><br />';
                 </li>
             </ul>
         </nav>
-	</div>	
+
 
 
 	
@@ -212,6 +210,7 @@ echo '<br /><br /><br />';
 							</div>';
 				}
 				$queryStatement->close();
+		echo'</div>';	
 				//$questionArray = array(array("number" => 0, "type" => 0, "value" => 0, "text" => 0, "heading" => 0, "id" => 0, "letter" => 0));
 			
 				$questionArray = array();
