@@ -159,7 +159,7 @@ $selectStartStatement->close();
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
 						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
+						<span class="TestRepublic">TEST REPUBLIC</span>
 					</div>
 				</a>
 			</div>
@@ -340,7 +340,7 @@ $selectStartStatement->close();
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-group" id="accordion">
-					 
+					 <span id="time_limit_txt">Time Limit:&nbsp;&nbsp;</span><span id="test"></span>
                     
 					<!-- Multiple Choice /.panel -->
 					
@@ -406,7 +406,7 @@ $selectStartStatement->close();
 												<textarea class="form-control essay_textarea" id="EssayQuestion'.$essayArray[$i+4].'" name="specificInstruction" rows="5"></textarea>
 											</div>';
 												
-                                        $essayCounter++;
+                                        $counter++;
 									}
 								echo'		
 									</div>
@@ -494,7 +494,7 @@ $selectStartStatement->close();
 													{
 														echo '<div class="mc_choice" >
 															<input type="radio" name="mc_answer1'.$multipleChoiceCounter.'" id="mc_answer'.$mcAnswerId.'" value="multipleRadio1" class="multipleRadio" /><label for="mc_answer'.$mcAnswerId.'">
-															<span class="mc_answer_lbl">'.$atext.'</span></label>
+															<span class="mc_answer_lbl">&nbsp;'.$atext.'</span></label>
                                                             </div>';
 													}	
 											echo'	</div>

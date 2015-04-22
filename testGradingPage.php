@@ -29,7 +29,7 @@
 	<script src="js/testTaking.js"></script> 
 	
 	<!-- Custom CSS -->
-    <link href="css/TestPage.css" rel="stylesheet">
+    <link href="css/testGrading.css" rel="stylesheet">
 	
 	<!-- custom alerts -->
 	<script src="dist/sweetalert.min.js"></script>

@@ -10,7 +10,7 @@
     <meta name="author" content="">
 	<link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic</title>
+    <title>Test Republic - Student Class</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
