@@ -49,11 +49,26 @@ if($id == null)
 $database = mysqli_connect(DATABASEADDRESS,DATABASEUSER,DATABASEPASS);
 @ $database->select_db(DATABASENAME);
 
-	
+// Display the test name at the top of the page
+$testNameQuery = "select test_name, instruction, time_limit from test where test_id = ?";
+$testNameStatement = $database->prepare($testNameQuery);
+@$classId = $_POST['classId'];
+@$testId = $_POST['testId'];
+@$testName = $_POST['testName'];
+
+$_SESSION['classId'] = $classId;
+$_SESSION['testId'] = $testId;
+
+	$testNameStatement->bind_param("s", $testId);
+	$testNameStatement->bind_result($tname, $instruction, $tlimit);
+	$testNameStatement->execute();
+	while($testNameStatement->fetch())
+	{
+		$_SESSION['timeLimit'] = $tlimit;
+	}
+	$testNameStatement->close();
 	 // session variable_exists, use that
 	 $timeLimit = $_SESSION['timeLimit'];
-
-
 
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
@@ -93,12 +108,7 @@ $matchingStatement = $database->prepare($matchingQuery);
 $trueFalseStatement = $database->prepare($trueFalseQuery);
 //require("Nav.php");
 
-@$classId = $_POST['classId'];
-@$testId = $_POST['testId'];
-@$testName = $_POST['testName'];
 
-$_SESSION['classId'] = $classId;
-$_SESSION['testId'] = $testId;
 
 $selectStartStatement->bind_param("ss", $testId, $id);
 $selectStartStatement->bind_result($ctime);
@@ -330,7 +340,6 @@ $selectStartStatement->close();
 						}
 						$headerStatement->close();
 						  ?>
-						  <div id="test"></div>
                 </h1>
             </div>
         </div>
@@ -449,7 +458,7 @@ $selectStartStatement->close();
 															
                                                         echo'<div class="tf_choice">
                                                             <input type="radio" name="tf_answer1'.$trueFalseCounter.'" id="tf_answer'.$answer_id.'" value="multipleRadio1" class="multipleRadio">
-                                                            <span class="mc_answer_lbl">'.$answer_text.'</span>';
+                                                            <label for="tf_answer'.$answer_id.'"><span class="mc_answer_lbl">'.$answer_text.'</span>';
 
                                                         echo'</div>';
                                                     }
@@ -908,7 +917,7 @@ $selectStartStatement->close();
 	{
 		//var d = new Date();
 		//var t = d.toLocaleTimeString();
-		if(hours == 0 && minutes == 0 && seconds == 0)
+		if(hours <= 0 && minutes <= 0 && seconds <= 0)
 		{
 			clearInterval(myVar);
 			

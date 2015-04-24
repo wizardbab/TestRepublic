@@ -207,8 +207,10 @@ global $class_id;
 								echo '<tr><td>'.$test_list.'</td>';
                                 if($date_taken != null)
 								{
-                                    if($graded != 1)
+                                    if($graded == 0)
                                         echo '<td>Grade Pending</td>';
+									else if($graded == 2)
+										echo '<td>In Progress</td>';
                                     else
                                     {
                                         $status = number_format($status, 2);
@@ -219,29 +221,41 @@ global $class_id;
                                     echo '<td>Not Taken</td>';
 						
 								echo'<td>'.date("m/d/Y", strtotime($date_begin)).' - '.date("m/d/Y", strtotime($date_end)).'</td>';
-										if($date_taken != null)
+										if($graded == null)
 										{
-                                            if($graded != 1)
-                                                echo '<td>Grade Pending</td>';
-                                            else
-                                                echo '<td><form action="testViewing.php" method="post">
+											if($currentTime >= $date_begin and $currentTime <= $date_end)
+											{
+												echo '<td><form action="testInstructionPage.php" method="post">
+																<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
+																<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
+																<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
+																<input type="submit" value="Take Test" class="btn btn-primary"/></form></td>';
+											}
+											else
+											{
+												echo '<td><button type="button" class="btn btn-danger" disabled>Unavailable</button></td>';
+											}
+										}
+										else if($graded == 0)
+										{
+                                            echo '<td>Grade Pending</td>';   
+										}
+										else if($graded == 1)
+										{
+											echo '<td><form action="testViewing.php" method="post">
 															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
 															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
 															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
 															<input type="hidden" value="'.$id.'" name="studentId" id="studentId"/>
 															<input type="submit" value="View Test" class="btn btn-primary"/></form></td>';
 										}
-										else if($currentTime >= $date_begin and $currentTime <= $date_end)
+										else if($graded == 2)
 										{
-											echo '<td><form action="testInstructionPage.php" method="post">
+											echo '<td><form action="testPage.php" method="post">
 															<input type="hidden" value="'.$class.'" name="classId" id="classId"/>
 															<input type="hidden" value="'.$test_id.'" name="testId" id="testId"/>
 															<input type="hidden" value="'.$test_list.'" name="testName" id="testName"/>
-															<input type="submit" value="Take Test" class="btn btn-primary"/></form></td>';
-										}
-										else
-										{
-											echo '<td><button type="button" class="btn btn-danger" disabled>Unavailable</button></td>';
+															<input type="submit" value="Resume Test" class="btn btn-primary"/></form></td>';
 										}
 										echo '</tr>';
 							}

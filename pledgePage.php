@@ -271,10 +271,6 @@ $testNameStatement = $database->prepare($testNameQuery);
 			}
 			else
 			{
-<<<<<<< HEAD
-				swal("Success","<?php echo $tname;?> Test has been submitted.", "success");
-				window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
-=======
                 $.post("TestButtonScripts/pledgeButton.php",
                 {
                     studentId:studentId,
@@ -285,7 +281,6 @@ $testNameStatement = $database->prepare($testNameQuery);
                     swal("Success","<?php echo $tname;?> Submitted!", "success");
                     window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
                 });
->>>>>>> 21e5d9dca03dc88264fbf597b01052ddd4afef45
 			}
 		});
 	});
