@@ -26,14 +26,14 @@
 	
 	$answerIdQuery = "select max(answer_id) from answer";
 	
-	$getQuestionQuery = "select question_id from question where heading_id = ? && question_letter = ?";
+	$getQuestionQuery = "select question_id from question where heading_id = ? and question_letter = ?";
 	
 	$insertQuestionQuery = "insert into question(question_id, student_id, test_id,
 		question_type, question_value, question_text, question_letter, question_no, heading_id, heading)
 		values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text, correct)
-		values(?, ?, ?, ?)";
+	$insertAnswerQuery = "insert into answer(answer_id, question_id, answer_text, correct, a_heading_id)
+		values(?, ?, ?, ?, ?)";
 		
 	$questionNumberQuery = "select max(question_no) from question where test_id = ?";
     
@@ -90,11 +90,11 @@
         
         // assign a new answer id
         $answerIdStatement = $database->prepare($answerIdQuery);
-        $answerIdStatement->bind_result($qid);
+        $answerIdStatement->bind_result($aid);
         $answerIdStatement->execute();
         while($answerIdStatement->fetch())
         {
-            $newAnswerId = $qid + 1;
+            $newAnswerId = $aid + 1;
         }
         $answerIdStatement->close();
         
@@ -121,25 +121,31 @@
             for($i = 0; $i < count($answers); $i++)
             {
                 $k = 0;
-                while($answerLetters[$i] != $questionLetters[$k])
+                while($k < count($questionLetters) and $answerLetters[$i] != $questionLetters[$k])
                 {
                     $k++;
                 }
-                $getQuestionStatement = $database->prepare($getQuestionQuery);
-                $getQuestionStatement->bind_param("ss", $newHeadingId, $questionLetters[$k]);
-                $getQuestionStatement->bind_result($qid);
-                $getQuestionStatement->execute();
-                while($getQuestionStatement->fetch())
+                if($k >= count($questionLetters))
                 {
-                    $newQid = $qid;
+                    $newQid = 0;
                 }
-                $getQuestionStatement->close();
-                    
+                else
+                {
+                    $getQuestionStatement = $database->prepare($getQuestionQuery);
+                    $getQuestionStatement->bind_param("ss", $newHeadingId, $questionLetters[$k]);
+                    $getQuestionStatement->bind_result($nqid);
+                    $getQuestionStatement->execute();
+                    while($getQuestionStatement->fetch())
+                    {
+                        $newQid = $nqid;
+                    }
+                    $getQuestionStatement->close();
+                }
+                
                 $insertAnswerStatement = $database->prepare($insertAnswerQuery);
-                $insertAnswerStatement->bind_param("ssss", $newAnswerId, $newQid, $answers[$i], $answerLetters[$i]);
+                $insertAnswerStatement->bind_param("sssss", $newAnswerId, $newQid, $answers[$i], $answerLetters[$i], $newHeadingId);
                 $insertAnswerStatement->execute();
                 $insertAnswerStatement->close();
-                
                 
                 $newAnswerId++;
             }

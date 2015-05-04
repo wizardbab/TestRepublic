@@ -31,7 +31,7 @@ body
 
 .TestRepublic
 {
-	font-family: Rockwell, Arial;
+	font-family: Arial;
 	color: white;
 	font-size: 20px;
 }
@@ -63,6 +63,11 @@ body
     color: #999;
 }
 
+/* This is the color of the text within the dropdowns */
+.top-nav>li>ul>li>a{
+    color: white;
+}
+
 .dropdown:hover>.dropdown-menu,
 .dropdown:hover>.dropdown-menu:hover {
     display: block;
@@ -71,10 +76,12 @@ body
     float: left;
     position: absolute;
     margin-top: 0;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
     border: 1px solid rgba(0,0,0,.15);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    background-color: #fff;
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
@@ -102,6 +109,7 @@ body
 
 .top-nav>.open>.dropdown-menu>li>a {
     white-space: normal;
+    color: #000;
 }
 
 ul.message-dropdown {
@@ -207,7 +215,7 @@ ul.alert-dropdown {
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    background: rgba(55,96,146,0.4);
+    /*background: rgba(55,96,146,0.4);*/
 }
 
 .sidebar-nav li a:active,
@@ -325,7 +333,7 @@ ul.alert-dropdown {
 	table.class_table
 	{
 		position: relative;
-		top: 170px;
+		top: 40px;
 		font-size: 14pt;
 		border: 2px solid black;
 		border-collapse: collapse;
@@ -376,5 +384,15 @@ ul.alert-dropdown {
 		background-color: rgb(55,96,146);
 	}
 	
-
+	.header1
+	{
+		margin-top: 150px;
+		font-size: 20pt;
+	}
+	
+	.header2
+	{
+		font-weight: bold;
+		color: rgb(55,96,146);
+	}
 }

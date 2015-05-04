@@ -1,5 +1,5 @@
 <?php
-   // Authors: David Hughen - Jake Stevens
+    // Authors: David Hughen - Jake Stevens
 	// Date Created: 3/13/15
 	// Last Modified: 3/13/15 - 3/16/15
 	// This php script handles the db stuff for saving tests
@@ -15,37 +15,24 @@
 	$saveQuery = "update test set date_begin = ?, date_end = ?, time_limit = ?, max_points = ?,
 					  test_name = ?, pledge = ?, instruction = ?, saved = 1, class_id = ?, teacher_id = ?
 					  where test_id = ?";
-	$saveStatement = $database->prepare($saveQuery);
 	
 	@$testName = $_POST['testName'];
 	@$dateBegin = $_POST['dateBegin'];
 	@$dateEnd = $_POST['dateEnd'];
-	@$timeLimit = $_POST['timeLimit'];
+	if($_POST['timeLimit'] != null)
+		@$timeLimit = $_POST['timeLimit'];
+	else
+		$timeLimit = null;
 	@$specificInstruction = $_POST['specificInstruction'];
 	@$testPledge = $_POST['testPledge'];
 	@$newTestId = $_POST['newTestId'];
-	@$maxPoints = $_POST['maxPoints'];
+	if($_POST['maxPoints'] != null)
+		@$maxPoints = $_POST['maxPoints'];
+	else
+		$maxPoints = null;
     @$classId = $_POST['classId'];
     @$teacherId = $_POST['teacherId'];
-	
-	$dataArray = array("testName" => $testName,
-					  "dateBegin" => $dateBegin, 
-					  "dateBegin" => $dateEnd, 
-					  "timeLimit" => $timeLimit, 
-					  "specificInstruction" => $specificInstruction, 
-					  "testPledge" => $testPledge, 
-					  "maxPoints" => $maxPoints);
-					  
-	echo $dataArray["testName"];
-	echo $dataArray["dateBegin"];
-	echo $dataArray["dateBegin"];
-	echo $dataArray["timeLimit"];
-	echo $dataArray["specificInstruction"];
-	echo $dataArray["testPledge"];
-	echo $dataArray["maxPoints"];
-    
-    //$timeLimit = intval($timeLimit * 100);
-	
+
     $newDateBegin = null;
     $newDateEnd = null;
     
@@ -60,9 +47,17 @@
 		$newDateEnd = date("Y-m-d", strtotime($d_date));
     }
 	
-	
+	$saveStatement = $database->prepare($saveQuery);
 	$saveStatement->bind_param("ssssssssss", $newDateBegin, $newDateEnd, $timeLimit, $maxPoints, $testName, $testPledge, $specificInstruction, $classId, $teacherId, $newTestId);
 	$saveStatement->execute();
 	$saveStatement->close();
+	
+	/*$tl = filter_var($timeLimit), FILTER_SANITIZE_STRING);
+	$ti = filter_var($newTestId), FILTER_SANITIZE_STRING);
+	
+		$query = "update test set time_limit = ".$tl." where test_id = ".$ti."";
+   mysql_query($query);
+	*/
+	
 	
 ?>

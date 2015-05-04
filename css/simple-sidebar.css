@@ -38,7 +38,7 @@ body
 
 .TestRepublic
 {
-	font-family: Rockwell, Arial;
+	font-family: Arial;
 	color: white;
 	font-size: 20px;
 }
@@ -323,6 +323,11 @@ ul.alert-dropdown {
 		background-color: pink;
 		height: 100px;
 	}
+    #warning_box2
+        {
+        background-color: palegreen;
+		height: 100px;
+    }
 	
 	.warning_msg
 	{
@@ -519,6 +524,7 @@ ul.alert-dropdown {
 		width: 60%;
 		text-align: center;
 		margin: 0px auto;
+		background: white;
 	}
 	
 	table.test_list td, table.test_list th

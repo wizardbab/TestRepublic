@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="images/newlogo.ico">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic - Class Page</title>
+    <title>Test Republic</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +20,39 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	 
+	  <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+	 
+	 function deleteTest(testId)
+	 {
+		$.post("TestButtonScripts/deleteTest.php",
+		{
+			testId:testId
+		},
+		function(data)
+		{
+			
+		});
+	}
+		  
+	 $(document).ready(function()
+	{
+      
+		  
+	});
+	
+	</script>
 
 </head>
 <body>
@@ -76,7 +109,7 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 // Title bar for student list
 $studentTitleQuery = "select test_name from test
 join test_list using(test_id)
-where class_id = ?
+where class_id = ? and student_id > 0
 group by(test_id)";
 
 // Student names for student list
@@ -85,16 +118,15 @@ join enrollment using(student_id)
 where class_id = ? and student_id = ?";
 
 // Test score for student list
-$testScoreQuery = "select student_id, sum(points_earned)/sum(question_value)*100, graded, test_id, test_name, date_taken from test_list
+$testScoreQuery = "select student_id, test_score/max_points*100, graded, test_id, test_name, date_taken from test_list
 join test using(test_id)
-join question using(test_id, student_id)
 where student_id = ? and class_id = ?
 group by(test_id)";
 
 // Average score for student list
-$averageQuery = "select sum(test_score)/sum(max_points)*100 from test_list
+$averageQuery = "select sum(test_score) / sum(max_points) * 100 from test_list
 join test using(test_id)
-where student_id = ? and class_id = ? and date_taken is not null";
+where student_id = ? and class_id = ? and graded = 1";
 
 // List of students for student list
 $studentQuery = "select student_id from enrollment
@@ -233,8 +265,10 @@ $studentStatement = $database->prepare($studentQuery);
 							{                                  
                                 $t1 = strtotime($dateBegin);
                                 $t2 = time();
-                                $dateBegin = date("m/d/Y", strtotime($dateBegin));
-                                $dateEnd = date("m/d/Y", strtotime($dateEnd));
+                                if(strtotime($dateBegin))
+                                    $dateBegin = date("m/d/Y", strtotime($dateBegin));
+                                if(strtotime($dateEnd))
+                                    $dateEnd = date("m/d/Y", strtotime($dateEnd));
                                 $tavg = number_format($tavg, 2);
                                 if($sid == null)
                                     $tavg = 'Test not published';
@@ -243,21 +277,24 @@ $studentStatement = $database->prepare($studentQuery);
                                 else
                                     $tavg = (float)$tavg.'%';
 								echo '<tr><td>' . $tname . '</td><td>'.$dateBegin.'</td><td>'.$dateEnd.'</td><td>' .$tavg. '</td><td><form action="testCreationPage.php" method="post">
+
                                                                                 <input type="hidden" value="'.$tid.'" name="testId" id="testId"/>';
-                                                                                if($t1 > $t2)
+                                                                                if($t1 > $t2 or $sid == null or $dateBegin == null)
                                                                                 {
-                                                                                echo '<input type="submit" value="Edit Test" class="view_test_button"/></form></td>
-																				</td></tr>';
+                                                                                echo '<input type="submit" value="Edit Test" class="btn btn-primary btn-block"/></form></td>
+																				</td>';
+																				echo'</tr>';
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="view_test_button"/></form></td>
-																				</td></tr>';
+                                                                                    echo '<input type="submit" disabled="disabled" value="Edit Test" class="btn btn-primary btn-block"/></form></td>';
+																				echo'</tr>';
                                                                                 }
+																				
 							}
 							$firstTableStatement->close();
                             if($tid == null)
-                                    echo'<tr><td colspan="5">No tests created</td></tr>';
+                                    echo'<tr><td colspan="6">No tests created</td></tr>';
 						?>
 						</tbody>
 						
@@ -271,8 +308,7 @@ $studentStatement = $database->prepare($studentQuery);
 				<div class="row">
 					<table class="student_list table-hover">
 					<tr class="student_list_header">
-					<td>First Name</td>
-					<td>Last Name</td>
+					<td>Name</td>
 					<?php
 						
 						// Get the test name on top of second table
@@ -323,7 +359,7 @@ $studentStatement = $database->prepare($studentQuery);
 								echo '<tr>';
 							while($studentNamesStatement->fetch())
 							{
-								echo '<td>'.$firstName . '</td><td>' . $lastName . '</td>';
+								echo '<td>'.$firstName . ' ' . $lastName . '</td>';
 							}
 							$studentNamesStatement->close();
 								
@@ -337,6 +373,10 @@ $studentStatement = $database->prepare($studentQuery);
                                         if(is_null($graded))
                                         {
                                             echo '<td>Not Taken</td>';
+                                        }
+                                        else if($graded == 2)
+                                        {
+                                            echo '<td>In Progress</td>';
                                         }
                                         else if($graded == 1)
                                         {
@@ -371,11 +411,13 @@ $studentStatement = $database->prepare($studentQuery);
 							$averageStatement->execute();	
 							while($averageStatement->fetch())
 							{
-                                $averageScore = number_format($averageScore, 2);
-                                if($averageScore != 0)
+                                if($averageScore != null)
+                                {
+                                    $averageScore = number_format($averageScore, 2);
                                     echo '<td>' . (float)$averageScore.'%'. '</td>';
+                                }
                                 else
-                                    echo '<td>No Tests Taken</td>';
+                                    echo '<td>No Tests Graded</td>';
 							}
 							$averageStatement->close();
 					

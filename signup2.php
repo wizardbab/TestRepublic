@@ -10,7 +10,7 @@
    <meta name="author" content="">
    <link rel="shortcut icon" href="images/newlogo.ico">
 
-   <title>Sign Up!</title>
+   <title>Test Republic - Sign Up</title>
 
    <!-- Bootstrap Core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +47,7 @@
    $(document).ready(function()
 	{
 		
+	
 	});
 	
 	function redirect()
@@ -186,21 +187,7 @@ $success = false;
                            // Valid email; validate password
                            else
                            {
-                              // Does a preliminary check for required password pattern
-                              if(!preg_match('^[[:alpha:]]+[[:digit:]]+^', $password))
-                              {
-                                 
-                                 echo "Need more variety: ";
-                              }
-                              else
-                                 if(!preg_match('^.{8,20}^', $password))
-                                 {
-                                    echo "Password needs to be between 8-16 characters";
-                                 }
-                                 
                                  // Valid email and password so we insert into db
-                                 else
-                                 {
                                     // Assign an id
                                     if ($idStatement = $database->prepare($newStudentIdQuery)) 
                                     {
@@ -300,7 +287,7 @@ $success = false;
 
                                 $selectQuestionQuery = "select heading, heading_id, question_letter, question_no, question_text, question_type, question_value, test_id, answer_id, answer_text, correct
                                 from answer
-                                join question using(question_id)
+                                right join question using(question_id)
                                 join test using(test_id)
                                 where student_id = ? and test_id = ?";
                                 
@@ -388,7 +375,6 @@ $success = false;
                                 echo '<script type="text/javascript">';
 								 echo 'redirect();';
 								 echo '</script>';
-                              }
                            }			
                         }
                         else
