@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Test Instruction</title>
 
@@ -82,7 +83,7 @@ $testNameStatement = $database->prepare($testNameQuery);
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
 						<span class="TestRepublic" id="backToClass">Back to <?php echo $classId; ?></span>
 					</div> 
 				</a>
@@ -109,16 +110,6 @@ $testNameStatement = $database->prepare($testNameQuery);
 							$topRightStatement->close();?><b class="caret"></b></a>
 						
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
                         <li>
                             <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
@@ -178,7 +169,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 		
 		<div class="row test_instruction_section">
 			<span class="test_instruction_txt">Test Instructions</span>
-			<textarea class="form-control instruction_tb" name="specificInstruction" rows="8"> <?php echo $instruction; ?> </textarea>
+			<textarea class="form-control instruction_tb" disabled name="specificInstruction" rows="8"> <?php echo $instruction; ?> </textarea>
 		</div>
 	
 		<div class="row time_limit">
@@ -196,7 +187,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 				<input type="hidden" value="<?php echo $classId; ?>" name="classId" id="classId"/>
 				<input type="hidden" value="<?php echo $testId; ?>" name="testId" id="testId"/>
 				<input type="hidden" value="<?php echo $testName; ?>" name="testName" id="testName"/>
-				<input type="submit" value="Start" class="btn btn-primary btn-block"/>
+				<input type="submit" id="startTest" value="Start" class="btn btn-primary btn-block start_btn"/>
 			</form>
           
 		</div>
@@ -224,7 +215,25 @@ $testNameStatement = $database->prepare($testNameQuery);
 	 $("#backToClass").click(function()
 		{
             window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
-        });
+      });
+		
+	  $("#startTest").click(function()
+		{
+			var testId = '<?php echo $testId; ?>';
+			var studentId = '<?php echo $id; ?>';
+			
+			$.post("TestButtonScripts/startButton.php",
+			{
+				 testId:testId,
+				 studentId:studentId
+			},
+			function(data)
+			{
+					
+			});
+      });
+		
+		
 	 </script>
 	
 

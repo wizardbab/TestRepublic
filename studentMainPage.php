@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic</title>
+    <title>Test Republic - Student</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -28,11 +29,14 @@
 // Php connections added by David Hughen 2/11/15
 // After Andrea Setiawan made modification to the student's html file
 session_start();
+date_default_timezone_set(timezone_name_from_abbr("CST"));
 
 // Include the constants used for the db connection
 require("constants.php");
 
 // 'CSWEB.studentnet.int', 'team1_cs414', 'CS414t1', 'cs414_team_1')
+@$sid = $_POST['studentId'];
+
 
 $id = isset($_POST['studentId']) ? $_POST['studentId'] : $_SESSION['username'];
 
@@ -60,17 +64,19 @@ $query = "select class_id, class_description from enrollment join class using (c
 // Student first and last name to display on top right of screen
 $topRightQuery = "select first_name, last_name from student where student_id = ?";
 
-// Class, etc, to display on studentMainPage
-$tableQuery = "select class_id, c_update, update_date from student
-join enrollment using (student_id)
-join class using (class_id)
-where student_id = ?";
+$classQuery = "select class_id from enrollment where student_id = ?";
 
-// Display any tests that will expire within 7 days
+// Class, etc, to display on studentMainPage
+$tableQuery = "select count(test_id) - count(date_taken) from test_list
+join test using(test_id)
+where student_id = ? and class_id = ? and datediff(date_begin, sysdate()) <= 0 and datediff(date_end, sysdate()) >= 0";
+
+// Display any tests that will expire within 3 days
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
+join test_list using(test_id, student_id)
+where student_id = ? and datediff(date_end, sysdate()) <= 7 and datediff(date_end, sysdate()) >= 0 and date_taken is null";
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
@@ -80,6 +86,7 @@ $stmt = $database->prepare($query);
 $topRightStatement = $database->prepare($topRightQuery);
 $table = $database->prepare($tableQuery);
 $warningstmt = $database->prepare($warningQuery);
+$classStatement = $database->prepare($classQuery);
 
 ?>
 
@@ -107,7 +114,7 @@ $warningstmt = $database->prepare($warningQuery);
 
 				while($stmt->fetch())
 				{
-               echo '<li><a href=studentClassPage.php?classId='.$class_id = str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
+                    echo '<li><a href=studentClassPage.php?classId='.$class_id = str_replace(" ", "%20", $clid).'><b>'.$clid.'</b><div class=subject-name>'.$clde.'</div></a></li>';
 				}
 				$stmt->close();
 				?>
@@ -121,27 +128,51 @@ $warningstmt = $database->prepare($warningQuery);
 		<!-- Keep page stuff under this div! -->
             <div class="container-fluid">
                 <div class="row">
-					<h2 class="warning_sign_msg"> Warning(s): </h2>
-                    <div class="col-md-12" id="warning_box1">
-                        <div class="warning_box">
-							<p class="warning_msg"> 
+					<h2 class="warning_sign_msg"> Notifications: </h2>
+                     
                                 <?php
                                 // Display warnings if a test has seven days or less to take
+                                $classArray = array();
                                 $warningstmt->bind_param("s", $id);
                                 $warningstmt->bind_result($class_id, $days_left);
                                 $warningstmt->execute();
                                 while($warningstmt->fetch())
                                 {
-                                    echo $class_id . ' test will expire in ' . $days_left . ' day(s).';
-                                    echo '<br />';
+                                    $classArray[] = $class_id;
+                                    $classArray[] = $days_left;
+                                    
                                 }
-                                if($class_id == null)
-                                    echo 'No warnings :)';
+                                if(count($classArray) == 0)
+                                {
+                                    echo'<div class="col-md-12" id="warning_box2">
+                                        <div class="warning_box">
+                                            <p class="warning_msg">';
+                                    echo 'No notifications';
+                                    echo'</p>
+                                        </div>
+                                    </div>';
+                                }
+                                else
+                                {
+                                    echo'<div style="overflow-y:auto;overflow-x:hidden" class="col-md-12" id="warning_box1">
+                                        <div class="warning_box">
+                                            <p class="warning_msg">';
+                                    for($i = 0; $i < count($classArray); $i += 2)
+                                    {
+                                        if($classArray[$i+1] == 0)
+                                            echo $classArray[$i] . ' test expires today.';
+                                        else
+                                            echo $classArray[$i] . ' test will expire in ' . $classArray[$i+1] . ' day(s).';
+                                        
+                                        echo '<br />';
+                                    }
+                                    echo'</p>
+                                        </div>
+                                    </div>';
+                                }
                                 $warningstmt->close();
                             ?>
-                                </p>
-						</div>
-                    </div>
+                                
 					
 					<!-- our code starts here :) -->
 					<table class="student_summary">
@@ -149,14 +180,12 @@ $warningstmt = $database->prepare($warningQuery);
 						<colgroup>
 							<col class="classes" />
 							<col class="recent_updates" />
-							<col class="date" />
 						</colgroup>
 						
 						<thead>
 						<tr>
 							<th>Classes</th>
-							<th>Recent Updates</th>
-							<th>Date</th>
+							<th>Tests to Take</th>
 						</tr>
 						</thead>
 						
@@ -164,17 +193,28 @@ $warningstmt = $database->prepare($warningQuery);
 						<?php 
 							// Code added by David Hughen to display class id, update, and date
 							// inside the table in the middle of the page
-							$table->bind_param("s", $id);
-							$table->bind_result($clid, $update, $date);
-							$table->execute();
-							while($table->fetch())
-							{	
-								echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?classId='.str_replace(" ", "%20", $clid).'\'">'.$clid.'</button></td>
-									  <td>'.$update.'</td>
-									  <td>'.$date.'</td></tr>';
+							$classStatement->bind_param("s", $id);
+							$classStatement->bind_result($clid);
+							$classStatement->execute();
+							while($classStatement->fetch())
+							{
+                                $tableArray[] = $clid;
 							}
-							$table->close(); 
-							?>	
+							$classStatement->close();
+                            
+                            for($i = 0; $i < count($tableArray); $i++)
+                            {
+                                $table->bind_param("ss", $id, $tableArray[$i]);
+                                $table->bind_result($count);
+                                $table->execute();
+                                while($table->fetch())
+                                {
+                                    echo '<tr><td><button type="button" class="course_button" onclick="location.href=\'studentClassPage.php?classId='.str_replace(" ", "%20", $tableArray[$i]).'\'">'.$tableArray[$i].'</button></td>
+                                          <td>You have '.$count.' test(s) to take</td></tr>';
+                                }
+                            }
+                            $table->close();
+							?>
 							</tbody>
 					</table>
                 </div>

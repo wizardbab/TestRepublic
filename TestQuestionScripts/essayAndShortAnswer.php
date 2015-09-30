@@ -44,6 +44,7 @@
     $questionNumberStatement->close();
 	
     $idArray = array();
+    array_push($idArray, 0);
 	$studentIdStatement = $database->prepare($studentIdQuery);
     $studentIdStatement->bind_param("s", $classId);
 	$studentIdStatement->bind_result($sid);

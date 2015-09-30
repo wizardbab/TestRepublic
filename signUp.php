@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,13 +21,16 @@
 
    <!-- Form Validation Includes -->
    <link href="css/validation_page.css" rel="stylesheet" type="text/css">
-   <script type="text/javascript" src="js/validation.js"></script>
+   <script type="text/javascript" src="js/signUpValidation.js"></script>
 
    <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <!-- Parsley -->
+    <script src="js/Parsley.js/dist/parsley.js"></script>
 </head>
 
 <body>
@@ -70,7 +72,7 @@ $success = false;
 ?>
 
    <div id="wrapper">
-      <form name="signUpForm" id="signUpForm" action="signUp.php" onsubmit="return validate(this)" method="post">
+      <form name="signUpForm" id="signUpForm" action="signUp.php" method="post">
          <div id="sidebar-wrapper">
             <a href="logout.php">
                <!-- Button with a link wrapped around it to go back to the login page -->
@@ -108,10 +110,9 @@ $success = false;
                         <a href="#">
                            <div class="subject-name">' . $courseCounter . ". " . $clde . '</div>
                         </a>
-                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '">
+                        <input type="checkbox" name="classes[]" class="sidebar_class" value="' . $clid . '" id="sidebar-element' . $courseCounter++ . '" />
                      </li>
                      ';
-                     
                   }
                   $classList->close(); 
                   ?>
@@ -134,25 +135,25 @@ $success = false;
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">First Name:</div>
-                           <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" /></div>
+                           <div class="col-md-8"><input type="text" name="firstName" id="firstName" value="<?php print $firstName; ?>" required /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">Last Name:</div>
-                           <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" /></div>
+                           <div class="col-md-8"><input type="text" name="lastName" id="lastName" value="<?php print $lastName; ?>" required /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</div>
-                           <div class="col-md-8"><input type="text" name="email" id="email" /></div>
+                           <div class="col-md-8"><input type="email" name="email" id="email" required /></div>
                         </div>
                      </label><br />
                      <label class="survey_style">
                         <div class="row">
                            <div class="col-md-4">Password:</div>
-                           <div class="col-md-8"><input type="password" name="password" id="password" /></div>
+                           <div class="col-md-8"><input title="Must contain at least one uppercase, one lowercase, one number, and be a minimum of 8 characters."type="password" name="password" id="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" /></div>
                         </div>
                      </label><br />
                      <!--<input class="btn btn-primary" type="submit" value="Create Account" data-toggle="modal" data-target="#sign_up_modal" data-title="Sign Up" id="create_acc_btn" />-->

@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
     <title>Pledge Page</title>
 
@@ -29,6 +30,10 @@
 	
 	<!-- Custom CSS -->
     <link href="css/pledgePage.css" rel="stylesheet">
+	
+	<!-- custom alerts -->
+	<script src="dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
 	
 </head>
 <?php
@@ -58,6 +63,7 @@ $mainClassQuery = "select class_id, class_description from class where class_id 
 // Display the test name at the top of the page
 $testNameQuery = "select test_name, pledge from test where test_id = ?";
 
+$pledgeSignedQuery = "update test_list set graded = 0 where test_id = ? and student_id = ?";
 
 $topRightStatement = $database->prepare($topRightQuery);
 $mainClassStatement = $database->prepare($mainClassQuery);
@@ -76,8 +82,8 @@ $testNameStatement = $database->prepare($testNameQuery);
                 </button>
 				<a href="#menu-toggle" class="navbar-brand" id="menu-toggle">
 					<div id="logo-area">
-						<img src="images/logo4.png" alt="Our Logo" height="45" width="45">
-						<span class="TestRepublic">Test Republic</span>
+						<img src="images/newlogo.png" alt="Our Logo" height="45" width="45">
+						<span class="TestRepublic">TEST REPUBLIC</span>
 					</div>
 				</a>
 			</div>
@@ -89,19 +95,19 @@ $testNameStatement = $database->prepare($testNameQuery);
 						  // to display student's name in top right corner
 
 							if ($topRightStatement = $database->prepare($topRightQuery)) 
-							{
-								$topRightStatement->bind_param("s", $id);
-							}
-							else {
-								printf("Errormessage: %s\n", $database->error);
-							}							
-								$topRightStatement->bind_result($first_name, $last_name);
-								$topRightStatement->execute();
-								while($topRightStatement->fetch())
-								{
-									echo $first_name . " " . $last_name;
-								}
-								$topRightStatement->close();?><b class="caret"></b></a>
+									{
+										$topRightStatement->bind_param("s", $id);
+									}
+									else {
+										printf("Errormessage: %s\n", $database->error);
+									}							
+						$topRightStatement->bind_result($first_name, $last_name);
+						$topRightStatement->execute();
+						while($topRightStatement->fetch())
+						{
+							echo $first_name . " " . $last_name . ", ". $id." ";
+						}
+						$topRightStatement->close();?><b class="caret"></b></a>
 						
                 </li>
             </ul>
@@ -149,7 +155,7 @@ $testNameStatement = $database->prepare($testNameQuery);
 		
 		<div class="row test_pledge_section">
 			<span class="test_pledge_txt">Test Pledge</span>
-			<textarea class="form-control pledge_tb" name="specificInstruction" rows="8"><?php echo $pledge; ?></textarea>
+			<textarea class="form-control pledge_tb" disabled name="specificInstruction" rows="8"><?php echo $pledge; ?></textarea>
 		</div>
 	
 		<div class="row sign_name_txt">
@@ -178,23 +184,103 @@ $testNameStatement = $database->prepare($testNameQuery);
 		</div>
 	
 		<div class="row increase_margin">
-            <button type="button" id="submitPledge" class="btn btn-primary btn-block">Submit</button>
+            <button type="button" id="submitPledge" class="btn btn-primary btn-block submit_btn">Submit</button>
 		</div>
 	
 	</div>
+	
+	<div id="proceedModal" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header modal_header_color">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title"><span class="glyphicon glyphicon-minus"></span>Proceed?</h4>
+						</div>
+						<div class="modal-body">
+							<form name="shortAnswerForm" id="shortAnswerForm" action="testCreationPage.php" method="post">
+								<div class="form-group">
+									<div class="point_value_section">
+										<label for="short_answer_point_value" class="control-label">Do you wish to proceed?&nbsp;</label>
+									</div>
+									<hr />
+									<div class="question_section">
+									</div>
+									<div class="form-group">
+										<input type="submit" value="Yes" class="form-control" id="short_answer_question">
+									</div>
+									<div class="form-group">
+										<input type="submit" value="No" class="form-control" id="short_answer_question">
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="SACancelBtn">Cancel</button>
+							<button type="submit" class="btn btn-primary " id="SABtn" name="create" value="create" >Create Question</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		
    
 	
 	<script>
+	function proceedFunction()
+	{
+		var x;
+		 
+		 swal({
+			title: "You didn't enter your name",
+			text: "Proceed with a score of zero?",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes",
+			cancelButtonText: "No, I'll sign it",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		}, 
+		function (isConfirm) 
+		{
+			if (isConfirm) 
+			{
+                swal("OK", "You have earned a 0", "warning");
+                window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+			} 
+			else 
+			{
+				swal("Cancelled", "Please re-enter your signature.", "error");
+			}
+		});
+	}
+	
 	$(document).ready(function()
 	{
+		var studentId = '<?php echo $id; ?>';
+        var testId = '<?php echo $testId; ?>';
+		
 		$("#submitPledge").click(function()
 		{
-			if($("#nameBox").val() != '<?php echo $first_name . " " . $last_name; ?>')
-				alert("incorrect!");
+			if($("#nameBox").val() == "")
+			{
+				proceedFunction();
+			}	
+			else if($("#nameBox").val() != '<?php echo $first_name . " " . $last_name; ?>')
+			{
+				swal("Error!","Please re-enter your digital signature", "error");
+			}
 			else
 			{
-				alert("good!");
-				window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+                $.post("TestButtonScripts/pledgeButton.php",
+                {
+                    studentId:studentId,
+                    testId:testId
+                },
+                function(data)
+                {
+                    swal("Success","<?php echo $tname;?> Submitted!", "success");
+                    window.location = "studentClassPage.php?classId=" + '<?php echo str_replace(" ", "%20", $classId); ?>';
+                });
 			}
 		});
 	});

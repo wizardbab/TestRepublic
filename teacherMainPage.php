@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	<link rel="shortcut icon" href="images/newlogo.ico">
 
-    <title>Test Republic</title>
+    <title>Test Republic - Teacher</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +20,7 @@
 	
 	   <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
 
 </head>
 
@@ -67,13 +69,13 @@ $topRightQuery = "select first_name, last_name from teacher where teacher_id = ?
 $tableQuery = "select class_id, count(graded), date_taken from class
 left join test using(class_id, teacher_id)
 left join test_list using(test_id)
-where teacher_id = ? and (graded != 1 or graded is null)
+where teacher_id = ? and (graded = 0 or graded is null)
 group by class_id";
 
 $warningQuery = "select class_id, datediff(date_end, sysdate()) as days_left from enrollment
 join class using (class_id)
 join test using(class_id)
-where student_id = ? and datediff(date_end, sysdate()) < 7 and datediff(date_end, sysdate()) > 0";
+where student_id = ? and datediff(date_end, sysdate()) < 3 and datediff(date_end, sysdate()) >= 0";
 
 // The @ is for ignoring PHP errors. Replace "database_down()" with whatever you want to happen when an error happens.
 @ $database->select_db(DATABASENAME);
@@ -129,7 +131,6 @@ $table = $database->prepare($tableQuery);
 						<colgroup>
 							<col class="classes" />
 							<col class="recent_updates" />
-							<col class="date" />
 						</colgroup>
 						
 						<thead>
@@ -151,7 +152,8 @@ $table = $database->prepare($tableQuery);
 									  <td>'.$update.' test(s) to grade</td></tr>';
 							}
 							$table->close(); 
-							?>			
+							?>
+						</tbody>
 					</table>
                 </div>
 

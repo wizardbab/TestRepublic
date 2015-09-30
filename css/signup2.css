@@ -26,6 +26,7 @@ body
 {
 	display: inline-block;
 	margin-top: -11px;
+	width: 230px;
 }
 
 .TestRepublic
@@ -199,6 +200,8 @@ body
 {
 	margin-top: 20px;
 	width: 95%;
+	font-size: 22px;
+	font-weight: bold;
 }
 
 #my-select
@@ -229,21 +232,29 @@ label.survey_style input
 
 .ms-container .ms-list
 {
-	height: 330px;
+	height: 310px;
 }
 
 .back_section
 {
 	position: absolute;
-	top: 20px;
-	left: 20px;
+	top: 25px;
+	left: 25px;
 }
 
 #back_btn
 {
-	background: white;
 	font-size: 16pt;
 	width: 100px;
+	color: white;
+}
+
+#back_btn:hover
+{
+	font-size: 16pt;
+	width: 100px;
+	color: black;
+	text-decoration: none;
 }
 
 #wrapper.toggled #signUpDiv {

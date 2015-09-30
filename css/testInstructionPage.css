@@ -309,6 +309,7 @@ ul.alert-dropdown {
 {
 	margin-top: 5px;
 	color: black;
+    font-size: 14pt;
 }
 
 .time_limit
@@ -334,5 +335,7 @@ ul.alert-dropdown {
 
 .start_btn
 {
-	margin-top: 50px;
+	margin-top: 30px;
+	font-size: 18pt;
+	font-weight: bold;
 }

@@ -59,35 +59,35 @@
         $selectQuestionStatement->execute();
         while($selectQuestionStatement->fetch())
         {
-            questionArray[] = $heading;
-            questionArray[] = $heading_id;
-            questionArray[] = $newQId;
-            questionArray[] = $question_letter;
-            questionArray[] = $question_no;
-            questionArray[] = $question_text;
-            questionArray[] = $question_type;
-            questionArray[] = $question_value;
-            questionArray[] = $test_id;
-            questionArray[] = $newAId;
-            questionArray[] = $answer_text;
-            questionArray[] = $correct;
+            $questionArray[] = $heading;
+            $questionArray[] = $heading_id;
+            $questionArray[] = $newQId;
+            $questionArray[] = $question_letter;
+            $questionArray[] = $question_no;
+            $questionArray[] = $question_text;
+            $questionArray[] = $question_type;
+            $questionArray[] = $question_value;
+            $questionArray[] = $test_id;
+            $questionArray[] = $newAId;
+            $questionArray[] = $answer_text;
+            $questionArray[] = $correct;
             $newQId++;
             $newAId++;
         }
         $selectQuestionStatement->close();
         
         $oldQno = -1;
-        for($k = 0; $k < count(questionArray); $k += 12)
+        for($k = 0; $k < count($questionArray); $k += 12)
         {
-            if($oldQno != questionArray[$k+3])
+            if($oldQno != $questionArray[$k+3])
             {
                 $insertQuestionStatement = $database->prepare($insertQuestionQuery);
-                $insertQuestionStatement->bind_param("sssssssss", questionArray[$k], questionArray[$k+1], questionArray[$k+2], questionArray[$k+3], questionArray[$k+4], questionArray[$k+5], questionArray[$k+6], questionArray[$k+7], questionArray[$k+8]);
+                $insertQuestionStatement->bind_param("sssssssss", $questionArray[$k], $questionArray[$k+1], $questionArray[$k+2], $questionArray[$k+3], $questionArray[$k+4], $questionArray[$k+5], $questionArray[$k+6], $questionArray[$k+7], $questionArray[$k+8]);
                 $insertQuestionStatement->execute();
                 $insertQuestionStatement->close();
             }
             $insertAnswerStatement = $database->prepare($insertAnswerQuery);
-            $insertAnswerStatement->bind_param("sss", questionArray[$k+9], questionArray[$k+10], questionArray[$k+11]);
+            $insertAnswerStatement->bind_param("sss", $questionArray[$k+9], $questionArray[$k+10], $questionArray[$k+11]);
             $insertAnswerStatement->execute();
             $insertAnswerStatement->close();
         }
